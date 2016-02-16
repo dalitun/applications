@@ -3,6 +3,7 @@
 ## Episode 25 : Mail
 
 ![postfixlogo](http://www.postfix.org/mysza.gif)
+![roundcube1](https://www.softaculous.com/images/softimages/118__logo.gif)
 
 Un serveur de messagerie (aussi connu comme un agent de transfert de courrier ou MTA, un agent de transport de courrier, un routeur mail ou un courrier Internet) est une application qui reçoit le courrier entrant des utilisateurs locaux (les gens dans le même domaine) et les expéditeurs à distance et e-mail avant sortant pour la livraison. Un ordinateur dédié à l'exécution de telles applications est aussi appelé un serveur de messagerie. Microsoft Exchange et Postfix sont parmi les programmes de serveur de messagerie les plus courants.
 ## Preparations

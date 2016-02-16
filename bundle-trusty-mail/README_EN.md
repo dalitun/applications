@@ -3,6 +3,7 @@
 ## Episode 20 : Mail
 
 ![postfixlogo](http://www.postfix.org/mysza.gif)
+![roundcube1](https://www.softaculous.com/images/softimages/118__logo.gif)
 
 A mail server (also known as a mail transfer agent or MTA, a mail transport agent, a mail router or an Internet mailer) is an application that receives incoming e-mail from local users (people within the same domain) and remote senders and forwards outgoing e-mail for delivery. A computer dedicated to running such applications is also called a mail server. Microsoft Exchange and Postfix are among the more common mail server programs.
 ## Preparations
