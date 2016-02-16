@@ -1,13 +1,10 @@
-# 5 Minutes Stacks, épisode 20 : Mediawiki #
+# 5 Minutes Stacks, épisode 25 : Mail #
 
-## Episode 20 : Mediawiki
+## Episode 25 : Mail
 
 ![postfixlogo](http://www.postfix.org/mysza.gif)
 
-MediaWiki est un moteur de wiki pour le Web. Il est utilisé par l’ensemble des projets de la Wikimedia Foundation, ainsi que par l’ensemble des wikis hébergés chez Wikia et par de nombreux autres wikis. Conçu pour répondre aux besoins de Wikipédia, ce moteur est depuis 2008 également utilisé par des entreprises comme solution de gestion des connaissances et comme système de gestion de contenu.
-MediaWiki est écrit en PHP, et peut aussi bien fonctionner avec une base de données MySQL que PostgreSQL. C'est un logiciel libre distribué selon les termes de la GPL.
-MediaWiki inclut de nombreuses fonctionnalités pour les sites à vocation collaborative : la gestion des espaces de noms, ou encore l'utilisation de pages de discussions associées à chaque article.
-
+Un serveur de messagerie (aussi connu comme un agent de transfert de courrier ou MTA, un agent de transport de courrier, un routeur mail ou un courrier Internet) est une application qui reçoit le courrier entrant des utilisateurs locaux (les gens dans le même domaine) et les expéditeurs à distance et e-mail avant sortant pour la livraison. Un ordinateur dédié à l'exécution de telles applications est aussi appelé un serveur de messagerie. Microsoft Exchange et Postfix sont parmi les programmes de serveur de messagerie les plus courants.
 ## Preparations
 
 ### Les versions
@@ -192,5 +189,4 @@ Les chemins intéressants sur votre machine :
 * [ Postfix Home page](http://www.postfix.org/documentation.html)
 * [ Dovecot Documentation](http://www.dovecot.org/)
 * [ Roundcube Documentation](https://roundcube.net/)
------------mentation](https://roundcube.net/)
 -----------

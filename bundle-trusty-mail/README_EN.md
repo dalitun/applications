@@ -125,11 +125,11 @@ http://yourDomainaName ,https://yourDomainaName or http://floatingIP/
 
 You have to arrive on this page:
 
-![auth](/home/mohamed/doc/mail/img/auth.png)
+![auth](img/auth.png)
 
 For logging you have to use Linux users then you begin to send and recieve emails.
 
-![inbox](/home/mohamed/doc/mail/img/roundcube.png)
+![inbox](img/roundcube.png)
 
 In this exemple we used the default domain name provided by cloudwatt you can change it:
 you have to edit `/etc/postfix/main.cf` and `/etc/apache2/sites-available/vhost.conf`
