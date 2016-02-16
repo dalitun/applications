@@ -162,10 +162,4 @@ Mail is now configured you can begin to write your articles,
 * [ Dovecot Documentation](http://www.dovecot.org/)
 * [ Roundcube Documentation](https://roundcube.net/)
 
-
------------tfix.org/documentation.html)
-* [ Dovecot Documentation](http://www.dovecot.org/)
-* [ Roundcube Documentation](https://roundcube.net/)
-
-
 -----------
