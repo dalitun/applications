@@ -137,7 +137,7 @@ then restart the services postfix ,dovecot and apache2:
 
 ~~~ bash
 # service postfix restart
-# initctl stop dovecot ; initctl start dovecot
+# initctl stop dovecot ;; initctl start dovecot
 # service apache2 restart
 ~~~
 Make a refresh on the url http://floatingIP/

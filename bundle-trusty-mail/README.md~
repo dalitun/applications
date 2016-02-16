@@ -168,7 +168,7 @@ Editez `etc/postfix/main.cf` and `/etc/apache2/sites-available/vhost.conf` puis 
 
 ~~~ bash
 # service postfix restart
-# initctl stop dovecot ; initctl start dovecot
+# initctl stop dovecot ;; initctl start dovecot
 # service apache2 restart
 ~~~
 faites un refresh sur l'url http://floatingIP/
