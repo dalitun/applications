@@ -2,8 +2,7 @@
 
 ## Episode 20 : Mail
 
-![postfixlogo](http://www.postfix.org/mysza.gif)
-![roundcube1](https://www.softaculous.com/images/softimages/118__logo.gif)
+![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
 
 A mail server (also known as a mail transfer agent or MTA, a mail transport agent, a mail router or an Internet mailer) is an application that receives incoming e-mail from local users (people within the same domain) and remote senders and forwards outgoing e-mail for delivery. A computer dedicated to running such applications is also called a mail server. Microsoft Exchange and Postfix are among the more common mail server programs.
 ## Preparations
@@ -14,8 +13,7 @@ A mail server (also known as a mail transfer agent or MTA, a mail transport agen
  - Dovecot 2.2.9
  - Clamsmtpd 1.10
  - Apache 2.4.7
- - Mysql 5.5.47
- - Roundcube 0.9.5
+ - rainloop
 
 ### The prerequisites to deploy this stack
 
@@ -88,8 +86,8 @@ A mail server (also known as a mail transfer agent or MTA, a mail transport agen
            - n1.cw.standard-4
            - n1.cw.standard-8
            - n1.cw.standard-12
-           - n1.cw.standard-16
 
+           - n1.cw.standard-16
  [...]
  ~~~
 
@@ -119,29 +117,41 @@ A mail server (also known as a mail transfer agent or MTA, a mail transport agen
  ~~~
 
 ### Enjoy
+Once all this makes you can connect via a Web browser on Rainloop:
 
-Once all this makes you can connect via a Web browser on Roundcube:
-
-http://yourDomainaName or https://yourDomainaName or http://floatingIP/
+http://yourDomainaName , https://yourDomainaName or http://floatingIP/
 
 You have to arrive on this page:
 
-![auth](/home/mohamed/doc/mail/img/auth.png)
+![auth](./img/auth.png)
 
 For logging you have to use Linux users and you begin to send and recieve emails.
 
-![inbox](/home/mohamed/doc/mail/img/roundcube.png)
+![inbox](./img/rainloop.png)
 
-In this exemple we used the default domain name provided by cloudwatt you can change it:
-you have to edit `/etc/postfix/main.cf` and `/etc/apache2/sites-available/vhost.conf`
-then restart the services postfix ,dovecot and apache2:
+In this exemple we used the default domain name provided by cloudwatt (`https://ip-floatingip.rev.cloudwatt.com` by replacing your "." by "-" in floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
+if you wanna change it :
+you have to edit `/etc/postfix/main.cf`, `/etc/apache2/sites-available/vhost.conf` and `/var/www/cw/data/_data_/_default_/domains/domain.ini`
+
+then restart the services postfix,dovecot and apache2:
 
 ~~~ bash
 # service postfix restart
-# initctl stop dovecot ; initctl start dovecot
+# initctl restart dovecot
 # service apache2 restart
 ~~~
 Make a refresh on the url http://floatingIP/
+
+If you want to change same configurations on your rainloop:
+ Access to (http://yourDomainaName , https://yourDomainaName or http://floatingIP)/?admin" with web browser on Client, then login with a user and password for initial login, user is "admin" and password is "12345"
+ ![admin1](./img/admin1.png)
+  Don't froget to change password 's admin
+
+An SSL certificate is automatically generated via Let's encrypt and it is renewed via a CRON job every 90 days.
+
+The updates ClamAv signatures is via cron everyday.
+
+
 ###So watt?
 The interesting directories and files are:
 
@@ -151,15 +161,15 @@ The interesting directories and files are:
 
 `/etc/dovecot`: Dovecot configuration files
 
-`/etc/roundcube`: Roundcube configuration files
+`/etc/clamsmtpd.conf`:ClamAv configuration file
 
-
-Mail is now configured you can begin to write your articles,
+`/var/www/cw/data/_data_/_default_/`: Rainloop configuration files
 
 
 #### Other resources you could be interested in:
 * [ Postfix Home page](http://www.postfix.org/documentation.html)
 * [ Dovecot Documentation](http://www.dovecot.org/)
-* [ Roundcube Documentation](https://roundcube.net/)
+* [ Rainloop Documentation](http://www.rainloop.net)
+* [ ClamAv Documentation](http://www.clamav.net/)
 
 -----------
