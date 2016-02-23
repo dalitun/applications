@@ -8,7 +8,7 @@ A mail server (also known as a mail transfer agent or MTA, a mail transport agen
 ## Preparations
 
 ### The version
- - Ubuntu Trusty 14.04.3
+ - Ubuntu Trusty 14.04
  - Postfix 2.11.0
  - Dovecot 2.2.9
  - Clamsmtpd 1.10
@@ -75,19 +75,22 @@ A mail server (also known as a mail transfer agent or MTA, a mail transport agen
      type: string
 
    flavor_name:
-     default: s1.cw.small-1              <-- indicate here the flavor size
+     default: n2.cw.standard-1              <-- indicate here the flavor size
      description: Flavor to use for the deployed instance
      type: string
      constraints:
        - allowed_values:
-           - s1.cw.small-1
-           - n1.cw.standard-1
-           - n1.cw.standard-2
-           - n1.cw.standard-4
-           - n1.cw.standard-8
-           - n1.cw.standard-12
-
-           - n1.cw.standard-16
+         - t1.cw.tiny
+         - s1.cw.small-1
+         - n2.cw.standard-1
+         - n2.cw.standard-2
+         - n2.cw.standard-4
+         - n2.cw.standard-8
+         - n2.cw.standard-16
+         - n2.cw.highmem-2
+         - n2.cw.highmem-4
+         - n2.cw.highmem-8
+         - n2.cw.highmem-12
  [...]
  ~~~
 
@@ -115,6 +118,49 @@ A mail server (also known as a mail transfer agent or MTA, a mail transport agen
  | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | your_stack_name | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
+ ~~~bash
+$ watch heat resource-list your_stack_name
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
+| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
+| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
+| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
+| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
+  +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
+~~~
+
+The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
+
+* Starts an Ubuntu Trusty Tahr based instance
+* Expose it on the Internet via a floating IP.
+
+
+### All of this is fine, but you do not have a way to create the stack from the console?
+
+We do indeed! Using the console, you can deploy a mail server:
+
+1.	Go the Cloudwatt Github in the [applications/bundle-trusty-mail]https://github.com/cloudwatt/applications/tree/master/bundle-trusty-mail) repository
+2.	Click on the file named `bundle-trusty-mail.heat.yml` (or `bbundle-trusty-mail.restore.heat.yml` to [restore from backup](#backup))
+3.	Click on RAW, a web page will appear containing purely the template
+4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
+5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
+6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
+7.	Name your stack in the « Stack name » field
+8.	Enter the name of your keypair in the « SSH Keypair » field
+9.  Write a passphrase that will be used for encrypting backups
+10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
+
+The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
+
+If you've reached this point, you're already done! Go enjoy Duplicity!
+
+### A one-click chat sounds really nice...
+
+... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your mail server!
+
 
 ### Enjoy
 Once all this makes you can connect via a Web browser on Rainloop:
@@ -140,15 +186,17 @@ then restart the services postfix,dovecot and apache2:
 # initctl restart dovecot
 # service apache2 restart
 ~~~
-Make a refresh on the url http://floatingIP/
+Make a refresh on the url http://floatingIP/.
 
-If you want to change same configurations on your rainloop:
- Access to (http://yourDomainaName , https://yourDomainaName or http://floatingIP)/?admin" with web browser on Client, then login with a user and password for initial login, user is "admin" and password is "12345"
+If you want to change rainloop configurations:
+ Access to (http://yourDomainaName , https://yourDomainaName
+   or http://floatingIP)/?admin" with web browser on Client,then login with a user and password for initial login, user is "admin" and password is "12345".
+
  ![admin1](./img/admin1.png)
-  Don't froget to change password 's admin
+
+Don't froget to change admin password.
 
 An SSL certificate is automatically generated via Let's encrypt and it is renewed via a CRON job every 90 days.
-
 The updates ClamAv signatures is via cron everyday.
 
 
