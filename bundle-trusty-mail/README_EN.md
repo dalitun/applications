@@ -25,11 +25,11 @@ A mail server (also known as a mail transfer agent or MTA, a mail transport agen
 
 ### Size of the instance
 
- Per default, the script is proposing a deployement on an instance type "Small" (s1.cw.small-1).  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
+ Per default, the script is proposing a deployement on an instance type "Standard" (n2.cw.standard-1).  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
 
 ### By the way...
 
- If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console)
+ If you do not like command lines, you can go directly to the "run it through the console" section by clicking [here](#console)
 
 ## What will you find in the repository
 
@@ -155,7 +155,7 @@ We do indeed! Using the console, you can deploy a mail server:
 
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
-If you've reached this point, you're already done! Go enjoy Duplicity!
+If you've reached this point, you're already done! Go enjoy Mail!
 
 ### A one-click chat sounds really nice...
 
@@ -165,7 +165,7 @@ If you've reached this point, you're already done! Go enjoy Duplicity!
 ### Enjoy
 Once all this makes you can connect via a Web browser on Rainloop:
 
-http://yourDomainaName , https://yourDomainaName or http://floatingIP/
+http://yourDomainaName , https://yourDomainaName or http://floatingthroughIP/
 
 You have to arrive on this page:
 
@@ -175,8 +175,9 @@ For logging you have to use Linux users and you begin to send and recieve emails
 
 ![inbox](./img/rainloop.png)
 
-In this exemple we used the default domain name provided by cloudwatt (`https://ip-floatingip.rev.cloudwatt.com` by replacing your "." by "-" in floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
-if you wanna change it :
+In this exemple we used the default domain name provided by cloudwatt (`https://ip-floatingip.rev.cloudwatt.com` juste you replace the "." by "-" in your floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
+if you wannt to change the domain :
+
 you have to edit `/etc/postfix/main.cf`, `/etc/apache2/sites-available/vhost.conf` and `/var/www/cw/data/_data_/_default_/domains/domain.ini`
 
 then restart the services postfix,dovecot and apache2:
@@ -200,7 +201,7 @@ An SSL certificate is automatically generated via Let's encrypt and it is renewe
 The updates ClamAv signatures is via cron everyday.
 
 
-###So watt?
+### So watt?
 The interesting directories and files are:
 
 `/etc/apache2`: Apache configuration files
