@@ -13,7 +13,7 @@ A mail server (also known as a mail transfer agent or MTA, a mail transport agen
  - Dovecot 2.2.9
  - Clamsmtpd 1.10
  - Apache 2.4.7
- - rainloop
+ - Rainloop
 
 ### The prerequisites to deploy this stack
 
@@ -170,10 +170,16 @@ http://yourDomainaName , https://yourDomainaName or http://floatingthroughIP/
 You have to arrive on this page:
 
 ![auth](./img/auth.png)
-
 For logging you have to use Linux users and you begin to send and recieve emails.
 
-![inbox](./img/rainloop.png)
+![inbox](./img/interface.png)
+
+user1 send an email to user2
+![inbox1](./img/sent.png)
+
+user2 recieve emai's user1
+
+![inbox](./img/receive.png)
 
 In this exemple we used the default domain name provided by cloudwatt (`https://ip-floatingip.rev.cloudwatt.com` juste you replace the "." by "-" in your floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
 if you wannt to change the domain :
@@ -195,7 +201,11 @@ If you want to change rainloop configurations:
 
  ![admin1](./img/admin1.png)
 
-Don't froget to change admin password.
+Don't froget to change admin password through this interface
+
+![admin1](./img/admin2.png)
+
+
 
 An SSL certificate is automatically generated via Let's encrypt and it is renewed via a CRON job every 90 days.
 The updates ClamAv signatures is via cron everyday.

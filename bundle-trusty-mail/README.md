@@ -2,20 +2,19 @@
 
 ## Episode 25 : Mail
 
-![postfixlogo](http://www.postfix.org/mysza.gif)
-![roundcube1](https://www.softaculous.com/images/softimages/118__logo.gif)
+![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
 
 Un serveur de messagerie (aussi connu comme un agent de transfert de courrier ou MTA, un agent de transport de courrier, un routeur mail ou un courrier Internet) est une application qui reçoit le courrier entrant des utilisateurs locaux (les gens dans le même domaine) et les expéditeurs à distance et e-mail avant sortant pour la livraison. Un ordinateur dédié à l'exécution de telles applications est aussi appelé un serveur de messagerie. Microsoft Exchange et Postfix sont parmi les programmes de serveur de messagerie les plus courants.
 ## Preparations
 
 ### Les versions
- - Ubuntu Trusty 14.04.3
+ - Ubuntu Trusty 14.04
  - Postfix 2.11.0
  - Dovecot 2.2.9
  - Clamsmtpd 1.10
  - Apache 2.4.7
  - Mysql 5.5.47
- - Roundcube 0.9.5
+ - Rainloop
 
 ### Les pré-requis pour déployer cette stack
 Ceci devrait être une routine à présent:
@@ -165,7 +164,7 @@ Pour se logger vous devez utiliser les utilisateurs Linux puis vous commencez à
 
 ![inbox](img/roundcube.png)
 Dans cette exemple nous avons utilisé le nom de domaine fourni par Cloudwatt vous pouvez le changer :
-Editez `etc/postfix/main.cf` and `/etc/apache2/sites-available/vhost.conf` puis redémarrer  les services Postfix, Dovecot et Apache2 
+Editez `etc/postfix/main.cf` and `/etc/apache2/sites-available/vhost.conf` puis redémarrer  les services Postfix, Dovecot et Apache2
 
 ~~~ bash
 # service postfix restart
@@ -184,7 +183,7 @@ Les chemins intéressants sur votre machine :
 
 `/etc/dovecot`: Fichiers de configuration Dovecot
 
-`/etc/roundcube`: Fichiers de configuration Roundcube 
+`/etc/roundcube`: Fichiers de configuration Roundcube
 
 #### Autres sources pouvant vous intéresser:
 * [ Postfix Home page](http://www.postfix.org/documentation.html)
