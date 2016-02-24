@@ -6,7 +6,7 @@
 heat_template_version: 2013-05-23
 
 
-description: All-in-one WordPress stack
+description: All-in-one Mail stack
 
 
 parameters:

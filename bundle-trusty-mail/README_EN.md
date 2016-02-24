@@ -93,14 +93,18 @@ A mail server (also known as a mail transfer agent or MTA, a mail transport agen
          - n2.cw.highmem-12
  [...]
  ~~~
+ ### Start stack
 
  In a shell, run the script `stack-start.sh`:
 
  ~~~ bash
- $ ./stack-start.sh your_stack_name your_keypair_name
- Enter your new admin password:
- Enter your new password once more:
- Creating stack...
+ ./stack-start.sh your_stack_name your_keypair_name
+ ~~~
+ Exemple :
+
+ ~~~bash
+ $ ./stack-start.sh EXP_STACK
+
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
@@ -108,7 +112,7 @@ A mail server (also known as a mail transfer agent or MTA, a mail transport agen
  +--------------------------------------+------------+--------------------+----------------------+
  ~~~
 
- Within 5 minutes the stack will be fully operational. (Use watch to see the status in real-time)
+ Wait **5 minutes** the stack will be fully operational. (Use watch to see the status in real-time)
 
  ~~~ bash
  $ watch -n 1 heat stack-list
@@ -164,25 +168,22 @@ If you've reached this point, you're already done! Go enjoy Mail!
 
 ### Enjoy
 Once all this makes you can connect via a Web browser on Rainloop:
-
 http://yourDomainaName , https://yourDomainaName or http://floatingthroughIP/
 
 You have to arrive on this page:
-
 ![auth](./img/auth.png)
-For logging you have to use Linux users and you begin to send and recieve emails.
 
+For logging you have to use Linux users and you begin to send and recieve emails.
 ![inbox](./img/interface.png)
 
 user1 send an email to user2
 ![inbox1](./img/sent.png)
 
-user2 recieve emai's user1
-
+user2 recieve user1 email
 ![inbox](./img/receive.png)
 
-In this exemple we used the default domain name provided by cloudwatt (`https://ip-floatingip.rev.cloudwatt.com` juste you replace the "." by "-" in your floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
-if you wannt to change the domain :
+In this exemple we used the default domain name provided by cloudwatt (`https://ip-floatingip.rev.cloudwatt.com` juste replace the "." by "-" in your floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
+if you want to change the domain :
 
 you have to edit `/etc/postfix/main.cf`, `/etc/apache2/sites-available/vhost.conf` and `/var/www/cw/data/_data_/_default_/domains/domain.ini`
 
@@ -195,7 +196,7 @@ then restart the services postfix,dovecot and apache2:
 ~~~
 Make a refresh on the url http://floatingIP/.
 
-If you want to change rainloop configurations:
+If you want to change rainloop configuration:
  Access to (http://yourDomainaName , https://yourDomainaName
    or http://floatingIP)/?admin" with web browser on Client,then login with a user and password for initial login, user is "admin" and password is "12345".
 

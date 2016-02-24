@@ -86,34 +86,30 @@ parameters:
     label: Instance Type (Flavor)
     description: Flavor to use for the deployed instance
     type: string
-    default: s1.cw.small-1
+    default: n2.cw.standard-1
     constraints:
       - allowed_values:
-        [...]
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-12
 
-resources:
-  network:
-    type: OS::Neutron::Net
-
-  subnet:
-    type: OS::Neutron::Subnet
-    properties:
-      network_id: { get_resource: network }
-      ip_version: 4
-      cidr: 10.0.1.0/24
-      allocation_pools:
-        - { start: 10.0.1.100, end: 10.0.1.199 }
 [...]
 ~~~
-
-<a name="startup" />
 
 ### Démarrer la stack
 
 Dans un shell, lancer le script `stack-start.sh`:
 
 ~~~
-./stack-start.sh nom_de_votre_stack
+./stack-start.sh nom_de_votre_stack votre_nom_clé
 ~~~
 
 Exemple :
@@ -146,35 +142,77 @@ $ heat resource-list nom_de_votre_stack
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack mediawiki
+* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack mail
 * l'exposer sur Internet via une IP flottante
+### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
+
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-cozycloud](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-mail)
+2.	Cliquez sur le fichier nommé `bundle-trusty-mail.heat.yml`
+3.	Cliquez sur RAW, une page web apparait avec le détail du script
+4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
+5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
+6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
+7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
+8.	Entrez votre keypair dans le champ « keypair_name »
+9.  Donner votre passphrase qui servira pour le chiffrement des sauvegardes
+10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
+
+C’est (déjà) FINI !
+
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre mail !
+
 
 ### Enjoy
 
 Une fois tout ceci fait vous pouvez vous connecter via un navigateur web sur votre serveur mail afin de commencer à le paramétrer
 exemple :
-
 http://votreNomDeDomaine , https://votreNomDeDomaine  ou http://floatingIP/
 
 vous devez arriver sur cette page :
+![auth](./img/auth.png))
 
-![auth](img/auth.png)
+Pour s'authenfier vous devez utiliser les utilisateurs Linux puis vous commencez à envoyer et recevoir vos emails.
+![inbox](./img/interface.png)
 
-Pour se logger vous devez utiliser les utilisateurs Linux puis vous commencez à envoyer et recevoir vos emails.
+user1 envoie un email à user2
+![inbox1](./img/sent.png)
 
-![inbox](img/roundcube.png)
-Dans cette exemple nous avons utilisé le nom de domaine fourni par Cloudwatt vous pouvez le changer :
-Editez `etc/postfix/main.cf` and `/etc/apache2/sites-available/vhost.conf` puis redémarrer  les services Postfix, Dovecot et Apache2
+user2 reçoit l'email de user1
+![inbox](./img/receive.png)
+
+
+Dans cette exemple nous avons utilisé le nom de domaine fourni par Cloudwatt(`https://ip-floatingip.rev.cloudwatt.com` juste remplacez les "." par "-" dans le floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
+si vous voudriez le changer :
+
+Editez `etc/postfix/main.cf` , `/etc/apache2/sites-available/vhost.conf` et `/var/www/cw/data/_data_/_default_/domains/domain.ini`, puis redémarrer  les services suivants Postfix, Dovecot et Apache2.
 
 ~~~ bash
 # service postfix restart
 # initctl stop dovecot ; initctl start dovecot
 # service apache2 restart
 ~~~
-faites un refresh sur l'url http://floatingIP/
+Faites un refresh sur l'url http://floatingIP/
+
+
+Si vous voudriez changer la configuration de rainloop
+ Accéder (http://yourDomainaName , https://yourDomainaName
+   or http://floatingIP)/?admin" à partir de votre navigateur,ensuite s'authenfier login with a user and password for initial login, user is "admin" and password is "12345".
+ ![admin1](./img/admin1.png)
+
+N'oubliez de changer le mot de passe admin à partir de cette interface.
+![admin1](./img/admin2.png)
+
+Un certificat SSL est automatiquement généré via Let's encrypt et celui-ci est renouvellé via un job CRON tous les 90 jours.
+les signatures Clamav sont mises à jour via un cron chaque jour.
+
 ###So watt?
-Ce tutoriel a pour but d'accélérer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
-Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+
 Les chemins intéressants sur votre machine :
 
 `/etc/apache2`: Fichiers de configuration Apache
@@ -183,9 +221,15 @@ Les chemins intéressants sur votre machine :
 
 `/etc/dovecot`: Fichiers de configuration Dovecot
 
-`/etc/roundcube`: Fichiers de configuration Roundcube
+`/etc/clamsmtpd.conf`:Fichier de configuration Clamav
+
+`/var/www/cw/data/_data_/_default_/`: Fichiers de configuration Rainloop
+
 
 #### Autres sources pouvant vous intéresser:
 * [ Postfix Home page](http://www.postfix.org/documentation.html)
 * [ Dovecot Documentation](http://www.dovecot.org/)
-* [ Roundcube Documentation](https://roundcube.net/)
+* [ Rainloop Documentation](http://www.rainloop.net)
+* [ ClamAv Documentation](http://www.clamav.net/)
+
+-----------
