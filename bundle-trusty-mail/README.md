@@ -4,7 +4,8 @@
 
 ![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
 
-Un serveur de messagerie (aussi connu comme un agent de transfert de courrier ou MTA, un agent de transport de courrier, un routeur mail ou un courrier Internet) est une application qui reçoit le courrier entrant des utilisateurs locaux (les gens dans le même domaine) et les expéditeurs à distance et e-mail avant sortant pour la livraison. Un ordinateur dédié à l'exécution de telles applications est aussi appelé un serveur de messagerie. Microsoft Exchange et Postfix sont parmi les programmes de serveur de messagerie les plus courants.
+Un serveur de messagerie électronique est un logiciel serveur de courrier électronique (courriel). Il a pour vocation de transférer les messages électroniques d'un serveur à un autre. Un utilisateur n'est jamais en contact direct avec ce serveur mais utilise soit un client de messagerie, soit un courrielleur web, qui se charge de contacter le serveur pour envoyer ou recevoir les messages.
+
 ## Preparations
 
 ### Les versions
@@ -144,6 +145,7 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack mail
 * l'exposer sur Internet via une IP flottante
+
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
@@ -172,12 +174,12 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Une fois tout ceci fait vous pouvez vous connecter via un navigateur web sur votre serveur mail afin de commencer à le paramétrer
 exemple :
-http://votreNomDeDomaine , https://votreNomDeDomaine  ou http://floatingIP/
+https://ip-floatingip.rev.cloudwatt.com ou https://floatingIP/
 
 vous devez arriver sur cette page :
 ![auth](./img/auth.png))
 
-Pour s'authenfier vous devez utiliser les utilisateurs Linux puis vous commencez à envoyer et recevoir vos emails.
+Pour s'authenfier vous devez créer des utilisateurs Linux puis vous commencez à envoyer et recevoir vos emails.
 ![inbox](./img/interface.png)
 
 user1 envoie un email à user2
@@ -186,11 +188,26 @@ user1 envoie un email à user2
 user2 reçoit l'email de user1
 ![inbox](./img/receive.png)
 
+Dans cette exemple nous avons utilisé le nom de domaine fourni par Cloudwatt(`https://ip-floatingip.rev.cloudwatt.com`  remplacez les "." par "-" de votre floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )).
 
-Dans cette exemple nous avons utilisé le nom de domaine fourni par Cloudwatt(`https://ip-floatingip.rev.cloudwatt.com` juste remplacez les "." par "-" dans le floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
-si vous voudriez le changer :
+Si vous voulez changer le domaine de votre serveur de mail, afin de pouvoir y paramétrer le votre, voici la méthode:
 
-Editez `etc/postfix/main.cf` , `/etc/apache2/sites-available/vhost.conf` et `/var/www/cw/data/_data_/_default_/domains/domain.ini`, puis redémarrer  les services suivants Postfix, Dovecot et Apache2.
+Dans `etc/postfix/main.cf` inscrire votre nom de domaine dans les paramètres ci-dessous:
+      *mydomain:
+      *myhostname:
+      *mydestination:
+      
+
+Dans `/etc/apache2/sites-available/vhost.conf` inscrire votre nom de domaine dans les paramètres ci-dessous :
+      *ServerName
+      *ServerAdmin: ce paramètre permet de définir l'adresse Email de l'administrateur
+      
+
+Dans `/var/www/cw/data/_data_/_default_/domains/domain.ini`:
+      *smtp_host
+      *imap_host
+
+**Redémarrez ensuite  les services suivants Postfix, Dovecot et Apache2.**
 
 ~~~ bash
 # service postfix restart
@@ -200,16 +217,14 @@ Editez `etc/postfix/main.cf` , `/etc/apache2/sites-available/vhost.conf` et `/va
 Faites un refresh sur l'url http://floatingIP/
 
 
-Si vous voudriez changer la configuration de rainloop
- Accéder (http://yourDomainaName , https://yourDomainaName
-   or http://floatingIP)/?admin" à partir de votre navigateur,ensuite s'authenfier login with a user and password for initial login, user is "admin" and password is "12345".
+Si vous voulez changer la configuration de rainloop,connectez vous sur l'interface d'admin sur l'adresse https://floatingIP/?admin ou https://ip-floatingip.rev.cloudwatt.com/?admin" à partir de votre navigateur. Il faut ensuite s'authenfier avec l'utilisateur **admin** et le mot de passe **12345**.
  ![admin1](./img/admin1.png)
 
-N'oubliez de changer le mot de passe admin à partir de cette interface.
+**Pour plus de sécurité** n'oubliez pas de changer le mot de passe admin à partir de cette interface.
 ![admin1](./img/admin2.png)
 
 Un certificat SSL est automatiquement généré via Let's encrypt et celui-ci est renouvellé via un job CRON tous les 90 jours.
-les signatures Clamav sont mises à jour via un cron chaque jour.
+Les signatures Clamav sont mises à jour via un job cron chaque jour.
 
 ###So watt?
 
