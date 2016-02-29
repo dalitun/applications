@@ -193,31 +193,33 @@ Dans cette exemple nous avons utilisé le nom de domaine fourni par Cloudwatt(`h
 Si vous voulez changer le domaine de votre serveur de mail, afin de pouvoir y paramétrer le votre, voici la méthode:
 
 Dans `etc/postfix/main.cf` inscrire votre nom de domaine dans les paramètres ci-dessous:
-      *mydomain:
-      *myhostname:
-      *mydestination:
-      
+
+      - mydomain:
+      - myhostname:
+      - mydestination:
+
 
 Dans `/etc/apache2/sites-available/vhost.conf` inscrire votre nom de domaine dans les paramètres ci-dessous :
-      *ServerName
-      *ServerAdmin: ce paramètre permet de définir l'adresse Email de l'administrateur
-      
+      - ServerName
+      - ServerAdmin: ce paramètre permet de définir l'adresse Email de l'administrateur
+
 
 Dans `/var/www/cw/data/_data_/_default_/domains/domain.ini`:
-      *smtp_host
-      *imap_host
+      - smtp_host
+      - imap_host
 
-**Redémarrez ensuite  les services suivants Postfix, Dovecot et Apache2.**
+**Redémarrez ensuite  les services suivants Postfix, Dovecot et Apache2**
 
 ~~~ bash
 # service postfix restart
 # initctl stop dovecot ; initctl start dovecot
 # service apache2 restart
 ~~~
-Faites un refresh sur l'url http://floatingIP/
+Faites un refresh sur l'url `http://floatingIP/`
 
 
-Si vous voulez changer la configuration de rainloop,connectez vous sur l'interface d'admin sur l'adresse https://floatingIP/?admin ou https://ip-floatingip.rev.cloudwatt.com/?admin" à partir de votre navigateur. Il faut ensuite s'authenfier avec l'utilisateur **admin** et le mot de passe **12345**.
+**Si vous voulez changer la configuration de rainloop***
+ connectez vous sur l'interface d'admin sur l'adresse `https://floatingIP/?admin` ou `https://ip-floatingip.rev.cloudwatt.com/?admin` à partir de votre navigateur. Il faut ensuite s'authenfier avec l'utilisateur **admin** et le mot de passe **12345**.
  ![admin1](./img/admin1.png)
 
 **Pour plus de sécurité** n'oubliez pas de changer le mot de passe admin à partir de cette interface.
