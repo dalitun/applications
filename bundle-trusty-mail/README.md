@@ -200,11 +200,13 @@ Dans `etc/postfix/main.cf` inscrire votre nom de domaine dans les paramètres ci
 
 
 Dans `/etc/apache2/sites-available/vhost.conf` inscrire votre nom de domaine dans les paramètres ci-dessous :
+
       - ServerName
       - ServerAdmin: ce paramètre permet de définir l'adresse Email de l'administrateur
 
 
 Dans `/var/www/cw/data/_data_/_default_/domains/domain.ini`:
+
       - smtp_host
       - imap_host
 
@@ -218,7 +220,8 @@ Dans `/var/www/cw/data/_data_/_default_/domains/domain.ini`:
 Faites un refresh sur l'url `http://floatingIP/`
 
 
-**Si vous voulez changer la configuration de rainloop***
+**Si vous voulez changer la configuration de rainloop**
+
  connectez vous sur l'interface d'admin sur l'adresse `https://floatingIP/?admin` ou `https://ip-floatingip.rev.cloudwatt.com/?admin` à partir de votre navigateur. Il faut ensuite s'authenfier avec l'utilisateur **admin** et le mot de passe **12345**.
  ![admin1](./img/admin1.png)
 
