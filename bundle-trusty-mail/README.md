@@ -177,16 +177,16 @@ exemple :
 https://ip-floatingip.rev.cloudwatt.com ou https://floatingIP/
 
 vous devez arriver sur cette page :
-![auth](./img/auth.png))
+![auth](./img/auth.jpg))
 
 Pour s'authenfier vous devez créer des utilisateurs Linux puis vous commencez à envoyer et recevoir vos emails.
-![inbox](./img/interface.png)
+![inbox](./img/interface.jpg)
 
 user1 envoie un email à user2
-![inbox1](./img/sent.png)
+![inbox1](./img/sent.jpg)
 
 user2 reçoit l'email de user1
-![inbox](./img/receive.png)
+![inbox](./img/receive.jpg)
 
 Dans cette exemple nous avons utilisé le nom de domaine fourni par Cloudwatt(`https://ip-floatingip.rev.cloudwatt.com`  remplacez les "." par "-" de votre floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )).
 
@@ -223,10 +223,10 @@ Faites un refresh sur l'url `http://floatingIP/`
 **Si vous voulez changer la configuration de rainloop**
 
  connectez vous sur l'interface d'admin sur l'adresse `https://floatingIP/?admin` ou `https://ip-floatingip.rev.cloudwatt.com/?admin` à partir de votre navigateur. Il faut ensuite s'authenfier avec l'utilisateur **admin** et le mot de passe **12345**.
- ![admin1](./img/admin1.png)
+ ![admin1](./img/admin1.jpg)
 
 **Pour plus de sécurité** n'oubliez pas de changer le mot de passe admin à partir de cette interface.
-![admin1](./img/admin2.png)
+![admin1](./img/admin2.jpg)
 
 Un certificat SSL est automatiquement généré via Let's encrypt et celui-ci est renouvellé via un job CRON tous les 90 jours.
 Les signatures Clamav sont mises à jour via un job cron chaque jour.

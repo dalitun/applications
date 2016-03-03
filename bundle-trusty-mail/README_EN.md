@@ -171,16 +171,16 @@ Once all this makes you can connect via a Web browser on Rainloop:
 http://yourDomainaName , https://yourDomainaName or http://floatingthroughIP/
 
 You have to arrive on this page:
-![auth](./img/auth.png)
+![auth](./img/auth.jpg)
 
 For logging you have to use Linux users and you begin to send and recieve emails.
-![inbox](./img/interface.png)
+![inbox](./img/interface.jpg)
 
 user1 send an email to user2
-![inbox1](./img/sent.png)
+![inbox1](./img/sent.jpg)
 
 user2 recieve user1 email
-![inbox](./img/receive.png)
+![inbox](./img/receive.jpg)
 
 In this exemple we used the default domain name provided by cloudwatt (`https://ip-floatingip.rev.cloudwatt.com` juste replace the "." by "-" in your floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
 if you want to change the domain :
@@ -200,11 +200,11 @@ If you want to change rainloop configuration:
  Access to (http://yourDomainaName , https://yourDomainaName
    or http://floatingIP)/?admin" with web browser on Client,then login with a user and password for initial login, user is "admin" and password is "12345".
 
- ![admin1](./img/admin1.png)
+ ![admin1](./img/admin1.jpg)
 
 Don't froget to change admin password through this interface
 
-![admin1](./img/admin2.png)
+![admin1](./img/admin2.jpg)
 
 
 
