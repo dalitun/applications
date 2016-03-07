@@ -174,7 +174,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Une fois tout ceci fait vous pouvez vous connecter via un navigateur web sur votre serveur mail afin de commencer à le paramétrer
 exemple :
-https://ip-floatingip.rev.cloudwatt.com ou https://floatingIP/
+`https://ip-floatingip.rev.cloudwatt.com` ou `https://floatingIP/`
 
 vous devez arriver sur cette page :
 ![auth](./img/auth.jpg)
