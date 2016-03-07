@@ -4,7 +4,7 @@
 
 ![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
 
-A mail server (also known as a mail transfer agent or MTA, a mail transport agent, a mail router or an Internet mailer) is an application that receives incoming e-mail from local users (people within the same domain) and remote senders and forwards outgoing e-mail for delivery. A computer dedicated to running such applications is also called a mail server. Microsoft Exchange and Postfix are among the more common mail server programs.
+An email server is a mail server software (email). It aims to transfer emails from one server to another. An user is never in direct contact with this server uses either a mail client or a web mail client, which is responsible to contact the server to send or receive messages.
 ## Preparations
 
 ### The version
@@ -167,8 +167,8 @@ If you've reached this point, you're already done! Go enjoy Mail!
 
 
 ### Enjoy
-Once all this makes you can connect via a Web browser on Rainloop:
-http://yourDomainaName , https://yourDomainaName or http://floatingthroughIP/
+Once all this makes you can connect via a Web browser on your mail server in order to begin to set it:
+https://ip-floatingip.rev.cloudwatt.com ou https://floatingIP/
 
 You have to arrive on this page:
 ![auth](./img/auth.jpg)
@@ -183,26 +183,47 @@ user2 recieve user1 email
 ![inbox](./img/receive.jpg)
 
 In this exemple we used the default domain name provided by cloudwatt (`https://ip-floatingip.rev.cloudwatt.com` juste replace the "." by "-" in your floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
-if you want to change the domain :
+if you want to change  the domain of your mail server ,in order to be able to set your,here is the method:
 
-you have to edit `/etc/postfix/main.cf`, `/etc/apache2/sites-available/vhost.conf` and `/var/www/cw/data/_data_/_default_/domains/domain.ini`
+In `etc/postfix/main.cf` change your domain name in this parameters:
 
-then restart the services postfix,dovecot and apache2:
+      - mydomain:
+      - myhostname:
+      - mydestination:
+
+
+In `/etc/apache2/sites-available/vhost.conf` change your domain name in this parameters:
+
+      - ServerName
+      - ServerAdmin: this parameter defines the address Administrator Email
+
+
+In `/var/www/cw/data/_data_/_default_/domains/domain.ini`:
+
+      - smtp_host
+      - imap_host
+
+**then restart the services postfix,dovecot and apache2:**
 
 ~~~ bash
 # service postfix restart
-# initctl restart dovecot
+# initctl stop dovecot ; initctl start dovecot
 # service apache2 restart
 ~~~
-Make a refresh on the url http://floatingIP/.
+Make a refresh on the url `http://floatingIP/`
 
-If you want to change rainloop configuration:
- Access to (http://yourDomainaName , https://yourDomainaName
-   or http://floatingIP)/?admin" with web browser on Client,then login with a user and password for initial login, user is "admin" and password is "12345".
+
+
+
+
+**If you want to change rainloop configuration**
+
+I
+ Access to  `https://floatingIP/?admin` or `https://ip-floatingip.rev.cloudwatt.com/?admin` with web browser on Client,then login with a user and password for initial login, user is "admin" and password is "12345".
 
  ![admin1](./img/admin1.jpg)
 
-Don't froget to change admin password through this interface
+**For more security** Don't froget to change admin password through this interface
 
 ![admin1](./img/admin2.jpg)
 
