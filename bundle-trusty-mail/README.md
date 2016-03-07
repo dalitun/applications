@@ -177,7 +177,7 @@ exemple :
 https://ip-floatingip.rev.cloudwatt.com ou https://floatingIP/
 
 vous devez arriver sur cette page :
-![auth](./img/auth.jpg))
+![auth](./img/auth.jpg)
 
 Pour s'authenfier vous devez créer des utilisateurs Linux puis vous commencez à envoyer et recevoir vos emails.
 ![inbox](./img/interface.jpg)
