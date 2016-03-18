@@ -168,7 +168,7 @@ If you've reached this point, you're already done! Go enjoy Mail!
 
 ### Enjoy
 Once all this makes you can connect via a Web browser on your mail server in order to begin to set it:
-https://ip-floatingip.rev.cloudwatt.com ou https://floatingIP/
+`https://ip-floatingip.rev.cloudwatt.com` ou `https://floatingIP/`
 
 You have to arrive on this page:
 ![auth](./img/auth.jpg)
