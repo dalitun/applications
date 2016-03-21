@@ -170,19 +170,17 @@ If you've reached this point, you're already done! Go enjoy Mail!
 
 
 ### Enjoy
-Once this is done you can connect via a web browser on the inteface of postfixamdin to start adding your virtuals virtuals fields and emails to authenfier login is **admin@ip-floatingip.rev.cloudwatt.com** and the password is **password_admin**
+Once this is done you can connect via a web browser on the postfixamdin interface in order to start adding your virtulas domains and emails,for logging you have to use  **admin@ip-floatingip.rev.cloudwatt.com** as login and **password_admin** as password.
 
 https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin`
 ![Postfixadmin](./img/postfixadmin.png)
 
 for knowing how to manager the postfixadmin you can
-see this link [postfixadmin]
+see this link [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
-(http://postfixadmin.sourceforge.net/screenshots/).
+For email boxes you see this URL `https://ip-floatingip.rev.cloudwatt.com/` or `https://floatingIP/` via a web browser.
 
-For email boxes you see this URL `https://ip-floatingip.rev.cloudwatt.com/` or`https://floatingIP/` via a web browser.
-
-You have to arrive on this page:
+You have to arrive on these pages:
 ![auth](./img/auth.jpg)
 
 For logging you have to use Linux users and you begin to send and receive emails.

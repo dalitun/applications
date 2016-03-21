@@ -173,17 +173,18 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 
 ### Enjoy
-Une fois tout ceci fait vous pouvez vous connecter via un navigateur web sur l'inteface de postfixamdin afin de commencer à ajouter votre virtuals domaines et virtuals emails pour s'authenfier le login c'est **admin@ip-floatingip.rev.cloudwatt.com** et le password c'est **password_admin**:
+Une fois tout ceci fait vous pouvez vous connecter via un navigateur web sur l'inteface de postfixamdin afin de commencer à ajouter votre virtuals domaines et virtuals emails pour s'authentifier par le login **admin@ip-floatingip.rev.cloudwatt.com** et le password  **password_admin**:
 
 `https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin`
 ![postfixadmin](./img/postfixadmin.png)
+
 pour savoir comment administrer le postfixadmin vous pouvez
 consulter ce lien [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
 
 Pour consulter les boites emails vous consultez cet url  `https://ip-floatingip.rev.cloudwatt.com/` ou `https://floatingIP` via un navigateur web.
 
-vous devez arriver sur cette page :
+vous devez arriver sur ces pages :
 ![auth](./img/auth.jpg)
 
 
