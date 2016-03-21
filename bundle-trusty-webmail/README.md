@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 25 : Web mail #
+# 5 Minutes Stacks, épisode 25 : Webmail #
 
 ## Episode 25 : Mail
 
@@ -169,42 +169,37 @@ C’est (déjà) FINI !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre mail !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Webmail !
 
 
 ### Enjoy
+Une fois tout ceci fait vous pouvez vous connecter via un navigateur web sur l'inteface de postfixamdin afin de commencer à ajouter votre virtuals domaines et virtuals emails pour s'authenfier le login c'est **admin@ip-floatingip.rev.cloudwatt.com** et le password c'est **password_admin**:
 
-Une fois tout ceci fait vous pouvez vous connecter via un navigateur web sur l'inteface de postfixamdin afin de commencer à ajouter votre virtuals domaines et virtuals emails
-exemple :
 `https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin`
-
-
 ![postfixadmin](./img/postfixadmin.png)
+pour savoir comment administrer le postfixadmin vous pouvez
+consulter ce lien [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
 
-
-
-
-
-`https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin`
+Pour consulter les boites emails vous consultez cet url  `https://ip-floatingip.rev.cloudwatt.com/` ou `https://floatingIP` via un navigateur web.
 
 vous devez arriver sur cette page :
 ![auth](./img/auth.jpg)
 
-Pour s'authenfier vous devez créer des utilisateurs Linux puis vous commencez à envoyer et recevoir vos emails.
+
 ![inbox](./img/interface.jpg)
 
-user1 envoie un email à user2
+user1 envoie un email à user2.
 ![inbox1](./img/sent.jpg)
 
-user2 reçoit l'email de user1
+user2 reçoit l'email de user1.
 ![inbox](./img/receive.jpg)
 
-Dans cette exemple nous avons utilisé le nom de domaine fourni par Cloudwatt(`https://ip-floatingip.rev.cloudwatt.com`  remplacez les "." par "-" de votre floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )).
+Dans cet exemple nous avons utilisé le nom de domaine fourni par Cloudwatt(`https://ip-floatingip.rev.cloudwatt.com`  remplacez les "." par "-" de votre floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )).
 
 Si vous voulez changer le domaine de votre serveur de mail, afin de pouvoir y paramétrer le votre, voici la méthode:
 
-Dans `etc/postfix/main.cf` inscrire votre nom de domaine dans les paramètres ci-dessous:
+Dans `/etc/postfix/main.cf` inscrire votre nom de domaine dans les paramètres ci-dessous:
 
       - mydomain:
       - myhostname:
@@ -226,7 +221,7 @@ Dans `/var/www/cw/data/_data_/_default_/domains/domain.ini`:
 
 ~~~ bash
 # service postfix restart
-# initctl stop dovecot ; initctl start dovecot
+# service dovecot restart
 # service apache2 restart
 ~~~
 Faites un refresh sur l'url `http://floatingIP/`
@@ -241,8 +236,7 @@ Faites un refresh sur l'url `http://floatingIP/`
 ![admin1](./img/admin2.jpg)
 
 Un certificat SSL est automatiquement généré via Let's encrypt et celui-ci est renouvellé via un job CRON tous les 90 jours.
-Les signatures Clamav sont mises à jour via un job cron chaque jour.
-
+Les signatures Clamav et SpamAssassin sont mises à jour via un job cron chaque jour.
 ###So watt?
 
 Les chemins intéressants sur votre machine :
@@ -254,6 +248,8 @@ Les chemins intéressants sur votre machine :
 `/etc/dovecot`: Fichiers de configuration Dovecot
 
 `/etc/clamsmtpd.conf`:Fichier de configuration Clamav
+
+`/etc/spamassassin/`: Fichiers de configuration SpamAssassin
 
 `/var/www/cw/data/_data_/_default_/`: Fichiers de configuration Rainloop
 
