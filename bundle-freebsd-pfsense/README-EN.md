@@ -141,9 +141,9 @@ If you've reached this point, you're already done! Go enjoy Pfsense!
 
 ## Enjoy
 In this example you have a pfsense server connects on both LAN and WAN, you have also an Ubuntu 14.04 server connects to the same LAN of pfsense.
-You can manage your firewall from your admin machine (ubunut 14.04).
+You can manage your firewall from your admin machine (ubuntu).
 
-you can connect to your pfsense by typing on your terminal this command with the Username: admin and Password: pfsense .
+you can connect to your pfsense by typing on your terminal this command with the **Username: admin** and **Password: pfsense**.
 
 ~~~bash
 $ lynx http://privateip_pfsense
@@ -174,10 +174,7 @@ root's password is "pfsense". I advise you to change it.
 sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
 ~~~
 
-3)Then you can manage pfsense by this url http://localhost:5555 in your browser.
-
-
-with username: admin and password: pfsense:
+3)Then you can manage pfsense by this url `http://localhost:5555`,with **username:admin** and **password: pfsense**:
 
 ![pfsense1](img/pfsense1.png)
 
