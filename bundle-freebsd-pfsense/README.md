@@ -125,9 +125,6 @@ $ heat resource-list Pfsense
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
 * démarrer une instance basée sur freebsd, pré-provisionnée avec la stack pfsense,
-* l'exposer sur Internet via une IP flottante.
-
-![pfsense](img/cloud-security.jpg)
 
 ## C’est bien tout ça, mais...
 
@@ -155,9 +152,10 @@ C’est (déjà) FINI !
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre pfsense !
 
 ## Enjoy
-Dans cet exemple vous avez un serveur pfsense qui est connecté sur deux réseaux LAN et WAN,vous avez encore un serveur ubuntu 14.04 LTS qui est connecté avec le meme réseaux LAN que pfsense,
-vous pouvez administrer votre firewall à partir de votre machine admin (ubuntu dans ce cas):
-vous pouvez connecter sur votre pfsense  en tapant sur votre terminal la commande suivante avec le Username:admin et Password:pfsense.
+Dans cet exemple vous avez un serveur pfsense qui est connecté sur deux réseaux LAN et WAN,vous avez encore un serveur ubuntu 14.04 qui est connecté sur le même réseaux LAN que pfsense,
+vous pouvez administrer votre firewall à partir de votre machine admin (ubuntu 14.04):
+
+vous pouvez connecter sur votre pfsense  en tapant dans votre terminal de l'admin la commande suivante avec le Username:admin et Password:pfsense.
 
 ```
 lynx http://private_ip_pfsense
@@ -167,11 +165,11 @@ lynx http://private_ip_pfsense
 ![lynx1](img/lynx2.png)
 
 
-Vous pouvez installer un interface GUI sur votre machine Linux ou vous pouvez meme utiliser une machine windows.
+Vous pouvez installer une interface GUI sur votre machine Admin ou vous pouvez aussi utiliser une machine windows.
 
-sinon vous pouvez créez deux tunnel ssh pour administrer pfsense à partir de votre machine workspace suivez les étapes suivantes:
+sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de votre machine local, suivez les étapes suivantes:
 
-1) Tapez la commande suivante:
+1) Tapez la commande suivante dans la machine Admin(ubuntu)
 ```
 sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
 ```
@@ -180,17 +178,17 @@ dans ce cas il faut utliser votre clé privé.
 ou
 
 ```
-sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80
+sudo ssh privateIpPfsene -l root -L 80:localhost:80
 ```
 le mot de passe de root c'est "pfsense". Je vous conseille de le changer.
 
-2) Sur votre machine tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
+2) Sur votre machine local tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
 
 ```
 sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
 ```
 
-3) Puis vous pouvez administrer votre pfsense en tapant dans le navigateur http://localhost:5555
+3) Puis vous pouvez administrer votre pfsense en tapant cet url http://localhost:5555 dans votre navigateur 
 
 avec username:admin et password:pfsense:
 

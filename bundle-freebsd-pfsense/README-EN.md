@@ -81,8 +81,8 @@ parameters:
 ~~~
 In a shell, run the script `stack-start.sh`:
 
-~~~
-./stack-start.sh stack_name
+~~~bash
+$ ./stack-start.sh Pfsense Votre_keypair_name private_net public_net
 ~~~
 
 Exemple :
@@ -107,15 +107,12 @@ $ watch heat resource-list Pfsense
 | network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
 | subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
 | server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating_ip_Admin`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
   +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
 ~~~
 The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
-* Starts an Ubuntu Trusty Tahr based instance
-* Expose it on the Internet via a floating IP.
-
-![pfsense](img/cloud-security.jpg)
+* Starts pfsense based instance
 
 ## All of this is fine, but...
 
@@ -123,7 +120,7 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 We do indeed! Using the console, you can deploy a Pfsense server:
 
-1.	Go the Cloudwatt Github in the [applications/bundle-freebsd-pfsense.heat](https://github.com/cloudwatt/applications/tree/master/bbundle-trusty-cozycloud) repository
+1.	Go the Cloudwatt Github in the [applications/bundle-freebsd-pfsense.heat](https://github.com/cloudwatt/applications/tree/master/bundle-freebsd-pfsense) repository
 2.	Click on the file named `bundle-freebsd-pfsense.heat.yml` (or `bundle-freebsd-pfsense.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
@@ -143,9 +140,8 @@ If you've reached this point, you're already done! Go enjoy Pfsense!
 ... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your pfsense server!
 
 ## Enjoy
-In this example you have a pfsense server connects on both LAN and WAN, you have also an Ubuntu 14.04 LTS server connects to the same LAN like pfsense.
-
-You can manage your firewall from your admin machine (ubunut 14.04 LTS).
+In this example you have a pfsense server connects on both LAN and WAN, you have also an Ubuntu 14.04 server connects to the same LAN of pfsense.
+You can manage your firewall from your admin machine (ubunut 14.04).
 
 you can connect to your pfsense by typing on your terminal this command with the Username: admin and Password: pfsense .
 
@@ -156,7 +152,7 @@ lynx http://privateip_pfsense
 
 ![lynx1](img/lynx2.png)
 
-You can install a GUI on your Linux machine, or you can even use windows machine,otherwise you can create two ssh tunnels in order to manager pfsense by your own machine:
+You can install a GUI interface on your Admin machine, or you can  use also windows machine,otherwise you can create two ssh tunnels in order to manager pfsense by your own machine:
 
 1) Type the following command:
 ```
@@ -167,7 +163,7 @@ in this case you have to use your private key.
 or
 
 ```
-sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80
+sudo ssh privateIpPfsene -l root -L 80:localhost:80
 ```
 
 root's password is "pfsense". I advise you to change it.
@@ -178,8 +174,8 @@ root's password is "pfsense". I advise you to change it.
 sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
 ```
 
-3)Then you can manage pfsense by typing in the browser
-http://localhost:5555
+3)Then you can manage pfsense by this url http://localhost:5555 in your browser.
+
 
 with username: admin and password: pfsense:
 
