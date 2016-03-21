@@ -145,9 +145,9 @@ You can manage your firewall from your admin machine (ubunut 14.04).
 
 you can connect to your pfsense by typing on your terminal this command with the Username: admin and Password: pfsense .
 
-```
-lynx http://privateip_pfsense
-```
+~~~bash
+$ lynx http://privateip_pfsense
+~~~
 ![lynx](img/lynx.png)
 
 ![lynx1](img/lynx2.png)
@@ -155,24 +155,24 @@ lynx http://privateip_pfsense
 You can install a GUI interface on your Admin machine, or you can  use also windows machine,otherwise you can create two ssh tunnels in order to manager pfsense by your own machine:
 
 1) Type the following command:
-```
-sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
-```
+~~~bash
+$ sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
+~~~
 in this case you have to use your private key.
 
 or
 
-```
-sudo ssh privateIpPfsene -l root -L 80:localhost:80
-```
+~~~bash
+$ sudo ssh privateIpPfsene -l root -L 80:localhost:80
+~~~
 
 root's password is "pfsense". I advise you to change it.
 
 2) On your own machine type this command in order to open the tunnel between your machine and the admin Machine.
 
-```
+~~~bash
 sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
-```
+~~~
 
 3)Then you can manage pfsense by this url http://localhost:5555 in your browser.
 

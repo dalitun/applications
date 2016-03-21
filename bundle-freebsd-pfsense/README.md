@@ -157,9 +157,9 @@ vous pouvez administrer votre firewall à partir de votre machine admin (ubuntu 
 
 vous pouvez connecter sur votre pfsense  en tapant dans votre terminal de l'admin la commande suivante avec le Username:admin et Password:pfsense.
 
-```
-lynx http://private_ip_pfsense
-```
+~~~bash
+$ lynx http://private_ip_pfsense
+~~~
 ![lynx](img/lynx.png)
 
 ![lynx1](img/lynx2.png)
@@ -170,25 +170,25 @@ Vous pouvez installer une interface GUI sur votre machine Admin ou vous pouvez a
 sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de votre machine local, suivez les étapes suivantes:
 
 1) Tapez la commande suivante dans la machine Admin(ubuntu)
-```
-sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
-```
+~~~bash
+$ sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
+~~~
 dans ce cas il faut utliser votre clé privé.
 
 ou
 
-```
-sudo ssh privateIpPfsene -l root -L 80:localhost:80
-```
+~~~bash
+$ sudo ssh privateIpPfsene -l root -L 80:localhost:80
+~~~
 le mot de passe de root c'est "pfsense". Je vous conseille de le changer.
 
 2) Sur votre machine local tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
 
-```
-sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
-```
+~~~bash
+$ sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
+~~~
 
-3) Puis vous pouvez administrer votre pfsense en tapant cet url http://localhost:5555 dans votre navigateur 
+3) Puis vous pouvez administrer votre pfsense en tapant cet url http://localhost:5555 dans votre navigateur
 
 avec username:admin et password:pfsense:
 
