@@ -154,8 +154,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 ## Enjoy
 Dans cet exemple vous avez un serveur pfsense qui est connecté sur deux réseaux LAN et WAN,vous avez encore un serveur ubuntu 14.04 qui est connecté sur le même réseaux LAN que pfsense,
 vous pouvez administrer votre firewall à partir de votre machine admin (ubuntu 14.04):
-
-vous pouvez connecter sur votre pfsense  en tapant dans votre terminal de l'admin la commande suivante avec le Username:admin et Password:pfsense.
+vous pouvez connecter sur votre pfsense  en tapant dans votre terminal de l'admin la commande suivante avec le **Username:admin** et **Password:pfsense**.
 
 ~~~bash
 $ lynx http://private_ip_pfsense
@@ -165,8 +164,7 @@ $ lynx http://private_ip_pfsense
 ![lynx1](img/lynx2.png)
 
 
-Vous pouvez installer une interface GUI sur votre machine Admin ou vous pouvez aussi utiliser une machine windows.
-
+Vous pouvez installer une interface GUI sur votre machine Admin ou vous pouvez aussi utiliser une machine windows,
 sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de votre machine local, suivez les étapes suivantes:
 
 1) Tapez la commande suivante dans la machine Admin(ubuntu)
@@ -180,7 +178,7 @@ ou
 ~~~bash
 $ sudo ssh privateIpPfsene -l root -L 80:localhost:80
 ~~~
-le mot de passe de root c'est "pfsense". Je vous conseille de le changer.
+le mot de passe de root c'est **pfsense**. Je vous conseille de le changer.
 
 2) Sur votre machine local tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
 
