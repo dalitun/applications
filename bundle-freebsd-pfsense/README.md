@@ -186,9 +186,9 @@ le mot de passe de root c'est **pfsense**. Je vous conseille de le changer.
 $ sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
 ~~~
 
-3) Puis vous pouvez administrer votre pfsense en tapant cet url http://localhost:5555 dans votre navigateur
+3) Puis vous pouvez administrer votre pfsense en tapant cet url `http://localhost:5555` dans votre navigateur
 
-avec username:admin et password:pfsense:
+avec **username:admin** et **password:pfsense**:
 
 ![pfsense1](img/pfsense1.png)
 
