@@ -103,16 +103,14 @@ parameters:
         - n2.cw.highmem-4
         - n2.cw.highmem-8
         - n2.cw.highmem-12
-
 [...]
 ~~~
-
 ### Démarrer la stack
 
-Dans un shell, lancer le script `stack-start.sh`:
+Dans un shell,lancer le script `stack-start.sh`:
 
 ~~~
-./stack-start.sh nom_de_votre_stack votre_nom_clé
+./stack-start.sh nom_de_votre_stack votre_nom_clé mysql_password postfix_admin_pass
 ~~~
 
 Exemple :
@@ -127,7 +125,6 @@ $ ./stack-start.sh EXP_STACK
 ~~~
 
 Puis attendez **5 minutes** que le déploiement soit complet.
-
 
 ~~~bash
 $ heat resource-list nom_de_votre_stack
@@ -145,7 +142,7 @@ $ heat resource-list nom_de_votre_stack
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack mail
+* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Webmail
 * l'exposer sur Internet via une IP flottante
 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
@@ -173,27 +170,27 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 
 ### Enjoy
-Une fois tout ceci fait vous pouvez vous connecter via un navigateur web sur l'inteface de postfixamdin afin de commencer à ajouter votre virtuals domaines et virtuals emails pour s'authentifier par le login **admin@ip-floatingip.rev.cloudwatt.com** et le password  **password_admin**:
+Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin` afin d'ajouter votre domaines et emails pour s'authentifier vous utilisez le login **admin@ip-floatingip.rev.cloudwatt.com** et le password  **password_admin**:
 
-`https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin`
 ![postfixadmin](./img/postfixadmin.png)
 
 pour savoir comment administrer le postfixadmin vous pouvez
 consulter ce lien [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
-
-Pour consulter les boites emails vous consultez cet url  `https://ip-floatingip.rev.cloudwatt.com/` ou `https://floatingIP` via un navigateur web.
+Pour consulter les boites emails vous consultez cet url  `https://ip-floatingip.rev.cloudwatt.com/` ou `https://floatingIP`.
 
 vous devez arriver sur ces pages :
-![auth](./img/auth.jpg)
 
+![auth](./img/auth.jpg)
 
 ![inbox](./img/interface.jpg)
 
 user1 envoie un email à user2.
+
 ![inbox1](./img/sent.jpg)
 
 user2 reçoit l'email de user1.
+
 ![inbox](./img/receive.jpg)
 
 Dans cet exemple nous avons utilisé le nom de domaine fourni par Cloudwatt(`https://ip-floatingip.rev.cloudwatt.com`  remplacez les "." par "-" de votre floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )).

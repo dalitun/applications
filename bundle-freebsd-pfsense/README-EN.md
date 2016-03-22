@@ -153,7 +153,7 @@ for logging you use  **Username: admin** and **Password: pfsense**.
 
 ![lynx1](img/lynx2.png)
 
-You can install a GUI interface on your Admin machine or you can  use also windows machine ,otherwise you can create two ssh tunnels in order to manager pfsense by your own machine:
+You can install a GUI interface on your Admin machine or you can use also windows machine ,otherwise you can create two ssh tunnels in order to manager pfsense by your own machine:
 
 1) Type the following command:
 

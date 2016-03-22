@@ -1,6 +1,6 @@
 # 5 Minutes Stacks, 25 episode : Mail #
 
-## Episode 20 : Mail
+## Episode 20 : Webail
 
 ![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
 
@@ -101,7 +101,7 @@ An email server is a mail server software (email). It aims to transfer emails fr
  In a shell, run the script `stack-start.sh`:
 
  ~~~ bash
- ./stack-start.sh your_stack_name your_keypair_name
+ ./stack-start.sh your_stack_name your_keypair_name mysql_password postfix_admin_pass
  ~~~
  Exemple :
 
@@ -170,26 +170,29 @@ If you've reached this point, you're already done! Go enjoy Mail!
 
 
 ### Enjoy
-Once this is done you can connect via a web browser on the postfixamdin interface in order to start adding your virtulas domains and emails,for logging you have to use  **admin@ip-floatingip.rev.cloudwatt.com** as login and **password_admin** as password.
+Once this is done you can connect via a web browser on the postfixamdin interface from this url `https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin` in order to start adding your domains and emails,for logging you use  **admin@ip-floatingip.rev.cloudwatt.com** as login and **password_admin** as password.
 
-https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin`
+
 ![Postfixadmin](./img/postfixadmin.png)
 
-for knowing how to manager the postfixadmin you can
-see this link [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
+for knowing how to manager the postfixadmin you can see this link [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
-For email boxes you see this URL `https://ip-floatingip.rev.cloudwatt.com/` or `https://floatingIP/` via a web browser.
+For email inboxes you see this URL `https://ip-floatingip.rev.cloudwatt.com/` or `https://floatingIP/` via a web browser.
 
 You have to arrive on these pages:
+
 ![auth](./img/auth.jpg)
 
 For logging you have to use Linux users and you begin to send and receive emails.
+
 ![inbox](./img/interface.jpg)
 
 user1 send an email to user2.
+
 ![inbox1](./img/sent.jpg)
 
 user2 receive user1 email.
+
 ![inbox](./img/receive.jpg)
 
 In this exemple we used the default domain name provided by cloudwatt (`https://ip-floatingip.rev.cloudwatt.com` juste replace the "." by "-" in your floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
