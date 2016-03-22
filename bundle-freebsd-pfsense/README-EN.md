@@ -140,24 +140,27 @@ If you've reached this point, you're already done! Go enjoy Pfsense!
 ... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your pfsense server!
 
 ## Enjoy
-In this example you have a pfsense server connects on both LAN and WAN, you have also an Ubuntu 14.04 server connects to the same LAN of pfsense.
-You can manage your firewall from your admin machine (ubuntu).
-
-you can connect to your pfsense by typing on your terminal this command with the **Username: admin** and **Password: pfsense**.
+In this example you have a pfsense server connects on both networks LAN and WAN, you have also an Ubuntu 14.04 connects to the same LAN of pfsense.You can manage your firewall from your admin machine (ubuntu).
+you can connect to your pfsense by typing on your terminal this command:
 
 ~~~bash
 $ lynx http://privateip_pfsense
 ~~~
+
 ![lynx](img/lynx.png)
+
+for logging you use  **Username: admin** and **Password: pfsense**.
 
 ![lynx1](img/lynx2.png)
 
 You can install a GUI interface on your Admin machine or you can  use also windows machine ,otherwise you can create two ssh tunnels in order to manager pfsense by your own machine:
 
 1) Type the following command:
+
 ~~~bash
 $ sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
 ~~~
+
 in this case you have to use your private key.
 
 or

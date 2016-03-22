@@ -152,14 +152,16 @@ C’est (déjà) FINI !
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre pfsense !
 
 ## Enjoy
-Dans cet exemple vous avez un serveur pfsense qui est connecté sur deux réseaux LAN et WAN,vous avez encore un serveur ubuntu 14.04 qui est connecté sur le même réseaux LAN que pfsense,
-vous pouvez administrer votre firewall à partir de votre machine admin (ubuntu 14.04):
-vous pouvez connecter sur votre pfsense  en tapant dans votre terminal de l'admin la commande suivante avec le **Username:admin** et **Password:pfsense**.
+Dans cet exemple vous avez un serveur pfsense qui est connecté sur deux réseaux LAN et WAN et vous avez aussi une machine ubuntu 14.04 qui est connecté sur le même réseaux LAN que pfsense.
+Vous pouvez administrer votre firewall à partir de votre machine admin (ubuntu 14.04) en tapant la commande suivante sur le terminal
 
 ~~~bash
 $ lynx http://private_ip_pfsense
 ~~~
+
 ![lynx](img/lynx.png)
+
+pour s'authenfier vous utilisez **Username:admin** et **Password:pfsense**.
 
 ![lynx1](img/lynx2.png)
 
@@ -168,9 +170,11 @@ Vous pouvez installer une interface GUI sur votre machine Admin ou vous pouvez a
 sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de votre machine local, suivez les étapes suivantes:
 
 1) Tapez la commande suivante dans la machine Admin(ubuntu)
+
 ~~~bash
 $ sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
 ~~~
+
 dans ce cas il faut utliser votre clé privé.
 
 ou
@@ -178,7 +182,8 @@ ou
 ~~~bash
 $ sudo ssh privateIpPfsene -l root -L 80:localhost:80
 ~~~
-le mot de passe de root c'est **pfsense**. Je vous conseille de le changer.
+
+le mot de passe de root c'est **pfsense**, Je vous conseille de le changer.
 
 2) Sur votre machine local tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
 
@@ -186,9 +191,9 @@ le mot de passe de root c'est **pfsense**. Je vous conseille de le changer.
 $ sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
 ~~~
 
-3) Puis vous pouvez administrer votre pfsense en tapant cet url `http://localhost:5555` dans votre navigateur
+3) Puis vous pouvez administrer votre pfsense en tapant cet url `http://localhost:5555` dans le navigateur
 
-avec **username:admin** et **password:pfsense**:
+avec **username:admin** et **password:pfsense**.
 
 ![pfsense1](img/pfsense1.png)
 
