@@ -20,7 +20,7 @@ parameters:
     label: Mysql password
     type: string
 
- postfix_admin:
+ postfix_admin_pass:
     description: postfixadmin password
     label: postfixadmin password
     type: string
@@ -97,7 +97,7 @@ resources:
             cat << EOF > /etc/ansible/mail-vars.yml
             ---
             mysql_mailuser_password: '$mysql_password$'
-            password_admin: '$postfix_admin$'
+            password_admin: '$postfix_admin_pass$'
             email_admin: 'admin@ip-$(echo $floating_ip$ | tr "." "-").rev.cloudwatt.com'
             mail_domain: 'ip-$(echo $floating_ip$ | tr "." "-").rev.cloudwatt.com'
             EOF
@@ -108,7 +108,7 @@ resources:
           params:
             $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
             $mysql_password$: { get_param: mysql_password }
-            $postfix_admin$: { get_param: postfix_admin }
+            $postfix_admin_pass$: { get_param: postfix_admin_pass }
 
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation

@@ -175,7 +175,7 @@ sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de 
 $ sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
 ~~~
 
-dans ce cas il faut utliser votre clé privé.
+dans ce cas il faut utliser votre clé privée.
 
 ou
 
