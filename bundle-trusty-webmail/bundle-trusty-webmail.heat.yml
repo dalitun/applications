@@ -2,25 +2,25 @@
 ##
 ### Written by the CAT (Cloudwatt Automation Team)
 ##
-#
+
 heat_template_version: 2013-05-23
 
 
 description: All-in-one Webmail stack
 
-
 parameters:
+ 
   keypair_name:
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
 
- mysql_password:
+  mysql_password:
     description: Mysql password
     label: Mysql password
     type: string
 
- postfix_admin_pass:
+  postfix_admin_pass:
     description: postfixadmin password
     label: postfixadmin password
     type: string
@@ -79,7 +79,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: e17152e8-95bc-46a5-820b-4d08fcd6f353
+      image: 41e0f92a-06ab-4203-a197-36eb8aebfb64
       flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
