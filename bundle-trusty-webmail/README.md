@@ -1,6 +1,6 @@
 # 5 Minutes Stacks, épisode 25 : Webmail #
 
-## Episode 25 : Mail
+## Episode 25 : Webmail
 
 ![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
 
@@ -145,7 +145,8 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Webmail
 * l'exposer sur Internet via une IP flottante
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+## C’est bien tout ça,
+### mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
 
@@ -169,13 +170,13 @@ C’est (déjà) FINI !
 Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Webmail !
 
 
-### Enjoy
+## Enjoy
 Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin` afin d'ajouter votre domaines et emails pour s'authentifier vous utilisez le login **admin@ip-floatingip.rev.cloudwatt.com** et le password  **password_admin**:
 
 ![postfixadmin](./img/postfixadmin.png)
 
-pour savoir comment administrer le postfixadmin vous pouvez
-consulter ce lien [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
+Pour savoir comment administrer le postfixadmin vous pouvez
+Consulter ce lien [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
 Pour consulter les boites emails vous consultez cet url  `https://ip-floatingip.rev.cloudwatt.com/` ou `https://floatingIP`.
 
@@ -227,7 +228,7 @@ Faites un refresh sur l'url `http://floatingIP/`
 
 **Si vous voulez changer la configuration de rainloop**
 
- connectez vous sur l'interface d'admin sur l'adresse `https://floatingIP/?admin` ou `https://ip-floatingip.rev.cloudwatt.com/?admin` à partir de votre navigateur. Il faut ensuite s'authenfier avec l'utilisateur **admin** et le mot de passe **12345**.
+ Connectez vous sur l'interface d'admin sur l'adresse `https://floatingIP/?admin` ou `https://ip-floatingip.rev.cloudwatt.com/?admin` à partir de votre navigateur. Il faut ensuite s'authenfier avec l'utilisateur **admin** et le mot de passe **12345**.
  ![admin1](./img/admin1.jpg)
 
 **Pour plus de sécurité** n'oubliez pas de changer le mot de passe admin à partir de cette interface.
@@ -235,7 +236,7 @@ Faites un refresh sur l'url `http://floatingIP/`
 
 Un certificat SSL est automatiquement généré via Let's encrypt et celui-ci est renouvellé via un job CRON tous les 90 jours.
 Les signatures Clamav et SpamAssassin sont mises à jour via un job cron chaque jour.
-###So watt?
+## So watt?
 
 Les chemins intéressants sur votre machine :
 
@@ -252,10 +253,11 @@ Les chemins intéressants sur votre machine :
 `/var/www/cw/data/_data_/_default_/`: Fichiers de configuration Rainloop
 
 
-#### Autres sources pouvant vous intéresser:
+### Autres sources pouvant vous intéresser:
 * [ Postfix Home page](http://www.postfix.org/documentation.html)
 * [ Dovecot Documentation](http://www.dovecot.org/)
 * [ Rainloop Documentation](http://www.rainloop.net)
 * [ ClamAv Documentation](http://www.clamav.net/)
 
------------
+----
+Have fun. Hack in peace.

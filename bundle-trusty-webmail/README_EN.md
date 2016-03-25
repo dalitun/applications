@@ -1,6 +1,6 @@
 # 5 Minutes Stacks, 25 episode : Mail #
 
-## Episode 20 : Webail
+## Episode 20 : Webmail
 
 ![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
 
@@ -169,13 +169,13 @@ If you've reached this point, you're already done! Go enjoy Mail!
 ... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your mail server!
 
 
-### Enjoy
+## Enjoy
 Once this is done you can connect via a web browser on the postfixamdin interface from this url `https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin` in order to start adding your domains and emails,for logging you use  **admin@ip-floatingip.rev.cloudwatt.com** as login and **password_admin** as password.
 
 
 ![Postfixadmin](./img/postfixadmin.png)
 
-for knowing how to manager the postfixadmin you can see this link [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
+For knowing how to manager the postfixadmin you can see this link [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
 For email inboxes you see this URL `https://ip-floatingip.rev.cloudwatt.com/` or `https://floatingIP/` via a web browser.
 
@@ -231,8 +231,7 @@ Make a refresh on the url `http://floatingIP/`
 
 **If you want to change rainloop configuration**
 
-I
- Access to  `https://floatingIP/?admin` or `https://ip-floatingip.rev.cloudwatt.com/?admin` with web browser on Client,then login with a user and password for initial login, user is "admin" and password is "12345".
+Access to  `https://floatingIP/?admin` or `https://ip-floatingip.rev.cloudwatt.com/?admin` with web browser on Client,then login with a user and password for initial login, user is "admin" and password is "12345".
 
  ![admin1](./img/admin1.jpg)
 
@@ -246,7 +245,7 @@ An SSL certificate is automatically generated via Let's encrypt and it is renewe
 The updates ClamAv signatures is via cron everyday.
 
 
-### So watt?
+## So watt?
 The interesting directories and files are:
 
 `/etc/apache2`: Apache configuration files
@@ -262,10 +261,11 @@ The interesting directories and files are:
 `/var/www/cw/data/_data_/_default_/`: Rainloop configuration files
 
 
-#### Other resources you could be interested in:
+### Other resources you could be interested in:
 * [ Postfix Home page](http://www.postfix.org/documentation.html)
 * [ Dovecot Documentation](http://www.dovecot.org/)
 * [ Rainloop Documentation](http://www.rainloop.net)
 * [ ClamAv Documentation](http://www.clamav.net/)
 
------------
+----
+Have fun. Hack in peace.

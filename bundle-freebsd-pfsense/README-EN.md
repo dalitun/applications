@@ -193,9 +193,10 @@ You now have an SSH access point on your virtual machine through the floating-IP
 
 * You have access to the web interface with https via the floating IP from ubuntu server.
 
-* Here are some news sites to learn more:
+### Here are some news sites to learn more:
 
 - https://www.pfsense.org/
 - https://forum.pfsense.org
+
 ----
 Have fun. Hack in peace.
