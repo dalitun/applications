@@ -2,14 +2,13 @@
 ##
 ### Written by the CAT (Cloudwatt Automation Team)
 ##
+#
 
 heat_template_version: 2013-05-23
-
 
 description: All-in-one Webmail stack
 
 parameters:
- 
   keypair_name:
     description: Keypair to inject in instance
     label: SSH Keypair
@@ -79,7 +78,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 41e0f92a-06ab-4203-a197-36eb8aebfb64
+      image: 3ada4d87-0aee-4f77-b10a-b7a9d730b20b
       flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
@@ -103,7 +102,7 @@ resources:
             EOF
 
             echo "127.0.0.1  ip-$(echo $floating_ip$ | tr "." "-").rev.cloudwatt.com" >>/etc/hosts
-            ansible-playbook /tmp/mail-install/mail-install.yml
+            ansible-playbook /root/mail-install/mail-install.yml -e @/etc/ansible/mail-vars.yml
 
           params:
             $floating_ip$: { get_attr: [floating_ip, floating_ip_address] }
@@ -120,3 +119,5 @@ outputs:
   floating_ip:
     description: IP address of the deployed compute instance
     value: { get_attr: [floating_ip, floating_ip_address] }
+
+
