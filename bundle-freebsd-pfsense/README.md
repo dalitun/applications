@@ -183,7 +183,7 @@ ou
 $ sudo ssh privateIpPfsene -l root -L 80:localhost:80
 ~~~
 
-le mot de passe de root c'est **pfsense**, Je vous conseille de le changer.
+le mot de passe de root c'est **pfsense**, je vous conseille de le changer.
 
 2) Sur votre machine local tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
 
@@ -213,3 +213,5 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 * Voici quelques sites d'informations avant d'aller plus loin :
 - https://www.pfsense.org/
 - https://forum.pfsense.org
+----
+Have fun. Hack in peace.
