@@ -180,7 +180,7 @@ Consulter ce lien [postfixadmin](http://postfixadmin.sourceforge.net/screenshots
 
 Pour consulter les boites emails vous consultez cet url  `https://ip-floatingip.rev.cloudwatt.com/` ou `https://floatingIP`.
 
-vous devez arriver sur ces pages :
+Vous devez arriver sur ces pages :
 
 ![auth](./img/auth.jpg)
 

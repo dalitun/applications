@@ -145,7 +145,8 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 * Expose it on the Internet via a floating IP.
 
 
-### All of this is fine, but you do not have a way to create the stack from the console?
+## All of this is fine,
+### but you do not have a way to create the stack from the console?
 
 We do indeed! Using the console, you can deploy a mail server:
 
