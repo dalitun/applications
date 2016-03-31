@@ -74,12 +74,26 @@ In this episode we used Rainloop as open source webmail that is developed in PHP
 
 
  parameters:
-   keypair_name:
+  keypair_name:
      default: keypair_name        <-- Indicate here your keypair
      description: Keypair to inject in instances
      type: string
-
-   flavor_name:
+  mysql_password:
+     description: Mysql password
+     label: Mysql password
+     type: string
+     default: changeme            <-- Indicate here your database password
+  postfix_admin_pass:
+     description: postfixadmin password
+     label: postfixadmin password
+     type: string
+     default: changeme            <-- Indicate here your postfix admin password
+  mail_domain:
+     description: mail domain
+     label: mail domain
+     type: string
+     default: exemple.com         <-- Indicate here your domain name
+flavor_name:
      default: n2.cw.standard-1              <-- indicate here the flavor size
      description: Flavor to use for the deployed instance
      type: string
@@ -103,7 +117,7 @@ In this episode we used Rainloop as open source webmail that is developed in PHP
  In a shell, run the script `stack-start.sh`:
 
  ~~~ bash
- ./stack-start.sh your_stack_name your_keypair_name mysql_password postfix_admin_pass
+ ./stack-start.sh your_stack_name your_keypair_name mysql_password postfix_admin_pass mail_domain
  ~~~
  Exemple :
 
@@ -153,7 +167,7 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 We do indeed! Using the console, you can deploy a mail server:
 
 1.	Go the Cloudwatt Github in the [applications/bundle-trusty-mail]https://github.com/cloudwatt/applications/tree/master/bundle-trusty-webmail) repository
-2.	Click on the file named `bundle-trusty-webmail.heat.yml` (or `bbundle-trusty-webmail.restore.heat.yml` to [restore from backup](#backup))
+2.	Click on the file named `bundle-trusty-webmail.heat.yml` (or `bundle-trusty-webmail.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
@@ -218,6 +232,8 @@ In `/var/www/cw/data/_data_/_default_/domains/domain.ini`:
 
       - smtp_host
       - imap_host
+
+Don't forget to edit the both files `/etc/hosts` et `/etc/hostname`.
 
 **then restart the services postfix,dovecot and apache2:**
 

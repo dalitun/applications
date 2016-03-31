@@ -84,8 +84,21 @@ parameters:
     description: Keypair to inject in instance
     type: string
     default: my-keypair-name                <-- Mettez ici le nom de votre keypair
-
-
+  mysql_password:
+     description: Mysql password
+     label: Mysql password
+     type: string
+     default: changeme                     <-- Mettez ici le mot de passe de votre base de données
+  postfix_admin_pass:
+     description: postfixadmin password
+     label: postfixadmin password
+     type: string
+     default: changeme                    <-- Mettez ici le mot de passe de votre admin postfix
+  mail_domain:
+     description: mail domain
+     label: mail domain
+     type: string
+     default: exemple.com                 <-- Mettez ici votre nom de domaine
   flavor_name:
     label: Instance Type (Flavor)
     description: Flavor to use for the deployed instance
@@ -111,7 +124,7 @@ parameters:
 Dans un shell,lancer le script `stack-start.sh`:
 
 ~~~
-./stack-start.sh nom_de_votre_stack votre_nom_clé mysql_password postfix_admin_pass
+./stack-start.sh nom_de_votre_stack votre_nom_clé mysql_password postfix_admin_pass mail_domain
 ~~~
 
 Exemple :
@@ -216,6 +229,8 @@ Dans `/var/www/cw/data/_data_/_default_/domains/domain.ini`:
 
       - smtp_host
       - imap_host
+
+N'oubliez pas d'éditer les deux fichers `/etc/hosts` et `/etc/hostname` .
 
 **Redémarrez ensuite  les services suivants Postfix, Dovecot et Apache2**
 

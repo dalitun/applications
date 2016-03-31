@@ -112,14 +112,12 @@ resources:
                   email_admin: 'admin@ip-$(echo $floating_ip$ | tr "." "-").rev.cloudwatt.com'
                   EOF
                   echo "127.0.0.1  ip-$(echo $floating_ip$ | tr "." "-").rev.cloudwatt.com" >>/etc/hosts
-                  echo "ip-$(echo $floating_ip$ | tr "." "-").rev.cloudwatt.com" >>/etc/hostname
                   else
                   cat << EOF >> /etc/ansible/mail-vars.yml
                   mail_domain: '$mail_domain$'
                   email_admin: 'admin@$mail_domain$'
                   EOF
                   echo "127.0.0.1  $mail_domain$" >>/etc/hosts
-                  echo "$mail_domain$" >>/etc/hostname
                   fi
                   ansible-playbook /root/mail-install/mail-install.yml -e @/etc/ansible/mail-vars.yml
 

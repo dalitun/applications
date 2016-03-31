@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ ! "$2" ]; then
-  echo "Usage $0 stack_name keypair_name mysql_password postfix_admin_pass yourdomain_mail"
+  echo "Usage $0 stack_name keypair_name mysql_password postfix_admin_pass mail_domain"
   echo "if you want to use the default parameters ,use $0 stack_name keypair_name "
   exit 1
 fi
