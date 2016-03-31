@@ -230,7 +230,7 @@ Dans `/var/www/cw/data/_data_/_default_/domains/domain.ini`:
       - smtp_host
       - imap_host
 
-N'oubliez pas d'éditer les deux fichers `/etc/hosts` et `/etc/hostname` .
+N'oubliez pas d'éditer les deux fichiers `/etc/hosts` et `/etc/hostname` .
 
 **Redémarrez ensuite  les services suivants Postfix, Dovecot et Apache2**
 
