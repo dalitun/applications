@@ -1,6 +1,6 @@
 heat_template_version: 2013-05-23
 
-description: Image Factory
+description: Pfsense
 
 parameters:
   keypair_name:
