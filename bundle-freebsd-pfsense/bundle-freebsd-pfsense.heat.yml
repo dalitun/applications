@@ -8,11 +8,11 @@ parameters:
     label: SSH Keypair
     type: string
 
-  flavor_name:
+  flavor_name_fw:
     default: n2.cw.standard-1
     description: Flavor to use for the deployed instance
     type: string
-    label: Openstack Flavor
+    label: Flavor for Pfsense
     constraints:
       - allowed_values:
         - t1.cw.tiny
@@ -26,6 +26,24 @@ parameters:
         - n2.cw.highmem-4
         - n2.cw.highmem-8
         - n2.cw.highmem-16
+  flavor_name_admin:
+      default: t1.cw.tiny
+      description: Flavor to use for the deployed instance
+      type: string
+      label: Flavor for Admin
+      constraints:
+        - allowed_values:
+          - t1.cw.tiny
+          - s1.cw.small-1
+          - n2.cw.standard-1
+          - n2.cw.standard-2
+          - n2.cw.standard-4
+          - n2.cw.standard-8
+          - n2.cw.standard-16
+          - n2.cw.highmem-2
+          - n2.cw.highmem-4
+          - n2.cw.highmem-8
+          - n2.cw.highmem-16
 
   public_net_cidr:
     description: /24 cidr of public network
@@ -59,6 +77,7 @@ resources:
       network_id: { get_resource: privatenet }
       ip_version: 4
       cidr: { get_param: private_net_cidr }
+      gateway_ip: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
       allocation_pools:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
           end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
@@ -134,7 +153,7 @@ resources:
             apt-get install -y lynx
 
           params:
-            $route$: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: public_net_cidr} ] }
+            $route$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: public_net_cidr} ] }
             $floating_ip$: { get_attr: [admin_floating_ip, floating_ip_address] }
             $public_net_cidr$: { get_param: public_net_cidr }
 
@@ -164,7 +183,7 @@ resources:
     properties:
       key_name: { get_param: keypair_name }
       image: 719e29c1-96c0-46e9-991b-e8bbd49fdd5c
-      flavor: n2.cw.standard-1
+      flavor: { get_param: flavor_name_fw }
       networks:
         - port: { get_resource: fw_public_port }
         - port: { get_resource: fw_private_port }
@@ -177,7 +196,7 @@ resources:
     properties:
       key_name: { get_param: keypair_name }
       image: e9dc1515-47cc-4d52-8f54-48577ab5b216
-      flavor: n2.cw.standard-1
+      flavor: { get_param: flavor_name_admin }
       networks:
         - { network: { get_resource: privatenet } }
       security_groups:

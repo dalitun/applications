@@ -4,15 +4,17 @@
 
 ![pfsenselogo](http://actuto.azurewebsites.net/wp-content/uploads/2014/10/pfsense-logo.png)
 
-pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques. Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires.
+pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques.Il a pour but d'assurer la sécurité périmétrique.Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires.
 
-Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Unbuntu.
+Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schema d'architecture.
+
+![pfsense_schema](img/pfsense.png)
 
 ## Preparations
 
 ### Les versions
   - Pfsense 2.2.6
-
+  - Ubuntu Trusty 14.04
 ### Les pré-requis pour déployer cette stack
 
 Ceci devrait être une routine à présent:
@@ -36,9 +38,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 Une fois le dépôt cloné, vous trouverez le répertoire `bundle-freebsd-pfsense/`
 
 * `bundle-freebsd-pfsense.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
-* `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
+* `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 
 ## Démarrage
 
@@ -126,7 +128,8 @@ $ heat resource-list Pfsense
 ~~~
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur freebsd, pré-provisionnée avec la stack pfsense.
+* Démarrer une instance basée sur freebsd, pré-provisionnée avec la stack pfsense.
+* Le `flotting_ip_Admin` est la flotting Ip de la machine Admin.  
 
 ## C’est bien tout ça, mais...
 
@@ -182,7 +185,7 @@ dans ce cas il faut utliser votre clé privée.
 ou
 
 ~~~bash
-$ sudo ssh privateIpPfsene -l root -L 80:localhost:80
+$ sudo ssh private_ip_pfsene -l root -L 80:localhost:80
 ~~~
 
 le mot de passe de root c'est **pfsense**, je vous conseille de le changer.
@@ -190,7 +193,7 @@ le mot de passe de root c'est **pfsense**, je vous conseille de le changer.
 2) Sur votre machine local tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
 
 ~~~bash
-$ sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
+$ sudo ssh flotting_ip_Admin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
 ~~~
 
 3) Puis vous pouvez administrer votre pfsense en tapant cet url `http://localhost:5555` dans le navigateur
