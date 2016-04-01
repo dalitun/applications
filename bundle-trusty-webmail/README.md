@@ -215,7 +215,7 @@ Vous allez avoir un email qui est marqué [SPAM].
 
 ![spam](./img/spam.png)
 
-Pour tester le ClamAc ça marche bien ,vous pouvez envoyer ce virus `http://eicar.org/download/eicar_com.zip`
+Pour tester le ClamAv ça marche bien ,envoyez ce virus `http://eicar.org/download/eicar_com.zip`
 Vous n'allez pas recevoir l'email car il va être bloqué par le ClamAv,vous pouvez vérifier les logs dans le fichier `/var/log/mail.log`.
 
 ![clamav1](./img/clamav1.png)

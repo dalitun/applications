@@ -212,6 +212,22 @@ user2 receive user1 email.
 
 ![inbox](./img/receive.jpg)
 
+For testing Spamassassin works well, Send an email contains this text `XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X`
+You'll have an email that 's marked [SPAM].
+
+![spam](./img/spam.png)
+
+For testing ClamAV works well, Send this virus `http://eicar.org/download/eicar_com.zip`
+You won't receive this email beacuase it is blocked by ClamAv
+ ,you can see the logs in `/var/log/mail.log` file.
+
+![clamav1](./img/clamav1.png)
+
+This is the logs in  `/var/log/mail.log` file.
+
+![clamav2](./img/clamav2.png)
+
+
 In this exemple we used the default domain name provided by cloudwatt (`https://ip-floatingip.rev.cloudwatt.com` juste replace the "." by "-" in your floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )),
 if you want to change  the domain of your mail server ,in order to be able to set your,here is the method:
 
