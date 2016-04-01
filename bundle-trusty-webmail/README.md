@@ -210,12 +210,12 @@ user2 reçoit l'email de user1.
 
 ![inbox](./img/receive.jpg)
 
-Pour tester le spam ,envoyez un email qui contient  `XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X`
+Pour tester le spamassassin ça marche bien ,envoyez un email qui contient ce texte `XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X`
 Vous allez avoir un email qui est marqué [SPAM].
 
 ![spam](./img/spam.png)
 
-Pour tester que le ClamAv ça marche ,vous pouvez envoyer ce virus `http://eicar.org/download/eicar_com.zip`
+Pour tester le ClamAc ça marche bien ,vous pouvez envoyer ce virus `http://eicar.org/download/eicar_com.zip`
 Vous n'allez pas recevoir l'email car il va être bloqué par le ClamAv,vous pouvez vérifier les logs dans le fichier `/var/log/mail.log`.
 
 ![clamav1](./img/clamav1.png)
