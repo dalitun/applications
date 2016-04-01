@@ -6,7 +6,7 @@
 
 pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques.Il a pour but d'assurer la sécurité périmétrique.Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires.
 
-Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schema d'architecture.
+Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schemà d'architecture.
 
 ![pfsense_schema](img/pfsense.png)
 
@@ -122,14 +122,14 @@ $ heat resource-list Pfsense
 | firewall                 | 94c3797e-760a-4d65-8bb4-b5ed50866b43                                      | OS::Nova::Server                   | CREATE_COMPLETE | 2016-03-18T13:39:51Z |
 | admingw                  | 88aeceff-e7b8-4ada-a92e-d3dd7c5afcc2                                      | OS::Nova::Server                   | CREATE_COMPLETE | 2016-03-18T13:39:53Z |
 | fw_floating_ass          | abb864b2-ca78-444a-a142-6223f1083264:2642a85e-1f92-4398-b136-8db010dabdb8 | OS::Neutron::FloatingIPAssociation | CREATE_COMPLETE | 2016-03-18T13:39:54Z |
-| admingw_internet_surface | 2c97b35b-5beb-4aec-b1d4-845161d956ef-`flotting_ip_Admin`                         | OS::Nova::FloatingIPAssociation    | CREATE_COMPLETE | 2016-03-18T13:40:14Z |
+| admingw_internet_surface | 2c97b35b-5beb-4aec-b1d4-845161d956ef-`flotting_ip_admin`                         | OS::Nova::FloatingIPAssociation    | CREATE_COMPLETE | 2016-03-18T13:40:14Z |
 +--------------------------+---------------------------------------------------------------------------+------------------------------------+-----------------+----------------------+
 
 ~~~
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
 * Démarrer une instance basée sur freebsd, pré-provisionnée avec la stack pfsense.
-* Le `flotting_ip_Admin` est la flotting Ip de la machine Admin.  
+* `flotting_ip_admin` est la flotting Ip de la machine Admin.  
 
 ## C’est bien tout ça, mais...
 
@@ -177,7 +177,7 @@ sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de 
 1) Tapez la commande suivante dans la machine Admin(ubuntu)
 
 ~~~bash
-$ sudo ssh privateIpPfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
+$ sudo ssh private_ip_pfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
 ~~~
 
 dans ce cas il faut utliser votre clé privée.
@@ -193,7 +193,7 @@ le mot de passe de root c'est **pfsense**, je vous conseille de le changer.
 2) Sur votre machine local tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
 
 ~~~bash
-$ sudo ssh flotting_ip_Admin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
+$ sudo ssh flotting_ip_admin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
 ~~~
 
 3) Puis vous pouvez administrer votre pfsense en tapant cet url `http://localhost:5555` dans le navigateur
