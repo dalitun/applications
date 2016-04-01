@@ -210,6 +210,21 @@ user2 reçoit l'email de user1.
 
 ![inbox](./img/receive.jpg)
 
+Pour tester le spam ,envoyez un email qui contient  `XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X`
+Vous allez avoir un email qui est marqué [SPAM].
+
+![spam](./img/spam.png)
+
+Pour tester que le ClamAv marche vous pouvez envoyer ce virus `http://eicar.org/download/eicar_com.zip`
+Vous n'allez pas recevoir l'email car il va être bloqué par le ClamAv,vous pouvez vérifier les logs dans le fichier `/var/log/mail.log`.
+
+![clamav1](./img/clamav1.png)
+
+Voici fichier log `/var/log/mail.log`.
+
+![clamav2](./img/clamav2.png)
+
+
 Dans cet exemple nous avons utilisé le nom de domaine fourni par Cloudwatt(`https://ip-floatingip.rev.cloudwatt.com`  remplacez les "." par "-" de votre floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )).
 
 Si vous voulez changer le domaine de votre serveur de mail, afin de pouvoir y paramétrer le votre, voici la méthode:
