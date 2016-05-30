@@ -56,35 +56,33 @@ Blueprint c'est une architecture 3-tires dont il y a des noeuds fronts , deux no
 
 Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
-**Artefact in zip ,git, tar.gz or war :**
-vous mettez l'url de l'artifact de votre application il faut qu'il soit en git,zip ou tar.gz  pour les applications php et nodejs et war pour les applications java.
+**SSH Keypair :** Votre key pair.
 
-**Application type :**
- si vous choisissez php vous allez avoir un environnement apache2 et php,
- si vous choisissez nodejs vous allez avoir un environnement qui éxécute les applications nodejs avec reverse proxy nginx et
- si vous choisissez java vous allez avoir un environnement tomcat 8 et openjdk8 avec nginx comme un reverse proxy.
+**Artefact in zip ,git, tar.gz or war :** Vous mettez l'url de l'artifact de votre application ,il faut qu'il soit en git,zip ou tar.gz  pour les applications php et nodejs et en war pour les applications java.
 
-**Database user :**
-l'ultisateur de la base de données
+**Application type :** Si vous choisissez php vous allez avoir un environnement apache2 et php, si vous choisissez nodejs vous allez avoir un environnement qui exécute les applications nodejs avec reverse proxy nginx et si vous choisissez tomcat vous allez avoir un environnement tomcat 8 et openjdk8 avec nginx comme un reverse proxy.
 
-**Database password :**
-le mot de passe de l'utlisateur de la base de données
+**Flavor Type for nodes :** le flavor pour les noeuds font web.
 
-**Database name :**
-le nom de la bases.
+**Number of front nodes :** nombre des noeudes font web.
 
-**Flavor Type for databases :**
+**Flavor Type for glusterfs :** le flavor pour les deux noeuds glusterfs.
 
-**Flavor Type for glusterfs :**
+**/24 cidr of fronts network :** l'addresse de réseaux des noeuds front web et glusterfs sous forme: 192.168.0.0/24.
 
-**Flavor Type for nodes :**
+**Database user :** l'ultisateur de la base de données.
 
-**SSH Keypair :**
-votre key pair
-**Number of front nodes :**
-Number of databases clusters.
-**OS type :**
-Vous choisissez l'OS qui vous convient
+**Database password :** le mot de passe de l'utlisateur de la base de données.
+
+**Database name :** le nom de la bases.
+
+**Flavor Type for databases :** le flavor pour les noeuds de la base de données.
+
+**Number of database clusters :** nombre des noeudes de base de données.
+
+**/24 cidr of databases network :** l'addresse de réseaux des noeuds   de base données sous forme: 192.168.0.0/24.
+
+**OS type :** Vous choisissez l'OS qui vous convient ,soit
 Ubuntu 14.04 , Ubuntu 16.04 ,Debian Jessie ou Centos 7.2
 
 La forme du stack :
@@ -94,15 +92,17 @@ La forme du stack :
 les outputs:
 
 ![output](img/4.png)
-Db_vip:
-l'addresse ip de load balancer de base de données clusters
-Db_name: nom de votre base
-Db_user: nom de l'utlisateur de votre base.
-URL : pour accécder votre application à partir d'un navigateur.
+
+**database_ip :** l'addresse ip de load balancer de base de données clusters
+**database_name :** nom de votre base
+**database_user :** nom de l'utlisateur de votre base.
+**database_port :** le port de la base de données
+**App_url_external :** pour accécder votre application à partir d'un navigateur.
+**App_url_internal :** pour accécder votre application via le réseau interne.
 
 ## Enjoy
 
-**les dossiers et fichiers de configuration pour les noeuds fonts:**
+**les dossiers et fichiers de configuration pour les noeuds fronts:**
 
 * php
 `/etc/apache2/sites-available/vhost.conf`: configuration Apache par défaut sur Debian et Ubuntu.
@@ -116,15 +116,19 @@ URL : pour accécder votre application à partir d'un navigateur.
 `/nodejs`: le répertoire de déploiement de votre application nodejs.
 
 **les dossiers et fichiers de configuration pour les deux noeuds glusterfs:**
-`gluster`: le volume qui est repliqué entre entre les noeuds.
+`gluster`: le volume qui est repliqué entre entre les deux noeuds.
 **les dossiers et fichiers de configuration pour les noeuds galera:**
 `/DbStorage/mysql`: le datadir des neudes de Mariadb est installé sur ce dossier qui est un volume cinder.
 Pour le backup vous avez deux solutions
 la première c'est juste crieer snaphot des volumes cinder attachés aux noeudes des bases de données.
 la deuxième le lvm est installé sur les instances vous pouvez utiliser et le volume cinder est un physique volumes PV.
 donc vous pouvez utiliser mylvmbackup pour sauvegarder votre base de données et le mettre dans un contenaire swift.
+`/etc/mysql`
+`/etc/mysql.conf`
+`/etc/my.cnf.d` 
 
-**Redémarrez ensuite  les services dans chaque type d'application**
+
+**Redémarrez les services dans chaque type d'application**
 
 * php
 Pour Debian et ubuntu
