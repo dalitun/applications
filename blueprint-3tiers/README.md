@@ -189,7 +189,7 @@ Pour les autres
 **Les noeuds Front :**
 
 `/root/deploy.sh` : est un cron pour deployer les applications ,vous pouvez l'arrêter si l'application est bien deployée.
-si vous voulez redeployer votre application,juste supprimer le contenues du dossier d'applications et lancer le script:
+si vous voulez redeployer votre application,juste supprimer le contenues du dossier de l'applications et lancer le script:
 ~~~bash
 # rm -rf /var/www/html/*
 ##si type de l'application est php.
@@ -201,14 +201,14 @@ si vous voulez redeployer votre application,juste supprimer le contenues du doss
 ~~~
 **Les deux noeuds Glusterfs:**
 
-le volume gluster c'est ip:/gluster ,pour tester qu'il fonctionne bien ,tapez:
+le volume gluster est sous la fome ip:/gluster ,pour tester qu'il fonctionne bien ,tapez la commande suivante:
 
 ~~~bash
 #gluster volume info
 ~~~
 **Les noeuds de Galeracluster :**
-`/root/sync.sh`: est cron pour démarrer les noeuds de Galera ,vous pouvez l'arrêter si les noeudes sont bien démarrés,
- pour tester , tapez la commande suivante:
+`/root/sync.sh`: est cron pour démarrer les noeuds de Galera ,vous pouvez l'arrêter si les noeuds sont bien démarrés,
+pour tester , tapez la commande suivante:
 
 ~~~bash
 # mysql -u root -e 'SELECT VARIABLE_VALUE as "cluster size" FROM INFORMATION_SCHEMA.GLOBAL_STATUS  WHERE VARIABLE_NAME="wsrep_cluster_size"'
@@ -219,18 +219,16 @@ le volume gluster c'est ip:/gluster ,pour tester qu'il fonctionne bien ,tapez:
 +--------------+
 ~~~
 
-Backup des noeuds Galeracluster:
-pour le backup
-1)
-Créer un cron qui fait des snapshots des volumes cinder qui sont attachés aux base de données intances.
+**Backup des noeuds Galeracluster :**
+Vous avez deux solutions pour le backup .
+
+1) Créer un cron qui fait des snapshots des volumes cinder qui sont attachés aux base de données intances.
 
 ~~~bash
 #cinder snapshot-create --display-name name_snapshot.$(date +%Y-%m-%d-%H.%M.%S) id_volume
 ~~~
-2)
-Créer un cron qui fait des snapshots de datadir de base de données
-et qui l'upload au conteneurs swift.
-exemple de script sous ubuntu et Debian:
+2) Créer un cron qui fait des snapshots de datadir de base de données et qui l'upload au conteneurs swift.
+Exemple de script sous ubuntu et Debian:
 ~~~bash
 #/bin/bash
 mylvmbackup --user=root --mycnf=/etc/mysql/my.cnf --vgname=vg0 --lvname=global --backuptype=tar
