@@ -145,11 +145,11 @@ les outputs:
 #### Redémarrez les services dans chaque type d'application
 
 * php
-Pour Debian et ubuntu
+Sur Debian et ubuntu
 ~~~ bash
 # service apache2 restart
 ~~~
-Pour Centos
+Sur Centos
 ~~~ bash
 # service httpd restart
 ~~~
@@ -166,20 +166,20 @@ Pour Centos
 ~~~
 
 * glasterfs
-Pour Debian et Ubuntu
+Sur Debian et Ubuntu
 ~~~ bash
 # service glusterfs-server restart
 ~~~
-Pour Centos
+Sur Centos
 ~~~ bash
 # service glusterd restart
 ~~~
 * galera
-Pour le premièr noeud
+Sur le premièr noeud
 ~~~ bash
 # service mysql restart --wsrep-new-cluster
 ~~~
-Pour les autres
+Sur les autres
 ~~~ bash
 # service mysql restart
 ~~~
@@ -204,7 +204,7 @@ si vous voulez redeployer votre application,juste supprimer le contenues du doss
 le volume gluster est sous la fome ip:/gluster ,pour tester qu'il fonctionne bien ,tapez la commande suivante:
 
 ~~~bash
-#gluster volume info
+# gluster volume info
 ~~~
 **Les noeuds de Galeracluster :**
 `/root/sync.sh`: est cron pour démarrer les noeuds de Galera ,vous pouvez l'arrêter si les noeuds sont bien démarrés,
@@ -225,7 +225,7 @@ Vous avez deux solutions pour le backup .
 1) Créer un cron qui fait des snapshots des volumes cinder qui sont attachés aux base de données intances.
 
 ~~~bash
-#cinder snapshot-create --display-name name_snapshot.$(date +%Y-%m-%d-%H.%M.%S) id_volume
+# cinder snapshot-create --display-name name_snapshot.$(date +%Y-%m-%d-%H.%M.%S) id_volume
 ~~~
 2) Créer un cron qui fait des snapshots de datadir de base de données et qui l'upload au conteneurs swift.
 Exemple de script sous ubuntu et Debian:
