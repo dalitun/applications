@@ -1,8 +1,8 @@
-# 5 Minutes Stacks, épisode 26 : Blueprint #
+# 5 Minutes Stacks, épisode 26 : Blueprint 3 tiers#
 
-## Episode 26 : Blueprint
+## Episode 26 : Blueprint 3 tiers
 
-Blueprint c'est une architecture 3-tires dont il y a des noeuds fronts , deux noeuds glusterfs et clusters bases de données :
+Ce Blueprint installe une architecture 3-tires dont il y a des noeuds fronts , deux noeuds glusterfs et clusters bases de données :
 
 
 ## Preparations
@@ -16,13 +16,12 @@ Blueprint c'est une architecture 3-tires dont il y a des noeuds fronts , deux no
  - Mariadb 10.1
  - lvm2
  - mylvmbackup
- - Galera
- - nodejs
- - Apache 2
- - Php 5 and 7
+ - Galeracluster 3
+ - Nodejs 6.x
+ - Apache 2.4
+ - php 5 & 7
  - openjdk 8
  - Tomcat 8
- - Nodejs 1.10
  - Nginx 1.10
 
 ### Les pré-requis
@@ -102,9 +101,9 @@ les outputs:
 
 **Database_port :** le port de la base de données.
 
-**App_url_external :** pour accécder votre application à partir d'un navigateur.
+**App_url_external :** pour accéder votre application à partir d'un navigateur.
 
-**App_url_internal :** pour accécder votre application via le réseau interne.
+**App_url_internal :** pour accéder votre application via le réseau interne.
 
 ## Enjoy
 
@@ -224,11 +223,15 @@ le volume monté c'est ip_glusterfs1:/gluster ,pour tester que glusterfs fonctio
 Backup des noeuds Galeracluster:
 pour le backup
 1)
+Créer un cron qui fait des snapshots des volumes cinder qui sont attachés aux base de données intances.
 
 ~~~bash
 #cinder snapshot-create --display-name name_snapshot.$(date +%Y-%m-%d-%H.%M.%S) id_volume
 ~~~
 2)
+Créer un cron qui fait des snapshots de datadir de base de données
+et qui l'upload au conteneurs swift.
+exemple de script sous ubuntu et Debian:
 ~~~bash
 #/bin/bash
 mylvmbackup --user=root --mycnf=/etc/mysql/my.cnf --vgname=vg0 --lvname=global --backuptype=tar
