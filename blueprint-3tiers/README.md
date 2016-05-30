@@ -2,8 +2,7 @@
 
 ## Episode 26 : Blueprint 3 tiers
 
-Ce Blueprint installe une architecture 3-tires dont il y a des noeuds fronts , deux noeuds glusterfs et clusters bases de données :
-
+Ce Blueprint deploit une architecture 3-tires dont il y a des noeuds fronts , deux noeuds glusterfs et clusters bases de données.
 
 ## Preparations
 
@@ -14,13 +13,13 @@ Ce Blueprint installe une architecture 3-tires dont il y a des noeuds fronts , d
  - Centos 7.2
  - Glustefs 3
  - Mariadb 10.1
- - lvm2
- - mylvmbackup
+ - Lvm2
+ - Mylvmbackup
  - Galeracluster 3
  - Nodejs 6.x
  - Apache 2.4
- - php 5 & 7
- - openjdk 8
+ - Php 5 & 7
+ - Openjdk 8
  - Tomcat 8
  - Nginx 1.10
 
@@ -187,7 +186,7 @@ Pour les autres
 
 #### Exploitation
 
-**Pour les noeuds front :**
+**Les noeuds Front :**
 
 `/root/deploy.sh` : est un cron pour deployer les applications ,vous pouvez l'arrêter si l'application est bien deployée.
 si vous voulez redeployer votre application,juste supprimer le contenues du dossier d'applications et lancer le script:
@@ -200,14 +199,14 @@ si vous voulez redeployer votre application,juste supprimer le contenues du doss
 ##i type de l'application est nodejs
 #/root/deploy.sh /nodejs nodejs url_artifact
 ~~~
-**Pour les deux noeuds glusterfs:**
+**Les deux noeuds Glusterfs:**
 
-le volume monté c'est ip_glusterfs1:/gluster ,pour tester que glusterfs fonctionne bien ,tapez
+le volume gluster c'est ip:/gluster ,pour tester qu'il fonctionne bien ,tapez:
 
 ~~~bash
 #gluster volume info
 ~~~
-**Pour les noeuds de galera :**
+**Les noeuds de Galeracluster :**
 `/root/sync.sh`: est cron pour démarrer les noeuds de Galera ,vous pouvez l'arrêter si les noeudes sont bien démarrés,
  pour tester , tapez la commande suivante:
 
