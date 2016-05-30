@@ -58,19 +58,27 @@ Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
 **Artefact in zip ,git, tar.gz or war :**
 vous mettez l'url de l'artifact de votre application il faut qu'il soit en git,zip ou tar.gz  pour les applications php et nodejs et war pour les applications java.
+
 **Application type :**
  si vous choisissez php vous allez avoir un environnement apache2 et php,
  si vous choisissez nodejs vous allez avoir un environnement qui éxécute les applications nodejs avec reverse proxy nginx et
  si vous choisissez java vous allez avoir un environnement tomcat 8 et openjdk8 avec nginx comme un reverse proxy.
+
 **Database user :**
 l'ultisateur de la base de données
+
 **Database password :**
 le mot de passe de l'utlisateur de la base de données
+
 **Database name :**
 le nom de la bases.
+
 **Flavor Type for databases :**
+
 **Flavor Type for glusterfs :**
+
 **Flavor Type for nodes :**
+
 **SSH Keypair :**
 votre key pair
 **Number of front nodes :**
@@ -80,8 +88,11 @@ Vous choisissez l'OS qui vous convient
 Ubuntu 14.04 , Ubuntu 16.04 ,Debian Jessie ou Centos 7.2
 
 La forme du stack :
+
 ![stack](img/5.png)
+
 les outputs:
+
 ![output](img/4.png)
 Db_vip:
 l'addresse ip de load balancer de base de données clusters
