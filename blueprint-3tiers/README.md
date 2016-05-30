@@ -189,6 +189,7 @@ Pour les autres
 #### Exploitation
 
 **Pour les noeuds front :**
+
 `/root/deploy.sh` : est un cron pour deployer les applications ,vous pouvez l'arrêter si l'application est bien deployée.
 si vous voulez redeployer votre application,juste supprimer le contenues du dossier d'applications et lancer le script:
 ~~~bash
@@ -201,8 +202,8 @@ si vous voulez redeployer votre application,juste supprimer le contenues du doss
 #/root/deploy.sh /nodejs nodejs url_artifact
 ~~~
 **Pour les deux noeuds glusterfs:**
-le volume monté c'est ip_glusterfs1:/gluster
-pour tester que glusterfs fonctionne bien ,tapez
+
+le volume monté c'est ip_glusterfs1:/gluster ,pour tester que glusterfs fonctionne bien ,tapez
 
 ~~~bash
 #gluster volume info
