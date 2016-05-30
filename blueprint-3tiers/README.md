@@ -80,9 +80,9 @@ Vous choisissez l'OS qui vous convient
 Ubuntu 14.04 , Ubuntu 16.04 ,Debian Jessie ou Centos 7.2
 
 La forme du stack :
-![stack](img/4.png)
+![stack](img/5.png)
 les outputs:
-![output](img/5.png)
+![output](img/4.png)
 Db_vip:
 l'addresse ip de load balancer de base de données clusters
 Db_name: nom de votre base
