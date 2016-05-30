@@ -82,8 +82,7 @@ Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
 **/24 cidr of databases network :** l'addresse de réseaux des noeuds   de base données sous forme: 192.168.0.0/24.
 
-**OS type :** Vous choisissez l'OS qui vous convient ,soit
-Ubuntu 14.04 , Ubuntu 16.04 ,Debian Jessie ou Centos 7.2
+**OS type :** Vous choisissez l'OS qui vous convient ,soit Ubuntu 14.04 , Ubuntu 16.04 ,Debian Jessie ou Centos 7.2
 
 La forme du stack :
 
@@ -94,10 +93,15 @@ les outputs:
 ![output](img/4.png)
 
 **database_ip :** l'addresse ip de load balancer de base de données clusters
+
 **database_name :** nom de votre base
+
 **database_user :** nom de l'utlisateur de votre base.
+
 **database_port :** le port de la base de données
+
 **App_url_external :** pour accécder votre application à partir d'un navigateur.
+
 **App_url_internal :** pour accécder votre application via le réseau interne.
 
 ## Enjoy
@@ -105,28 +109,43 @@ les outputs:
 **les dossiers et fichiers de configuration pour les noeuds fronts:**
 
 * php
+
 `/etc/apache2/sites-available/vhost.conf`: configuration Apache par défaut sur Debian et Ubuntu.
+
 `/etc/http/conf.d/vhost.conf`:configuration Apache par défaut sur Centos.
+
 `/var/www/html`: le répertoire de déploiement de votre application php.
+
 * tomcat
+
 `/usr/share/tomcat`: le dossier de tomcat.
+
 `/user/share/tomcat/webapps`: le répertoire de déploiement de votre application java
+
 `/etc/nginx/conf.d/default`: configuration de reverse proxy.
+
 * nodejs
+
 `/nodejs`: le répertoire de déploiement de votre application nodejs.
 
 **les dossiers et fichiers de configuration pour les deux noeuds glusterfs:**
+
 `gluster`: le volume qui est repliqué entre entre les deux noeuds.
+
 **les dossiers et fichiers de configuration pour les noeuds galera:**
+
 `/DbStorage/mysql`: le datadir des neudes de Mariadb est installé sur ce dossier qui est un volume cinder.
+
 Pour le backup vous avez deux solutions
 la première c'est juste crieer snaphot des volumes cinder attachés aux noeudes des bases de données.
 la deuxième le lvm est installé sur les instances vous pouvez utiliser et le volume cinder est un physique volumes PV.
 donc vous pouvez utiliser mylvmbackup pour sauvegarder votre base de données et le mettre dans un contenaire swift.
-`/etc/mysql`
-`/etc/mysql.conf`
-`/etc/my.cnf.d` 
 
+`/etc/mysql`
+
+`/etc/mysql.conf`
+
+`/etc/my.cnf.d`
 
 **Redémarrez les services dans chaque type d'application**
 
