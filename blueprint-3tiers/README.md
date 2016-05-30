@@ -79,9 +79,8 @@ Number of databases clusters.
 Vous choisissez l'OS qui vous convient
 Ubuntu 14.04 , Ubuntu 16.04 ,Debian Jessie ou Centos 7.2
 
-La forme de stack :
+La forme du stack :
 ![stack](img/4.png)
-
 les outputs:
 ![output](img/5.png)
 Db_vip:
