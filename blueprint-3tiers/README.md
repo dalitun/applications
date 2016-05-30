@@ -2,7 +2,6 @@
 
 ## Episode 26 : Blueprint
 
-
 Blueprint c'est une architecture 3-tires dont il y a des noeuds fronts , deux noeuds glusterfs et clusters bases de données :
 
 
@@ -32,7 +31,7 @@ Blueprint c'est une architecture 3-tires dont il y a des noeuds fronts , deux no
   * Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
 
 
-   ### Initialiser l'environnement
+### Initialiser l'environnement
 
  Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
  Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
@@ -51,11 +50,13 @@ Blueprint c'est une architecture 3-tires dont il y a des noeuds fronts , deux no
 
  ### 1 clic
 
-![from1](img/2.png)
-![form2](img/1.png)
+![from1](img/1.png)
+![form2](img/2.png)
+![form3](img/3.png)
+
 Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
-  **Artefact in zip ,git, tar.gz or war :**
+**Artefact in zip ,git, tar.gz or war :**
 vous mettez l'url de l'artifact de votre application il faut qu'il soit en git,zip ou tar.gz  pour les applications php et nodejs et war pour les applications java.
 **Application type :**
  si vous choisissez php vous allez avoir un environnement apache2 et php,
@@ -82,7 +83,7 @@ La forme de stack :
 ![stack](img/4.png)
 
 les outputs:
-![output](img/3.png)
+![output](img/5.png)
 Db_vip:
 l'addresse ip de load balancer de base de données clusters
 Db_name: nom de votre base
@@ -155,7 +156,30 @@ Pour les autres
 # service mysql restart
 ~~~
 
-**Pour les cron**
+**scripts exploits**
+
+pour les noeuds front :
+/root/deploy.sh : est un cron pour deployer les applications ,vous pouvez l'arreter si l'application est bien deployer.
+si vous voulez redeployer votre applications
+juste supprimer les contenues de chaques dossier d'applications et lancer le script
+exemple:
+~~~bash
+rm -rf /var/www/html/*
+/root/deploy.sh /var/www/html php url_repo
+~~~
+
+pour les noeuds de galera
+/root/sync.sh: cron pour bien redemmarrer les noeuds de galera ,vous pouvez l'arreter si les Galera est bien deployer pour savoir que
+les noeuds marchent bien:
+
+~~~bash
+mysql -u root -e 'SELECT VARIABLE_VALUE as "cluster size"  FROM INFORMATION_SCHEMA.GLOBAL_STATUS  WHERE VARIABLE_NAME="wsrep_cluster_size"'
++--------------+
+| cluster size |
++--------------+
+| nomber de noeuds mariadb            |
++--------------+
+~~~
 
 
 ### Autres sources pouvant vous intéresser:
