@@ -14,6 +14,8 @@ Blueprint c'est une architecture 3-tires dont il y a des noeuds fronts , deux no
  - Centos 7.2
  - Glustefs 3
  - Mariadb 10.1
+ - lvm2
+ - mylvmbackup
  - Galera
  - nodejs
  - Apache 2
@@ -92,13 +94,13 @@ les outputs:
 
 ![output](img/4.png)
 
-**database_ip :** l'addresse ip de load balancer de base de données clusters
+**Database_ip :** l'addresse ip de load balancer de base de données clusters
 
-**database_name :** nom de votre base
+**Database_name :** nom de votre base
 
-**database_user :** nom de l'utlisateur de votre base.
+**Database_user :** nom de l'utlisateur de votre base.
 
-**database_port :** le port de la base de données
+**Database_port :** le port de la base de données.
 
 **App_url_external :** pour accécder votre application à partir d'un navigateur.
 
@@ -106,7 +108,7 @@ les outputs:
 
 ## Enjoy
 
-**les dossiers et fichiers de configuration pour les noeuds fronts:**
+#### Les dossiers et fichiers de configuration pour les noeuds fronts:
 
 * php
 
@@ -130,24 +132,19 @@ les outputs:
 
 **les dossiers et fichiers de configuration pour les deux noeuds glusterfs:**
 
-`gluster`: le volume qui est repliqué entre entre les deux noeuds.
+`/srv/gluster/brick`: le répertoire qui est repliqué entre les deux noeuds glusterfs.
 
-**les dossiers et fichiers de configuration pour les noeuds galera:**
+#### Les dossiers et fichiers de configuration pour les noeuds galera:
 
-`/DbStorage/mysql`: le datadir des neudes de Mariadb est installé sur ce dossier qui est un volume cinder.
+`/DbStorage/mysql`: le datadir des neudes de Mariadb.
 
-Pour le backup vous avez deux solutions
-la première c'est juste crieer snaphot des volumes cinder attachés aux noeudes des bases de données.
-la deuxième le lvm est installé sur les instances vous pouvez utiliser et le volume cinder est un physique volumes PV.
-donc vous pouvez utiliser mylvmbackup pour sauvegarder votre base de données et le mettre dans un contenaire swift.
+`/etc/mysql`: le répertoire de configuration de Mariadb sous Debian and Ubuntu.
 
-`/etc/mysql`
+`/etc/mysql.cnf`: le fichier  de configuration de Mariadb sous Centos.  
 
-`/etc/mysql.conf`
+`/etc/my.cnf.d`: le répertoire de configuration de Mariadb sous Centos.
 
-`/etc/my.cnf.d`
-
-**Redémarrez les services dans chaque type d'application**
+#### Redémarrez les services dans chaque type d'application
 
 * php
 Pour Debian et ubuntu
@@ -173,11 +170,11 @@ Pour Centos
 * glasterfs
 Pour Debian et Ubuntu
 ~~~ bash
-# service httpd restart
+# service glusterfs-server restart
 ~~~
 Pour Centos
 ~~~ bash
-# service httpd restart
+# service glusterd restart
 ~~~
 * galera
 Pour le premièr noeud
@@ -189,37 +186,63 @@ Pour les autres
 # service mysql restart
 ~~~
 
-**scripts exploits**
+#### Exploitation
 
-pour les noeuds front :
-/root/deploy.sh : est un cron pour deployer les applications ,vous pouvez l'arreter si l'application est bien deployer.
-si vous voulez redeployer votre applications
-juste supprimer les contenues de chaques dossier d'applications et lancer le script
-exemple:
+**Pour les noeuds front :**
+`/root/deploy.sh` : est un cron pour deployer les applications ,vous pouvez l'arrêter si l'application est bien deployée.
+si vous voulez redeployer votre application,juste supprimer le contenues du dossier d'applications et lancer le script:
 ~~~bash
-rm -rf /var/www/html/*
-/root/deploy.sh /var/www/html php url_repo
+# rm -rf /var/www/html/*
+##si type de l'application est php.
+# /root/deploy.sh /var/www/html php url_artifact
+##si type de l'application est tomcat
+#/root/deploy.sh /opt/tomcat/webapps tomcat war_url
+##i type de l'application est nodejs
+#/root/deploy.sh /nodejs nodejs url_artifact
 ~~~
-
-pour les noeuds de galera
-/root/sync.sh: cron pour bien redemmarrer les noeuds de galera ,vous pouvez l'arreter si les Galera est bien deployer pour savoir que
-les noeuds marchent bien:
+**Pour les deux noeuds glusterfs:**
+le volume monté c'est ip_glusterfs1:/gluster
+pour tester que glusterfs fonctionne bien ,tapez
 
 ~~~bash
-mysql -u root -e 'SELECT VARIABLE_VALUE as "cluster size"  FROM INFORMATION_SCHEMA.GLOBAL_STATUS  WHERE VARIABLE_NAME="wsrep_cluster_size"'
+#gluster volume info
+~~~
+**Pour les noeuds de galera :**
+`/root/sync.sh`: est cron pour démarrer les noeuds de Galera ,vous pouvez l'arrêter si les noeudes sont bien démarrés,
+ pour tester , tapez la commande suivante:
+
+~~~bash
+# mysql -u root -e 'SELECT VARIABLE_VALUE as "cluster size" FROM INFORMATION_SCHEMA.GLOBAL_STATUS  WHERE VARIABLE_NAME="wsrep_cluster_size"'
 +--------------+
 | cluster size |
 +--------------+
-| nomber de noeuds mariadb            |
+| nomber de noeuds mariadb |
 +--------------+
 ~~~
 
+Backup des noeuds Galeracluster:
+pour le backup
+1)
+
+~~~bash
+#cinder snapshot-create --display-name name_snapshot.$(date +%Y-%m-%d-%H.%M.%S) id_volume
+~~~
+2)
+~~~bash
+#/bin/bash
+mylvmbackup --user=root --mycnf=/etc/mysql/my.cnf --vgname=vg0 --lvname=global --backuptype=tar
+/var/cache/mylvmbackup/backup/*
+swift upload your_back_contenair /var/cache/mylvmbackup/backup/*
+rm -rf /var/cache/mylvmbackup/backup/*
+~~~
 
 ### Autres sources pouvant vous intéresser:
-* [ Postfix Home page](http://www.postfix.org/documentation.html)
-* [ Dovecot Documentation](http://www.dovecot.org/)
-* [ Rainloop Documentation](http://www.rainloop.net)
-* [ ClamAv Documentation](http://www.clamav.net/)
+* [ Apache Home page](http://www.apache.org/)
+* [ Galera Documentation](http://galeracluster.com/support)
+* [ Glusterfs Documentation](https://www.gluster.org/)
+* [ Tomcat Documentation](http://tomcat.apache.org/)
+* [ Nodejs Documentation](https://nodejs.org/en/)
+* [ Nginx Documentation](https://www.nginx.com/resources/wiki/)
 
 ----
 Have fun. Hack in peace.
