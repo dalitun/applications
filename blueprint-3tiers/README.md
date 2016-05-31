@@ -235,8 +235,8 @@ Vous avez deux solutions pour le backup.
 ~~~bash
 # cinder snapshot-create --display-name snapshot_name.$(date +%Y-%m-%d-%H.%M.%S) id_volume
 ~~~
-2) Lancez un cron qui fait des snapshots sur les volumes de Mariadb et qui l'upload au conteneurs swift.
-Exemple de script sous ubuntu et Debian:
+2) Lancez un cron qui fait des snapshots de la base de données et qui l'uploader dans un conteneur swift.
+
 ~~~bash
 #/bin/bash
 mylvmbackup --user=root --mycnf=/etc/mysql/my.cnf --vgname=vg0 --lvname=global --backuptype=tar
