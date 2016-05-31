@@ -145,11 +145,12 @@ Outputs:
 #### Restart services for every application
 
 * php
+
 On Debian & ubuntu :
 ~~~ bash
 # service apache2 restart
 ~~~
-ON Centos :
+On Centos :
 ~~~ bash
 # service httpd restart
 ~~~
@@ -166,6 +167,7 @@ ON Centos :
 ~~~
 
 * Glasterfs
+
 On Debian & Ubuntu :
 ~~~ bash
 # service glusterfs-server restart
