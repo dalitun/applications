@@ -9,7 +9,6 @@ Vous aurez le choix de déployer sur les frontaux web différentes applications 
 
 
 
-
 ## Preparations
 
 ### Les versions
@@ -80,13 +79,13 @@ Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
 **Database password :** Le mot de passe de l'utlisateur de la base de données.
 
-**Database name :** Le nom de la bases.
+**Database name :** Le nom de la base de données.
 
 **Flavor Type for databases :** Le flavor des noeuds de la base de données.
 
-**Number of database clusters :** nombre de noeudes de base la données.
+**Number of database clusters :** Nombre de noeudes de base la données.
 
-**/24 cidr of databases network :** l'addresse réseaux des noeuds de la base données sous la forme: 192.168.0.0/24.
+**/24 cidr of databases network :** L'adresse réseaux des noeuds de la base données sous la forme: 192.168.0.0/24.
 
 **OS type :** Vous choisissez l'OS qui vous convient, soit Ubuntu 14.04, Ubuntu 16.04, Debian Jessie ou Centos 7.2
 
@@ -108,12 +107,12 @@ Les sorties:
 
 **App_url_external :** Url externe du load balancer des noeuds frontaux web.
 
-**App_url_internal :** Url externe du load balancer des noeuds frontaux web.
+**App_url_internal :** Url interne du load balancer des noeuds frontaux web.
 
 
 ## Enjoy
 
-#### Les dossiers et fichiers de configuration pour les noeuds fronts:
+#### Les dossiers et fichiers de configuration pour les noeuds frontaux web:
 
 * php
 
@@ -127,27 +126,27 @@ Les sorties:
 
 `/usr/share/tomcat`: Le dossier de tomcat.
 
-`/user/share/tomcat/webapps`: le répertoire de déploiement de votre application java
+`/user/share/tomcat/webapps`: Le répertoire de déploiement de l'application java
 
-`/etc/nginx/conf.d/default`: configuration de reverse proxy.
+`/etc/nginx/conf.d/default`: Configuration de reverse proxy.
 
 * nodejs
 
-`/nodejs`: le répertoire de déploiement de votre application nodejs.
+`/nodejs`: Le répertoire de déploiement de l'application nodejs.
 
-**les dossiers et fichiers de configuration pour les deux noeuds glusterfs:**
+**les dossiers et fichiers de configuration pour les deux noeuds Glusterfs:**
 
-`/srv/gluster/brick`: le répertoire qui est repliqué entre les deux noeuds glusterfs.
+`/srv/gluster/brick`: Le répertoire qui est repliqué entre les deux noeuds glusterfs.
 
 #### Les dossiers et fichiers de configuration pour les noeuds galera:
 
-`/DbStorage/mysql`: le datadir des neudes de Mariadb.
+`/DbStorage/mysql`: le datadir des neudes Mariadb.
 
-`/etc/mysql`: le répertoire de configuration de Mariadb sous Debian and Ubuntu.
+`/etc/mysql`: Le répertoire de configuration de Mariadb sous Debian and Ubuntu.
 
-`/etc/mysql.cnf`: le fichier  de configuration de Mariadb sous Centos.  
+`/etc/my.cnf`: Le fichier  de configuration de Mariadb sous Centos.  
 
-`/etc/my.cnf.d`: le répertoire de configuration de Mariadb sous Centos.
+`/etc/my.cnf.d`: Le répertoire de configuration de Mariadb sous Centos.
 
 #### Redémarrez les services pour chaque type d'application
 
@@ -197,7 +196,7 @@ Sur les autres
 **Les noeuds Front :**
 
 `/root/deploy.sh` : est un cron pour deployer les applications, vous pouvez l'arrêter si l'application est bien deployée.
-si vous voulez redeployer votre application, juste supprimer le contenue du dossier de l'application et lancer ce script:
+si vous voulez redeployer l'application, juste supprimez le contenue du dossier de l'application et lancer ces commandes:
 ~~~bash
 # rm -rf /var/www/html/*
 ##si type de l'application est php.
@@ -209,12 +208,13 @@ si vous voulez redeployer votre application, juste supprimer le contenue du doss
 ~~~
 **Les deux noeuds Glusterfs:**
 
-le volume gluster est sous la fome ip:/gluster, pour tester qu'il fonctionne bien ,tapez la commande suivante:
+Le volume gluster est sous la fome ip:/gluster, pour tester qu'il fonctionne bien ,tapez la commande suivante:
 
 ~~~bash
 # gluster volume info
 ~~~
 **Les noeuds de Galeracluster :**
+
 `/root/sync.sh`: est cron pour démarrer les noeuds de Galera, vous pouvez l'arrêter si les noeuds sont bien démarrés,
 pour tester, tapez la commande suivante:
 
