@@ -2,7 +2,13 @@
 
 ## Episode 26 : Blueprint 3 tiers
 
-Ce Blueprint deploit une architecture 3-tires dont il y a des noeuds fronts, deux noeuds glusterfs et clusters bases de données.
+Ce blueprint va vous aider à mettre en place une architecture 3-tiers.
+Nous avons automatisé le déploiement des différents noeuds composant l'architecture.
+A travers ce blueprint nous vous proposons de mettre en place frontaux web, du glusterfs avec un cluster de base de données.
+Vous aurez le choix de déployer sur les frontaux web différentes applications (Apache & php, tomcat 8 ou nodejs).
+
+
+
 
 ## Preparations
 
@@ -58,29 +64,29 @@ Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
 **SSH Keypair :** Votre key pair.
 
-**Artefact in zip ,git, tar.gz or war :** Mettez l'url de l'artifact de votre application, il faut qu'il soit en git,zip ou tar.gz  pour les applications php et nodejs et en war pour les applications java.
+**Artefact in zip ,git, tar.gz or war :** Mettez l'url de l'artifact de votre application, il faut qu'il soit en git, zip ou tar.gz pour les applications php et nodejs et en war pour les applications java.
 
-**Application type :** Si vous choisissez php vous allez avoir un environnement apache2 et php, si vous choisissez nodejs vous allez avoir un environnement qui exécute les applications nodejs avec reverse proxy nginx et si vous choisissez tomcat vous allez avoir un environnement tomcat 8 et openjdk8 avec nginx comme un reverse proxy.
+**Application type :** Si vous choisissez php vous allez avoir un environnement apache2 et php, si vous choisissez nodejs vous allez avoir un environnement qui exécute les applications nodejs avec un reverse proxy nginx et si vous choisissez tomcat vous allez avoir un environnement tomcat 8 et openjdk8 avec nginx comme un reverse proxy.
 
-**Flavor Type for nodes :** le flavor des noeuds front web.
+**Flavor Type for nodes :** Le flavor de noeuds frontaux web.
 
-**Number of front nodes :** nombre des noeudes font web.
+**Number of front nodes :** Nombre de noeudes fontaux web.
 
-**Flavor Type for glusterfs :** le flavor pour les deux noeuds glusterfs.
+**Flavor Type for glusterfs :** Le flavor des deux noeuds glusterfs.
 
-**/24 cidr of fronts network :** l'addresse de réseaux des noeuds front web et glusterfs sous forme: 192.168.0.0/24.
+**/24 cidr of fronts network :** L'adresse réseaux des noeuds frontaux web et glusterfs sous la forme: 192.168.0.0/24.
 
-**Database user :** l'ultisateur de la base de données.
+**Database user :** L'ultisateur de la base de données.
 
-**Database password :** le mot de passe de l'utlisateur de la base de données.
+**Database password :** Le mot de passe de l'utlisateur de la base de données.
 
-**Database name :** le nom de la bases.
+**Database name :** Le nom de la bases.
 
-**Flavor Type for databases :** le flavor pour les noeuds de la base de données.
+**Flavor Type for databases :** Le flavor des noeuds de la base de données.
 
-**Number of database clusters :** nombre des noeudes de base de données.
+**Number of database clusters :** nombre de noeudes de base la données.
 
-**/24 cidr of databases network :** l'addresse de réseaux des noeuds   de base données sous forme: 192.168.0.0/24.
+**/24 cidr of databases network :** l'addresse réseaux des noeuds de la base données sous la forme: 192.168.0.0/24.
 
 **OS type :** Vous choisissez l'OS qui vous convient, soit Ubuntu 14.04, Ubuntu 16.04, Debian Jessie ou Centos 7.2
 
@@ -88,21 +94,22 @@ La forme du stack :
 
 ![stack](img/5.png)
 
-Les outputs:
+Les sorties:
 
 ![output](img/4.png)
 
-**Database_ip :** l'addresse ip de load balancer de base de données clusters.
+**Database_ip :** L'adresse ip du load balancer de Galeracluster.
 
-**Database_name :** nom de votre base.
+**Database_name :** Nom de la base de données.
 
-**Database_user :** nom de l'utlisateur de votre base.
+**Database_user :** Nom de l'utlisateur de la base de données.
 
-**Database_port :** le port de la base de données.
+**Database_port :** Le port de la base de données.
 
-**App_url_external :** pour accéder votre application à partir d'un navigateur.
+**App_url_external :** Url externe du load balancer des noeuds frontaux web.
 
-**App_url_internal :** pour accéder votre application via le réseau interne.
+**App_url_internal :** Url externe du load balancer des noeuds frontaux web.
+
 
 ## Enjoy
 
@@ -110,15 +117,15 @@ Les outputs:
 
 * php
 
-`/etc/apache2/sites-available/vhost.conf`: configuration Apache par défaut sur Debian et Ubuntu.
+`/etc/apache2/sites-available/vhost.conf`: Configuration Apache par défaut sur Debian et Ubuntu.
 
-`/etc/http/conf.d/vhost.conf`:configuration Apache par défaut sur Centos.
+`/etc/http/conf.d/vhost.conf`: Configuration Apache par défaut sur Centos.
 
-`/var/www/html`: le répertoire de déploiement de votre application php.
+`/var/www/html`: Le répertoire de déploiement de l'application php.
 
 * tomcat
 
-`/usr/share/tomcat`: le dossier de tomcat.
+`/usr/share/tomcat`: Le dossier de tomcat.
 
 `/user/share/tomcat/webapps`: le répertoire de déploiement de votre application java
 
