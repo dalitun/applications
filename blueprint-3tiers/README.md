@@ -88,7 +88,7 @@ La forme du stack :
 
 ![stack](img/5.png)
 
-les outputs:
+Les outputs:
 
 ![output](img/4.png)
 
@@ -165,7 +165,7 @@ Sur Centos
 # service nginx restart
 ~~~
 
-* glasterfs
+* Glasterfs
 Sur Debian et Ubuntu
 ~~~ bash
 # service glusterfs-server restart
@@ -174,7 +174,8 @@ Sur Centos
 ~~~ bash
 # service glusterd restart
 ~~~
-* galera
+* Galera
+
 Sur le premièr noeud
 ~~~ bash
 # service mysql restart --wsrep-new-cluster
