@@ -2,7 +2,10 @@
 
 ## Episode 26 : Blueprint 3 tiers
 
-This Blueprint deploys a 3-tier architecture which can install fronts nodes, two nodes glusterfs, and Galera cluster.
+This blueprint will help you to set up a 3-tier architecture.
+We have automated the deployment of various nodes component architecture.
+Through this blueprint we propose to set up web front-end, the glusterfs with a database cluster.
+You can choose to deploy on different Web front-end applications (Apache & php, tomcat 8 or nodejs).
 
 
 ## Preparations
