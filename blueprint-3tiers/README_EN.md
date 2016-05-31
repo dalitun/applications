@@ -191,8 +191,8 @@ On the others :
 
 **Front Nodes :**
 
-`/root/deploy.sh` :is a cron to deploy applications, you can stop it if the application is well deployed.
-if you want to redeploy your application, just delete the older application and run the script:
+`/root/deploy.sh` :is a cron for deploying the application, you can stop it if your application is well deployed,
+if you want to redeploy the application, just delete the older application and run the script:
 ~~~bash
 # rm -rf /var/www/html/*
 ##si type de l'application est php.
@@ -222,7 +222,7 @@ for testing, type the following command:
 ~~~
 
 **Backup Galeracluster nodes :**
-You have two solutions for backup the databases :
+You have two solutions for backuping the databases :
 
 1) Run a cron in order to make snapshots of cinder volumes that are attached to database nodes.
 

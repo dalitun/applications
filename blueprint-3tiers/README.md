@@ -235,7 +235,7 @@ Vous avez deux solutions pour le backup.
 ~~~bash
 # cinder snapshot-create --display-name snapshot_name.$(date +%Y-%m-%d-%H.%M.%S) id_volume
 ~~~
-2) Lancez un cron qui fait des snapshots de la base de données et qui l'uploader dans un conteneur swift.
+2) Lancez un cron qui fait des snapshots de la base de données et le met dans un conteneur swift.
 
 ~~~bash
 #/bin/bash
