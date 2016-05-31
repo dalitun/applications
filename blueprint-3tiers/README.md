@@ -46,9 +46,9 @@ Ce Blueprint deploit une architecture 3-tires dont il y a des noeuds fronts , de
  Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
 
 
- ## Installer Blueprint
+## Installer Blueprint
 
- ### 1 clic
+### 1 clic
 
 ![from1](img/1.png)
 ![form2](img/2.png)
