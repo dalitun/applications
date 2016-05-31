@@ -176,7 +176,7 @@ Sur Centos
 ~~~
 * Galera
 
-Sur le premièr noeud
+Sur le premier noeud
 ~~~ bash
 # service mysql restart --wsrep-new-cluster
 ~~~
