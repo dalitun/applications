@@ -235,7 +235,7 @@ Vous avez deux solutions pour le backup.
 ~~~bash
 # cinder snapshot-create --display-name snapshot_name.$(date +%Y-%m-%d-%H.%M.%S) id_volume
 ~~~
-2) Lancez un cron qui fait des snapshots de datadir de base de données et qui l'upload au conteneurs swift.
+2) Lancez un cron qui fait des snapshots sur les volumes de Mariadb et qui l'upload au conteneurs swift.
 Exemple de script sous ubuntu et Debian:
 ~~~bash
 #/bin/bash
