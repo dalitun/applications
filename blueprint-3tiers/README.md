@@ -2,7 +2,7 @@
 
 ## Episode 26 : Blueprint 3 tiers
 
-Ce Blueprint deploit une architecture 3-tires dont il y a des noeuds fronts , deux noeuds glusterfs et clusters bases de données.
+Ce Blueprint deploit une architecture 3-tires dont il y a des noeuds fronts, deux noeuds glusterfs et clusters bases de données.
 
 ## Preparations
 
@@ -46,7 +46,7 @@ Ce Blueprint deploit une architecture 3-tires dont il y a des noeuds fronts , de
  Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
 
 
-## Installer Blueprint
+## Initialiser Blueprint
 
 ### 1 clic
 
@@ -58,11 +58,11 @@ Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
 **SSH Keypair :** Votre key pair.
 
-**Artefact in zip ,git, tar.gz or war :** Vous mettez l'url de l'artifact de votre application ,il faut qu'il soit en git,zip ou tar.gz  pour les applications php et nodejs et en war pour les applications java.
+**Artefact in zip ,git, tar.gz or war :** Mettez l'url de l'artifact de votre application, il faut qu'il soit en git,zip ou tar.gz  pour les applications php et nodejs et en war pour les applications java.
 
 **Application type :** Si vous choisissez php vous allez avoir un environnement apache2 et php, si vous choisissez nodejs vous allez avoir un environnement qui exécute les applications nodejs avec reverse proxy nginx et si vous choisissez tomcat vous allez avoir un environnement tomcat 8 et openjdk8 avec nginx comme un reverse proxy.
 
-**Flavor Type for nodes :** le flavor pour les noeuds font web.
+**Flavor Type for nodes :** le flavor des noeuds front web.
 
 **Number of front nodes :** nombre des noeudes font web.
 
@@ -82,7 +82,7 @@ Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
 **/24 cidr of databases network :** l'addresse de réseaux des noeuds   de base données sous forme: 192.168.0.0/24.
 
-**OS type :** Vous choisissez l'OS qui vous convient ,soit Ubuntu 14.04 , Ubuntu 16.04 ,Debian Jessie ou Centos 7.2
+**OS type :** Vous choisissez l'OS qui vous convient, soit Ubuntu 14.04, Ubuntu 16.04, Debian Jessie ou Centos 7.2
 
 La forme du stack :
 
@@ -92,9 +92,9 @@ Les outputs:
 
 ![output](img/4.png)
 
-**Database_ip :** l'addresse ip de load balancer de base de données clusters
+**Database_ip :** l'addresse ip de load balancer de base de données clusters.
 
-**Database_name :** nom de votre base
+**Database_name :** nom de votre base.
 
 **Database_user :** nom de l'utlisateur de votre base.
 
@@ -142,7 +142,7 @@ Les outputs:
 
 `/etc/my.cnf.d`: le répertoire de configuration de Mariadb sous Centos.
 
-#### Redémarrez les services dans chaque type d'application
+#### Redémarrez les services pour chaque type d'application
 
 * php
 Sur Debian et ubuntu
@@ -189,8 +189,8 @@ Sur les autres
 
 **Les noeuds Front :**
 
-`/root/deploy.sh` : est un cron pour deployer les applications ,vous pouvez l'arrêter si l'application est bien deployée.
-si vous voulez redeployer votre application,juste supprimer le contenues du dossier de l'applications et lancer le script:
+`/root/deploy.sh` : est un cron pour deployer les applications, vous pouvez l'arrêter si l'application est bien deployée.
+si vous voulez redeployer votre application, juste supprimer le contenue du dossier de l'application et lancer ce script:
 ~~~bash
 # rm -rf /var/www/html/*
 ##si type de l'application est php.
@@ -202,14 +202,14 @@ si vous voulez redeployer votre application,juste supprimer le contenues du doss
 ~~~
 **Les deux noeuds Glusterfs:**
 
-le volume gluster est sous la fome ip:/gluster ,pour tester qu'il fonctionne bien ,tapez la commande suivante:
+le volume gluster est sous la fome ip:/gluster, pour tester qu'il fonctionne bien ,tapez la commande suivante:
 
 ~~~bash
 # gluster volume info
 ~~~
 **Les noeuds de Galeracluster :**
-`/root/sync.sh`: est cron pour démarrer les noeuds de Galera ,vous pouvez l'arrêter si les noeuds sont bien démarrés,
-pour tester , tapez la commande suivante:
+`/root/sync.sh`: est cron pour démarrer les noeuds de Galera, vous pouvez l'arrêter si les noeuds sont bien démarrés,
+pour tester, tapez la commande suivante:
 
 ~~~bash
 # mysql -u root -e 'SELECT VARIABLE_VALUE as "cluster size" FROM INFORMATION_SCHEMA.GLOBAL_STATUS  WHERE VARIABLE_NAME="wsrep_cluster_size"'
@@ -221,7 +221,7 @@ pour tester , tapez la commande suivante:
 ~~~
 
 **Backup des noeuds Galeracluster :**
-Vous avez deux solutions pour le backup .
+Vous avez deux solutions pour le backup.
 
 1) Créer un cron qui fait des snapshots des volumes cinder qui sont attachés aux base de données intances.
 
