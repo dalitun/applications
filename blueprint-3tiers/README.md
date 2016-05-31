@@ -223,12 +223,12 @@ pour tester, tapez la commande suivante:
 **Backup des noeuds Galeracluster :**
 Vous avez deux solutions pour le backup.
 
-1) Créer un cron qui fait des snapshots des volumes cinder qui sont attachés aux base de données intances.
+1) Lancez un cron qui fait des snapshots des volumes cinder qui sont attachés aux base de données intances.
 
 ~~~bash
 # cinder snapshot-create --display-name snapshot_name.$(date +%Y-%m-%d-%H.%M.%S) id_volume
 ~~~
-2) Créer un cron qui fait des snapshots de datadir de base de données et qui l'upload au conteneurs swift.
+2) Lancez un cron qui fait des snapshots de datadir de base de données et qui l'upload au conteneurs swift.
 Exemple de script sous ubuntu et Debian:
 ~~~bash
 #/bin/bash

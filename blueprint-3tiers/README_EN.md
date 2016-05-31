@@ -139,16 +139,17 @@ Outputs:
 `/etc/mysql`: Mariadb configuration directory on Debian and Ubuntu.
 
 `/etc/mysql.cnf`: Mariadb configuration file on Centos.
+
 `/etc/my.cnf.d`: Mariadb configuration directory on Centos.
 
 #### Restart services for every application
 
 * php
-On Debian & ubuntu
+On Debian & ubuntu :
 ~~~ bash
 # service apache2 restart
 ~~~
-ON Centos
+ON Centos :
 ~~~ bash
 # service httpd restart
 ~~~
@@ -165,21 +166,21 @@ ON Centos
 ~~~
 
 * Glasterfs
-On Debian & Ubuntu
+On Debian & Ubuntu :
 ~~~ bash
 # service glusterfs-server restart
 ~~~
-On Centos
+On Centos :
 ~~~ bash
 # service glusterd restart
 ~~~
 * Galera
 
-On the first node
+On the first node :
 ~~~ bash
 # service mysql restart --wsrep-new-cluster
 ~~~
-On the others
+On the others :
 ~~~ bash
 # service mysql restart
 ~~~
@@ -206,7 +207,8 @@ Gluster volume is in the form ip:/gluster, for testing it works well, type the f
 # gluster volume info
 ~~~
 **Les noeuds de Galeracluster :**
-`/root/sync.sh`:is acron  to start Mariadb nodes, you can stop if the nodes are well started,
+
+`/root/sync.sh`:is a cron  to start Mariadb nodes, you can stop if the nodes are well started,
 for testing, type the following command:
 ~~~bash
 # mysql -u root -e 'SELECT VARIABLE_VALUE as "cluster size" FROM INFORMATION_SCHEMA.GLOBAL_STATUS  WHERE VARIABLE_NAME="wsrep_cluster_size"'
@@ -220,13 +222,14 @@ for testing, type the following command:
 **Backup Galeracluster nodes :**
 You have two solutions for backup the databases :
 
-1) Créer un cron qui fait des snapshots des volumes cinder qui sont attachés aux base de données intances.
+1) Run a cron in order to make snapshots of cinder volumes that are attached to database nodes.
 
 ~~~bash
 # cinder snapshot-create --display-name snapshot_name.$(date +%Y-%m-%d-%H.%M.%S) id_volume
 ~~~
-2) Créer un cron qui fait des snapshots de datadir de base de données et qui l'upload au conteneurs swift.
-Exemple de script sous ubuntu et Debian:
+2) Run a cron in order to make database datadir snapshots then upload it in swift containers.
+Sample script ubuntu and Debian:
+Example on ubuntu & Debian:
 ~~~bash
 #/bin/bash
 mylvmbackup --user=root --mycnf=/etc/mysql/my.cnf --vgname=vg0 --lvname=global --backuptype=tar
@@ -234,7 +237,7 @@ swift upload your_back_contenair /var/cache/mylvmbackup/backup/*
 rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
 
-### Autres sources pouvant vous intéresser:
+### Resources you could be interested in:
 * [ Apache Home page](http://www.apache.org/)
 * [ Galera Documentation](http://galeracluster.com/support)
 * [ Glusterfs Documentation](https://www.gluster.org/)
