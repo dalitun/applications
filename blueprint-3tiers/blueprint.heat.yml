@@ -1,5 +1,5 @@
 heat_template_version: 2013-05-23
-description: All-in-one Blueprint
+description: All-in-one Blueprint 3-tier
 parameters:
 
  keypair_name:
