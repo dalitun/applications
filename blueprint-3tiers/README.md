@@ -136,13 +136,15 @@ Les sorties:
 
 `/nodejs`: Le répertoire de déploiement de l'application nodejs.
 
+`/etc/nginx/conf.d/default`: Configuration de reverse proxy.
+
 #### Les dossiers et fichiers de configuration pour les deux noeuds Glusterfs:
 
 `/srv/gluster/brick`: Le répertoire qui est repliqué entre les deux noeuds glusterfs.
 
 #### Les dossiers et fichiers de configuration pour les noeuds galera:
 
-`/DbStorage/mysql`: le datadir des neudes Mariadb.
+`/DbStorage/mysql`: le datadir des neudes Mariadb est un volume cinder.
 
 `/etc/mysql`: Le répertoire de configuration de Mariadb sous Debian and Ubuntu.
 
@@ -195,10 +197,10 @@ Sur les autres
 
 #### Exploitation
 
-**Les noeuds Front :**
+**Les noeuds Frontaux :**
 
 `/root/deploy.sh` : est un cron pour deployer les applications, vous pouvez l'arrêter si l'application est bien deployée.
-si vous voulez redeployer l'application, juste supprimez le contenue du dossier de l'application et lancer ces commandes:
+si vous voulez redeployer l'application, juste supprimez le contenue du dossier de l'application, lancer ces commandes:
 ~~~bash
 # rm -rf /var/www/html/*
 ##si type de l'application est php.
@@ -230,14 +232,14 @@ pour tester, tapez la commande suivante:
 ~~~
 
 **Backup des noeuds Galeracluster :**
-Vous avez deux solutions pour le backup.
+Vous avez deux solutions pour le backup de la base de données.
 
-1) Lancez un cron qui fait des snapshots des volumes cinder qui sont attachés aux base de données intances.
+1) Lancez un cron qui fait des snapshots des volumes cinder qui sont attachés aux noeuds de la base de données :
 
 ~~~bash
 # cinder snapshot-create --display-name snapshot_name.$(date +%Y-%m-%d-%H.%M.%S) id_volume
 ~~~
-2) Lancez un cron qui fait des snapshots de la base de données et le met dans un conteneur swift.
+2) Lancez un cron qui fait des snapshots de la base de données et le met dans un conteneur swift :
 
 ~~~bash
 #/bin/bash

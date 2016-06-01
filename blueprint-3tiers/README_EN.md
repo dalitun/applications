@@ -133,13 +133,15 @@ Outputs:
 
 `/nodejs`: The nodejs application deployment directory.
 
+`/etc/nginx/conf.d/default`: Reverse proxy configuration.
+
 #### Two Glusterfs nodes configuration Folders and files :
 
 `/srv/gluster/brick`: le répertoire qui est repliqué entre les deux noeuds glusterfs.
 
 #### Galera nodes configuration Folders and files :
 
-`/DbStorage/mysql`: Mariadb nodes datadir.
+`/DbStorage/mysql`: Mariadb nodes datadir is a cinder volume.
 
 `/etc/mysql`: Mariadb configuration directory on Debian and Ubuntu.
 
@@ -197,7 +199,7 @@ On the others :
 **Front Nodes :**
 
 `/root/deploy.sh` :is a cron for deploying the application, you can stop it if your application is well deployed,
-if you want to redeploy the application, just delete the older application and run the script:
+if you want to redeploy the application, just delete the older application, run this commands:
 ~~~bash
 # rm -rf /var/www/html/*
 ##si type de l'application est php.
@@ -227,16 +229,14 @@ for testing, type the following command:
 ~~~
 
 **Backup Galeracluster nodes :**
-You have two solutions for backuping the databases :
+You have two solutions for backuping the database :
 
-1) Run a cron in order to make snapshots of cinder volumes that are attached to database nodes.
+1) Run a cron in order to make snapshots of cinder volumes that are attached to database nodes :
 
 ~~~bash
 # cinder snapshot-create --display-name snapshot_name.$(date +%Y-%m-%d-%H.%M.%S) id_volume
 ~~~
-2) Run a cron in order to make database datadir snapshots then upload it in swift containers.
-Sample script ubuntu and Debian:
-Example on ubuntu & Debian:
+2) Run a cron in order to make database datadir snapshots then upload it in swift containers :
 ~~~bash
 #/bin/bash
 mylvmbackup --user=root --mycnf=/etc/mysql/my.cnf --vgname=vg0 --lvname=global --backuptype=tar
