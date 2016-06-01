@@ -1,6 +1,6 @@
 # 5 Minutes Stacks, episode 26 : Blueprint 3 tier#
 
-## Episode 26 : Blueprint 3 tiers
+## Episode 26 : Blueprint 3 tier
 
 This blueprint will help you to set up a 3-tier architecture.
 We have automated the deployment of various nodes component architecture.
