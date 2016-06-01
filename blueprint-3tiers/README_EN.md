@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 26 : Blueprint 3 tiers#
+# 5 Minutes Stacks, episode 26 : Blueprint 3 tier#
 
 ## Episode 26 : Blueprint 3 tiers
 
