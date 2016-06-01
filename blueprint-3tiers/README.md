@@ -136,7 +136,7 @@ Les sorties:
 
 `/nodejs`: Le répertoire de déploiement de l'application nodejs.
 
-**les dossiers et fichiers de configuration pour les deux noeuds Glusterfs:**
+#### Les dossiers et fichiers de configuration pour les deux noeuds Glusterfs:
 
 `/srv/gluster/brick`: Le répertoire qui est repliqué entre les deux noeuds glusterfs.
 
