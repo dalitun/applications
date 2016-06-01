@@ -6,7 +6,9 @@ Ce blueprint va vous aider à mettre en place une architecture 3-tiers.
 Nous avons automatisé le déploiement des différents noeuds composant l'architecture.
 A travers ce blueprint nous vous proposons de mettre en place frontaux web, du glusterfs avec un cluster de base de données.
 Vous aurez le choix de déployer sur les frontaux web différentes applications (Apache & php, tomcat 8 ou nodejs).
+Voici le schema d'architecture :
 
+![arch](img/arch.png)
 
 
 ## Preparations
@@ -16,7 +18,7 @@ Vous aurez le choix de déployer sur les frontaux web différentes applications 
  - Ubuntu Xenial 16.04
  - Debian Jessie
  - Centos 7.2
- - Glustefs 3
+ - Glustefs 3.6
  - Mariadb 10.1
  - Lvm2
  - Mylvmbackup

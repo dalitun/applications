@@ -6,7 +6,9 @@ This blueprint will help you to set up a 3-tier architecture.
 We have automated the deployment of various nodes component architecture.
 Through this blueprint we propose to set up web front-end, the glusterfs with a database cluster.
 You can choose to deploy on different Web front-end applications (Apache & php, tomcat 8 or nodejs).
+Here is the architecture diagram.
 
+![arch](img/arch.png)
 
 ## Preparations
 
