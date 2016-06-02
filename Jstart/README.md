@@ -149,7 +149,7 @@ $ crontab -e
 ~~~
 
 ### Autres sources pouvant vous intéresser:
-
 * [ Openstack Home page](https://www.openstack.org/)
+
 ----
 Have fun. Hack in peace.
