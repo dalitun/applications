@@ -91,16 +91,14 @@ Puis attendez quelques minutes que le déploiement soit complet.
 
 ~~~bash
 $ heat resource-list nom_de_votre_stack
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
++---------------+--------------------------------------+----------------------------+-----------------+----------------------+
+| resource_name | physical_resource_id                 | resource_type              | resource_status | updated_time         |
++---------------+--------------------------------------+----------------------------+-----------------+----------------------+
+| keypair       | JeStart-mykeypair                    | OS::Nova::KeyPair          | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
+| network       | 165fff85-a6ac-4bdd-ad63-ac2ba8e58f45 | OS::Neutron::Net           | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
+| sg            | 9d5f6961-8eb2-4e59-b637-fa3f70659b55 | OS::Neutron::SecurityGroup | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
+| subnet        | f5d63c5e-1fb5-4ed9-9927-a7025c5dbd95 | OS::Neutron::Subnet        | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
++---------------+--------------------------------------+----------------------------+-----------------+----------------------+
 ~~~
 
 ## C’est bien tout ça,
