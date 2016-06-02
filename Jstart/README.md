@@ -63,7 +63,7 @@ Dans le fichier `JeStart.heat.yml` vous trouverez en haut une section `parameter
     net_cidr:
       default: 192.168.1.0/24            <-- Mettez ici l'adresse ip réseaux cidr sous forme /24
       type: string
-      label: /24 cidr of private network
+      label: /24 cidr of your network
       description: /24 cidr of private network
 
 [...]
