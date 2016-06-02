@@ -1,64 +1,40 @@
-# 5 Minutes Stacks, épisode premier : LAMP #
+# 5 Minutes Stacks, épisode 25 : JeStart #
 
-Bienvenue à l'inauguration de la série des 5 Minutes Stacks !
+## Episode 25 : JeStart
 
-## Le concept
+Ce stack vous permet d'intialiser votre tenant il vous permet de créer un keypair ,un réseau et security group.
 
-Régulièrement, Cloudwatt publiera, de façon conjointe sur ce blog et
-sur son github, des stacks applicatives avec un guide de déploiement.
-Le but est de vous facilitez la vie pour démarrer des projets. La
-procédure prend quelques minutes à préparer et 5 minutes à déployer.
 
-Une fois la pile applicative déployée, vous êtes maître dessus et vous
-pouvez commencer à l'exploiter immédiatement.
-
-Si vous avez des questions, remarques, idées d'améliorations n'hésitez
-pas à ouvrir une issue sur Github ou à soumettre une pull-request.
-
-## Episode premier : Linux-Apache-MySQL-PHP5
-
-La base de déploiement est une instance Ubuntu Trusty. Les serveurs Apache et MySQL sont
-déployés dans une instance unique. 
-
-### Les versions
-
-* Ubuntu 14.04.2
-* Apache 2.4.7
-* MySQL 5.5.43
-* PHP 5.5.9
+## Preparations
 
 ### Les pré-requis pour déployer cette stack
+Ceci devrait être une routine à présent:
 
-* un accès internet
-* un shell Linux
-* un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact), avec une [paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
-* les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
-* un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
+* Un accès internet
+* Un shell linux
+* Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+* Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
+* Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
-### Taille de l'instance
-
-Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
 
 ### Au fait...
 
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur [ce lien](#console) 
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
 
 ## Tour du propriétaire
 
-Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-lamp/`:
+Une fois le dépôt cloné, vous trouverez le répertoire `JeStart/`
 
-* `bundle-trusty-lamp.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
-* `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
-* `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
-
+* `JeStart.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 
 ## Démarrage
 
 ### Initialiser l'environnement
 
-Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
+Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
+Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
 
-Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé. 
+Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
@@ -66,93 +42,115 @@ Please enter your OpenStack Password:
 
 ~~~
 
-Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
+Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
+
 
 ### Ajuster les paramètres
 
-Dans le fichier `bundle-trusty-lamp.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
-C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
+Dans le fichier `JeStart.heat.yml` vous trouverez en haut une section `parameters`.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+  heat_template_version: 2013-05-23
 
+  description: Template help you to start in your tenant.
 
-description: Basic all-in-one LAMP stack
-
-
-parameters:
-  keypair_name:
-    default: amaury-ext-compute         <-- Mettez ici le nom de votre paire de clés
-    description: Keypair to inject in instances
-    type: string
-
-  flavor_name:
-    default: s1.cw.small-1              <-- Mettez ici l'identifiant de votre flavor
-    description: Flavor to use for the deployed instance
-    type: string
-    constraints:
-      - allowed_values:
-          - s1.cw.small-1
-          - n1.cw.standard-1
-          - n1.cw.standard-2
-          - n1.cw.standard-4
-          - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
+  parameters:
+    keypair_name_prefix:
+      default: mykeypair                 <-- Mettez ici le prefix du nom de votre keypair
+      type: string
+      label: key Name prefix
+      description: the keypair name.
+    net_cidr:
+      default: 192.168.1.0/24            <-- Mettez ici l'adresse ip réseaux cidr sous forme /24
+      type: string
+      label: /24 cidr of private network
+      description: /24 cidr of private network
 
 [...]
 ~~~
-
 ### Démarrer la stack
 
-Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
+Dans un shell,lancer le script la commande suivante:
 
 ~~~
-./stack-start.sh MA_LAMPE
+heat stack-create nom_de_votre_stack -f JeStart.heat.yml -Pkeypair_name_prefix=prefix_de_keypair -Pnet_cidr=192.168.1.0/24
 ~~~
 
-Enfin, attendez 5 minutes que le déploiement soit complet.
+Exemple :
 
-Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+~~~bash
+$ heat stack-create mysatck_name -f JeStart.heat.yml -Pkeypair_name_prefix=préfix -Pnet_cidr=192.168.1.0/24
++--------------------------------------+-----------------+--------------------+----------------------+
+| id                                   | stack_name      | stack_status       | creation_time        |
++--------------------------------------+-----------------+--------------------+----------------------+
+| ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
++--------------------------------------+-----------------+--------------------+----------------------+
+~~~
 
-* démarrer une instance basée sur Ubuntu Trusty Tahr, pré-provisionnée avec la stack LAMP
-* l'exposer sur Internet via une IP flottante
+Puis attendez quelques minutes que le déploiement soit complet.
 
-### Enjoy
+~~~bash
+$ heat resource-list nom_de_votre_stack
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
+| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
+| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
+| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
+| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
+~~~
 
-Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` qui va récupérer l'url d'entrée de votre stack.
+## C’est bien tout ça,
+### mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
-<a name="console" />
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
 
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
-
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur LAMP :
-
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-lamp
-2.	Cliquez sur le fichier nommé bundle-trusty-lamp.heat.yml
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-mail](https://github.com/cloudwatt/applications/tree/master/JeStart)
+2.	Cliquez sur le fichier nommé `JeStart.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+8.  Donner votre passphrase qui servira pour le chiffrement des sauvegardes
+9.	Remplissez les deux champs  « key Name prefix » et « /24 cidr of private network » puis cliquez sur « LANCER »
 
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
-
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée.
 C’est (déjà) FINI !
 
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-## So watt ?
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Stack d'initialiser !
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord. 
 
-Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+## Enjoy
+Pour télécharger votre clé consulter cet url `https://console.cloudwatt.com/project/access_and_security/keypairs/nom_votre_stack-prefix/download/`.
+Puis cliquez sur `Download key pair "nom_votre_stack-prefix"`.
 
-Vous pouvez commencer à construire votre site en prenant la main sur votre serveur. Les points d'entrée utiles :
+Vous pouvez utilsez un script shell pour shelve et unshelve les instances qui sont présentées dans votre tenant.
 
-* `/etc/apache2/sites-available/default-cw.conf` : configuration Apache par défaut 
-* `/var/www/cw` : le répertoire de déploiement du mini site php d'exemple
+Vous pouvez créer un cron pour shelve les instances à chauque Vendredi à minuit.
 
------
+~~~bash
+$ source COMPUTE-[...]-openrc.sh
+Please enter your OpenStack Password:
+$ crontab -e
+0 0 * * 5 /path/shelveunshelve.sh shelve
+~~~
+
+Vous pouvez créer un cron pour unshelve les instances à chauque Lundi à 5h du matin.
+
+~~~bash
+$ source COMPUTE-[...]-openrc.sh
+Please enter your OpenStack Password:
+$ crontab -e
+0 5 * * 1 /path/shelveunshelve.sh unshelve
+~~~
+
+### Autres sources pouvant vous intéresser:
+* [ Openstack Home page](https://www.openstack.org/)
+----
 Have fun. Hack in peace.
