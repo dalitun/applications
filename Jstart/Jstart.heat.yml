@@ -72,12 +72,14 @@ resources:
 
 
 
-
-outputs:
       
-  public_key:
-    description: The public key of the keypair.
-    value: { get_attr: [keypair, public_key] }
-  private_key:
-    description: The private key of the keypair.
-    value: { get_attr: [keypair, private_key] }
+outputs:   
+   url_download_keypairs:
+     description: URL for downloading your private key
+     value:
+       str_replace:
+         template: https://console.cloudwatt.com/project/access_and_security/keypairs/$stack-$name/download/
+         params:
+           $name: { get_param: keypair_name_prefix }
+           $stack : { get_param: "OS::stack_name" }
+
