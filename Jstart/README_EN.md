@@ -1,24 +1,10 @@
-# 5 Minutes Stacks, 25 episode : Mail #
+# 5 Minutes Stacks, 25 episode : JeStart #
 
-## Episode 20 : Webmail
-
-![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
-
-An email server is a mail server software (email). It aims to transfer emails from one server to another. An user is never in direct contact with this server uses either a mail client or a webmail client, which is responsible to contact the server to send or receive messages.
-In this episode we used Rainloop as open source webmail that is developed in PHP and designed to be comprehensive and easy to use. It manages very well IMAP / SMTP protocols and has a modern interface (HTML5 / CSS3) very Ergonomic, it is rather pleasant. In terms of features, there are all those of a conventional mail client, plus a system of plugins.
+## Episode 20 : JeStart
+.
 
 ## Preparations
 
-### The version
- - Ubuntu Trusty 14.04
- - Postfix 2.11.0
- - Postfixadmin-2.93
- - Dovecot 2.2.9
- - SpamAssassin 3.4.0
- - Clamsmtpd 1.10
- - Apache 2.4.7
- - Mysql 5.5.47
- - Rainloop
 
 ### The prerequisites to deploy this stack
 
@@ -28,9 +14,6 @@ In this episode we used Rainloop as open source webmail that is developed in PHP
  * the tools [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
  * a local clone of the git repository [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
-### Size of the instance
-
- Per default, the script is proposing a deployement on an instance type "Standard" (n2.cw.standard-1).  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
 
 ### By the way...
 
@@ -38,12 +21,9 @@ In this episode we used Rainloop as open source webmail that is developed in PHP
 
 ## What will you find in the repository
 
- Once you have cloned the github, you will find in the `bundle-trusty-webmail/` repository:
+ Once you have cloned the github, you will find in the `JeStart/` repository:
 
- * `bundle-trusty-webmail.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
- * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
- * `stack-get-url.sh`: Flotting IP recovery script.
-
+ * `JeStart.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
 
 ## Start-up
 
@@ -64,96 +44,59 @@ In this episode we used Rainloop as open source webmail that is developed in PHP
 
 ### Adjust the parameters
 
- With the `bundle-trusty-webmail.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+ With the `bundle-trusty-webmail.heat.yml` file, you will find at the top a section named `parameters`.
 
  ~~~ yaml
- heat_template_version: 2013-05-23
+   heat_template_version: 2013-05-23
 
+   description: Template help you to start in your tenant.
 
- description: Basic all-in-one WEBMAIL stack
+   parameters:
+     keypair_name_prefix:
+       default: mykeypair                 <-- Mettez ici le prefix du nom de votre keypair
+       type: string
+       label: key Name prefix
+       description: the keypair name.
+     net_cidr:
+       default: 192.168.1.0/24            <-- Mettez ici l'adresse ip réseaux cidr sous forme /24
+       type: string
+       label: /24 cidr of your network
+       description: /24 cidr of private network
 
-
- parameters:
-  keypair_name:
-     default: keypair_name        <-- Indicate here your keypair
-     description: Keypair to inject in instances
-     type: string
-  mysql_password:
-     description: Mysql password
-     label: Mysql password
-     type: string
-     default: changeme            <-- Indicate here your database password
-  postfix_admin_pass:
-     description: postfixadmin password
-     label: postfixadmin password
-     type: string
-     default: changeme            <-- Indicate here your postfix admin password
-  mail_domain:
-     description: mail domain
-     label: mail domain
-     type: string
-     default: exemple.com         <-- Indicate here your domain name
-flavor_name:
-     default: n2.cw.standard-1              <-- indicate here the flavor size
-     description: Flavor to use for the deployed instance
-     type: string
-     constraints:
-       - allowed_values:
-         - t1.cw.tiny
-         - s1.cw.small-1
-         - n2.cw.standard-1
-         - n2.cw.standard-2
-         - n2.cw.standard-4
-         - n2.cw.standard-8
-         - n2.cw.standard-16
-         - n2.cw.highmem-2
-         - n2.cw.highmem-4
-         - n2.cw.highmem-8
-         - n2.cw.highmem-12
  [...]
  ~~~
- ### Start stack
+ ### Démarrer la stack
 
- In a shell, run the script `stack-start.sh`:
+ Dans un shell,lancer le script la commande suivante:
 
- ~~~ bash
- ./stack-start.sh your_stack_name your_keypair_name mysql_password postfix_admin_pass mail_domain
  ~~~
+ heat stack-create nom_de_votre_stack -f JeStart.heat.yml -Pkeypair_name_prefix=prefix_de_keypair -Pnet_cidr=192.168.1.0/24
+ ~~~
+
  Exemple :
 
  ~~~bash
- $ ./stack-start.sh EXP_STACK
-
- +--------------------------------------+------------+--------------------+----------------------+
- | id                                   | stack_name | stack_status       | creation_time        |
- +--------------------------------------+------------+--------------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | your_stack_name | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
- +--------------------------------------+------------+--------------------+----------------------+
+ $ heat stack-create mysatck_name -f JeStart.heat.yml -Pkeypair_name_prefix=préfix -Pnet_cidr=192.168.1.0/24
+ +--------------------------------------+-----------------+--------------------+----------------------+
+ | id                                   | stack_name      | stack_status       | creation_time        |
+ +--------------------------------------+-----------------+--------------------+----------------------+
+ | ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
+ +--------------------------------------+-----------------+--------------------+----------------------+
  ~~~
 
- Wait **5 minutes** the stack will be fully operational. (Use watch to see the status in real-time)
+ Puis attendez quelques minutes que le déploiement soit complet.
 
- ~~~ bash
- $ watch -n 1 heat stack-list
- +--------------------------------------+------------+-----------------+----------------------+
- | id                                   | stack_name | stack_status    | creation_time        |
- +--------------------------------------+------------+-----------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | your_stack_name | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
- +--------------------------------------+------------+-----------------+----------------------+
- ~~~
  ~~~bash
-$ watch heat resource-list your_stack_name
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
-  +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
-~~~
+ $ heat resource-list nom_de_votre_stack
+ +---------------+--------------------------------------+----------------------------+-----------------+----------------------+
+ | resource_name | physical_resource_id                 | resource_type              | resource_status | updated_time         |
+ +---------------+--------------------------------------+----------------------------+-----------------+----------------------+
+ | keypair       | JeStart-mykeypair                    | OS::Nova::KeyPair          | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
+ | network       | 165fff85-a6ac-4bdd-ad63-ac2ba8e58f45 | OS::Neutron::Net           | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
+ | sg            | 9d5f6961-8eb2-4e59-b637-fa3f70659b55 | OS::Neutron::SecurityGroup | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
+ | subnet        | f5d63c5e-1fb5-4ed9-9927-a7025c5dbd95 | OS::Neutron::Subnet        | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
+ +---------------+--------------------------------------+----------------------------+-----------------+----------------------+
+ ~~~
 
 The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
