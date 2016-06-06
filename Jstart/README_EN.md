@@ -84,7 +84,7 @@
  +--------------------------------------+-----------------+--------------------+----------------------+
  ~~~
 
- Puis attendez quelques minutes que le déploiement soit complet.
+  Wait a few minitues the stack will be fully operational.
 
  ~~~bash
  $ heat resource-list your_stack_name
