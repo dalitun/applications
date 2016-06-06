@@ -109,7 +109,7 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 We do indeed! Using the console, you can deploy a mail server:
 
-1.	Go the Cloudwatt Github in the [applications/bundle-trusty-mail]https://github.com/cloudwatt/applications/tree/master/JeStart) repository
+1.	Go the Cloudwatt Github in the [applications/JeStart](https://github.com/cloudwatt/applications/tree/master/JeStart) repository
 2.	Click on the file named `JeStart.heat.yml` (or `JeStart.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
@@ -119,7 +119,7 @@ We do indeed! Using the console, you can deploy a mail server:
 8. Fill the two fields « Name prefix key » and «/ 24 cidr of private network » and click "LAUNCH"
 
 
-The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. 
+The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete.
 If you've reached this point, you're already done!
 
 ### A one-click chat sounds really nice...
