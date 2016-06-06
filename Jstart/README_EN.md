@@ -116,17 +116,15 @@ We do indeed! Using the console, you can deploy a mail server:
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
 6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
 7.	Name your stack in the « Stack name » field
-8.	Enter the name of your keypair in the « SSH Keypair » field
-9.  Write a passphrase that will be used for encrypting backups
-10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
+8. Fill the two fields « Name prefix key » and «/ 24 cidr of private network » and click "LAUNCH"
 
-The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
-If you've reached this point, you're already done! Go enjoy Mail!
+The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. 
+If you've reached this point, you're already done!
 
 ### A one-click chat sounds really nice...
 
-... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your mail server!
+... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your stack !
 
 
 ## Enjoy
