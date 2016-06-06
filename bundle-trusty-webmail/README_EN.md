@@ -112,7 +112,7 @@ flavor_name:
          - n2.cw.highmem-12
  [...]
  ~~~
- ### Start stack
+### Start stack
 
  In a shell, run the script `stack-start.sh`:
 

@@ -121,11 +121,12 @@ C’est (déjà) FINI !
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Stack d'initialiser !
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur **DEPLOYER** et laisser vous guider... 2 minutes plus tard un bouton vert apparait... **ACCEDER** : vous avez votre Stack d'initialiser !
 
 
 ## Enjoy
-Pour télécharger votre clé consulter cet url `https://console.cloudwatt.com/project/access_and_security/keypairs/nom_votre_stack-prefix/download/`.
+Pour télécharger votre clé privée, consultez cet url
+`https://console.cloudwatt.com/project/access_and_security/keypairs/nom_votre_stack-prefix/download/`.
 Puis cliquez sur `Download key pair "nom_votre_stack-prefix"`.
 
 Vous pouvez utilsez un script shell pour shelve et unshelve les instances qui sont présentées dans votre tenant.
