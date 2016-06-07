@@ -21,7 +21,7 @@
 
 ## What will you find in the repository
 
- Once you have cloned the github, you will find in the `JeStart/` repository:
+ Once you have cloned the github, you will find in the `Jestart/` repository:
 
  * `JeStart.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
 
@@ -109,7 +109,7 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 We do indeed! Using the console, you can deploy a mail server:
 
-1.	Go the Cloudwatt Github in the [applications/JeStart](https://github.com/cloudwatt/applications/tree/master/JeStart) repository
+1.	Go the Cloudwatt Github in the [applications/Jestart](https://github.com/cloudwatt/applications/tree/master/Jestart) repository
 2.	Click on the file named `JeStart.heat.yml` (or `JeStart.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
