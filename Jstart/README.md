@@ -130,7 +130,7 @@ Puis cliquez sur `Download key pair "nom_votre_stack-prefix"`.
 
 Vous pouvez utilsez un script shell pour shelve et unshelve les instances qui sont présentées dans votre tenant.
 
-Vous pouvez créer un cron pour shelve les instances à chauque Vendredi à minuit.
+Vous pouvez créer un cron pour shelve les instances à chaque Vendredi à minuit.
 
 ~~~bash
 $ source COMPUTE-[...]-openrc.sh
@@ -139,7 +139,7 @@ $ crontab -e
 0 0 * * 5 /path/shelveunshelve.sh shelve
 ~~~
 
-Vous pouvez créer un cron pour unshelve les instances à chauque Lundi à 5h du matin.
+Vous pouvez créer un cron pour unshelve les instances à chaque Lundi à 5h du matin.
 
 ~~~bash
 $ source COMPUTE-[...]-openrc.sh
