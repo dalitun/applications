@@ -1,0 +1,187 @@
+#
+##
+### Written by the CAT team
+##
+#
+heat_template_version: 2013-05-23
+
+
+description: Bundle CoreOS Drone
+
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+  flavor_name:
+    default: n2.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - s1.cw.small-1
+          - n2.cw.standard-1
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n2.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+  drone_github_client:
+    default: b9a0c0c49f9e271c000c
+    description:  drone github client
+    label:  drone github client
+    type: string
+  drone_github_secret:
+    default: 2b1d0815ebf00f39eb47082f77e530e5581aa002
+    description:  drone github secret
+    label: drone github secret
+    type: string
+
+    
+resources:
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      dns_nameservers:
+        - 185.23.94.244
+        - 185.23.94.245
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      admin_state_up: true
+      external_gateway_info:
+        enable_snat: true
+        network: "public"
+
+  toolbox_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet_id: { get_resource: subnet }
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+      rules:
+        - { direction: ingress, protocol: TCP }
+        - { direction: ingress, protocol: UDP }
+        - { direction: ingress, protocol: ICMP }
+        - { direction: egress, protocol: ICMP }
+        - { direction: egress, protocol: TCP }
+        - { direction: egress, protocol: UDP }
+
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  ports:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: network }
+      fixed_ips:
+        - ip_address: 10.0.1.254
+          subnet_id: { get_resource: subnet }
+      security_groups:
+        - { get_resource: security_group }
+
+  server:
+    type: OS::Nova::Server
+    properties:
+      key_name: { get_param: keypair_name }
+      image: CoreOS Stable 899.13
+      flavor: { get_param: flavor_name }
+      user_data_format: RAW
+      networks:
+        - port: { get_resource: ports }
+      user_data:
+        str_replace:
+          params:
+            $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
+            $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
+            $drone_github_client: { get_param: drone_github_client}
+            $drone_github_secret: { get_param: drone_github_secret}
+
+          template: |
+            #cloud-config
+            write_files:
+              - path: /home/core/drone.sqlite
+                permissions: 0775
+                owner: "core:core"
+
+            coreos:
+              etcd2:
+                name: "%H"
+                advertise-client-urls: http://$private_ipv4:2379
+                initial-advertise-peer-urls: http://$private_ipv4:2380
+                initial-cluster: "%H=http://$private_ipv4:2380"
+                listen-client-urls: http://0.0.0.0:2379,http://0.0.0.0:4001
+                listen-peer-urls: http://$private_ipv4:2380
+              units:
+                - name: etcd2.service
+                  command: start
+                - name: fleet.service
+                  command: start
+                - name: docker-tcp.socket
+                  command: start
+                  enable: true
+                  content: |
+                    [Unit]
+                    Description=Docker Socket for the API
+
+                    [Socket]
+                    ListenStream=2375
+                    BindIPv6Only=both
+                    Service=docker.service
+
+                    [Install]
+                    WantedBy=sockets.target
+
+                - name: drone.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=drone UI
+                    After=docker.service
+                    Requires=docker.service
+
+                    [Service]
+                    TimeoutStartSec=0
+                    ExecStartPre=-/usr/bin/docker kill drone
+                    ExecStartPre=-/usr/bin/docker rm drone
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/drone
+                    ExecStart=/usr/bin/docker run --name="drone" -p 8080:8080 \
+                       -v /var/lib/drone/ \
+                       -v /var/run/docker.sock:/var/run/docker.sock \
+                       -v /home/core/drone.sqlite:/var/lib/drone/drone.sqlite \
+                       -e DRONE_GITHUB_CLIENT=$drone_github_client \
+                       -e DRONE_GITHUB_SECRET=$drone_github_secret cloudwattfr/drone
+                    ExecStop=/usr/bin/docker stop drone
+
+                    [Install]
+                    WantedBy=multi-user.target
+
+
+  floating_ip_link:
+    type: OS::Nova::FloatingIPAssociation
+    properties:
+      floating_ip: { get_resource: floating_ip }
+      server_id: { get_resource: server }
+
+outputs:
+  floating_ip:
+    description: IP address of the deployed compute instance
+    value: { get_attr: [floating_ip, floating_ip_address] }
