@@ -41,7 +41,7 @@ parameters:
     label: drone github secret
     type: string
 
-    
+
 resources:
   network:
     type: OS::Neutron::Net
@@ -182,6 +182,10 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  floating_ip:
-    description: IP address of the deployed compute instance
-    value: { get_attr: [floating_ip, floating_ip_address] }
+  floating_ip_url:
+    description: Drone URL
+    value:
+      str_replace:
+        template: http://$floating_ip:8000
+        params:
+          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
