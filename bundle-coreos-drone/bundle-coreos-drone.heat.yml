@@ -30,12 +30,28 @@ parameters:
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
-  drone_github_client:
+
+  drone_driver:
+    default: github
+    description: Flavor to use for the deployed instance
+    type: string
+    label: drone driver
+    constraints:
+      - allowed_values:
+          - github
+          - gitlab
+          - bitbucket
+  drone_url:
+    default: https://github.com
+    description:  drone url
+    label:  drone github client
+    type: string
+  drone_client:
     default: b9a0c0c49f9e271c000c
     description:  drone github client
     label:  drone github client
     type: string
-  drone_github_secret:
+  drone_secret:
     default: 2b1d0815ebf00f39eb47082f77e530e5581aa002
     description:  drone github secret
     label: drone github secret
@@ -76,8 +92,8 @@ resources:
     type: OS::Neutron::SecurityGroup
     properties:
       rules:
-        - { direction: ingress, protocol: TCP }
-        - { direction: ingress, protocol: UDP }
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
@@ -86,7 +102,7 @@ resources:
   floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
-      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+      floating_network_id: b5dd7532-1533-4b9c-8bf9-e66631a9be1d
 
   ports:
     type: OS::Neutron::Port
@@ -112,8 +128,10 @@ resources:
           params:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
-            $drone_github_client: { get_param: drone_github_client}
-            $drone_github_secret: { get_param: drone_github_secret}
+            $drone_driver: { get_param: drone_driver}
+            $drone_url:  { get_param: drone_url}
+            $drone_client: { get_param: drone_client}
+            $drone_secret: { get_param: drone_secret}
 
           template: |
             #cloud-config
@@ -121,6 +139,41 @@ resources:
               - path: /home/core/drone.sqlite
                 permissions: 0775
                 owner: "core:core"
+              - path: /home/core/drone.env
+                permissions: 0775
+                owner: "core:core"
+              - path: /home/core/env.sh
+                permissions: 0775
+                owner: "core:core"
+                content: |
+                   #!/bin/bash
+                   D=$drone_driver
+                   case "$D" in
+
+                   "github")
+
+                   echo "DRONE_GITHUB_CLIENT=$drone_client"  >/home/core/drone.env
+                   echo "DRONE_GITHUB_SECRET=$drone_secret" >> /home/core/drone.env
+
+                              ;;
+                   "gitlab")
+
+                   echo "DRONE_GITLAB_URL=$drone_url" > /home/core/drone.env
+                   echo "DRONE_GITLAB_CLIENT=$drone_client" >> /home/core/drone.env
+                   echo "DRONE_GITLAB_SECRET=$drone_secret" >> /home/core/drone.env
+
+                              ;;
+                   "bitbucket")
+                    echo "DRONE_BITBUCKET_CLIENT=$drone_client" > /home/core/drone.env
+                    echo "DRONE_BITBUCKET_SECRET=$drone_secret" >> /home/core/drone.env
+
+                              ;;
+                    *)
+
+                      echo "coming soon"
+                             ;;
+
+                     esac
 
             coreos:
               etcd2:
@@ -150,6 +203,17 @@ resources:
                     [Install]
                     WantedBy=sockets.target
 
+                - name: runcmd.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Runs a command
+                    [Service]
+                    Type=oneshot
+                    ExecStart=/bin/bash -c "/home/core/env.sh;"
+
+
+
                 - name: drone.service
                   command: start
                   content: |
@@ -157,18 +221,18 @@ resources:
                     Description=drone UI
                     After=docker.service
                     Requires=docker.service
+                    Requires=runcmd.service
 
                     [Service]
                     TimeoutStartSec=0
                     ExecStartPre=-/usr/bin/docker kill drone
                     ExecStartPre=-/usr/bin/docker rm drone
                     ExecStartPre=/usr/bin/docker pull cloudwattfr/drone
-                    ExecStart=/usr/bin/docker run --name="drone" -p 8080:8080 \
+                    ExecStart=/usr/bin/docker run --name="drone" -p 80:8080 \
                        -v /var/lib/drone/ \
                        -v /var/run/docker.sock:/var/run/docker.sock \
                        -v /home/core/drone.sqlite:/var/lib/drone/drone.sqlite \
-                       -e DRONE_GITHUB_CLIENT=$drone_github_client \
-                       -e DRONE_GITHUB_SECRET=$drone_github_secret cloudwattfr/drone
+                       --env-file /home/core/drone.env cloudwattfr/drone
                     ExecStop=/usr/bin/docker stop drone
 
                     [Install]
@@ -186,6 +250,6 @@ outputs:
     description: Drone URL
     value:
       str_replace:
-        template: http://$floating_ip:8000
+        template: http://$floating_ip
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
