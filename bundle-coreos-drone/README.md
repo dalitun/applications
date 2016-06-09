@@ -62,7 +62,7 @@ Dans le fichier `bundle-coreos-drone.heat.yml` vous trouverez en haut une sectio
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
-hheat_template_version: 2013-05-23
+heat_template_version: 2013-05-23
 
 description: Bundle CoreOS Drone
 
@@ -113,8 +113,7 @@ description: Bundle CoreOS Drone
       type: string
  [...]
  ~~~
-
- ### Démarrer la stack
+### Démarrer la stack
 
  Dans un shell, lancer le script `stack-start.sh` :
 
@@ -138,7 +137,7 @@ description: Bundle CoreOS Drone
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
 
- ### Enjoy
+### Enjoy
 
  Une fois tout ceci fait, vous pouvez récupérer les IP associées aux instances créées grâce à la commande suivante (la section `outputs` liste les IP de chaque instance) :
 
@@ -184,7 +183,7 @@ description: Bundle CoreOS Drone
 +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
 
  ~~~
-## Enjoy
+
 
 Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de Drone via un navigateur web à partir de cet url http://flottingIp.
 ![page1](./img/drone1.png)
