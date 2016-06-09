@@ -35,7 +35,6 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 Une fois le dépôt cloné, vous trouverez le répertoire `bundle-coreos-drone/`
 
 * `bundle-coreos-drone.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
-* `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
 * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 
@@ -73,20 +72,18 @@ description: Bundle CoreOS Drone
       type: string
 
     flavor_name:      
-      default: n2.cw.standard-1     <-- Indiquer ici la taille de l’instance par défaut
+      default: n1.cw.standard-1     <-- Indiquer ici la taille de l’instance par défaut
       description: Flavor to use for the deployed instance
       type: string
       label: Instance Type (Flavor)
       constraints:
         - allowed_values:
-            - s1.cw.small-1
-            - n2.cw.standard-1
-            - n1.cw.standard-1
-            - n1.cw.standard-2
-            - n2.cw.standard-4
-            - n1.cw.standard-8
-            - n1.cw.standard-12
-            - n1.cw.standard-16
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
 
     drone_driver:
       default: github     <-- Indiquer ici le type VCS

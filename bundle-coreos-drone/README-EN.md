@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 25 : Drone #
+# 5 Minutes Stacks, 25 episode : Drone #
 
 ## Episode 25 : Drone
 
@@ -77,21 +77,18 @@ description: Bundle CoreOS Drone
       type: string
 
     flavor_name:      
-      default: n2.cw.standard-1     <-- Indicate here flavor size
+      default: n1.cw.standard-1     <-- Indicate here flavor size
       description: Flavor to use for the deployed instance
       type: string
       label: Instance Type (Flavor)
       constraints:
         - allowed_values:
-            - s1.cw.small-1
-            - n2.cw.standard-1
-            - n1.cw.standard-1
-            - n1.cw.standard-2
-            - n2.cw.standard-4
-            - n1.cw.standard-8
-            - n1.cw.standard-12
-            - n1.cw.standard-16
-
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
     drone_driver:
       default: github     <-- Indicate here VCS type
       description: Flavor to use for the deployed instance
