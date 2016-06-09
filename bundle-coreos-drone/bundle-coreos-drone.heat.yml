@@ -9,6 +9,16 @@ heat_template_version: 2013-05-23
 description: Bundle CoreOS Drone
 
 
+parameter_groups:
+- label: OAuth
+  parameters:
+    - keypair_name
+    - flavor_name
+    - drone_driver
+    - drone_url
+    - drone_client
+    - drone_secret
+
 parameters:
   keypair_name:
     description: Keypair to inject in instance
@@ -47,14 +57,12 @@ parameters:
     label:  drone github client
     type: string
   drone_client:
-    default: b9a0c0c49f9e271c000c
-    description:  drone github client
-    label:  drone github client
+    description: OAuth id client
+    label:  OAuth id client
     type: string
   drone_secret:
-    default: 2b1d0815ebf00f39eb47082f77e530e5581aa002
-    description:  drone github secret
-    label: drone github secret
+    description: OAuth secret client
+    label: OAuth secret client
     type: string
 
 
@@ -82,7 +90,7 @@ resources:
         enable_snat: true
         network: "public"
 
-  toolbox_interface:
+  interface:
     type: OS::Neutron::RouterInterface
     properties:
       router_id: { get_resource: router }
@@ -102,7 +110,7 @@ resources:
   floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
-      floating_network_id: b5dd7532-1533-4b9c-8bf9-e66631a9be1d
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
 
   ports:
     type: OS::Neutron::Port
