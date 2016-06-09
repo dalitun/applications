@@ -107,7 +107,7 @@ description: Bundle CoreOS Drone
       description: OAuth id client
       label:  OAuth id client
       type: string
-    drone_secret:         <-- Indiquer ici l'id OAuth secret
+    drone_secret:         <-- Indiquer ici  le code secret OAuth client
       description: OAuth secret client
       label: OAuth secret client
       type: string
@@ -118,11 +118,11 @@ description: Bundle CoreOS Drone
  Dans un shell, lancer le script `stack-start.sh` :
 
  ~~~ bash
- $ ./stack-start.sh DOCKER
+ $ ./stack-start.sh Drone
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | DOCKER     | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | Drone     | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+--------------------+----------------------+
  ~~~
 
@@ -133,7 +133,7 @@ description: Bundle CoreOS Drone
  +--------------------------------------+------------+-----------------+----------------------+
  | id                                   | stack_name | stack_status    | creation_time        |
  +--------------------------------------+------------+-----------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | DOCKER     | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | Drone     | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
 
