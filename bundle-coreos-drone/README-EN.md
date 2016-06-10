@@ -15,6 +15,7 @@ Drone integrates seamlessly with Github, Bitbucket and Google Code as well as th
   - CoreOS Stable 899.13.0
   - Docker 1.10.3
   - Drone v0.4
+
 ### The prerequisites to deploy this stack
 
    These should be routine by now:

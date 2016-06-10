@@ -12,6 +12,7 @@ Drone est un produit initialement disponible en SaaS et rendu Open Source dans u
   - CoreOS Stable 899.13.0
   - Docker 1.10.3
   - Drone v0.4
+
 ### Les pré-requis pour déployer cette stack
 
 Ceci devrait être une routine à présent:
