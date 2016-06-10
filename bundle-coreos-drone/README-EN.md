@@ -141,7 +141,7 @@ description: Bundle CoreOS Drone
 
 ### Enjoy
 
-Once all of this done, instance's IP can be obtained with the following command (and will be listed in the "output" section):
+Once all of this done, stack's description can be obtained with the following command :
 
  ~~~ bash
  $ heat stack-show Drone

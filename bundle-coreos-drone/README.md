@@ -137,7 +137,7 @@ description: Bundle CoreOS Drone
 
 ### Enjoy
 
- Une fois tout ceci fait, vous pouvez récupérer les IP associées aux instances créées grâce à la commande suivante (la section `outputs` liste les IP de chaque instance) :
+ Une fois tout ceci fait, vous pouvez récupérer la description du votre stack à partir de cette commande :
 
  ~~~ bash
  $ heat stack-show Drone
