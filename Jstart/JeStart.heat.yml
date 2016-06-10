@@ -20,9 +20,9 @@ resources:
     properties:
       name:
         str_replace:
-          template: $stack-$name
+          template: $prefix-$stack
           params:
-             $name: { get_param: keypair_name_prefix }
+             $prefix: { get_param: keypair_name_prefix }
              $stack : { get_param: "OS::stack_name" }
       save_private_key: true
 
@@ -38,7 +38,7 @@ resources:
         - { direction: egress, protocol: UDP }
       name:
         str_replace:
-           template: $stack-start-sg
+           template: start-sg-stack
            params:
                $stack: { get_param: 'OS::stack_name' }
 
@@ -49,7 +49,7 @@ resources:
       admin_state_up: true
       name:
         str_replace:
-            template: $stack-start-net
+            template: start-net-$stack
             params:
                 $stack: { get_param: 'OS::stack_name' }
 
@@ -65,7 +65,7 @@ resources:
           end: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: net_cidr} ] }
       name:
         str_replace:
-            template: $stack-start-subnet
+            template: start-subnet-$stack
             params:
                 $stack: { get_param: 'OS::stack_name' }
 
@@ -85,22 +85,22 @@ outputs:
       description: Your key pair name
       value:
          str_replace:
-           template: $stack-$name
+           template: $prefix-stack
            params:
-              $name: { get_param: keypair_name_prefix }
+              $prefix: { get_param: keypair_name_prefix }
               $stack : { get_param: "OS::stack_name" }
 
    net_name:
       description: Network name
       value:
            str_replace:
-               template: $stack-start-net
+               template: start-net-$stack
                params:
                    $stack: { get_param: 'OS::stack_name' }
    Sg_name:
       description:  Security Groupe name
       value:
         str_replace:
-           template: $stack-start-sg
+           template: start-sg-$stack
            params:
                $stack: { get_param: 'OS::stack_name' }
