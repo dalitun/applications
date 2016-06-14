@@ -2,7 +2,7 @@
 
 ## Episode 25 : JeStart
 
-Ce stack vous permet d'intialiser votre tenant il vous permet de créer un keypair ,un réseau et security group.
+Ce stack vous permet d'intialiser votre tenant, il vous permet de créer une keypair ,un réseau et une security group.
 
 
 ## Preparations
@@ -70,7 +70,7 @@ Dans le fichier `JeStart.heat.yml` vous trouverez en haut une section `parameter
 ~~~
 ### Démarrer la stack
 
-Dans un shell,lancer le script la commande suivante:
+Dans un shell,lancer le script la commande suivante :
 
 ~~~
 heat stack-create nom_de_votre_stack -f JeStart.heat.yml -Pkeypair_name_prefix=prefix_de_keypair -Pnet_cidr=192.168.1.0/24
