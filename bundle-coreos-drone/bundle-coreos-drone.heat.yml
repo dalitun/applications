@@ -41,7 +41,7 @@ parameters:
 
   drone_driver:
     default: github
-    description: Flavor to use for the deployed instance
+    description: you can choose github , bitbucket or gitlab
     type: string
     label: drone driver
     constraints:
@@ -148,38 +148,10 @@ resources:
               - path: /home/core/drone.env
                 permissions: 0775
                 owner: "core:core"
-              - path: /home/core/env.sh
-                permissions: 0775
-                owner: "core:core"
                 content: |
-                   #!/bin/bash
-                   D=$drone_driver
-                   case "$D" in
-
-                   "github")
-
-                   echo "DRONE_GITHUB_CLIENT=$drone_client"  >/home/core/drone.env
-                   echo "DRONE_GITHUB_SECRET=$drone_secret" >> /home/core/drone.env
-
-                              ;;
-                   "gitlab")
-
-                   echo "DRONE_GITLAB_URL=$drone_url" > /home/core/drone.env
-                   echo "DRONE_GITLAB_CLIENT=$drone_client" >> /home/core/drone.env
-                   echo "DRONE_GITLAB_SECRET=$drone_secret" >> /home/core/drone.env
-
-                              ;;
-                   "bitbucket")
-                    echo "DRONE_BITBUCKET_CLIENT=$drone_client" > /home/core/drone.env
-                    echo "DRONE_BITBUCKET_SECRET=$drone_secret" >> /home/core/drone.env
-
-                              ;;
-                    *)
-
-                      echo "coming soon"
-                             ;;
-
-                     esac
+                    REMOTE_DRIVER=$drone_driver
+                    REMOTE_CONFIG=$drone_url?client_id=$drone_client&client_secret=$drone_secret
+ 
 
             coreos:
               etcd2:
@@ -209,15 +181,6 @@ resources:
                     [Install]
                     WantedBy=sockets.target
 
-                - name: runcmd.service
-                  command: start
-                  content: |
-                    [Unit]
-                    Description=Runs a command
-                    [Service]
-                    Type=oneshot
-                    ExecStart=/bin/bash -c "/home/core/env.sh;"
-
 
 
                 - name: drone.service
@@ -227,19 +190,20 @@ resources:
                     Description=drone UI
                     After=docker.service
                     Requires=docker.service
-                    Requires=runcmd.service
 
                     [Service]
                     TimeoutStartSec=0
                     ExecStartPre=-/usr/bin/docker kill drone
                     ExecStartPre=-/usr/bin/docker rm drone
-                    ExecStartPre=/usr/bin/docker pull cloudwattfr/drone
-                    ExecStart=/usr/bin/docker run --name="drone" -p 80:8080 \
-                       -v /var/lib/drone/ \
-                       -v /var/run/docker.sock:/var/run/docker.sock \
-                       -v /home/core/drone.sqlite:/var/lib/drone/drone.sqlite \
-                       --env-file /home/core/drone.env cloudwattfr/drone
-                    ExecStop=/usr/bin/docker stop drone
+                    ExecStartPre=/usr/bin/docker pull drone/drone
+                    ExecStart=/usr/bin/docker run \
+                             --volume /var/lib/drone:/var/lib/drone \
+                             --volume /var/run/docker.sock:/var/run/docker.sock \
+                             --env-file /home/core/drone.env \
+                             --restart=always \
+                             --publish=80:8000 \
+                             --detach=true \
+                             --name=drone drone/drone
 
                     [Install]
                     WantedBy=multi-user.target
