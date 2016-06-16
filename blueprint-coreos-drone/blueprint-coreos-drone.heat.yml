@@ -6,7 +6,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Bundle CoreOS Drone
+description: Bleuprint CoreOS Drone
 
 
 parameter_groups:
@@ -151,7 +151,7 @@ resources:
                 content: |
                     REMOTE_DRIVER=$drone_driver
                     REMOTE_CONFIG=$drone_url?client_id=$drone_client&client_secret=$drone_secret
- 
+
 
             coreos:
               etcd2:

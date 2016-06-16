@@ -28,15 +28,15 @@ Drone integrates seamlessly with Github, Bitbucket and Google Code as well as th
 
 ### Size of the instance
 
-   By default, the stack deploys on an instance of type "Standard 2" (n2.cw.standard-2). A variety of other instance flavors exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+   By default, the stack deploys on an instance of type "Standard 2" (n1.cw.standard-2). A variety of other instance flavors exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
 
    Stack parameters, of course, are yours to tweak at your fancy.
 
 ## What will you find in the repository
 
-   Once you have cloned the github, you will find in the `bundle-coreos-drone/` repository:
+   Once you have cloned the github, you will find in the `bleuprint-coreos-drone/` repository:
 
-   * `bundle-coreos-drone.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
+   * `bleuprint-coreos-drone.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
    * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
 
 ## Start-up
@@ -59,7 +59,7 @@ Drone integrates seamlessly with Github, Bitbucket and Google Code as well as th
 
 ### Adjust the parameters
 
-  In the `bundle-coreos-drone.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
+  In the `bleuprint-coreos-drone.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
 
   Within these heat templates, you can also adjust (and set the defaults for) the instance type by playing with the `flavor_name` parameter accordingly.
 

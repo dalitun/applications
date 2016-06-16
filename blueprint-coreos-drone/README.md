@@ -23,7 +23,7 @@ Ceci devrait être une routine à présent:
  * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
-Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n2.cw.standard-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
+Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n1.cw.standard-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 Vous pouvez ajuster les parametres de la stack à votre goût.
 
@@ -33,9 +33,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `bundle-coreos-drone/`
+Une fois le dépôt cloné, vous trouverez le répertoire `bleuprint-coreos-drone/`
 
-* `bundle-coreos-drone.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+* `bleuprint-coreos-drone.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 
 * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 
@@ -58,13 +58,13 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `bundle-coreos-drone.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+Dans le fichier `bleuprint-coreos-drone.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
 
-description: Bundle CoreOS Drone
+description: Bleuprint CoreOS Drone
 
   parameters:
     keypair_name:       <-- Indiquer ici votre paire de clés par défaut
@@ -146,7 +146,7 @@ description: Bundle CoreOS Drone
 +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
 | capabilities          | []                                                                                                                                   |
 | creation_time         | 2016-06-09T10:53:33Z                                                                                                                 |
-| description           | Bundle CoreOS Drone                                                                                                                  |
+| description           | Bleuprint CoreOS Drone                                                                                                                  |
 | disable_rollback      | True                                                                                                                                 |
 | id                    | a754ce3f-870b-47f9-9863-9ddbe41a0267                                                                                                 |
 | links                 | https://orchestration.fr1.cloudwatt.com/v1/7da34701e2fe488683d8a8382ee6f454/stacks/drone/a754ce3f-870b-47f9-9863-9ddbe41a0267 (self) |
@@ -175,7 +175,7 @@ description: Bundle CoreOS Drone
 | stack_status          | CREATE_COMPLETE                                                                                                                      |
 | stack_status_reason   | Stack CREATE completed successfully                                                                                                  |
 | stack_user_project_id | eb79ff46f2e44090ada252dc32f62b4a                                                                                                     |
-| template_description  | Bundle CoreOS Drone                                                                                                                  |
+| template_description  | Bleuprint CoreOS Drone                                                                                                                  |
 | timeout_mins          | 60                                                                                                                                   |
 | updated_time          | None                                                                                                                                 |
 +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
