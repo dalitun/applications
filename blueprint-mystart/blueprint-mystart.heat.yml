@@ -5,7 +5,7 @@
 #
 heat_template_version: 2013-05-23
 
-description: Template blueprint-jestart.
+description: Template blueprint-mystart.
 
 parameters:
   keypair_name_prefix:

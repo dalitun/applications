@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, 25 episode : JeStart #
+# 5 Minutes Stacks, 25 episode : Mystart #
 
-## Episode 20 : JeStart
+## Episode 20 : Mystart
 .
 
 ## Preparations
@@ -21,9 +21,9 @@
 
 ## What will you find in the repository
 
- Once you have cloned the github, you will find in the `blueprint-jestart/` repository:
+ Once you have cloned the github, you will find in the `blueprint-mystart/` repository:
 
- * `blueprint-jestart.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+ * `blueprint-mystart.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
 
 ## Start-up
 
@@ -44,12 +44,12 @@
 
 ### Adjust the parameters
 
- With the `blueprint-jestart.heat.yml` file, you will find at the top a section named `parameters`.
+ With the `blueprint-mystart.heat.yml` file, you will find at the top a section named `parameters`.
 
  ~~~ yaml
    heat_template_version: 2013-05-23
 
-   description: Template blueprint-jestart.
+   description: Template blueprint-mystart.
 
    parameters:
      keypair_name_prefix:
@@ -70,13 +70,13 @@
  In a shell, run this command:
 
  ~~~
- heat stack-create nom_de_votre_stack -f blueprint-jestart.heat.yml -Pkeypair_name_prefix=keypair_prefix -Pnet_cidr=192.168.1.0/24
+ heat stack-create nom_de_votre_stack -f blueprint-mystart.heat.yml -Pkeypair_name_prefix=keypair_prefix -Pnet_cidr=192.168.1.0/24
  ~~~
 
  Exemple :
 
  ~~~bash
- $ heat stack-create mysatck_name -f blueprint-jestart.heat.yml -Pkeypair_name_prefix=prefix -Pnet_cidr=192.168.1.0/24
+ $ heat stack-create mysatck_name -f blueprint-mystart.heat.yml -Pkeypair_name_prefix=prefix -Pnet_cidr=192.168.1.0/24
  +--------------------------------------+-----------------+--------------------+----------------------+
  | id                                   | stack_name      | stack_status       | creation_time        |
  +--------------------------------------+-----------------+--------------------+----------------------+
@@ -91,7 +91,7 @@
  +---------------+--------------------------------------+----------------------------+-----------------+----------------------+
  | resource_name | physical_resource_id                 | resource_type              | resource_status | updated_time         |
  +---------------+--------------------------------------+----------------------------+-----------------+----------------------+
- | keypair       | JeStart-mykeypair                    | OS::Nova::KeyPair          | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
+ | keypair       | mystart-mykeypair                    | OS::Nova::KeyPair          | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
  | network       | 165fff85-a6ac-4bdd-ad63-ac2ba8e58f45 | OS::Neutron::Net           | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
  | sg            | 9d5f6961-8eb2-4e59-b637-fa3f70659b55 | OS::Neutron::SecurityGroup | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
  | subnet        | f5d63c5e-1fb5-4ed9-9927-a7025c5dbd95 | OS::Neutron::Subnet        | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
@@ -109,8 +109,8 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 We do indeed! Using the console, you can deploy a mail server:
 
-1.	Go the Cloudwatt Github in the [applications/bleuprint-jestart](https://github.com/cloudwatt/applications/tree/master/blueprint-jestart) repository
-2.	Click on the file named `blueprint-jestart.heat.yml` (or `Jblueprint-jestart.restore.heat.yml` to [restore from backup](#backup))
+1.	Go the Cloudwatt Github in the [applications/bleuprint-mystart](https://github.com/cloudwatt/applications/tree/master/blueprint-mystart) repository
+2.	Click on the file named `blueprint-mystart.heat.yml` (or `blueprint-mystart.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console

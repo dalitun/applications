@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 25 : Jestart #
+# 5 Minutes Stacks, épisode 25 : Mystart #
 
-## Episode 25 : Jestart
+## Episode 25 : Mystart
 
 Ce stack vous permet d'intialiser votre tenant, il vous permet de créer une keypair ,un réseau et une security group.
 
@@ -23,9 +23,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-jestart/`
+Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-mystart/`
 
-* `blueprint-jestart.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+* `blueprint-mystart.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 
 ## Démarrage
 
@@ -47,12 +47,12 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `blueprint-jestart.heat.yml` vous trouverez en haut une section `parameters`.
+Dans le fichier `blueprint-mystart.heat.yml` vous trouverez en haut une section `parameters`.
 
 ~~~ yaml
   heat_template_version: 2013-05-23
 
-  description: Template blueprint-jestart
+  description: Template blueprint-mystart
 
   parameters:
     keypair_name_prefix:
@@ -73,13 +73,13 @@ Dans le fichier `blueprint-jestart.heat.yml` vous trouverez en haut une section 
 Dans un shell, lancer le script la commande suivante :
 
 ~~~
-heat stack-create nom_de_votre_stack -f blueprint-jestart.heat.yml -Pkeypair_name_prefix=prefix_de_keypair -Pnet_cidr=192.168.1.0/24
+heat stack-create nom_de_votre_stack -f blueprint-mystart.heat.yml -Pkeypair_name_prefix=prefix_de_keypair -Pnet_cidr=192.168.1.0/24
 ~~~
 
 Exemple :
 
 ~~~bash
-$ heat stack-create mysatck_name -f blueprint-jestart.heat.yml -Pkeypair_name_prefix=préfix -Pnet_cidr=192.168.1.0/24
+$ heat stack-create mysatck_name -f blueprint-mystart.heat.yml -Pkeypair_name_prefix=préfix -Pnet_cidr=192.168.1.0/24
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
@@ -94,7 +94,7 @@ $ heat resource-list nom_de_votre_stack
 +---------------+--------------------------------------+----------------------------+-----------------+----------------------+
 | resource_name | physical_resource_id                 | resource_type              | resource_status | updated_time         |
 +---------------+--------------------------------------+----------------------------+-----------------+----------------------+
-| keypair       | JeStart-mykeypair                    | OS::Nova::KeyPair          | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
+| keypair       | mystart-mykeypair                    | OS::Nova::KeyPair          | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
 | network       | 165fff85-a6ac-4bdd-ad63-ac2ba8e58f45 | OS::Neutron::Net           | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
 | sg            | 9d5f6961-8eb2-4e59-b637-fa3f70659b55 | OS::Neutron::SecurityGroup | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
 | subnet        | f5d63c5e-1fb5-4ed9-9927-a7025c5dbd95 | OS::Neutron::Subnet        | CREATE_COMPLETE | 2016-06-02T16:14:43Z |
@@ -107,8 +107,8 @@ $ heat resource-list nom_de_votre_stack
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
 
 1.	Allez sur le Github Cloudwatt dans le répertoire
-[applications/blueprint-jestart](https://github.com/cloudwatt/applications/tree/master/blueprint-jestart)
-2.	Cliquez sur le fichier nommé `blueprint-jestart.heat.yml`
+[applications/blueprint-mystart](https://github.com/cloudwatt/applications/tree/master/blueprint-mystart)
+2.	Cliquez sur le fichier nommé `blueprint-mystart.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
