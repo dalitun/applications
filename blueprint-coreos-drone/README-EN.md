@@ -198,9 +198,9 @@ After you arrive in this page, you can start to create your projects:
 
 For creating OAuth see this links:
 
-* [for github](https://github.com/settings/applications)
-* [for gitlab](http://docs.gitlab.com/ee/integration/oauth_provider.html)
-* [for bitbucket](https://blog.bitbucket.org/2015/07/30/bitbucket-now-supports-oauth2-and-fine-grained-scopes-for-resources/)
+* [for github](http://readme.drone.io/setup/remotes/github/)
+* [for gitlab](http://readme.drone.io/setup/remotes/gitlab/)
+* [for bitbucket](http://readme.drone.io/setup/remotes/bitbucket/)
 
 ##### systemd - init system for Drone service
 
