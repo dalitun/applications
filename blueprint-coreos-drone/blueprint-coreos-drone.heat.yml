@@ -51,7 +51,7 @@ parameters:
           - bitbucket
   drone_url:
     default: https://github.com
-    description:  drone url
+    description:  drone url 
     label:  drone github client
     type: string
   drone_client:
