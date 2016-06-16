@@ -1,3 +1,8 @@
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
 heat_template_version: 2013-05-23
 
 description: Template blueprint-jestart.
@@ -76,9 +81,9 @@ outputs:
      description: URL for downloading your private key
      value:
        str_replace:
-         template: https://console.cloudwatt.com/project/access_and_security/keypairs/$stack-$name/download/
+         template: https://console.cloudwatt.com/project/access_and_security/keypairs/$prefix-$stack/download/
          params:
-           $name: { get_param: keypair_name_prefix }
+           $prefix: { get_param: keypair_name_prefix }
            $stack : { get_param: "OS::stack_name" }
 
    keypair_name:

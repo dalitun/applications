@@ -70,7 +70,7 @@ Dans le fichier `blueprint-jestart.heat.yml` vous trouverez en haut une section 
 ~~~
 ### Démarrer la stack
 
-Dans un shell,lancer le script la commande suivante :
+Dans un shell, lancer le script la commande suivante :
 
 ~~~
 heat stack-create nom_de_votre_stack -f blueprint-jestart.heat.yml -Pkeypair_name_prefix=prefix_de_keypair -Pnet_cidr=192.168.1.0/24
@@ -134,7 +134,7 @@ Vous pouvez lancer votre première instance :
 ~~~bash
 $ source COMPUTE-[...]-openrc.sh
 Please enter your OpenStack Password:
-$ nova boot --flavor s1.cw.small-1 --image Ubuntu 16.04 --nic net-id=id_start-net-nom_votre_stack --security-group start-sg-nom_votre_stack --key-name préfix-nom_votre_stack nom_de_votre_instance
+$ nova boot --flavor n1.cw.standard-1 --image Ubuntu 16.04 --nic net-id=id_start-net-nom_votre_stack --security-group start-sg-nom_votre_stack --key-name préfix-nom_votre_stack nom_de_votre_instance
 ~~~
 
 ### Autres sources pouvant vous intéresser:

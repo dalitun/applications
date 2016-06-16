@@ -109,7 +109,7 @@ The `start-stack.sh` script takes care of running the API necessary requests to 
 
 We do indeed! Using the console, you can deploy a mail server:
 
-1.	Go the Cloudwatt Github in the [applications/Jestart](https://github.com/cloudwatt/applications/tree/master/blueprint-jestart) repository
+1.	Go the Cloudwatt Github in the [applications/bleuprint-jestart](https://github.com/cloudwatt/applications/tree/master/blueprint-jestart) repository
 2.	Click on the file named `blueprint-jestart.heat.yml` (or `Jblueprint-jestart.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
@@ -136,7 +136,7 @@ You can launch your first instance:
 ~~~bash
 $ source COMPUTE-[...]-openrc.sh
 Please enter your OpenStack Password:
-$ nova boot --flavor s1.cw.small-1 --image Ubuntu 16.04 --nic net-id=id_start-net-your_stack_name --security-group start-sg-your_stack_name --key-name prefix-your_stack_name your_instance_name
+$ nova boot --flavor n1.cw.standard-1 --image Ubuntu 16.04 --nic net-id=id_start-net-your_stack_name --security-group start-sg-your_stack_name --key-name prefix-your_stack_name your_instance_name
 ~~~
 
 
