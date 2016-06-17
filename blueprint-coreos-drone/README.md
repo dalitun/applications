@@ -33,9 +33,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `bleuprint-coreos-drone/`
+Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-drone/`
 
-* `bleuprint-coreos-drone.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+* `blueprint-coreos-drone.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 
 * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 
@@ -58,13 +58,13 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `bleuprint-coreos-drone.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+Dans le fichier `blueprint-coreos-drone.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
 
-description: Bleuprint CoreOS Drone
+description: Blueprint CoreOS Drone
 
   parameters:
     keypair_name:       <-- Indiquer ici votre paire de clés par défaut
@@ -165,7 +165,7 @@ description: Bleuprint CoreOS Drone
 |                       |   "keypair_name": "testkey",                                                                                                         |
 |                       |   "drone_driver": "github",                                                                                                          |
 |                       |   "drone_client": "********************",                                                                                            |
-|                       |   "flavor_name": "n2.cw.standard-1",                                                                                                 |
+|                       |   "flavor_name": "n1.cw.standard-1",                                                                                                 |
 |                       |   "drone_secret": "****************************************",                                                                        |
 |                       |   "drone_url": "https://github.com"                                                                                                  |
 |                       | }                                                                                                                                    |
@@ -175,7 +175,7 @@ description: Bleuprint CoreOS Drone
 | stack_status          | CREATE_COMPLETE                                                                                                                      |
 | stack_status_reason   | Stack CREATE completed successfully                                                                                                  |
 | stack_user_project_id | eb79ff46f2e44090ada252dc32f62b4a                                                                                                     |
-| template_description  | Bleuprint CoreOS Drone                                                                                                                  |
+| template_description  | Blueprint CoreOS Drone                                                                                                                  |
 | timeout_mins          | 60                                                                                                                                   |
 | updated_time          | None                                                                                                                                 |
 +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+

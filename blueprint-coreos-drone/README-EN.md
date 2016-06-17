@@ -34,9 +34,9 @@ Drone integrates seamlessly with Github, Bitbucket and Google Code as well as th
 
 ## What will you find in the repository
 
-   Once you have cloned the github, you will find in the `bleuprint-coreos-drone/` repository:
+   Once you have cloned the github, you will find in the `blueprint-coreos-drone/` repository:
 
-   * `bleuprint-coreos-drone.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
+   * `blueprint-coreos-drone.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
    * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
 
 ## Start-up
@@ -59,11 +59,11 @@ Drone integrates seamlessly with Github, Bitbucket and Google Code as well as th
 
 ### Adjust the parameters
 
-  In the `bleuprint-coreos-drone.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
+  In the `blueprint-coreos-drone.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
 
   Within these heat templates, you can also adjust (and set the defaults for) the instance type by playing with the `flavor_name` parameter accordingly.
 
-  By default, the stack network and subnet are generated for the stack. This behavior can be changed within the `bundle-coreos-drone.heat.yml` file as well, if need be, although doing so may be cause for security concerns.
+  By default, the stack network and subnet are generated for the stack. This behavior can be changed within the `blueprint-coreos-drone.heat.yml` file as well, if need be, although doing so may be cause for security concerns.
 
 
 ~~~ yaml
@@ -169,7 +169,7 @@ Once all of this done, stack's description can be obtained with the following co
 |                       |   "keypair_name": "testkey",                                                                                                         |
 |                       |   "drone_driver": "github",                                                                                                          |
 |                       |   "drone_client": "********************",                                                                                            |
-|                       |   "flavor_name": "n2.cw.standard-1",                                                                                                 |
+|                       |   "flavor_name": "n1.cw.standard-1",                                                                                                 |
 |                       |   "drone_secret": "****************************************",                                                                        |
 |                       |   "drone_url": "https://github.com"                                                                                                  |
 |                       | }                                                                                                                                    |
@@ -179,7 +179,7 @@ Once all of this done, stack's description can be obtained with the following co
 | stack_status          | CREATE_COMPLETE                                                                                                                      |
 | stack_status_reason   | Stack CREATE completed successfully                                                                                                  |
 | stack_user_project_id | eb79ff46f2e44090ada252dc32f62b4a                                                                                                     |
-| template_description  | Bundle CoreOS Drone                                                                                                                  |
+| template_description  | Bleuprint CoreOS Drone                                                                                                                  |
 | timeout_mins          | 60                                                                                                                                   |
 | updated_time          | None                                                                                                                                 |
 +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
@@ -202,7 +202,7 @@ You choose the drone project and activate it.
 
 ![Page 4](./img/drone4.png)
 
-Then committer in this project and you will see the result.
+Then commit in this project and you will see the result.
 
 ![Page5](./img/drone5.png)
 
@@ -242,4 +242,5 @@ sudo systemctl stop drone.service
 * [Drone Documentatuion](https://drone.io/)
 
 -----
+
 Have fun. Hack in peace.

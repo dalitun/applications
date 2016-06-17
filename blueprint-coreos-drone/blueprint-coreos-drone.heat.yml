@@ -6,7 +6,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Bleuprint CoreOS Drone
+description: Blueprint CoreOS Drone
 
 
 parameter_groups:
@@ -51,7 +51,7 @@ parameters:
           - bitbucket
   drone_url:
     default: https://github.com
-    description:  drone url 
+    description:  drone url
     label:  drone github client
     type: string
   drone_client:
