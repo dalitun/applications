@@ -187,10 +187,25 @@ Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de Drone v
 ![page1](./img/drone1.png)
 
 Puis s'authentifier sur le github , bitbucket ou gitlab.
+
 ![page2](./img/drone2.png)
 
-Après vous arrivez à cette page et vous pouvez commencez à crééer vos projets:
+Après vous arrivez à cette page et vous pouvez commencez à selectionner un drone projet:
+
 ![page3](./img/drone3.png)
+
+Vous choisissez le projet drone et l'activer.
+
+![page4](./img/drone4.png)
+
+Puis committer dans ce projet et vous allez voir la résultat.
+
+![page5](./img/drone5.png)
+
+Après le commit .
+
+![page6](./img/drone6.png)
+
 
 Pour créer OAuth voir les lien suivants:
 

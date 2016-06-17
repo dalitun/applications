@@ -191,10 +191,24 @@ Once this is done you can connect via a web browser on the postfixamdin interfac
 ![page1](./img/drone1.png)
 
 Then authenticate on github, bitbucket or gitlab.
+
 ![page2](./img/drone2.png)
 
-After you arrive in this page, you can start to create your projects:
-![page3](./img/drone3.png)
+After you arrive at this page and you can start to select a project drone:
+
+! [Page 3] (./ img / drone3.png)
+
+You choose the drone project and activate it.
+
+! [Page 4] (./ img / drone4.png)
+
+Then committer in this project and you will see the result.
+
+! [Page5] (./ img / drone5.png)
+
+After commit.
+
+! [Page6] (./ img / drone6.png)
 
 For creating OAuth see this links:
 
