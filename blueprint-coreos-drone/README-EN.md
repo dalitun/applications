@@ -196,19 +196,19 @@ Then authenticate on github, bitbucket or gitlab.
 
 After you arrive at this page and you can start to select a project drone:
 
-! [Page 3] (./ img / drone3.png)
+![Page 3](./img/drone3.png)
 
 You choose the drone project and activate it.
 
-! [Page 4] (./ img / drone4.png)
+![Page 4](./img/drone4.png)
 
 Then committer in this project and you will see the result.
 
-! [Page5] (./ img / drone5.png)
+![Page5](./img/drone5.png)
 
 After commit.
 
-! [Page6] (./ img / drone6.png)
+![Page6](./img/drone6.png)
 
 For creating OAuth see this links:
 
