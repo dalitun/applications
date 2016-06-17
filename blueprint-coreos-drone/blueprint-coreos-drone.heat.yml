@@ -49,10 +49,10 @@ parameters:
           - github
           - gitlab
           - bitbucket
-  drone_url:
+  drone_driver_url:
     default: https://github.com
-    description:  drone url
-    label:  drone github client
+    description:  drone driver url for example https://github.com, https://bitbucket.org/ or your gitlab url
+    label:  drone driver url
     type: string
   drone_client:
     description: OAuth id client
@@ -135,7 +135,7 @@ resources:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
             $drone_driver: { get_param: drone_driver}
-            $drone_url:  { get_param: drone_url}
+            $drone_driver_url:  { get_param: drone_driver_url}
             $drone_client: { get_param: drone_client}
             $drone_secret: { get_param: drone_secret}
 
@@ -150,7 +150,7 @@ resources:
                 owner: "core:core"
                 content: |
                     REMOTE_DRIVER=$drone_driver
-                    REMOTE_CONFIG=$drone_url?client_id=$drone_client&client_secret=$drone_secret
+                    REMOTE_CONFIG=$drone_driver_url?client_id=$drone_client&client_secret=$drone_secret
 
 
             coreos:

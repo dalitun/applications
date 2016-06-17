@@ -96,16 +96,16 @@ description: Blueprint CoreOS Drone
             - github
             - gitlab
             - bitbucket
-    drone_url:            <-- Indiquer ici l'url VCS
+    drone_driver_url:     <-- Indiquer ici l'url VCS
       default: https://github.com
-      description:  drone url
+      description:  drone driver url for example https://github.com, https://bitbucket.org/ or your gitlab url
       label:  drone github client
       type: string
     drone_client:         <-- Indiquer ici l'id OAuth client
       description: OAuth id client
       label:  OAuth id client
       type: string
-    drone_secret:         <-- Indiquer ici  le code secret OAuth client
+    drone_secret:         <-- Indiquer ici  le code secret OAuth client pour le VCS ultilisé
       description: OAuth secret client
       label: OAuth secret client
       type: string
@@ -184,13 +184,14 @@ description: Blueprint CoreOS Drone
 
 
 Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de Drone via un navigateur web à partir de cet url http://flottingIp.
+
 ![page1](./img/drone1.png)
 
-Puis s'authentifier sur le github , bitbucket ou gitlab.
+Puis s'authentifier sur le github, bitbucket ou gitlab.
 
 ![page2](./img/drone2.png)
 
-Après vous arrivez à cette page et vous pouvez commencez à selectionner un drone projet:
+Après vous arrivez à cette page.
 
 ![page3](./img/drone3.png)
 
@@ -202,10 +203,9 @@ Puis committer dans ce projet et vous allez voir la résultat.
 
 ![page5](./img/drone5.png)
 
-Après le commit .
+Après le committe.
 
 ![page6](./img/drone6.png)
-
 
 Pour créer OAuth voir les lien suivants:
 

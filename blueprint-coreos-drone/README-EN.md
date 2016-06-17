@@ -100,16 +100,16 @@ description: Bundle CoreOS Drone
             - github
             - gitlab
             - bitbucket
-    drone_url:            <-- Indicate here VCS url
+    drone_driver_url:     <-- Indicate here VCS url
       default: https://github.com
-      description:  drone url
+      description:  drone driver url for example https://github.com, https://bitbucket.org/ or your gitlab url
       label:  drone github client
       type: string
     drone_client:        <-- Indicate here OAuth client id
       description: OAuth id client
       label:  OAuth id client
       type: string
-    drone_secret:         <-- <-- Indicate here secret code OAuth client
+    drone_secret:        <-- Indicate here secret code OAuth client for VCS used
       description: OAuth secret client
       label: OAuth secret client
       type: string
@@ -188,13 +188,14 @@ Once all of this done, stack's description can be obtained with the following co
 
 
 Once this is done you can connect via a web browser on the postfixamdin interface from this url http://flottingIp.
+
 ![page1](./img/drone1.png)
 
 Then authenticate on github, bitbucket or gitlab.
 
 ![page2](./img/drone2.png)
 
-After you arrive at this page and you can start to select a project drone:
+After you arrive at this page.
 
 ![Page 3](./img/drone3.png)
 
