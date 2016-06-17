@@ -195,7 +195,7 @@ Then authenticate on github, bitbucket or gitlab.
 
 ![page2](./img/drone2.png)
 
-After you arrive at this page.
+Then you arrive at this page.
 
 ![Page 3](./img/drone3.png)
 
@@ -203,7 +203,7 @@ You choose the drone project and activate it.
 
 ![Page 4](./img/drone4.png)
 
-Then commit in this project and you will see the result.
+Then commit anything in this project and you will see the result.
 
 ![Page5](./img/drone5.png)
 

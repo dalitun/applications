@@ -199,7 +199,7 @@ Vous choisissez le projet drone et l'activer.
 
 ![page4](./img/drone4.png)
 
-Puis committer dans ce projet et vous allez voir la résultat.
+Puis committer une chose dans ce projet et vous allez voir la résultat.
 
 ![page5](./img/drone5.png)
 
