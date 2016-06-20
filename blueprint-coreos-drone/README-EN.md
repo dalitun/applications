@@ -187,7 +187,7 @@ Once all of this done, stack's description can be obtained with the following co
  ~~~
 
 
-Once this is done you can connect via a web browser on the postfixamdin interface from this url http://flottingIp.
+You can connect via a web browser on Drone application interface from this url http://flottingIp.
 
 ![page1](./img/drone1.png)
 
@@ -203,11 +203,11 @@ You choose the drone project and activate it.
 
 ![Page 4](./img/drone4.png)
 
-Then commit anything in this project and you will see the result.
+Then commit anything in this project and you will see the result of your commit.
 
 ![Page5](./img/drone5.png)
 
-After commit.
+After the commit.
 
 ![Page6](./img/drone6.png)
 

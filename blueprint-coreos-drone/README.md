@@ -183,7 +183,7 @@ description: Blueprint CoreOS Drone
  ~~~
 
 
-Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de Drone via un navigateur web à partir de cet url http://flottingIp.
+Vous pouvez vous connecter sur l'inteface de Drone via un navigateur web à partir de cet url http://flottingIp.
 
 ![page1](./img/drone1.png)
 
@@ -199,11 +199,11 @@ Vous choisissez le projet drone et l'activer.
 
 ![page4](./img/drone4.png)
 
-Puis committer une chose dans ce projet et vous allez voir la résultat.
+Puis committer une chose dans ce projet et vous allez voir la résultat de votre commit.
 
 ![page5](./img/drone5.png)
 
-Après le committe.
+Après le commit.
 
 ![page6](./img/drone6.png)
 
