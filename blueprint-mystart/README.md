@@ -129,7 +129,7 @@ Pour télécharger votre clé privée, consultez cet url
 `https://console.cloudwatt.com/project/access_and_security/keypairs/prefix-nom_votre_stack/download/`.
 Puis cliquez sur `Download key pair "prefix-nom_votre_stack"`.
 
-Vous pouvez lancer votre première instance :
+Maintenant vous pouvez lancer votre première instance :
 
 ~~~bash
 $ source COMPUTE-[...]-openrc.sh

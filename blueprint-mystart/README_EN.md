@@ -1,7 +1,8 @@
 # 5 Minutes Stacks, 25 episode : Mystart #
 
 ## Episode 20 : Mystart
-.
+
+This stack helps you to initialize your tenant, it helps you to create a keypair, a network and security group.
 
 ## Preparations
 
@@ -131,7 +132,7 @@ If you've reached this point, you're already done!
 for downloading your private key, consult this url `https://console.cloudwatt.com/project/access_and_security/keypairs/nom_votre_stack-prefix/download/`.
 Then click on `Download key pair "prefix-your_stack_name"`.
 
-You can launch your first instance:
+Now you can launch your first instance:
 
 ~~~bash
 $ source COMPUTE-[...]-openrc.sh
