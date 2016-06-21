@@ -44,9 +44,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 Une fois le dépôt cloné, vous trouverez le répertoire `bundle-xenial-glusterfs-multi-dc/`
 
-* `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire sur la zone fr1.
+* `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr1.
 
-* `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire sur la zone fr2.
+* `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr2.
 
 
 * `stack-start.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
@@ -79,47 +79,32 @@ C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par 
 ~~~ yaml
 heat_template_version: 2013-05-23
 
-description: All-in-one Web mail stack
+
+description: All-in-one Glusterfs Multi DC
+
 
 parameters:
   keypair_name:
-    label: SSH Keypair
     description: Keypair to inject in instance
+    label: SSH Keypair
     type: string
-    default: my-keypair-name                <-- Mettez ici le nom de votre keypair
-  mysql_password:
-     description: Mysql password
-     label: Mysql password
-     type: string
-     default: changeme                     <-- Mettez ici le mot de passe de votre base de données
-  postfix_admin_pass:
-     description: postfixadmin password
-     label: postfixadmin password
-     type: string
-     default: changeme                    <-- Mettez ici le mot de passe de votre admin postfix
-  mail_domain:
-     description: mail domain
-     label: mail domain
-     type: string
-     default: exemple.com                 <-- Mettez ici votre nom de domaine
+
   flavor_name:
-    label: Instance Type (Flavor)
+    default: n2.cw.standard-1
     description: Flavor to use for the deployed instance
     type: string
-    default: n2.cw.standard-1
+    label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-        - t1.cw.tiny
-        - s1.cw.small-1
-        - n2.cw.standard-1
-        - n2.cw.standard-2
-        - n2.cw.standard-4
-        - n2.cw.standard-8
-        - n2.cw.standard-16
-        - n2.cw.highmem-2
-        - n2.cw.highmem-4
-        - n2.cw.highmem-8
-        - n2.cw.highmem-12
+         - n2.cw.standard-1
+         - n2.cw.standard-2
+         - n2.cw.standard-4
+         - n2.cw.standard-8
+         - n2.cw.standard-16
+         - n2.cw.highmem-2
+         - n2.cw.highmem-4
+         - n2.cw.highmem-8
+         - n2.cw.highmem-16
 [...]
 ~~~
 
@@ -130,47 +115,33 @@ C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par 
 ~~~ yaml
 heat_template_version: 2013-05-23
 
-description: All-in-one Web mail stack
+
+description: All-in-one Glusterfs Multi Dc
 
 parameters:
   keypair_name:
-    label: SSH Keypair
     description: Keypair to inject in instance
+    label: SSH Keypair
     type: string
-    default: my-keypair-name                <-- Mettez ici le nom de votre keypair
-  mysql_password:
-     description: Mysql password
-     label: Mysql password
-     type: string
-     default: changeme                     <-- Mettez ici le mot de passe de votre base de données
-  postfix_admin_pass:
-     description: postfixadmin password
-     label: postfixadmin password
-     type: string
-     default: changeme                    <-- Mettez ici le mot de passe de votre admin postfix
-  mail_domain:
-     description: mail domain
-     label: mail domain
-     type: string
-     default: exemple.com                 <-- Mettez ici votre nom de domaine
+
   flavor_name:
-    label: Instance Type (Flavor)
+    default: n1.cw.standard-1
     description: Flavor to use for the deployed instance
     type: string
-    default: n2.cw.standard-1
+    label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-        - t1.cw.tiny
-        - s1.cw.small-1
-        - n2.cw.standard-1
-        - n2.cw.standard-2
-        - n2.cw.standard-4
-        - n2.cw.standard-8
-        - n2.cw.standard-16
-        - n2.cw.highmem-2
-        - n2.cw.highmem-4
-        - n2.cw.highmem-8
-        - n2.cw.highmem-12
+          - n1.cw.standard-1
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-12
+          - n1.cw.standard-16
+
+  slave_public_ip:
+     type: string
+     label: slave public ip
+
 [...]
 ~~~
 ### Démarrer la stack
@@ -184,7 +155,7 @@ Dans un shell,lancer le script `stack-start.sh`:
 Exemple :
 
 ~~~bash
-$ ./stack-start.sh EXP_STACK
+$ ./stack-start-fr2.sh EXP_STACK
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
@@ -208,10 +179,41 @@ $ heat resource-list nom_de_votre_stack
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
 ~~~
 
-Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+Le script `start-stack-fr2.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
 * démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Webmail
 * l'exposer sur Internet via une IP flottante
+
+~~~bash
+$ ./stack-start-fr1.sh EXP_STACK
++--------------------------------------+-----------------+--------------------+----------------------+
+| id                                   | stack_name      | stack_status       | creation_time        |
++--------------------------------------+-----------------+--------------------+----------------------+
+| ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
++--------------------------------------+-----------------+--------------------+----------------------+
+~~~
+
+Puis attendez **5 minutes** que le déploiement soit complet.
+
+~~~bash
+$ heat resource-list nom_de_votre_stack
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
+| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
+| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
+| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
+| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
+~~~
+
+Le script `start-stack-fr1.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+
+* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Webmail
+* l'exposer sur Internet via une IP flottante
+
 
 ## C’est bien tout ça,
 ### mais vous n’auriez pas un moyen de lancer l’application par la console ?
@@ -233,31 +235,22 @@ La stack va se créer automatiquement (vous pouvez en voir la progression cliqua
 
 C’est (déjà) FINI !
 
-### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
-
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Webmail !
-
-
 ## Enjoy
 Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface  .
 
 **Redémarrez ensuite  les services suivants Postfix, Dovecot et Apache2**
 
 ~~~ bash
-# service postfix restart
-# service dovecot restart
-# service apache2 restart
+# service glusterfs-server restart
 ~~~
 Faites un refresh sur l'url `http://floatingIP/`
 
 
 **Si vous voulez changer la configuration de rainloop**
 
-
 ## So watt?
 
 Les chemins intéressants sur votre machine :
-
 
 
 
