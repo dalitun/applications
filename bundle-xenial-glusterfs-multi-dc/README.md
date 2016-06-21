@@ -1,0 +1,268 @@
+# 5 Minutes Stacks, épisode 25 : GlusterFs multi Data center #
+
+## Episode 25 : GlusterFs multi Data center
+
+![gluster](https://www.gluster.org/images/antmascot.png?1458134976)
+
+GlusterFS est un logiciel libre de système de fichiers distribué en parallèle, capable de monter jusqu'à plusieurs pétaoctets.
+GlusterFS est un système de fichiers de cluster/réseaux. GlusterFS est livré avec deux éléments, un serveur et un client.
+Le serveur de stockage (ou chaque serveur d'un cluster) fait tourner glusterfsd et les clients utilisent la commande mount ou glusterfs client pour monter les systèmes de fichiers servis, en utilisant FUSE.
+
+Le but ici est de faire tourner 2 serveurs qui vont se faire une réplication complète d'une partie d'un filesystem.
+
+Attention à ne pas faire tourner ce type d'architecture sur Internet car les performances seront catastrophiques. En effet, quand un noeud veut accéder en lecture à un fichier, il doit contacter tous les autres noeuds pour savoir s'il n'y a pas de divergences. Seulement ensuite, il autorise la lecture, ce qui peut prendre beaucoup de temps suivant les architectures.
+
+Dans cet épisode, nous allons créer deux glusterfs qui se répliquent en geo-replication.
+
+## Preparations
+
+### Les versions
+ - Ubuntu Xenial 16.04
+ - Glusterfs 3.7
+
+
+### Les pré-requis pour déployer cette stack
+Ceci devrait être une routine à présent:
+
+* Un accès internet
+* Un shell linux
+* Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
+* Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
+* Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
+
+### Taille de l'instance
+Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il
+existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
+
+Vous pouvez ajuster les parametres de la stack à votre goût.
+
+### Au fait...
+
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version ["Je lance avec la console"](#console)...
+
+## Tour du propriétaire
+
+Une fois le dépôt cloné, vous trouverez le répertoire `bundle-xenial-glusterfs-multi-dc/`
+
+* `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire sur la zone fr1.
+
+* `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire sur la zone fr2.
+
+
+* `stack-start.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
+* `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
+
+## Démarrage
+
+### Initialiser l'environnement
+
+Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
+Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
+
+Sourcez le fichier téléchargé dans votre shell et entrez votre mot de passe lorsque vous êtes invité à utiliser les clients OpenStack.
+
+~~~ bash
+$ source COMPUTE-[...]-openrc.sh
+Please enter your OpenStack Password:
+
+~~~
+
+Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagir avec votre compte Cloudwatt.
+
+
+### Ajuster les paramètres
+
+Dans le fichier `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster
+est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
+
+~~~ yaml
+heat_template_version: 2013-05-23
+
+description: All-in-one Web mail stack
+
+parameters:
+  keypair_name:
+    label: SSH Keypair
+    description: Keypair to inject in instance
+    type: string
+    default: my-keypair-name                <-- Mettez ici le nom de votre keypair
+  mysql_password:
+     description: Mysql password
+     label: Mysql password
+     type: string
+     default: changeme                     <-- Mettez ici le mot de passe de votre base de données
+  postfix_admin_pass:
+     description: postfixadmin password
+     label: postfixadmin password
+     type: string
+     default: changeme                    <-- Mettez ici le mot de passe de votre admin postfix
+  mail_domain:
+     description: mail domain
+     label: mail domain
+     type: string
+     default: exemple.com                 <-- Mettez ici votre nom de domaine
+  flavor_name:
+    label: Instance Type (Flavor)
+    description: Flavor to use for the deployed instance
+    type: string
+    default: n2.cw.standard-1
+    constraints:
+      - allowed_values:
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-12
+[...]
+~~~
+
+Dans le fichier `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster
+est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
+
+~~~ yaml
+heat_template_version: 2013-05-23
+
+description: All-in-one Web mail stack
+
+parameters:
+  keypair_name:
+    label: SSH Keypair
+    description: Keypair to inject in instance
+    type: string
+    default: my-keypair-name                <-- Mettez ici le nom de votre keypair
+  mysql_password:
+     description: Mysql password
+     label: Mysql password
+     type: string
+     default: changeme                     <-- Mettez ici le mot de passe de votre base de données
+  postfix_admin_pass:
+     description: postfixadmin password
+     label: postfixadmin password
+     type: string
+     default: changeme                    <-- Mettez ici le mot de passe de votre admin postfix
+  mail_domain:
+     description: mail domain
+     label: mail domain
+     type: string
+     default: exemple.com                 <-- Mettez ici votre nom de domaine
+  flavor_name:
+    label: Instance Type (Flavor)
+    description: Flavor to use for the deployed instance
+    type: string
+    default: n2.cw.standard-1
+    constraints:
+      - allowed_values:
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-12
+[...]
+~~~
+### Démarrer la stack
+
+Dans un shell,lancer le script `stack-start.sh`:
+
+~~~
+./stack-start.sh nom_de_votre_stack votre_nom_clé mysql_password postfix_admin_pass mail_domain
+~~~
+
+Exemple :
+
+~~~bash
+$ ./stack-start.sh EXP_STACK
++--------------------------------------+-----------------+--------------------+----------------------+
+| id                                   | stack_name      | stack_status       | creation_time        |
++--------------------------------------+-----------------+--------------------+----------------------+
+| ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
++--------------------------------------+-----------------+--------------------+----------------------+
+~~~
+
+Puis attendez **5 minutes** que le déploiement soit complet.
+
+~~~bash
+$ heat resource-list nom_de_votre_stack
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
+| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
+| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
+| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
+| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
+| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
++------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
+~~~
+
+Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
+
+* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Webmail
+* l'exposer sur Internet via une IP flottante
+
+## C’est bien tout ça,
+### mais vous n’auriez pas un moyen de lancer l’application par la console ?
+
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
+
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-mail](https://github.com/cloudwatt/applications/tree/master/bundle-xenial-glusterfs-multi-dc)
+2.	Cliquez sur le fichier nommé `bundle-xenial-glusterfs-multi-dc-fr1(ou 2).heat.yml`
+3.	Cliquez sur RAW, une page web apparait avec le détail du script
+4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
+5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
+6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
+7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
+8.	Entrez votre keypair dans le champ « keypair_name »
+9.  Donner votre passphrase qui servira pour le chiffrement des sauvegardes
+10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
+
+C’est (déjà) FINI !
+
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Webmail !
+
+
+## Enjoy
+Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface  .
+
+**Redémarrez ensuite  les services suivants Postfix, Dovecot et Apache2**
+
+~~~ bash
+# service postfix restart
+# service dovecot restart
+# service apache2 restart
+~~~
+Faites un refresh sur l'url `http://floatingIP/`
+
+
+**Si vous voulez changer la configuration de rainloop**
+
+
+## So watt?
+
+Les chemins intéressants sur votre machine :
+
+
+
+
+### Autres sources pouvant vous intéresser:
+* [ GlusterFs Home page](http://www.postfix.org/documentation.html)
+
+----
+Have fun. Hack in peace.

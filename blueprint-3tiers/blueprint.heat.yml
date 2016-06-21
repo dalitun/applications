@@ -8,7 +8,7 @@ parameters:
     type: string
 
  os_type:
-    default: Ubuntu 14.04
+    default: Debian Jessie
     description: os type
     label: Os type
     type: string
