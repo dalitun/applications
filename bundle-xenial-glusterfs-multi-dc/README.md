@@ -20,7 +20,6 @@ Dans cet épisode, nous allons créer deux glusterfs qui ne sont pas dans la mê
  - Ubuntu Xenial 16.04
  - Glusterfs 3.7
 
-
 ### Les pré-requis pour déployer cette stack
 Ceci devrait être une routine à présent:
 
@@ -234,15 +233,16 @@ C’est (déjà) FINI !
 
 Une fois tout ceci est bien fait:
 
-Vous pouvez tester la réplicaion entre les deux serveurs connectez sur glusterfs fr1 et tapez la commande suivante.
+afin de tester l'etat de la réplicaion entre les deux serveurs, connectez sur glusterfs fr1 en tapant la commande suivante.
 ~~~bash
+# gluster vol info
 # gluster vol geo-rep datastore nom_de_votre_stack-gluster-dc2::datastore status
 ~~~
 
-Vous pouvez utilisez les volumes glusterfs dans une machine client par exemple:
+Vous pouvez monter le volume glusterfs dans une machine client qui se connecte dans le  même réseau que la machine serveur par exemple:
 ~~~bash
 # apt-get -y install gusterfs-client
-#  mkdir
+#  mkdir /mnt/datastore
 # mount -t glusterfs nom_de_votre_stack-gluster-dc1:datastore /mnt/datastore
 ~~~
 
@@ -252,19 +252,19 @@ Vous pouvez utilisez les volumes glusterfs dans une machine client par exemple:
 # service glusterfs-server restart
 ~~~
 
-Faites un refresh sur l'url `http://floatingIP/`
 
-
-**Si vous voulez changer la configuration de rainloop**
 
 ## So watt?
 
 Les chemins intéressants sur votre machine :
+sur chaque serveur glusterfs soit sur fr1 ou fr2.
+On a créé un volume replication `datastore` qui contient deux bricks `/brick/brick1` et `/brick/brick2`,
+Donc vous pouvez ajouter autres bricks vous pouvez voir [ce lien ](https://support.rackspace.com/how-to/add-and-remove-glusterfs-servers/) 
 
 
 
 ### Autres sources pouvant vous intéresser:
-* [ GlusterFs Home page](http://www.postfix.org/documentation.html)
+* [ GlusterFs Home page](http://www.gluster.org/)
 
 ----
 Have fun. Hack in peace.
