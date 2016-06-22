@@ -1,24 +1,20 @@
-# 5 Minutes Stacks, 25 episode : Mail #
+# 5 Minutes Stacks, épisode 25 : GlusterFs multi Data center #
 
-## Episode 20 : Webmail
+## Episode 25 : GlusterFs multi Data center
 
-![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
+![gluster](https://www.gluster.org/images/antmascot.png?1458134976)
 
-An email server is a mail server software (email). It aims to transfer emails from one server to another. An user is never in direct contact with this server uses either a mail client or a webmail client, which is responsible to contact the server to send or receive messages.
-In this episode we used Rainloop as open source webmail that is developed in PHP and designed to be comprehensive and easy to use. It manages very well IMAP / SMTP protocols and has a modern interface (HTML5 / CSS3) very Ergonomic, it is rather pleasant. In terms of features, there are all those of a conventional mail client, plus a system of plugins.
+GlusterFS is a powerful network/cluster filesystem written in user space which uses FUSE to hook itself with VFS layer. 
+GlusterFS takes a layered approach to the file system, where features are added/removed as per the requirement. 
+Though GlusterFS is a File System, it uses already tried and tested disk file systems like ext3, ext4, xfs, etc. to store the data.
+It can easily scale up to petabytes of storage which is available to user under a single mount point.
+
 
 ## Preparations
 
 ### The version
- - Ubuntu Trusty 14.04
- - Postfix 2.11.0
- - Postfixadmin-2.93
- - Dovecot 2.2.9
- - SpamAssassin 3.4.0
- - Clamsmtpd 1.10
- - Apache 2.4.7
- - Mysql 5.5.47
- - Rainloop
+ - Ubuntu Xenial 16.04
+ - GlusterFS 3.7
 
 ### The prerequisites to deploy this stack
 
