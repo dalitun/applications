@@ -12,7 +12,7 @@ Le but ici est de faire tourner 2 serveurs qui vont se faire une réplication co
 
 Attention à ne pas faire tourner ce type d'architecture sur Internet car les performances seront catastrophiques. En effet, quand un noeud veut accéder en lecture à un fichier, il doit contacter tous les autres noeuds pour savoir s'il n'y a pas de divergences. Seulement ensuite, il autorise la lecture, ce qui peut prendre beaucoup de temps suivant les architectures.
 
-Dans cet épisode, nous allons créer deux glusterfs qui ne sont pas dans la même zone.
+Dans cet épisode, nous allons créer deux glusterfs qui se réplique entre eux mais ils ne sont pas dans la même zone.
 
 ## Preparations
 
@@ -231,15 +231,14 @@ C’est (déjà) FINI !
 
 ## Enjoy
 
-Une fois tout ceci est bien fait:
 
-afin de tester l'etat de la réplicaion entre les deux serveurs, connectez sur glusterfs fr1 en tapant la commande suivante.
+Afin de tester l'etat de la réplication entre les deux serveurs, connectez sur glusterfs fr1, puis tapez la commande suivante.
 ~~~bash
 # gluster vol info
 # gluster vol geo-rep datastore nom_de_votre_stack-gluster-dc2::datastore status
 ~~~
 
-Vous pouvez monter le volume glusterfs dans une machine client qui se connecte dans le  même réseau que la machine serveur par exemple:
+Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte dans le même réseau que la machine serveur par exemple:
 ~~~bash
 # apt-get -y install gusterfs-client
 #  mkdir /mnt/datastore
@@ -256,10 +255,8 @@ Vous pouvez monter le volume glusterfs dans une machine client qui se connecte d
 
 ## So watt?
 
-Les chemins intéressants sur votre machine :
-sur chaque serveur glusterfs soit sur fr1 ou fr2.
-On a créé un volume replication `datastore` qui contient deux bricks `/brick/brick1` et `/brick/brick2`,
-Donc vous pouvez ajouter autres bricks vous pouvez voir [ce lien ](https://support.rackspace.com/how-to/add-and-remove-glusterfs-servers/) 
+Sur chaque serveur glusterfs soit sur fr1 ou fr2, on a créé un volume replication `datastore` qui contient deux bricks `/brick/brick1` et `/brick/brick2`,
+donc vous pouvez ajouter autres bricks, pour savoir comment cliquez sur ce [ lien ](https://support.rackspace.com/how-to/add-and-remove-glusterfs-servers/) 
 
 
 
