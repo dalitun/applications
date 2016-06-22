@@ -215,7 +215,7 @@ Le script `start-stack-fr1.sh` s'occupe de lancer les appels nécessaires sur le
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
 
-1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-mail](https://github.com/cloudwatt/applications/tree/master/bundle-xenial-glusterfs-multi-dc)
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-xenial-glusterfs-multi-dc](https://github.com/cloudwatt/applications/tree/master/bundle-xenial-glusterfs-multi-dc)
 2.	Cliquez sur le fichier nommé `bundle-xenial-glusterfs-multi-dc-fr1(ou 2).heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
@@ -231,7 +231,20 @@ La stack va se créer automatiquement (vous pouvez en voir la progression cliqua
 C’est (déjà) FINI !
 
 ## Enjoy
-Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface  .
+
+Une fois tout ceci est bien fait:
+
+Vous pouvez tester la réplicaion entre les deux serveurs connectez sur glusterfs fr1 et tapez la commande suivante.
+~~~bash
+# gluster vol geo-rep datastore nom_de_votre_stack-gluster-dc2::datastore status
+~~~
+
+Vous pouvez utilisez les volumes glusterfs dans une machine client par exemple:
+~~~bash
+# apt-get -y install gusterfs-client
+#  mkdir
+# mount -t glusterfs nom_de_votre_stack-gluster-dc1:datastore /mnt/datastore
+~~~
 
 **Redémarrez ensuite  le service gluterfs-server **
 
