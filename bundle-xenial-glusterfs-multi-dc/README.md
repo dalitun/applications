@@ -30,7 +30,7 @@ Ceci devrait être une routine à présent:
 * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
-Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il
+Par défaut, le script propose un déploiement sur une instance de type "Standard 1" (n1.cw.standard-1) pour la zone fr1 et "Standard 2" (n2.cw.standard-1) pour la zone fr2. Il
 existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 Vous pouvez ajuster les parametres de la stack à votre goût.
@@ -44,9 +44,7 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 Une fois le dépôt cloné, vous trouverez le répertoire `bundle-xenial-glusterfs-multi-dc/`
 
 * `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr1.
-
 * `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr2.
-
 
 * `stack-start-fr1.sh`: Scipt de lancement de la stack dans la zone fr1, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 * `stack-get-url-fr1.sh`: Script de récupération de l'IP d'entrée de votre stack dans la zone fr1, qui peut aussi se trouver dans les parametres de sortie de la stack sur la zone fr1.
@@ -154,7 +152,7 @@ D'abord il faut lancer lancer les stack sur fr2 le premier ,puis lancer le stack
 Il faut aussi que les deux stack sur fr1 et fr2 aient le même nom.
 Dans un shell,lancer le script `stack-start-dc2.sh`:
 
-~~~
+~~~bash
 $ export OS_REGION_NAME=fr2
 $ ./stack-start-fr2.sh nom_de_votre_stack votre_nom_clé
 ~~~
@@ -191,7 +189,7 @@ Le script `start-stack-fr2.sh` s'occupe de lancer les appels nécessaires sur le
 * démarrer une instance basée sur Ubuntu xenial, pré-provisionnée avec la stack glusterfs sur fr2
 * l'exposer sur Internet via une IP flottante
 
-Après le déploiement du stack sur fr2, on lance la stack sur fr1.
+Après le déploiement du stack sur fr2, vous lancez la stack sur fr1.
 ~~~bash
 $ export OS_REGION_NAME=fr1
 $ ./stack-start-fr1.sh nom_de_votre_stack flotting_ip_stack_fr2
@@ -201,7 +199,6 @@ $ ./stack-start-fr1.sh nom_de_votre_stack flotting_ip_stack_fr2
 | ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS | 2016-06-22T11:03:51Z |
 +--------------------------------------+-----------------+--------------------+----------------------+
 ~~~
-
 
 Le script `start-stack-fr1.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
@@ -231,8 +228,7 @@ C’est (déjà) FINI !
 
 ## Enjoy
 
-
-Afin de tester l'etat de la réplication entre les deux serveurs, connectez sur glusterfs fr1, puis tapez la commande suivante.
+Afin de tester l'etat de la réplication entre les deux serveurs, connectez sur glusterfs fr1, puis tapez les commandes suivantes.
 ~~~bash
 # gluster vol info
 # gluster vol geo-rep datastore nom_de_votre_stack-gluster-dc2::datastore status
@@ -245,12 +241,11 @@ Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte 
 # mount -t glusterfs nom_de_votre_stack-gluster-dc1:datastore /mnt/datastore
 ~~~
 
-**Redémarrez ensuite  le service gluterfs-server **
+**Pour pour redémarrer le service gluterfs-server **
 
 ~~~ bash
 # service glusterfs-server restart
 ~~~
-
 
 
 ## So watt?
