@@ -12,7 +12,7 @@ Le but ici est de faire tourner 2 serveurs qui vont se faire une réplication co
 
 Attention à ne pas faire tourner ce type d'architecture sur Internet car les performances seront catastrophiques. En effet, quand un noeud veut accéder en lecture à un fichier, il doit contacter tous les autres noeuds pour savoir s'il n'y a pas de divergences. Seulement ensuite, il autorise la lecture, ce qui peut prendre beaucoup de temps suivant les architectures.
 
-Dans cet épisode, nous allons créer deux glusterfs qui se répliquent en geo-replication.
+Dans cet épisode, nous allons créer deux glusterfs qui ne sont pas dans la même zone.
 
 ## Preparations
 
@@ -49,9 +49,11 @@ Une fois le dépôt cloné, vous trouverez le répertoire `bundle-xenial-gluster
 * `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr2.
 
 
-* `stack-start.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
-* `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
+* `stack-start-fr1.sh`: Scipt de lancement de la stack dans la zone fr1, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
+* `stack-get-url-fr1.sh`: Script de récupération de l'IP d'entrée de votre stack dans la zone fr1, qui peut aussi se trouver dans les parametres de sortie de la stack sur la zone fr1.
 
+* `stack-start-fr2.sh`: Scipt de lancement de la stack dans la zone fr2, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
+* `stack-get-url-fr2.sh`: Script de récupération de l'IP d'entrée de votre stack dans la zone fr2, qui peut aussi se trouver dans les parametres de sortie de la stack sur la zone fr2.
 ## Démarrage
 
 ### Initialiser l'environnement
@@ -84,10 +86,11 @@ description: All-in-one Glusterfs Multi DC
 
 
 parameters:
-  keypair_name:
+  keypair_name:   
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
+    default: my-keypair-name                <-- Mettez ici le nom de votre keypair
 
   flavor_name:
     default: n2.cw.standard-1
@@ -123,6 +126,7 @@ parameters:
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
+    default: my-keypair-name                <-- Mettez ici le nom de votre keypair
 
   flavor_name:
     default: n1.cw.standard-1
@@ -138,28 +142,32 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-  slave_public_ip:
+  slave_public_ip:                        
      type: string
      label: slave public ip
+     default: 0.0.0.0                      <-- Mettez ici la floating ip du glusterfs dc 2
 
 [...]
 ~~~
 ### Démarrer la stack
 
-Dans un shell,lancer le script `stack-start.sh`:
+D'abord il faut lancer lancer les stack sur fr2 le premier ,puis lancer le stack sur fr1.
+Il faut aussi que les deux stack sur fr1 et fr2 aient le même nom.
+Dans un shell,lancer le script `stack-start-dc2.sh`:
 
 ~~~
-./stack-start.sh nom_de_votre_stack votre_nom_clé mysql_password postfix_admin_pass mail_domain
+$ export OS_REGION_NAME=fr2
+$ ./stack-start-fr2.sh nom_de_votre_stack votre_nom_clé
 ~~~
 
 Exemple :
 
 ~~~bash
-$ ./stack-start-fr2.sh EXP_STACK
+$ ./stack-start-fr2.sh  nom_de_votre_stack
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
-| ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
+| ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS |  |
 +--------------------------------------+-----------------+--------------------+----------------------+
 ~~~
 
@@ -170,48 +178,35 @@ $ heat resource-list nom_de_votre_stack
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
 | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
+| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2016-06-22T11:03:51Z |
+| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2016-06-22T11:03:51Z |
+| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2016-06-22T11:03:51Z |
+| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2016-06-22T11:03:51Z |
+| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2016-06-22T11:03:51Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating_ip_stack_fr2`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2016-06-22T11:03:51Z |
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
 ~~~
 
 Le script `start-stack-fr2.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Webmail
+* démarrer une instance basée sur Ubuntu xenial, pré-provisionnée avec la stack glusterfs sur fr2
 * l'exposer sur Internet via une IP flottante
 
+Après le déploiement du stack sur fr2, on lance la stack sur fr1.
 ~~~bash
-$ ./stack-start-fr1.sh EXP_STACK
+$ export OS_REGION_NAME=fr1
+$ ./stack-start-fr1.sh nom_de_votre_stack flotting_ip_stack_fr2
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
-| ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
+| ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS | 2016-06-22T11:03:51Z |
 +--------------------------------------+-----------------+--------------------+----------------------+
 ~~~
 
-Puis attendez **5 minutes** que le déploiement soit complet.
-
-~~~bash
-$ heat resource-list nom_de_votre_stack
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
-~~~
 
 Le script `start-stack-fr1.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Webmail
+* démarrer une instance basée sur Ubuntu xenial, pré-provisionnée avec la stack glusterfs sur fr1
 * l'exposer sur Internet via une IP flottante
 
 
@@ -238,11 +233,12 @@ C’est (déjà) FINI !
 ## Enjoy
 Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface  .
 
-**Redémarrez ensuite  les services suivants Postfix, Dovecot et Apache2**
+**Redémarrez ensuite  le service gluterfs-server **
 
 ~~~ bash
 # service glusterfs-server restart
 ~~~
+
 Faites un refresh sur l'url `http://floatingIP/`
 
 
