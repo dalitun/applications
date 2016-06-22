@@ -245,6 +245,6 @@ so you can add other bricks for knowing how, click this [link](https://support.r
 
 
 ### Other resources you could be interested in:
-* [ GlusterFs Home page](http://www.gluster.org/)
+*[GlusterFs Home page](http://www.gluster.org/)
 ----
 Have fun. Hack in peace.
