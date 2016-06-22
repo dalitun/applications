@@ -226,7 +226,7 @@ In order to test the replication state between the both servers, connect to glus
 You can mount the glusterfs volume in a client machine that connects to the same network as the server machine, for example:
 ~~~bash
 # apt-get -y install gusterfs-client
-#  mkdir /mnt/datastore
+# mkdir /mnt/datastore
 # mount -t glusterfs nom_de_votre_stack-gluster-dc1:datastore /mnt/datastore
 ~~~
 
