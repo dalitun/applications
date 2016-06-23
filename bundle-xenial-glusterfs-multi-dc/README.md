@@ -8,11 +8,7 @@ GlusterFS est un logiciel libre de système de fichiers distribué en parallèle
 GlusterFS est un système de fichiers de cluster/réseaux. GlusterFS est livré avec deux éléments, un serveur et un client.
 Le serveur de stockage (ou chaque serveur d'un cluster) fait tourner glusterfsd et les clients utilisent la commande mount ou glusterfs client pour monter les systèmes de fichiers servis, en utilisant FUSE.
 
-Le but ici est de faire tourner 2 serveurs qui vont se faire une réplication complète d'une partie d'un filesystem.
-
-Attention à ne pas faire tourner ce type d'architecture sur Internet car les performances seront catastrophiques. En effet, quand un noeud veut accéder en lecture à un fichier, il doit contacter tous les autres noeuds pour savoir s'il n'y a pas de divergences. Seulement ensuite, il autorise la lecture, ce qui peut prendre beaucoup de temps suivant les architectures.
-
-Dans cet épisode, nous allons créer deux glusterfs qui se répliquent entre eux mais ils ne sont pas dans la même zone.
+Dans cet épisode, nous allons créer deux glusterfs qui se répliquent entre eux mais ils ne sont pas dans la même zone en utilisant la geo-replication.
 
 ## Preparations
 
@@ -104,8 +100,8 @@ parameters:
 [...]
 ~~~
 
-Dans le fichier `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster
-est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+Dans le fichier `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml` vous trouverez en haut une section `parameters`.Il y a deux paramètres obligatoires à ajuster
+est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et `slave_public_ip` doit contenir la flotting Ip de de  la Stack fr2.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
@@ -141,13 +137,13 @@ parameters:
 ~~~
 ### Démarrer la stack
 
-D'abord il faut lancer lancer les stack sur fr2 le premier ,puis lancer le stack sur fr1.
-Il faut aussi que les deux stack sur fr1 et fr2 aient le même nom.
+D'abord la stack sur fr2 qu'il soit lancée la premiére ,si la stack fr2 est bien lancée, vous pouvez lancer la stack sur fr1.
+Il faut aussi que les deux stacks sur fr1 et fr2 aient le même nom.
 Dans un shell,lancer le script `stack-start-fr2.sh`:
 
 ~~~bash
 $ export OS_REGION_NAME=fr2
-$ ./stack-start-fr2.sh nom_de_votre_stack votre_nom_clé
+$ ./stack-start-fr2.sh nom_de_votre_stack
 ~~~
 
 Exemple :
@@ -182,10 +178,10 @@ Le script `start-stack-fr2.sh` s'occupe de lancer les appels nécessaires sur le
 * démarrer une instance basée sur Ubuntu xenial, pré-provisionnée avec la stack glusterfs sur fr2
 * l'exposer sur Internet via une IP flottante
 
-Après le déploiement du stack sur fr2, vous lancez la stack sur fr1.
+Après le déploiement de la stack sur fr2, vous pouvez lancer la stack sur fr1.
 ~~~bash
 $ export OS_REGION_NAME=fr1
-$ ./stack-start-fr1.sh nom_de_votre_stack flotting_ip_stack_fr2
+$ ./stack-start-fr1.sh nom_de_votre_stack
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+

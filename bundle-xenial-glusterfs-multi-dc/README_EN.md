@@ -94,7 +94,7 @@ parameters:
 [...]
 ~~~
 
- With the `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+ With the `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml` file, you will find at the top a section named `parameters`. The both parameteres to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account and the second called `slave_public_ip` must contain flotting ip stack fr2. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
  ~~~ yaml
 heat_template_version: 2013-05-23
