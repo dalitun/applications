@@ -42,10 +42,10 @@ Une fois le dépôt cloné, vous trouverez le répertoire `bundle-xenial-gluster
 * `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr1.
 * `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr2.
 
-* `stack-start-fr1.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
+* `stack-start-fr1.sh`: Scipt de lancement de la stack dans la zone fr1, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 
 * `stack-start-fr2.sh`: Scipt de lancement de la stack dans la zone fr2, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
-* `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack dans la zone fr2, qui peut aussi se trouver dans les parametres de sortie de la stack.
+* `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
 ## Démarrage
 
@@ -100,8 +100,7 @@ parameters:
 [...]
 ~~~
 
-Dans le fichier `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml` vous trouverez en haut une section `parameters`.Il y a deux paramètres obligatoires à ajuster
-est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et `slave_public_ip` doit contenir la flotting Ip de de  la Stack fr2.
+Dans le fichier `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml` vous trouverez en haut une section `parameters`.Il y a deux paramètres obligatoires à ajuster, le premier nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur et le deuxième nommé `slave_public_ip` doit contenir la flotting Ip de la Stack fr2.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
@@ -137,7 +136,7 @@ parameters:
 ~~~
 ### Démarrer la stack
 
-D'abord la stack sur fr2 qu'il soit lancée la premiére ,si la stack fr2 est bien lancée, vous pouvez lancer la stack sur fr1.
+D'abord il faut lancer la stack fr2 la permière ,si la stack fr2 est bien lancée, vous pouvez lancer la stack sur fr1.
 Il faut aussi que les deux stacks sur fr1 et fr2 aient le même nom.
 Dans un shell,lancer le script `stack-start-fr2.sh`:
 
@@ -217,7 +216,7 @@ C’est (déjà) FINI !
 
 ## Enjoy
 
-Afin de tester l'etat de la réplication entre les deux serveurs, connectez sur glusterfs fr1, puis tapez la commande suivante.
+Afin de tester l'état de la réplication entre les deux serveurs, connectez sur glusterfs fr1, puis exécuter la commande suivante.
 ~~~bash
 # gluster vol geo-rep datastore nom_de_votre_stack-gluster-dc2::datastore status
 MASTER NODE            MASTER VOL    MASTER BRICK     SLAVE USER    SLAVE                             SLAVE NODE             STATUS    CRAWL STATUS       LAST_SYNCED                  
@@ -227,7 +226,7 @@ nom_de_votre_stack-gluster-dc1    datastore     /brick/brick2    root          n
 
 ~~~
 
-Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte dans le même réseau que la machine serveur par exemple:
+Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte dans le même réseau que la machine serveur :
 ~~~bash
 # apt-get -y install gusterfs-client
 # mkdir /mnt/datastore
@@ -243,9 +242,7 @@ Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte 
 
 ## So watt?
 
-Sur chaque serveur glusterfs soit sur fr1 ou fr2, on a créé un volume replication `datastore` qui contient deux bricks `/brick/brick1` et `/brick/brick2`,
-donc vous pouvez ajouter autres bricks, pour savoir comment cliquez sur ce [lien]()
-
+Sur chaque serveur glusterfs soit sur fr1 ou fr2, on a créé un volume replication `datastore` qui contient deux bricks `/brick/brick1` et `/brick/brick2`,pour savoir comment ajouter autres bricks, consultez ce [lien](https://access.redhat.com/documentation/en-US/Red_Hat_Storage/2.1/html/Administration_Guide/Expanding_Volumes.html).
 
 
 ### Autres sources pouvant vous intéresser:

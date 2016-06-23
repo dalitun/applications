@@ -39,10 +39,11 @@ It can easily scale up to petabytes of storage which is available to user under 
 * `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure in fr1 zone.
 * `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure in fr2 zone.
 
-* `stack-start-fr2.sh`:  Stack launching script in fr2 zone . This is a small script that will save you some copy-paste.
 * `stack-start-fr1.sh`:  Stack launching script in fr1 zone . This is a small script that will save you some copy-paste.
+* `stack-start-fr2.sh`:  Stack launching script in fr2 zone . This is a small script that will save you some copy-paste.
 
-* `stack-get-url-fr1.sh`: Flotting IP recovery script for fr1 stack.
+
+* `stack-get-url.sh`: Flotting IP recovery script.
 
 ## Start-up
 
@@ -239,7 +240,7 @@ You can mount the glusterfs volume in a client machine that connects to the same
 ## So watt?
 
 On each server glusterfs either fr1 or fr2, we created a volume replication `datastore` that contains two bricks `/brick/brick1` and `/brick/brick2`,
-so you can add other bricks for knowing how, click this [link]()
+so you can add other bricks for knowing how, click this [link](https://access.redhat.com/documentation/en-US/Red_Hat_Storage/2.1/html/Administration_Guide/Expanding_Volumes.html)
 
 
 
