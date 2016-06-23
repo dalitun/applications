@@ -8,7 +8,7 @@ GlusterFS est un logiciel libre de système de fichiers distribué en parallèle
 GlusterFS est un système de fichiers de cluster/réseaux. GlusterFS est livré avec deux éléments, un serveur et un client.
 Le serveur de stockage (ou chaque serveur d'un cluster) fait tourner glusterfsd et les clients utilisent la commande mount ou glusterfs client pour monter les systèmes de fichiers servis, en utilisant FUSE.
 
-Dans cet épisode, nous allons créer deux glusterfs qui se répliquent entre eux mais ils ne sont pas dans la même zone en utilisant la geo-replication.
+Dans cet épisode, nous allons créer deux glusterfs qui se répliquent entre eux mais ils ne sont pas dans la même zone.
 
 ## Preparations
 

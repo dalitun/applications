@@ -9,6 +9,8 @@ GlusterFS takes a layered approach to the file system, where features are added/
 Though GlusterFS is a File System, it uses already tried and tested disk file systems like ext3, ext4, xfs, etc. to store the data.
 It can easily scale up to petabytes of storage which is available to user under a single mount point.
 
+In this episode, we will create two glusterfs replicate between them, but they are not in the same zone.
+
 
 ## Preparations
 
