@@ -235,7 +235,7 @@ You can mount the glusterfs volume in a client machine that connects to the same
 ## So watt?
 
 On each server glusterfs either fr1 or fr2, we created a volume replication `datastore` that contains two bricks `/brick/brick1` and `/brick/brick2`,
-so you can add other bricks for knowing how, click this [link](https://support.rackspace.com/how-to/add-and-remove-glusterfs-servers/)
+so you can add other bricks for knowing how, click this [link]()
 
 
 
