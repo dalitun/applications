@@ -12,7 +12,7 @@ Le but ici est de faire tourner 2 serveurs qui vont se faire une réplication co
 
 Attention à ne pas faire tourner ce type d'architecture sur Internet car les performances seront catastrophiques. En effet, quand un noeud veut accéder en lecture à un fichier, il doit contacter tous les autres noeuds pour savoir s'il n'y a pas de divergences. Seulement ensuite, il autorise la lecture, ce qui peut prendre beaucoup de temps suivant les architectures.
 
-Dans cet épisode, nous allons créer deux glusterfs qui se réplique entre eux mais ils ne sont pas dans la même zone.
+Dans cet épisode, nous allons créer deux glusterfs qui se répliquent entre eux mais ils ne sont pas dans la même zone.
 
 ## Preparations
 
@@ -76,11 +76,7 @@ C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par 
 
 ~~~ yaml
 heat_template_version: 2013-05-23
-
-
 description: All-in-one Glusterfs Multi DC
-
-
 parameters:
   keypair_name:   
     description: Keypair to inject in instance
@@ -113,10 +109,7 @@ C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par 
 
 ~~~ yaml
 heat_template_version: 2013-05-23
-
-
 description: All-in-one Glusterfs Multi Dc
-
 parameters:
   keypair_name:
     description: Keypair to inject in instance

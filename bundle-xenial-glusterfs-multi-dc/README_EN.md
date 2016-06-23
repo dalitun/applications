@@ -65,7 +65,6 @@ It can easily scale up to petabytes of storage which is available to user under 
 
  With the `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
-
 ~~~ yaml
 heat_template_version: 2013-05-23
 description: All-in-one Glusterfs Multi DC
@@ -99,10 +98,7 @@ parameters:
 
  ~~~ yaml
 heat_template_version: 2013-05-23
-
-
 description: All-in-one Glusterfs Multi Dc
-
 parameters:
   keypair_name:
     description: Keypair to inject in instance
