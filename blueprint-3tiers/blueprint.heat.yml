@@ -8,7 +8,7 @@ parameters:
     type: string
 
  os_type:
-    default: Debian Jessie
+    default: Ubuntu 14.04
     description: os type
     label: Os type
     type: string
@@ -37,7 +37,7 @@ parameters:
 
  nodes_number:
     default: 0
-    description: number of web servers 10 nodes
+    description: number of web servers 6 nodes
     label: Number of front nodes
     type: number
     constraints:
@@ -85,7 +85,7 @@ parameters:
           - n1.cw.standard-16
  number_db_clusters:
     default: 0
-    description: number of web servers 10 nodes
+    description: number of web servers 6 nodes
     label: number of database clusters
     type: number
     constraints:
@@ -248,7 +248,7 @@ resources:
     properties:
       count: 2
       resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_467b00f998064f1688feeca95bdc7a88/blueprint/glusterfs.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprint/glusterfs.heat.yaml
         properties:
           nodename:
             str_replace:
@@ -275,7 +275,7 @@ resources:
     properties:
       count: { get_param: number_db_clusters}
       resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_467b00f998064f1688feeca95bdc7a88/blueprint/db.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprint/db.heat.yaml
         properties:
           nodename:
             str_replace:
@@ -309,7 +309,7 @@ resources:
     properties:
       count: { get_param: nodes_number}
       resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_467b00f998064f1688feeca95bdc7a88/blueprint/node.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprint/node.heat.yaml
         properties:
           nodename:
             str_replace:
@@ -334,17 +334,11 @@ resources:
           Application_source: { get_param: Application_source }
 
 
+
 #--------------------------#
 # Load Balancer properties #
 #--------------------------#
-  lb_vip_port_web:
-     type: OS::Neutron::Port
-     properties:
-       security_groups: [{ get_resource: sg_web }]
-       network_id: { get_resource: nodes_net }
-       fixed_ips:
-          - subnet_id: { get_resource: nodes_subnet }
-
+  
   pool_web:
     type: OS::Neutron::Pool
     properties:
@@ -352,35 +346,28 @@ resources:
       protocol: TCP
       lb_method: ROUND_ROBIN
       subnet: { get_resource: nodes_subnet }
-      vip: {"protocol_port": 80}
-
-  floating_ip:
-    type: OS::Neutron::FloatingIP
-    properties:
-        floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
-        port_id: { get_resource: lb_vip_port_web }
-
-  vip_floating:
-    type: OS::Neutron::FloatingIPAssociation
-    properties:
-      floatingip_id: { get_resource: floating_ip }
-      port_id: { get_attr: [pool_web, vip, port_id] }
+      vip: {"protocol_port": 80,"address": { "Fn::Replace": [ {'.0/24': '.100'}, {get_param: nodes_net_cidr} ] } }
 
   lb_web:
     type: OS::Neutron::LoadBalancer
     properties:
       pool_id: { get_resource: pool_web }
       protocol_port: 80
+
+
+ 
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      fixed_ip_address: { get_attr: [pool_web, vip, address] }
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+      port_id: { get_attr: [pool_web, vip, port_id] }
+
+
 ######################################
 #lb databases
 ################################################
-  lb_vip_port_db:
-    type: OS::Neutron::Port
-    properties:
-      security_groups: [{ get_resource: sg_db }]
-      network_id: { get_resource: db_net }
-      fixed_ips:
-        - subnet_id: { get_resource: db_subnet }
+  
 
   pool_db:
     type: OS::Neutron::Pool
@@ -389,13 +376,14 @@ resources:
       protocol: TCP
       lb_method: ROUND_ROBIN
       subnet: { get_resource: db_subnet }
-      vip: {"protocol_port": 3306}
-
+      vip: {"protocol_port": 3306,"address": { "Fn::Replace": [ {'.0/24': '.3'}, {get_param: db_net_cidr} ] } }
+  
   lb_db:
     type: OS::Neutron::LoadBalancer
     properties:
       pool_id: { get_resource: pool_db }
       protocol_port: 3306
+
 
 
 #---------#
@@ -429,3 +417,4 @@ outputs:
   Database_port:
     description: database port
     value: 3306
+
