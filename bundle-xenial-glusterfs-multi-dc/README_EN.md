@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 25 : GlusterFs multi Data center #
+# 5 Minutes Stacks, episode 25 : GlusterFs multi Data center #
 
 ## Episode 25 : GlusterFs multi Data center
 
@@ -41,7 +41,6 @@ It can easily scale up to petabytes of storage which is available to user under 
 
 * `stack-start-fr1.sh`:  Stack launching script in fr1 zone . This is a small script that will save you some copy-paste.
 * `stack-start-fr2.sh`:  Stack launching script in fr2 zone . This is a small script that will save you some copy-paste.
-
 
 * `stack-get-url.sh`: Flotting IP recovery script.
 
@@ -95,7 +94,7 @@ parameters:
 [...]
 ~~~
 
- With the `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml` file, you will find at the top a section named `parameters`. The both parameteres to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account and the second called `slave_public_ip` must contain flotting ip stack fr2. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+ With the `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml` file, you will find at the top a section named `parameters`. The both parameters to adjust are the first called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account and the second called `slave_public_ip` must contain flotting ip stack fr2. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
  ~~~ yaml
 heat_template_version: 2013-05-23
@@ -128,16 +127,13 @@ parameters:
 
 [...]
 ~~~
-
-
-
 ### Start stack
 
  In a shell, run the script `stack-start.sh`:
 
 ~~~bash
 $ export OS_REGION_NAME=fr2
-$ ./stack-start-fr2.sh your_stack_name votre_nom_clé
+$ ./stack-start-fr2.sh your_stack_name
 ~~~
 
 Exemple :
@@ -172,10 +168,10 @@ The `start-stack-fr2.sh` script takes care of running the API necessary requests
 * Starts an Ubuntu xenial based instance on fr2 zone
 * Expose it on the Internet via a floating IP.
 
-After deployment of the stack on fr2, you launch the stack on fr1.
+After deployment of the stack on fr2 zone, you can launch the stack on fr1 zone.
 ~~~bash
 $ export OS_REGION_NAME=fr1
-$ ./stack-start-fr1.sh your_stack_name flotting_ip_stack_fr2
+$ ./stack-start-fr1.sh your_stack_name
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
@@ -208,10 +204,8 @@ The stack will be automatically generated (you can see its progress by clicking 
 
 If you've reached this point, you're already done! Go enjoy Mail!
 
-
 ## Enjoy
 
-Afin de tester l'etat de la réplication entre les deux serveurs, connectez sur glusterfs fr1, puis tapez la commande suivante.
 In order to test the replication state between the both servers, connect to glusterfs fr1, then type the following command.
 ~~~bash
 # gluster vol geo-rep datastore your_stack_name-gluster-dc2::datastore status
@@ -219,11 +213,9 @@ MASTER NODE            MASTER VOL    MASTER BRICK     SLAVE USER    SLAVE       
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 your_stack_name-gluster-dc1    datastore     /brick/brick1    root          your_stack_name-gluster-dc2::datastore    storage-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
 your_stack_name-gluster-dc1    datastore     /brick/brick2    root          your_stack_name-gluster-dc2::datastore    your_stack_name-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56    
-
-
 ~~~
 
-You can mount the glusterfs volume in a client machine that connects to the same network as the server machine, for example:
+You can mount the glusterfs volume in a client machine that connects to the same network as the server machine :
 ~~~bash
 # apt-get -y install gusterfs-client
 # mkdir /mnt/datastore
@@ -239,9 +231,8 @@ You can mount the glusterfs volume in a client machine that connects to the same
 
 ## So watt?
 
-On each server glusterfs either fr1 or fr2, we created a volume replication `datastore` that contains two bricks `/brick/brick1` and `/brick/brick2`,
-so you can add other bricks for knowing how, click this [link](https://access.redhat.com/documentation/en-US/Red_Hat_Storage/2.1/html/Administration_Guide/Expanding_Volumes.html)
-
+On each server glusterfs either fr1 or fr2, we created a replication volume `datastore` that contains two bricks `/brick/brick1` and `/brick/brick2`,
+so you can add other bricks for knowing how, click on this [link](https://access.redhat.com/documentation/en-US/Red_Hat_Storage/2.1/html/Administration_Guide/Expanding_Volumes.html)
 
 
 ### Other resources you could be interested in:

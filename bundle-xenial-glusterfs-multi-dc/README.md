@@ -232,7 +232,6 @@ Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte 
 # mkdir /mnt/datastore
 # mount -t glusterfs nom_de_votre_stack-gluster-dc1:datastore /mnt/datastore
 ~~~
-
 **Pour pour redémarrer le service gluterfs-server **
 
 ~~~ bash
