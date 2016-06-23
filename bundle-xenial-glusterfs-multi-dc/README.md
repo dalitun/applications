@@ -198,7 +198,7 @@ Le script `start-stack-fr1.sh` s'occupe de lancer les appels nécessaires sur le
 ## C’est bien tout ça,
 ### mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
+Et bien si ! En utilisant la console, vous pouvez déployer les deux serveurs glusterfs:
 
 1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-xenial-glusterfs-multi-dc](https://github.com/cloudwatt/applications/tree/master/bundle-xenial-glusterfs-multi-dc)
 2.	Cliquez sur le fichier nommé `bundle-xenial-glusterfs-multi-dc-fr1(ou 2).heat.yml`
@@ -217,10 +217,14 @@ C’est (déjà) FINI !
 
 ## Enjoy
 
-Afin de tester l'etat de la réplication entre les deux serveurs, connectez sur glusterfs fr1, puis tapez les commandes suivantes.
+Afin de tester l'etat de la réplication entre les deux serveurs, connectez sur glusterfs fr1, puis tapez la commande suivante.
 ~~~bash
-# gluster vol info
 # gluster vol geo-rep datastore nom_de_votre_stack-gluster-dc2::datastore status
+MASTER NODE            MASTER VOL    MASTER BRICK     SLAVE USER    SLAVE                             SLAVE NODE             STATUS    CRAWL STATUS       LAST_SYNCED                  
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+nom_de_votre_stack-gluster-dc1    datastore     /brick/brick1    root          nom_de_votre_stack-gluster-dc2::datastore    nom_de_votre_stack-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
+nom_de_votre_stack-gluster-dc1    datastore     /brick/brick2    root          nom_de_votre_stack-gluster-dc2::datastore    nom_de_votre_stack-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
+
 ~~~
 
 Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte dans le même réseau que la machine serveur par exemple:

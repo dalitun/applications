@@ -136,13 +136,13 @@ parameters:
 
 ~~~bash
 $ export OS_REGION_NAME=fr2
-$ ./stack-start-fr2.sh you_stack_name votre_nom_clé
+$ ./stack-start-fr2.sh your_stack_name votre_nom_clé
 ~~~
 
 Exemple :
 
+$ ./stack-start-fr2.sh  your_stack_name
 ~~~bash
-$ ./stack-start-fr2.sh  you_stack_name
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
@@ -153,7 +153,7 @@ $ ./stack-start-fr2.sh  you_stack_name
  Wait **5 minutes** the stack will be fully operational. (Use watch to see the status in real-time)
 
 ~~~bash
-$ heat resource-list you_stack_name
+$ heat resource-list your_stack_name
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
 | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
@@ -174,11 +174,11 @@ The `start-stack-fr2.sh` script takes care of running the API necessary requests
 After deployment of the stack on fr2, you launch the stack on fr1.
 ~~~bash
 $ export OS_REGION_NAME=fr1
-$ ./stack-start-fr1.sh you_stack_name flotting_ip_stack_fr2
+$ ./stack-start-fr1.sh your_stack_name flotting_ip_stack_fr2
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
-| ee873a3a-a306-4127-8647-4bc80469cec4 | you_stack_name       | CREATE_IN_PROGRESS | 2016-06-22T11:03:51Z |
+| ee873a3a-a306-4127-8647-4bc80469cec4 | your_stack_name       | CREATE_IN_PROGRESS | 2016-06-22T11:03:51Z |
 +--------------------------------------+-----------------+--------------------+----------------------+
 ~~~
 
@@ -190,7 +190,7 @@ The `start-stack-fr1.sh` script takes care of running the API necessary requests
 ## All of this is fine,
 ### but you do not have a way to create the stack from the console?
 
-We do indeed! Using the console, you can deploy a mail server:
+We do indeed! Using the console, you can deploy a the both glusterfs servers:
 
 1.	Go the Cloudwatt Github in the [applications/bundle-xenial-glusterfs-multi-dc]https://github.com/cloudwatt/applications/tree/master/bundle-xenial-glusterfs-multi-dc) repository
 2.	Click on the file named `bundle-xenial-glusterfs-multi-dc-fr1(ou 2).heat.yml` (or `bundle-xenial-glusterfs-multi-dc-fr1(ou 2).restore.heat.yml` to [restore from backup](#backup))
@@ -208,21 +208,25 @@ The stack will be automatically generated (you can see its progress by clicking 
 If you've reached this point, you're already done! Go enjoy Mail!
 
 
-
 ## Enjoy
 
 Afin de tester l'etat de la réplication entre les deux serveurs, connectez sur glusterfs fr1, puis tapez la commande suivante.
-In order to test the replication state between the both servers, connect to glusterfs fr1, then type the following commands.
+In order to test the replication state between the both servers, connect to glusterfs fr1, then type the following command.
 ~~~bash
-# gluster vol info
-# gluster vol geo-rep datastore nom_de_votre_stack-gluster-dc2::datastore status
+# gluster vol geo-rep datastore your_stack_name-gluster-dc2::datastore status
+MASTER NODE            MASTER VOL    MASTER BRICK     SLAVE USER    SLAVE                             SLAVE NODE             STATUS    CRAWL STATUS       LAST_SYNCED                  
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+your_stack_name-gluster-dc1    datastore     /brick/brick1    root          your_stack_name-gluster-dc2::datastore    storage-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
+your_stack_name-gluster-dc1    datastore     /brick/brick2    root          your_stack_name-gluster-dc2::datastore    your_stack_name-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56    
+
+
 ~~~
 
 You can mount the glusterfs volume in a client machine that connects to the same network as the server machine, for example:
 ~~~bash
 # apt-get -y install gusterfs-client
 # mkdir /mnt/datastore
-# mount -t glusterfs nom_de_votre_stack-gluster-dc1:datastore /mnt/datastore
+# mount -t glusterfs your_stack_name-gluster-dc1:datastore /mnt/datastore
 ~~~
 
 **To restart gluterfs-server service **
