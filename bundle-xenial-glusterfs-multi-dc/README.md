@@ -46,11 +46,10 @@ Une fois le dépôt cloné, vous trouverez le répertoire `bundle-xenial-gluster
 * `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr1.
 * `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire dans la zone fr2.
 
-* `stack-start-fr1.sh`: Scipt de lancement de la stack dans la zone fr1, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
-* `stack-get-url-fr1.sh`: Script de récupération de l'IP d'entrée de votre stack dans la zone fr1, qui peut aussi se trouver dans les parametres de sortie de la stack sur la zone fr1.
+* `stack-start-fr1.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 
 * `stack-start-fr2.sh`: Scipt de lancement de la stack dans la zone fr2, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
-* `stack-get-url-fr2.sh`: Script de récupération de l'IP d'entrée de votre stack dans la zone fr2, qui peut aussi se trouver dans les parametres de sortie de la stack sur la zone fr2.
+* `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack dans la zone fr2, qui peut aussi se trouver dans les parametres de sortie de la stack.
 ## Démarrage
 
 ### Initialiser l'environnement
@@ -150,7 +149,7 @@ parameters:
 
 D'abord il faut lancer lancer les stack sur fr2 le premier ,puis lancer le stack sur fr1.
 Il faut aussi que les deux stack sur fr1 et fr2 aient le même nom.
-Dans un shell,lancer le script `stack-start-dc2.sh`:
+Dans un shell,lancer le script `stack-start-fr2.sh`:
 
 ~~~bash
 $ export OS_REGION_NAME=fr2
@@ -251,7 +250,7 @@ Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte 
 ## So watt?
 
 Sur chaque serveur glusterfs soit sur fr1 ou fr2, on a créé un volume replication `datastore` qui contient deux bricks `/brick/brick1` et `/brick/brick2`,
-donc vous pouvez ajouter autres bricks, pour savoir comment cliquez sur ce [ lien ](https://support.rackspace.com/how-to/add-and-remove-glusterfs-servers/) 
+donc vous pouvez ajouter autres bricks, pour savoir comment cliquez sur ce [lien](https://support.rackspace.com/how-to/add-and-remove-glusterfs-servers/)
 
 
 

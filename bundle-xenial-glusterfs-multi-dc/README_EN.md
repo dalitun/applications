@@ -4,8 +4,8 @@
 
 ![gluster](https://www.gluster.org/images/antmascot.png?1458134976)
 
-GlusterFS is a powerful network/cluster filesystem written in user space which uses FUSE to hook itself with VFS layer. 
-GlusterFS takes a layered approach to the file system, where features are added/removed as per the requirement. 
+GlusterFS is a powerful network/cluster filesystem written in user space which uses FUSE to hook itself with VFS layer.
+GlusterFS takes a layered approach to the file system, where features are added/removed as per the requirement.
 Though GlusterFS is a File System, it uses already tried and tested disk file systems like ext3, ext4, xfs, etc. to store the data.
 It can easily scale up to petabytes of storage which is available to user under a single mount point.
 
@@ -35,15 +35,14 @@ It can easily scale up to petabytes of storage which is available to user under 
 ## What will you find in the repository
 
  Once you have cloned the github, you will find in the `bundle-xenial-glusterfs-multi-dc/` repository:
- 
+
 * `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure in fr1 zone.
 * `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure in fr2 zone.
 
-* `stack-start-fr1.sh`:  Stack launching script in fr1 zone . This is a small script that will save you some copy-paste.
 * `stack-get-url-fr1.sh`: Flotting IP recovery script for fr1 stack.
 
 * `stack-start-fr2.sh`:  Stack launching script in fr2 zone . This is a small script that will save you some copy-paste.
-* `stack-get-url-fr2.sh`: Flotting IP recovery script for fr2 stack.
+* `stack-start-fr1.sh`:  Stack launching script in fr1 zone . This is a small script that will save you some copy-paste.
 
 ## Start-up
 
@@ -131,9 +130,9 @@ parameters:
      default: 0.0.0.0                      <-- Indicate here flotting ip glusterfs dc 2
 
 [...]
-~~~ 
- 
- 
+~~~
+
+
 
 ### Start stack
 
@@ -173,7 +172,7 @@ $ heat resource-list you_stack_name
 
 The `start-stack-fr2.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
-* Starts an Ubuntu xenial based instance on fr2 zone 
+* Starts an Ubuntu xenial based instance on fr2 zone
 * Expose it on the Internet via a floating IP.
 
 After deployment of the stack on fr2, you launch the stack on fr1.
@@ -189,7 +188,7 @@ $ ./stack-start-fr1.sh you_stack_name flotting_ip_stack_fr2
 
 The `start-stack-fr1.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
-* Starts an Ubuntu xenial based instance on fr1 zone 
+* Starts an Ubuntu xenial based instance on fr1 zone
 * Expose it on the Internet via a floating IP.
 
 ## All of this is fine,
@@ -240,7 +239,7 @@ You can mount the glusterfs volume in a client machine that connects to the same
 ## So watt?
 
 On each server glusterfs either fr1 or fr2, we created a volume replication `datastore` that contains two bricks `/brick/brick1` and `/brick/brick2`,
-so you can add other bricks for knowing how, click this [link](https://support.rackspace.com/how-to/add-and-remove-glusterfs-servers/) 
+so you can add other bricks for knowing how, click this [link](https://support.rackspace.com/how-to/add-and-remove-glusterfs-servers/)
 
 
 
