@@ -189,7 +189,7 @@ The `start-stack-fr1.sh` script takes care of running the API necessary requests
 
 We do indeed! Using the console, you can deploy a the both glusterfs servers:
 
-1.	Go the Cloudwatt Github in the [applications/bundle-xenial-glusterfs-multi-dc]https://github.com/cloudwatt/applications/tree/master/bundle-xenial-glusterfs-multi-dc) repository
+1.	Go the Cloudwatt Github in the [applications/bundle-xenial-glusterfs-multi-dc](https://github.com/cloudwatt/applications/tree/master/bundle-xenil-glusterfs-multi-dc) repository.
 2.	Click on the file named `bundle-xenial-glusterfs-multi-dc-fr1(ou 2).heat.yml` (or `bundle-xenial-glusterfs-multi-dc-fr1(ou 2).restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
