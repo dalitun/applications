@@ -39,10 +39,10 @@ It can easily scale up to petabytes of storage which is available to user under 
 * `bundle-xenial-glusterfs-multi-dc-fr1.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure in fr1 zone.
 * `bundle-xenial-glusterfs-multi-dc-fr2.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure in fr2 zone.
 
-* `stack-get-url-fr1.sh`: Flotting IP recovery script for fr1 stack.
-
 * `stack-start-fr2.sh`:  Stack launching script in fr2 zone . This is a small script that will save you some copy-paste.
 * `stack-start-fr1.sh`:  Stack launching script in fr1 zone . This is a small script that will save you some copy-paste.
+
+* `stack-get-url-fr1.sh`: Flotting IP recovery script for fr1 stack.
 
 ## Start-up
 

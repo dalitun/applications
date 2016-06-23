@@ -50,6 +50,7 @@ Une fois le dépôt cloné, vous trouverez le répertoire `bundle-xenial-gluster
 
 * `stack-start-fr2.sh`: Scipt de lancement de la stack dans la zone fr2, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack dans la zone fr2, qui peut aussi se trouver dans les parametres de sortie de la stack.
+
 ## Démarrage
 
 ### Initialiser l'environnement
