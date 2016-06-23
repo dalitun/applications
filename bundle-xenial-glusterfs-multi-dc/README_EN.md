@@ -211,7 +211,7 @@ In order to test the replication state between the both servers, connect to glus
 # gluster vol geo-rep datastore your_stack_name-gluster-dc2::datastore status
 MASTER NODE            MASTER VOL    MASTER BRICK     SLAVE USER    SLAVE                             SLAVE NODE             STATUS    CRAWL STATUS       LAST_SYNCED                  
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-your_stack_name-gluster-dc1    datastore     /brick/brick1    root          your_stack_name-gluster-dc2::datastore    storage-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
+your_stack_name-gluster-dc1    datastore     /brick/brick1    root          your_stack_name-gluster-dc2::datastore    your_stack_name-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
 your_stack_name-gluster-dc1    datastore     /brick/brick2    root          your_stack_name-gluster-dc2::datastore    your_stack_name-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56    
 ~~~
 
