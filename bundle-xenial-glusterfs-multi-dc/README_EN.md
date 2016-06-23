@@ -232,7 +232,7 @@ You can mount the glusterfs volume in a client machine that connects to the same
 ## So watt?
 
 On each server glusterfs either fr1 or fr2, we created a replication volume `datastore` that contains two bricks `/brick/brick1` and `/brick/brick2`,
-so you can add other bricks for knowing how, click on this [link](https://access.redhat.com/documentation/en-US/Red_Hat_Storage/2.1/html/Administration_Guide/Expanding_Volumes.html)
+so you can add other bricks for knowing how, click on this [link](https://access.redhat.com/documentation/en-US/Red_Hat_Storage/2.1/html/Administration_Guide/Expanding_Volumes.html).
 
 
 ### Other resources you could be interested in:
