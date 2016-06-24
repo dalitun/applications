@@ -49,8 +49,13 @@ resources:
     type: OS::Neutron::SecurityGroup
     properties:
       rules:
-        - { direction: ingress, protocol: TCP }
-        - { direction: ingress, protocol: UDP }
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+        - { direction: ingress, protocol: TCP, port_range_min: 24007 , port_range_max: 24007 }
+        - { direction: ingress, protocol: TCP, port_range_min: 111 , port_range_max: 111 }
+        - { direction: ingress, protocol: TCP, port_range_min: 2049   , port_range_max: 2049 }
+        - { direction: ingress, protocol: TCP, port_range_min: 38465 , port_range_max: 38469 }
+        - { direction: ingress, protocol: TCP, port_range_min:  49152 , port_range_max:  49152 }
+        - { direction: ingress, protocol: TCP, port_range_min: 111 , port_range_max: 111 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
@@ -69,7 +74,7 @@ resources:
       flavor: { get_param: flavor_name }
       name:
          str_replace:
-            template: $stack-gluster-dc1
+            template: $stack-dc1
             params:
                 $stack: { get_param: 'OS::stack_name' }
       networks:
@@ -81,11 +86,12 @@ resources:
         str_replace:
           template: |
             #!/bin/bash
-             echo "$slave_public_ip $stack-gluster-dc2 " >> /etc/hosts
+             SLAVE_HOST=$(echo $stack-dc2 | tr ‘[A-Z]’ ‘[a-z]’) 
+             echo "$slave_public_ip $SLAVE_HOST" >> /etc/hosts
              mkdir /etc/ansible
              cat << EOF >> /etc/ansible/vars.yml
                 master: true
-                hostname_slave: $stack-gluster-dc2
+                hostname_slave: $SLAVE_HOST
             EOF
              sudo export ANSIBLE_HOST_KEY_CHECKING=False
              sudo ansible-playbook /root/install.yml -e @/etc/ansible/vars.yml
