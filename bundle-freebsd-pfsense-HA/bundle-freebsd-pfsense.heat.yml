@@ -229,7 +229,7 @@ resources:
       user_data:
          str_replace:
            template: |
-               ip_lan=$ip_lan$&ip_gateway=$ip_gateway$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$&ip_sync=$ip_sync$
+               ip_lan=$ip_lan$&ip_gateway=$ip_gateway$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$&ip_sync=$ip_sync$&ip_sync_gateway=ip_sync_gateway$
 
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
@@ -237,6 +237,7 @@ resources:
                $dhcp_to$ : { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
                $dhcp_from$: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
                $ip_sync$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
+               $ip_sync_gateway: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: sync_net_cidr} ] }
 
 
   firewall2:
@@ -253,7 +254,8 @@ resources:
        user_data:
         str_replace:
            template: |
-               ip_lan=$ip_lan$&ip_gateway=$ip_gateway$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$&ip_sync=$ip_sync$
+               ip_lan=$ip_lan$&ip_gateway=$ip_gateway$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$&ip_sync=$ip_sync$&ip_sync_gateway=ip_sync_gateway$
+
 
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: private_net_cidr} ] }
@@ -261,6 +263,7 @@ resources:
                $dhcp_to$ : { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
                $dhcp_from$: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
                $ip_sync$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
+               $ip_sync_gateway: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: sync_net_cidr} ] }
 
   
   admingw:

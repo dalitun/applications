@@ -69,6 +69,7 @@ $config['interfaces']['lan']['gateway']= 'GW_LAN_'.$k;
 $config['dhcpd']['lan']['enable'] = true;
 $config['dhcpd']['lan']['range']['from']=$dhcp_to;
 $config['dhcpd']['lan']['range']['to']=$dhcp_from;
+###conf synnc interface
 
 
 
