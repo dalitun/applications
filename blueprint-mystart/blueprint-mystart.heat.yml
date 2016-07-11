@@ -43,7 +43,7 @@ resources:
         - { direction: egress, protocol: UDP }
       name:
         str_replace:
-           template: start-sg-stack
+           template: start-sg-$stack
            params:
                $stack: { get_param: 'OS::stack_name' }
 
