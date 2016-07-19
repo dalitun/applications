@@ -28,20 +28,6 @@ function retrieveMetaData($url) {
         return($metadata);
 }
 
-function retrievePublicIP() {
-
-	$wanintf = get_real_wan_interface();
-
-	$url = "http://169.254.169.254/latest/meta-data/public-ipv4";
-	$public_ipv4 = retrieveMetaData($url);
-
-	if (is_ipaddrv4($public_ipv4)) {
-		$natipfile = "/var/db/natted_{$wanintf}_ip";
-		file_put_contents($natipfile, $public_ipv4);
-
-	}
-
-}
 
 function addSSHkey(){
 
@@ -51,21 +37,39 @@ shell_exec ('echo "' . $key .'">>~/.ssh/authorized_keys');
 }
 ####main#################################
 
+$config['system']['hostname'] = 'master';
+$config['system']['domain'] = 'localdomain';
+$config['system']['dnsserver']['0'] = '8.8.8.8';
+$config['system']['dnsserver']['1'] = '8.8.4.4';
+
+$config['interfaces']['wan']['enable'] = 'true';
+$config['interfaces']['wan']['if'] = 'em0';
+$config['interfaces']['wan']['descr'] = 'WAN';
+$config['interfaces']['wan']['ipaddr'] = 'dhcp';
+
 $tmp=retrieveMetaData("http://169.254.169.254/openstack/latest/user_data");
 parse_str($tmp);
 parse_config(true);
-
 if($config['interfaces']['lan']['ipaddr'] != $ip_lan)
 {
+
 addSSHkey();
 #retrievePublicIP();
+
+
+$config['interfaces']['lan']['enable'] = 'true';
+$config['interfaces']['lan']['if'] = 'em1';
+$config['interfaces']['lan']['descr'] = 'LAN';
+$config['interfaces']['lan']['ipaddr'] = '172.16.0.2';
+$config['interfaces']['lan']['subnet'] = '24';
+$config['interfaces']['pfsync']['enable'] = 'true';
+$config['interfaces']['pfsync']['if'] = 'em2';
+$config['interfaces']['pfsync']['descr'] = 'PFSYNC';
+$config['interfaces']['pfsync']['ipaddr'] = '192.168.254.1';
+$config['interfaces']['pfsync']['subnet'] = '29';
 $config['interfaces']['lan']['enable'] = true;
 $config['interfaces']['lan']['ipaddr']= $ip_lan;
 $config['interfaces']['lan']['subnet']= $netmask;
-$c=count($config['gateways']['gateway_item']);
-$k=$c + 1;
-$config['gateways']['gateway_item'][$c] = array('interface'=>'lan', 'gateway'=>$ip_gateway, 'name'=>'GW_LAN_'.$k,'weight'=>1,'ipprotocol'=>'inet','interval'=>'','descr'=>'Interface lan Gateway');
-$config['interfaces']['lan']['gateway']= 'GW_LAN_'.$k;
 $config['dhcpd']['lan']['enable'] = true;
 $config['dhcpd']['lan']['range']['from']=$dhcp_to;
 $config['dhcpd']['lan']['range']['to']=$dhcp_from;
