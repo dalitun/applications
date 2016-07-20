@@ -68,6 +68,39 @@ resources:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: public_net_cidr} ] }
           end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: public_net_cidr} ] }
 
+
+  router:
+    type: OS::Neutron::Router
+    properties:
+      admin_state_up: true
+      external_gateway_info:
+        enable_snat: true
+        network: "public"
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource : router }
+      subnet_id: { get_resource : subnet_public }
+
+
+
+
+  manager:
+    type: OS::Neutron::Net
+
+  subnet_manager:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: manager }
+      ip_version: 4
+      dns_nameservers:
+        - 185.23.94.244
+        - 185.23.94.245
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
+
   privatenet:
     type: OS::Neutron::Net
 
@@ -76,7 +109,11 @@ resources:
     properties:
       network_id: { get_resource: privatenet }
       ip_version: 4
+      enable_dhcp: True
       cidr: { get_param: private_net_cidr }
+      host_routes:
+        - destination: 0.0.0.0/0
+          nexthop: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
       gateway_ip: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
       allocation_pools:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
@@ -108,10 +145,7 @@ resources:
         - { direction: egress, protocol: UDP }
 
 
-  fw_floating_ip:
-    type: OS::Neutron::FloatingIP
-    properties:
-      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
 
   admin_floating_ip:
     type: OS::Neutron::FloatingIP
@@ -124,13 +158,13 @@ resources:
       config:
          str_replace:
            template: |
-               ip_lan=$ip_lan$&ip_gateway=$ip_gateway$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$
+                ip_lan=$ip_lan$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$&hostname=$name$&domain=cloudwatt
 
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
-               $ip_gateway$: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: private_net_cidr} ] }
                $dhcp_to$ : { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
                $dhcp_from$: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
+               $name$: { get_param: 'OS::stack_name' }
 
 
 
@@ -147,13 +181,13 @@ resources:
         str_replace:
           template: |
             #!/bin/bash
-
-            ip route add default via $route$
+            dhclient eth1
+            route add -net $public_net_cidr$ gw $gw$ eth1
+            #route add default via $gw$
             apt-get install -y lynx
 
           params:
-            $route$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: public_net_cidr} ] }
-            $floating_ip$: { get_attr: [admin_floating_ip, floating_ip_address] }
+            $gw$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
             $public_net_cidr$: { get_param: public_net_cidr }
 
   admin_init:
@@ -172,6 +206,8 @@ resources:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: privatenet }
+      allowed_address_pairs:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
           subnet_id: { get_resource: subnet_private }
@@ -181,7 +217,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 719e29c1-96c0-46e9-991b-e8bbd49fdd5c
+      image: fadcd5f8-3932-4152-9ae5-e5e86f31923b
       flavor: { get_param: flavor_name_fw }
       networks:
         - port: { get_resource: fw_public_port }
@@ -190,16 +226,35 @@ resources:
       user_data:
         get_resource: fw_postboot
 
+  admin_private_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: privatenet }
+      fixed_ips:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.22'}, {get_param: private_net_cidr} ] }
+          subnet_id: { get_resource: subnet_private }
+      security_groups: [{ get_resource: admin_sg }]
+
+  admin_manager_port:
+    type: OS::Neutron::Port
+    properties:
+      network: { get_resource: manager }
+      fixed_ips:
+        - ip_address: 10.0.1.254
+          subnet_id: { get_resource: subnet_manager }
+      security_groups:
+        - { get_resource: fw_sg }
+
   admingw:
     type: OS::Nova::Server
+    depends_on: firewall
     properties:
       key_name: { get_param: keypair_name }
       image: Ubuntu 14.04
       flavor: { get_param: flavor_name_admin }
       networks:
-        - { network: { get_resource: privatenet } }
-      security_groups:
-        - { get_resource: admin_sg }
+        - port: { get_resource: admin_manager_port }
+        - port: { get_resource: admin_private_port }
       user_data_format: RAW
       user_data:
         get_resource: admin_init
@@ -210,11 +265,38 @@ resources:
       floating_ip: { get_resource: admin_floating_ip }
       server_id: { get_resource: admingw}
 
-  fw_floating_ass:
-    type: OS::Neutron::FloatingIPAssociation
+  client_port:
+    type: OS::Neutron::Port
     properties:
-      floatingip_id: { get_resource: fw_floating_ip }
-      port_id: { get_resource: fw_public_port }
+      network_id: { get_resource: privatenet }
+      fixed_ips:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.222'}, {get_param: private_net_cidr} ] }
+          subnet_id: { get_resource: subnet_private }
+      security_groups: [{ get_resource: admin_sg }]
+
+
+  client:
+    type: OS::Nova::Server
+    depends_on: firewall
+    properties:
+      key_name: { get_param: keypair_name }
+      image: Ubuntu 14.04
+      flavor: { get_param: flavor_name_admin }
+      networks:
+        - port: { get_resource: client_port }
+      user_data_format: RAW
+      user_data:
+        str_replace:
+          template: |
+            #!/bin/bash
+            dhclient eth0
+            #route add default via $gw$
+          params:
+            $gw$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+
+
+
+
 
 outputs:
   admin_floating_ip:
