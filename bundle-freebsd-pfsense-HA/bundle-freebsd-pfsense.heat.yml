@@ -274,7 +274,7 @@ resources:
 
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: private_net_cidr} ] }
-               $ip_sync$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
+               $ip_sync$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
                $ip_sync_master$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
                $stack$: { get_param: 'OS::stack_name' }
 
