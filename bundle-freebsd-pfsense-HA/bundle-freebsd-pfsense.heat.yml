@@ -55,14 +55,15 @@ parameters:
     description: /24 cidr of private network
     type: string
 
-  
+
   sync_net_cidr:
     description: /24 cidr of private network
-    type: string  
+    type: string
 
 
 resources:
-  network: 
+
+  network:
     type: OS::Neutron::Net
 
   subnet_public:
@@ -75,6 +76,20 @@ resources:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: public_net_cidr} ] }
           end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: public_net_cidr} ] }
 
+  router:
+    type: OS::Neutron::Router
+    properties:
+      admin_state_up: true
+      external_gateway_info:
+        enable_snat: true
+        network: "public"
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource : router }
+      subnet_id: { get_resource : subnet_public }
+
   privatenet:
     type: OS::Neutron::Net
 
@@ -83,13 +98,17 @@ resources:
     properties:
       network_id: { get_resource: privatenet }
       ip_version: 4
+      enable_dhcp: True
       cidr: { get_param: private_net_cidr }
+      host_routes:
+        - destination: 0.0.0.0/0
+          nexthop: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
       gateway_ip: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
       allocation_pools:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
           end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
 
-  syncnet: 
+  syncnet:
     type: OS::Neutron::Net
 
   subnet_sync:
@@ -101,8 +120,20 @@ resources:
       allocation_pools:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: sync_net_cidr} ] }
           end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: sync_net_cidr} ] }
+  manager:
+    type: OS::Neutron::Net
 
-
+  subnet_manager:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: manager }
+      ip_version: 4
+      dns_nameservers:
+        - 185.23.94.244
+        - 185.23.94.245
+      cidr: 10.0.1.0/24
+      allocation_pools:
+        - { start: 10.0.1.100, end: 10.0.1.199 }
 
 
   admin_sg:
@@ -118,14 +149,13 @@ resources:
         - { direction: egress, protocol: UDP }
 
 
-
   fw_sg:
     type: OS::Neutron::SecurityGroup
     properties:
       rules:
-        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
-        - { direction: ingress, protocol: TCP, port_range_min: 443, port_range_max: 443 }
-        - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
+        - { direction: ingress, protocol: TCP }
+        - { direction: ingress, protocol: UDP }
+        - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
@@ -143,56 +173,56 @@ resources:
         - { direction: egress, protocol: UDP }
 
 
-
-  fw_floating_ip:
-    type: OS::Neutron::FloatingIP
-    properties:
-      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
-
-  
-  fw2_floating_ip:
-    type: OS::Neutron::FloatingIP
-    properties:
-      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
-
-
   admin_floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
       floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
 
-  fw_public_port:
+  master_public_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: network }
       security_groups: [{ get_resource: fw_sg }]
 
-  fw_private_port:
+  master_private_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: privatenet }
-      fixed_ips:
+      allowed_address_pairs:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+      fixed_ips:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.252'}, {get_param: private_net_cidr} ] }
           subnet_id: { get_resource: subnet_private }
       security_groups: [{ get_resource: fw_sg }]
-  
-  fw2_public_port:
+
+  backup_public_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: network }
       security_groups: [{ get_resource: fw_sg }]
 
-  fw2_private_port:
+  backup_private_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: privatenet }
+      allowed_address_pairs:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: private_net_cidr} ] }
           subnet_id: { get_resource: subnet_private }
       security_groups: [{ get_resource: fw_sg }]
 
 
-  fw_sync_port:
+  master_sync_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: syncnet }
+      fixed_ips:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
+          subnet_id: { get_resource: subnet_sync }
+      security_groups: [{ get_resource: sync_sg }]
+
+  backup_sync_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: syncnet }
@@ -201,94 +231,96 @@ resources:
           subnet_id: { get_resource: subnet_sync }
       security_groups: [{ get_resource: sync_sg }]
 
-  fw2_sync_port:
-    type: OS::Neutron::Port
-    properties:
-      network_id: { get_resource: syncnet }
-      fixed_ips:
-        - ip_address: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
-          subnet_id: { get_resource: subnet_sync }
-      security_groups: [{ get_resource: sync_sg }]
-    
 
-
-
-
-
-  firewall:
+  master:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 0635b197-4975-412e-bd21-1abcef503289
+      image: Pfsense.cw.ha
       flavor: { get_param: flavor_name_fw }
       networks:
-        - port: { get_resource: fw_public_port }
-        - port: { get_resource: fw_private_port }
-        - port: { get_resource: fw_sync_port }
+        - port: { get_resource: master_public_port }
+        - port: { get_resource: master_private_port }
+        - port: { get_resource: master_sync_port }
       user_data_format: RAW
       user_data:
          str_replace:
            template: |
-               ip_lan=$ip_lan$&ip_gateway=$ip_gateway$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$&ip_sync=$ip_sync$&ip_sync_gateway=ip_sync_gateway$
+               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=MASTER&ip_sync_backup=$ip_sync_backup$&vip_lan=$vip_lan$&hostname=$stack$2&domain=cloudwatt
 
            params:
-               $ip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
-               $ip_gateway$: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: private_net_cidr} ] }
-               $dhcp_to$ : { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
-               $dhcp_from$: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
-               $ip_sync$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
-               $ip_sync_gateway: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: sync_net_cidr} ] }
+               $ip_lan$: { "Fn::Replace": [ {'.0/24': '.252'}, {get_param: private_net_cidr} ] }
+               $ip_sync$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
+               $ip_sync_backup$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
+               $vip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+               $stack$: { get_param: 'OS::stack_name' }
 
 
-  firewall2:
+  backup:
      type: OS::Nova::Server
      properties:
        key_name: { get_param: keypair_name }
-       image: 0635b197-4975-412e-bd21-1abcef503289
+       image: Pfsense.cw.ha
        flavor: { get_param: flavor_name_fw }
        networks:
-         - port: { get_resource: fw2_public_port }
-         - port: { get_resource: fw2_private_port }
-         - port: { get_resource: fw2_sync_port }
+         - port: { get_resource: backup_public_port }
+         - port: { get_resource: backup_private_port }
+         - port: { get_resource: backup_sync_port }
        user_data_format: RAW
        user_data:
         str_replace:
            template: |
-               ip_lan=$ip_lan$&ip_gateway=$ip_gateway$&netmask=24&dhcp_to=$dhcp_to$&dhcp_from=$dhcp_from$&ip_sync=$ip_sync$&ip_sync_gateway=ip_sync_gateway$
-
+               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=BACKUP&ip_sync_master=$ip_sync_master$&hostname=$stack$2&domain=cloudwatt
 
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: private_net_cidr} ] }
-               $ip_gateway$: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: private_net_cidr} ] }
-               $dhcp_to$ : { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
-               $dhcp_from$: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
                $ip_sync$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
-               $ip_sync_gateway: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: sync_net_cidr} ] }
+               $ip_sync_master$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
+               $stack$: { get_param: 'OS::stack_name' }
 
-  
+
+  admin_private_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: privatenet }
+      fixed_ips:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.22'}, {get_param: private_net_cidr} ] }
+          subnet_id: { get_resource: subnet_private }
+      security_groups: [{ get_resource: admin_sg }]
+
+  admin_manager_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: manager }
+      fixed_ips:
+         - ip_address: 10.0.1.254
+           subnet_id: { get_resource: subnet_manager }
+      security_groups:
+           - { get_resource: fw_sg }
+
   admingw:
     type: OS::Nova::Server
+    depends_on: [ master, backup ]
     properties:
       key_name: { get_param: keypair_name }
       image: Ubuntu 14.04
       flavor: { get_param: flavor_name_admin }
       networks:
-        - { network: { get_resource: privatenet } }
-      security_groups:
-        - { get_resource: admin_sg }
+         - port: { get_resource: admin_manager_port }
+         - port: { get_resource: admin_private_port }
       user_data_format: RAW
       user_data:
          str_replace:
-          template: |
-            #!/bin/bash
+           template: |
+             #!/bin/bash
+             dhclient eth1
+             route add -net $public_net_cidr$ gw $gw$ eth1
+             #route add default via $gw$
+             apt-get install -y lynx
+           params:
+             $gw$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+             $public_net_cidr$: { get_param: public_net_cidr }
 
-            ip route add default via $route$
-            apt-get install -y lynx
-
-          params:
-            $route$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: public_net_cidr} ] }
-            $floating_ip$: { get_attr: [admin_floating_ip, floating_ip_address] }
-            $public_net_cidr$: { get_param: public_net_cidr }
 
   admingw_internet_surface:
     type: OS::Nova::FloatingIPAssociation
@@ -296,18 +328,35 @@ resources:
       floating_ip: { get_resource: admin_floating_ip }
       server_id: { get_resource: admingw}
 
-  fw_floating_ass:
-    type: OS::Neutron::FloatingIPAssociation
+  client_port:
+    type: OS::Neutron::Port
     properties:
-      floatingip_id: { get_resource: fw_floating_ip }
-      port_id: { get_resource: fw_public_port }
+      network_id: { get_resource: privatenet }
+      fixed_ips:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.222'}, {get_param: private_net_cidr} ] }
+          subnet_id: { get_resource: subnet_private }
+      security_groups: [{ get_resource: admin_sg }]
 
-  fw2_floating_ass:
-    type: OS::Neutron::FloatingIPAssociation
+
+  client:
+    type: OS::Nova::Server
+    depends_on: [ master, backup ]
     properties:
-      floatingip_id: { get_resource: fw2_floating_ip }
-      port_id: { get_resource: fw2_public_port }
-    
+      key_name: { get_param: keypair_name }
+      image: Ubuntu 14.04
+      flavor: { get_param: flavor_name_admin }
+      networks:
+        - port: { get_resource: client_port }
+      user_data_format: RAW
+      user_data:
+        str_replace:
+          template: |
+            #!/bin/bash
+            dhclient eth0
+            #route add default via $gw$
+          params:
+            $gw$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+
 
 
 outputs:
