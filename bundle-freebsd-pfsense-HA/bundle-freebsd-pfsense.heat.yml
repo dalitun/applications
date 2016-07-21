@@ -161,22 +161,21 @@ resources:
         - { direction: egress, protocol: UDP }
 
 
-  sync_sg:
-    type: OS::Neutron::SecurityGroup
-    properties:
-      rules:
-        - { direction: ingress, protocol: TCP }
-        - { direction: ingress, protocol: ICMP }
-        - { direction: ingress, protocol: UDP }
-        - { direction: egress, protocol: ICMP }
-        - { direction: egress, protocol: TCP }
-        - { direction: egress, protocol: UDP }
-
 
   admin_floating_ip:
     type: OS::Neutron::FloatingIP
     properties:
       floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+  vip_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: privatenet }
+      fixed_ips:
+        - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+          subnet_id: { get_param: subnet_private }
+      security_groups: [{ get_param: fw_sg }]
+
 
   master_public_port:
     type: OS::Neutron::Port
@@ -220,7 +219,7 @@ resources:
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
           subnet_id: { get_resource: subnet_sync }
-      security_groups: [{ get_resource: sync_sg }]
+      security_groups: [{ get_resource: fw_sg }]
 
   backup_sync_port:
     type: OS::Neutron::Port
@@ -229,14 +228,14 @@ resources:
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
           subnet_id: { get_resource: subnet_sync }
-      security_groups: [{ get_resource: sync_sg }]
+      security_groups: [{ get_resource: fw_sg }]
 
 
   master:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: Pfsense.cw.ha
+      image: Pfsense.cw.new
       flavor: { get_param: flavor_name_fw }
       networks:
         - port: { get_resource: master_public_port }
@@ -246,7 +245,7 @@ resources:
       user_data:
          str_replace:
            template: |
-               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=MASTER&ip_sync_backup=$ip_sync_backup$&vip_lan=$vip_lan$&hostname=$stack$2&domain=cloudwatt
+               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=MASTER&ip_sync_backup=$ip_sync_backup$&vip_lan=$vip_lan$&hostname=$stack$1&domain=cloudwatt
 
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.252'}, {get_param: private_net_cidr} ] }
@@ -258,9 +257,10 @@ resources:
 
   backup:
      type: OS::Nova::Server
+     depends_on: master
      properties:
        key_name: { get_param: keypair_name }
-       image: Pfsense.cw.ha
+       image: Pfsense.cw.new
        flavor: { get_param: flavor_name_fw }
        networks:
          - port: { get_resource: backup_public_port }

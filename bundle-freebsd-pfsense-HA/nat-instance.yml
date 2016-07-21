@@ -162,12 +162,10 @@ resources:
                  dhclient eth1
                  sudo sed -i '/^#net.ipv4.ip\_forward/s/^#//g' /etc/sysctl.conf
                  sudo sysctl -p /etc/sysctl.conf
+                 sudo iptables -t nat -A POSTROUTING -o eth1 -s $private_net_cidr$ -j MASQUERADE
 
            params:
-               $ip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
-               $ip_gateway$: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: private_net_cidr} ] }
-               $dhcp_to$ : { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
-               $dhcp_from$: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
+               $private_net_cidr$: { get_param: private_net_cidr }
 
 
   fw_init:
