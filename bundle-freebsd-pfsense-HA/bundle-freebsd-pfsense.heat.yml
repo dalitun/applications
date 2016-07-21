@@ -233,6 +233,7 @@ resources:
 
   master:
     type: OS::Nova::Server
+    depends_on: backup
     properties:
       key_name: { get_param: keypair_name }
       image: Pfsense.cw.new
@@ -257,7 +258,6 @@ resources:
 
   backup:
      type: OS::Nova::Server
-     depends_on: master
      properties:
        key_name: { get_param: keypair_name }
        image: Pfsense.cw.new

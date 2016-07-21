@@ -182,7 +182,7 @@ $config['hasync']['synchronizecaptiveportal'] = 'on';
 	write_config();
   log_error("rc.reload_all: Reloading all configuration settings.");
   shell_exec('/etc/rc.reload_all');
-  wait(10);
+  #wait(10);
  #shell_exec('pfSsh.php playback enableallowallwan');
   shell_exec('/etc/rc.initial');
 }
