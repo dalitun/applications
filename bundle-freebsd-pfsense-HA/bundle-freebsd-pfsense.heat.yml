@@ -90,6 +90,7 @@ resources:
       router_id: { get_resource : router }
       subnet_id: { get_resource : subnet_public }
 
+
   privatenet:
     type: OS::Neutron::Net
 
@@ -103,10 +104,18 @@ resources:
       host_routes:
         - destination: 0.0.0.0/0
           nexthop: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
-      gateway_ip: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+     #gateway_ip: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
       allocation_pools:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: private_net_cidr} ] }
           end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: private_net_cidr} ] }
+
+
+  router_interface2:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource : router }
+      subnet_id: { get_resource : subnet_private }
+
 
   syncnet:
     type: OS::Neutron::Net
@@ -120,6 +129,14 @@ resources:
       allocation_pools:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: sync_net_cidr} ] }
           end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: sync_net_cidr} ] }
+
+  router_interface3:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource : router }
+      subnet_id: { get_resource : subnet_sync }
+
+
   manager:
     type: OS::Neutron::Net
 
