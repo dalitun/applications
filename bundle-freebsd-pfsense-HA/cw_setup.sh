@@ -35,6 +35,75 @@ $key=retrieveMetaData("http://169.254.169.254/latest/meta-data/public-keys/0/ope
 shell_exec ('echo "' . $key .'">>~/.ssh/authorized_keys');
 
 }
+
+function haConfig($ip,$type){
+
+
+###conf synnc interface
+
+$config['interfaces']['pfsync']['enable'] = 'true';
+$config['interfaces']['pfsync']['if'] = 'vtnet2';
+$config['interfaces']['pfsync']['descr'] = 'PFSYNC';
+$config['interfaces']['pfsync']['ipaddr'] = $ip_sync ;
+$config['interfaces']['pfsync']['subnet'] = 24;
+
+$config['filter']['rule']['2']['type'] = 'pass';
+$config['filter']['rule']['2']['interface'] = 'pfsync';
+$config['filter']['rule']['2']['ipprotocol'] = 'inet';
+$config['filter']['rule']['2']['tracker']= '0100000103';
+$config['filter']['rule']['2']['source']['any']= '';
+$config['filter']['rule']['2']['destination']['any'] = '';
+$config['filter']['rule']['2']['descr'] = 'Allow PFSYNC';
+
+
+$config['hasync']['pfsyncenabled'] = 'on';
+$config['hasync']['pfsyncpeerip'] = $ip;# ip backup or master
+$config['hasync']['pfsyncinterface'] = 'pfsync';
+
+if($type == 'MASTER') {
+$config['hasync']['synchronizetoip'] = $ip; # ip backup
+$config['hasync']['username'] = 'admin';
+$config['hasync']['password'] = 'pfsense';
+}
+
+$config['hasync']['synchronizeusers'] = 'on';
+$config['hasync']['synchronizeauthservers'] = 'on';
+$config['hasync']['synchronizecerts'] = 'on';
+$config['hasync']['synchronizerules'] = 'on';
+$config['hasync']['synchronizeschedules'] = 'on';
+$config['hasync']['synchronizealiases'] = 'on';
+$config['hasync']['synchronizenat'] = 'on';
+$config['hasync']['synchronizeipsec'] = 'on';
+$config['hasync']['synchronizeopenvpn'] = 'on';
+$config['hasync']['synchronizedhcpd'] = 'on';
+$config['hasync']['synchronizewol'] = 'on';
+$config['hasync']['synchronizestaticroutes'] = 'on';
+$config['hasync']['synchronizelb'] = 'on';
+$config['hasync']['synchronizevirtualip'] = 'on';
+$config['hasync']['synchronizetrafficshaper'] = 'on';
+$config['hasync']['synchronizetrafficshaperlimiter'] = 'on';
+$config['hasync']['synchronizetrafficshaperlayer7'] = 'on';
+$config['hasync']['synchronizednsforwarder'] = 'on';
+$config['hasync']['synchronizecaptiveportal'] = 'on';
+
+if($type == 'MASTER') {
+$config['virtualip']['vip']['0']['mode'] = 'carp';
+$config['virtualip']['vip']['0']['interface'] = 'lan';
+$config['virtualip']['vip']['0']['vhid'] = '1';
+$config['virtualip']['vip']['0']['advskew'] = '0';
+$config['virtualip']['vip']['0']['advbase'] = '1';
+$config['virtualip']['vip']['0']['password'] = 'pfsense';
+$config['virtualip']['vip']['0']['descr'] = '';
+$config['virtualip']['vip']['0']['type'] = 'single';
+$config['virtualip']['vip']['0']['subnet_bits'] = '24';
+$config['virtualip']['vip']['0']['subnet'] = $vip_lan; #vip lan
+}
+
+
+}
+
+
+
 ####main#################################
 
 
@@ -58,7 +127,6 @@ if($config['interfaces']['lan']['ipaddr'] != $ip_lan)
 {
 
 addSSHkey();
-#retrievePublicIP();
 
 $config['interfaces']['lan']['enable'] = true;
 $config['interfaces']['lan']['if'] = 'vtnet1';
@@ -67,119 +135,17 @@ $config['interfaces']['lan']['ipaddr']= $ip_lan;
 $config['interfaces']['lan']['subnet']= 24;
 
 
-####### conf HA
 
-#######master config
+if($type == 'MASTER' or $type == 'BACKUP') {
 
-if($type == 'MASTER') {
-
-###conf synnc interface
-$config['interfaces']['pfsync']['enable'] = 'true';
-$config['interfaces']['pfsync']['if'] = 'vtnet2';
-$config['interfaces']['pfsync']['descr'] = 'PFSYNC';
-$config['interfaces']['pfsync']['ipaddr'] = $ip_sync ;
-$config['interfaces']['pfsync']['subnet'] = 24;
-
-$config['filter']['rule']['2']['type'] = 'pass';
-$config['filter']['rule']['2']['interface'] = 'pfsync';
-$config['filter']['rule']['2']['ipprotocol'] = 'inet';
-$config['filter']['rule']['2']['tracker']= '0100000103';
-$config['filter']['rule']['2']['source']['any']= '';
-$config['filter']['rule']['2']['destination']['any'] = '';
-$config['filter']['rule']['2']['descr'] = 'Allow PFSYNC';
-
-
-$config['hasync']['pfsyncenabled'] = 'on';
-$config['hasync']['pfsyncpeerip'] = $ip_sync_backup;# ip backup
-$config['hasync']['pfsyncinterface'] = 'pfsync';
-
-$config['hasync']['synchronizetoip'] = $ip_sync_backup; # ip backup
-$config['hasync']['username'] = 'admin';
-$config['hasync']['password'] = 'pfsense';
-
-$config['hasync']['synchronizeusers'] = 'on';
-$config['hasync']['synchronizeauthservers'] = 'on';
-$config['hasync']['synchronizecerts'] = 'on';
-$config['hasync']['synchronizerules'] = 'on';
-$config['hasync']['synchronizeschedules'] = 'on';
-$config['hasync']['synchronizealiases'] = 'on';
-$config['hasync']['synchronizenat'] = 'on';
-$config['hasync']['synchronizeipsec'] = 'on';
-$config['hasync']['synchronizeopenvpn'] = 'on';
-$config['hasync']['synchronizedhcpd'] = 'on';
-$config['hasync']['synchronizewol'] = 'on';
-$config['hasync']['synchronizestaticroutes'] = 'on';
-$config['hasync']['synchronizelb'] = 'on';
-$config['hasync']['synchronizevirtualip'] = 'on';
-$config['hasync']['synchronizetrafficshaper'] = 'on';
-$config['hasync']['synchronizetrafficshaperlimiter'] = 'on';
-$config['hasync']['synchronizetrafficshaperlayer7'] = 'on';
-$config['hasync']['synchronizednsforwarder'] = 'on';
-$config['hasync']['synchronizecaptiveportal'] = 'on';
-
-$config['virtualip']['vip']['0']['mode'] = 'carp';
-$config['virtualip']['vip']['0']['interface'] = 'lan';
-$config['virtualip']['vip']['0']['vhid'] = '1';
-$config['virtualip']['vip']['0']['advskew'] = '0';
-$config['virtualip']['vip']['0']['advbase'] = '1';
-$config['virtualip']['vip']['0']['password'] = 'pfsense';
-$config['virtualip']['vip']['0']['descr'] = '';
-$config['virtualip']['vip']['0']['type'] = 'single';
-$config['virtualip']['vip']['0']['subnet_bits'] = '24';
-$config['virtualip']['vip']['0']['subnet'] = $vip_lan; #vip lan
-
-
-}
-#############backup config
-
-if($type == 'BACKUP') {
-
-###conf synnc interface
-$config['interfaces']['pfsync']['enable'] = 'true';
-$config['interfaces']['pfsync']['if'] = 'vtnet2';
-$config['interfaces']['pfsync']['descr'] = 'PFSYNC';
-$config['interfaces']['pfsync']['ipaddr'] = $ip_sync ;
-$config['interfaces']['pfsync']['subnet'] = 24;
-
-$$config['filter']['rule']['2']['type'] = 'pass';
-$config['filter']['rule']['2']['interface'] = 'pfsync';
-$config['filter']['rule']['2']['ipprotocol'] = 'inet';
-$config['filter']['rule']['2']['tracker']= '0100000103';
-$config['filter']['rule']['2']['source']['any']= '';
-$config['filter']['rule']['2']['destination']['any'] = '';
-$config['filter']['rule']['2']['descr'] = 'Allow PFSYNC';
-
-
-$config['hasync']['pfsyncenabled'] = 'on';
-$config['hasync']['pfsyncpeerip'] = $ip_sync_master;#ip master sync
-$config['hasync']['pfsyncinterface'] = 'pfsync';
-
-
-$config['hasync']['synchronizeusers'] = 'on';
-$config['hasync']['synchronizeauthservers'] = 'on';
-$config['hasync']['synchronizecerts'] = 'on';
-$config['hasync']['synchronizerules'] = 'on';
-$config['hasync']['synchronizeschedules'] = 'on';
-$config['hasync']['synchronizealiases'] = 'on';
-$config['hasync']['synchronizenat'] = 'on';
-$config['hasync']['synchronizeipsec'] = 'on';
-$config['hasync']['synchronizeopenvpn'] = 'on';
-$config['hasync']['synchronizedhcpd'] = 'on';
-$config['hasync']['synchronizewol'] = 'on';
-$config['hasync']['synchronizestaticroutes'] = 'on';
-$config['hasync']['synchronizelb'] = 'on';
-$config['hasync']['synchronizevirtualip'] = 'on';
-$config['hasync']['synchronizetrafficshaper'] = 'on';
-$config['hasync']['synchronizetrafficshaperlimiter'] = 'on';
-$config['hasync']['synchronizetrafficshaperlayer7'] = 'on';
-$config['hasync']['synchronizednsforwarder'] = 'on';
-$config['hasync']['synchronizecaptiveportal'] = 'on';
+ haConfig($ip,$type);
 
 }
 
 
-	/* to save out the new configuration (config.xml) */
-	write_config();
+
+
+  write_config();
   exec;
   exit();
 
