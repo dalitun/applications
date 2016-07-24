@@ -256,12 +256,12 @@ resources:
       user_data:
          str_replace:
            template: |
-               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=MASTER&ip_sync_backup=$ip_sync_backup$&vip_lan=$vip_lan$&hostname=$stack$1&domain=cloudwatt
+               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=MASTER&ip=$ip$&vip_lan=$vip_lan$&hostname=$stack$1&domain=cloudwatt
 
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.252'}, {get_param: private_net_cidr} ] }
                $ip_sync$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
-               $ip_sync_backup$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
+               $ip$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
                $vip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
                $stack$: { get_param: 'OS::stack_name' }
 
@@ -281,14 +281,14 @@ resources:
        user_data:
         str_replace:
            template: |
-               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=BACKUP&ip_sync_master=$ip_sync_master$&hostname=$stack$2&domain=cloudwatt
+               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=BACKUP&ip=$ip$&vip_lan=$vip_lan$&hostname=$stack$1&domain=cloudwatt
 
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: private_net_cidr} ] }
                $ip_sync$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
-               $ip_sync_master$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
+               $ip$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
+               $vip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
                $stack$: { get_param: 'OS::stack_name' }
-
 
   admin_private_port:
     type: OS::Neutron::Port
