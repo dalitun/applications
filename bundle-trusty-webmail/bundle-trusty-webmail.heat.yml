@@ -19,13 +19,11 @@ parameters:
     label: Mysql password
     type: string
     default: changeme
-
   postfix_admin_pass:
     description: postfixadmin password
     label: postfixadmin password
     type: string
     default: changeme
-
   mail_domain:
     description: mail domain
     label: mail domain

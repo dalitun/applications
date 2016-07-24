@@ -180,15 +180,12 @@ $config['hasync']['synchronizecaptiveportal'] = 'on';
 
 	/* to save out the new configuration (config.xml) */
 	write_config();
-  log_error("rc.reload_all: Reloading all configuration settings.");
-  shell_exec('/etc/rc.reload_all');
-  #wait(10);
- #shell_exec('pfSsh.php playback enableallowallwan');
-  shell_exec('/etc/rc.initial');
-}
+  exec;
+  exit();
 
 else
 
   echo('This configuration is already existed');
+  exit();
 
 ?>
