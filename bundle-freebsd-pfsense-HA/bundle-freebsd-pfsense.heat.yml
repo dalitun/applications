@@ -126,7 +126,6 @@ resources:
 
 
 
-
   manager:
     type: OS::Neutron::Net
 
@@ -181,6 +180,7 @@ resources:
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
           subnet_id: { get_resource: subnet_private }
+      mac_address: 02:50:8f:ea:d3:26
       security_groups: [{ get_resource: fw_sg }]
 
 
@@ -196,9 +196,11 @@ resources:
       network_id: { get_resource: privatenet }
       allowed_address_pairs:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+          mac_address: 02:50:8f:ea:d3:26
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.252'}, {get_param: private_net_cidr} ] }
           subnet_id: { get_resource: subnet_private }
+      mac_address: 02:e8:70:a6:e5:05
       security_groups: [{ get_resource: fw_sg }]
 
   backup_public_port:
@@ -212,10 +214,12 @@ resources:
     properties:
       network_id: { get_resource: privatenet }
       allowed_address_pairs:
-        - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+         - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+           mac_address: 02:50:8f:ea:d3:26
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: private_net_cidr} ] }
           subnet_id: { get_resource: subnet_private }
+      mac_address: 02:2c:9c:83:80:cd
       security_groups: [{ get_resource: fw_sg }]
 
 
@@ -223,8 +227,6 @@ resources:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: syncnet }
-      allowed_address_pairs:
-        - ip_address: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
           subnet_id: { get_resource: subnet_sync }
@@ -234,8 +236,6 @@ resources:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: syncnet }
-      allowed_address_pairs:
-        - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
           subnet_id: { get_resource: subnet_sync }
@@ -244,9 +244,10 @@ resources:
 
   master:
     type: OS::Nova::Server
+    depends_on: backup
     properties:
       key_name: { get_param: keypair_name }
-      image: Pfsense.cw.new
+      image: Pfsense_cw.new
       flavor: { get_param: flavor_name_fw }
       networks:
         - port: { get_resource: master_public_port }
@@ -256,22 +257,21 @@ resources:
       user_data:
          str_replace:
            template: |
-               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=MASTER&ip=$ip$&vip_lan=$vip_lan$&hostname=$stack$1&domain=cloudwatt
+               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=MASTER&ip_peer=$ip_peer$&vip_lan=$vip_lan$&hostname=$stack$1&domain=cloudwatt
 
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.252'}, {get_param: private_net_cidr} ] }
                $ip_sync$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
-               $ip$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
+               $ip_peer$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
                $vip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
                $stack$: { get_param: 'OS::stack_name' }
 
 
   backup:
      type: OS::Nova::Server
-     depends_on: master
      properties:
        key_name: { get_param: keypair_name }
-       image: Pfsense.cw.new
+       image: Pfsense_cw.new
        flavor: { get_param: flavor_name_fw }
        networks:
          - port: { get_resource: backup_public_port }
@@ -281,13 +281,12 @@ resources:
        user_data:
         str_replace:
            template: |
-               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=BACKUP&ip=$ip$&vip_lan=$vip_lan$&hostname=$stack$1&domain=cloudwatt
+               ip_lan=$ip_lan$&ip_sync=$ip_sync$&type=BACKUP&ip_peer=$ip_peer$&hostname=$stack$2&domain=cloudwatt
 
            params:
                $ip_lan$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: private_net_cidr} ] }
                $ip_sync$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: sync_net_cidr} ] }
-               $ip$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
-               $vip_lan$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
+               $ip_peer$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
                $stack$: { get_param: 'OS::stack_name' }
 
   admin_private_port:

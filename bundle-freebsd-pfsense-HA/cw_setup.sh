@@ -36,10 +36,39 @@ shell_exec ('echo "' . $key .'">>~/.ssh/authorized_keys');
 
 }
 
-function haConfig($ip,$type){
+####main#################################
 
+
+$tmp=retrieveMetaData("http://169.254.169.254/openstack/latest/user_data");
+parse_str($tmp);
+parse_config(true);
+
+$config['system']['hostname'] = $hostname;
+$config['system']['domain'] = $domain;
+$config['system']['dnsserver']['0'] = '185.23.94.244';
+$config['system']['dnsserver']['1'] = '185.23.94.245';
+
+
+$config['interfaces']['wan']['enable'] = 'true';
+$config['interfaces']['wan']['if'] = 'vtnet0';
+$config['interfaces']['wan']['descr'] = 'WAN';
+$config['interfaces']['wan']['ipaddr'] = 'dhcp';
+
+
+if($config['interfaces']['lan']['ipaddr'] != $ip_lan)
+{
+
+addSSHkey();
+$config['interfaces']['lan']['enable'] = true;
+$config['interfaces']['lan']['if'] = 'vtnet1';
+$config['interfaces']['lan']['descr'] = 'LAN';
+$config['interfaces']['lan']['ipaddr']= $ip_lan;
+$config['interfaces']['lan']['subnet']= 24;
 
 ###conf synnc interface
+
+
+if($type) {
 
 $config['interfaces']['pfsync']['enable'] = 'true';
 $config['interfaces']['pfsync']['if'] = 'vtnet2';
@@ -57,14 +86,8 @@ $config['filter']['rule']['2']['descr'] = 'Allow PFSYNC';
 
 
 $config['hasync']['pfsyncenabled'] = 'on';
-$config['hasync']['pfsyncpeerip'] = $ip;# ip backup or master
+$config['hasync']['pfsyncpeerip'] = $ip_peer;# ip backup or master
 $config['hasync']['pfsyncinterface'] = 'pfsync';
-
-if($type == 'MASTER') {
-$config['hasync']['synchronizetoip'] = $ip; # ip backup
-$config['hasync']['username'] = 'admin';
-$config['hasync']['password'] = 'pfsense';
-}
 
 $config['hasync']['synchronizeusers'] = 'on';
 $config['hasync']['synchronizeauthservers'] = 'on';
@@ -86,7 +109,11 @@ $config['hasync']['synchronizetrafficshaperlayer7'] = 'on';
 $config['hasync']['synchronizednsforwarder'] = 'on';
 $config['hasync']['synchronizecaptiveportal'] = 'on';
 
+
+
+
 if($type == 'MASTER') {
+
 $config['virtualip']['vip']['0']['mode'] = 'carp';
 $config['virtualip']['vip']['0']['interface'] = 'lan';
 $config['virtualip']['vip']['0']['vhid'] = '1';
@@ -97,61 +124,26 @@ $config['virtualip']['vip']['0']['descr'] = '';
 $config['virtualip']['vip']['0']['type'] = 'single';
 $config['virtualip']['vip']['0']['subnet_bits'] = '24';
 $config['virtualip']['vip']['0']['subnet'] = $vip_lan; #vip lan
-}
 
 
-}
+$config['hasync']['synchronizetoip'] = $ip_peer;
+$config['hasync']['username'] = 'admin';
+$config['hasync']['password'] = 'pfsense';
 
-
-
-####main#################################
-
-
-$tmp=retrieveMetaData("http://169.254.169.254/openstack/latest/user_data");
-parse_str($tmp);
-parse_config(true);
-
-$config['system']['hostname'] = $hostname;
-$config['system']['domain'] = $domain;
-$config['system']['dnsserver']['0'] = '185.23.94.244';
-$config['system']['dnsserver']['1'] = '185.23.94.245';
-
-$config['interfaces']['wan']['enable'] = 'true';
-$config['interfaces']['wan']['if'] = 'vtnet0';
-$config['interfaces']['wan']['descr'] = 'WAN';
-$config['interfaces']['wan']['ipaddr'] = 'dhcp';
-
-
-
-if($config['interfaces']['lan']['ipaddr'] != $ip_lan)
-{
-
-addSSHkey();
-
-$config['interfaces']['lan']['enable'] = true;
-$config['interfaces']['lan']['if'] = 'vtnet1';
-$config['interfaces']['lan']['descr'] = 'LAN';
-$config['interfaces']['lan']['ipaddr']= $ip_lan;
-$config['interfaces']['lan']['subnet']= 24;
-
-
-
-if($type == 'MASTER' or $type == 'BACKUP') {
-
- haConfig($ip,$type);
+                    }
 
 }
 
+write_config();
+shell_exec('/etc/rc.reload_all');
+exit();
 
 
-
-  write_config();
-  exec;
-  exit();
-
+}
 else
 
-  echo('This configuration is already existed');
-  exit();
+echo('This configuration is already existed');
+exit();
+
 
 ?>
