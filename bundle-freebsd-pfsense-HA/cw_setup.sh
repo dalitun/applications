@@ -131,15 +131,16 @@ $config['hasync']['username'] = 'admin';
 $config['hasync']['password'] = 'pfsense';
 
                     }
-
 }
 
+shell_exec('rm -rf /tmp/config.cache');
 write_config();
 shell_exec('/etc/rc.reload_all');
 exit();
 
 
 }
+
 else
 
 echo('This configuration is already existed');
