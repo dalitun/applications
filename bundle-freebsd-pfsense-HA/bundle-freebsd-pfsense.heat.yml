@@ -90,7 +90,6 @@ resources:
       router_id: { get_resource : router }
       subnet_id: { get_resource : subnet_public }
 
-
   privatenet:
     type: OS::Neutron::Net
 
@@ -126,21 +125,6 @@ resources:
 
 
 
-  manager:
-    type: OS::Neutron::Net
-
-  subnet_manager:
-    type: OS::Neutron::Subnet
-    properties:
-      network_id: { get_resource: manager }
-      ip_version: 4
-      dns_nameservers:
-        - 185.23.94.244
-        - 185.23.94.245
-      cidr: 10.0.1.0/24
-      allocation_pools:
-        - { start: 10.0.1.100, end: 10.0.1.199 }
-
 
   admin_sg:
     type: OS::Neutron::SecurityGroup
@@ -167,12 +151,6 @@ resources:
         - { direction: egress, protocol: UDP }
 
 
-
-  admin_floating_ip:
-    type: OS::Neutron::FloatingIP
-    properties:
-      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
-
   vip_port:
     type: OS::Neutron::Port
     properties:
@@ -180,8 +158,22 @@ resources:
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
           subnet_id: { get_resource: subnet_private }
-      mac_address: 02:50:8f:ea:d3:26
       security_groups: [{ get_resource: fw_sg }]
+
+
+  vip_floating_ip:
+      type: OS::Neutron::FloatingIP
+      properties:
+        floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+
+
+  vip_floating_ass:
+      type: OS::Neutron::FloatingIPAssociation
+      properties:
+        floatingip_id: { get_resource: vip_floating_ip }
+        port_id: { get_resource: vip_port }
+
+
 
 
   master_public_port:
@@ -196,7 +188,6 @@ resources:
       network_id: { get_resource: privatenet }
       allowed_address_pairs:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
-          mac_address: 02:50:8f:ea:d3:26
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.252'}, {get_param: private_net_cidr} ] }
           subnet_id: { get_resource: subnet_private }
@@ -215,7 +206,6 @@ resources:
       network_id: { get_resource: privatenet }
       allowed_address_pairs:
          - ip_address: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
-           mac_address: 02:50:8f:ea:d3:26
       fixed_ips:
         - ip_address: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: private_net_cidr} ] }
           subnet_id: { get_resource: subnet_private }
@@ -289,54 +279,9 @@ resources:
                $ip_peer$: { "Fn::Replace": [ {'.0/24': '.253'}, {get_param: sync_net_cidr} ] }
                $stack$: { get_param: 'OS::stack_name' }
 
-  admin_private_port:
-    type: OS::Neutron::Port
-    properties:
-      network_id: { get_resource: privatenet }
-      fixed_ips:
-        - ip_address: { "Fn::Replace": [ {'.0/24': '.22'}, {get_param: private_net_cidr} ] }
-          subnet_id: { get_resource: subnet_private }
-      security_groups: [{ get_resource: admin_sg }]
-
-  admin_manager_port:
-    type: OS::Neutron::Port
-    properties:
-      network_id: { get_resource: manager }
-      fixed_ips:
-         - ip_address: 10.0.1.254
-           subnet_id: { get_resource: subnet_manager }
-      security_groups:
-           - { get_resource: fw_sg }
-
-  admingw:
-    type: OS::Nova::Server
-    depends_on: [ master, backup ]
-    properties:
-      key_name: { get_param: keypair_name }
-      image: Ubuntu 14.04
-      flavor: { get_param: flavor_name_admin }
-      networks:
-         - port: { get_resource: admin_manager_port }
-         - port: { get_resource: admin_private_port }
-      user_data_format: RAW
-      user_data:
-         str_replace:
-           template: |
-             #!/bin/bash
-             dhclient eth1
-             route add -net $public_net_cidr$ gw $gw$ eth1
-             #route add default via $gw$
-             apt-get install -y lynx
-           params:
-             $gw$: { "Fn::Replace": [ {'.0/24': '.254'}, {get_param: private_net_cidr} ] }
-             $public_net_cidr$: { get_param: public_net_cidr }
 
 
-  admingw_internet_surface:
-    type: OS::Nova::FloatingIPAssociation
-    properties:
-      floating_ip: { get_resource: admin_floating_ip }
-      server_id: { get_resource: admingw}
+
 
   client_port:
     type: OS::Neutron::Port
@@ -369,7 +314,8 @@ resources:
 
 
 
+
 outputs:
-  admin_floating_ip:
+  fw_floating_ip:
     description: IP address of the deployed compute instance
-    value: { get_attr: [admin_floating_ip, floating_ip_address] }
+    value: foool
