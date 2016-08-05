@@ -218,8 +218,9 @@ resources:
                     ExecStart=/usr/bin/docker run \
                              --volume /mysql/data/:/var/lib/mysql \
                              --env-file /home/core/mysql.env \
+                             --publish=3306:3306 \
                              --name=mysql mysql
-                             --publish=3306:3306
+
                     [Install]
                     WantedBy=multi-user.target
 
