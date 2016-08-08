@@ -31,6 +31,7 @@ parameters:
 
   sqlpass:
     description: password root sql
+    label: Mysql password
     type: string
     hidden: true
 

@@ -31,6 +31,7 @@ parameters:
 
   sqlpass:
     description: password root sql
+    label: Postgresql password
     type: string
     hidden: true
 
@@ -150,7 +151,7 @@ resources:
                 owner: "core:core"
                 content: |
                     POSTGRES_PASSWORD=$sqlpass
-                    POSTGRES_DB=owncloud
+                    POSTGRES_DB=postgresql123
                     PGDATA=/var/lib/postgresql/data/pgdata
 
             coreos:

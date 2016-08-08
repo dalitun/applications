@@ -29,11 +29,6 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-  sqlpass:
-    description: password root sql
-    type: string
-    hidden: true
-
 
   volume_size:
     default: 5
@@ -145,12 +140,7 @@ resources:
                 content: |
                   #!/bin/bash
                   sudo mkdir -p /rethinkdb/data
-              - path: /home/core/mysql.env
-                permissions: 0775
-                owner: "core:core"
-                content: |
-                    MYSQL_ROOT_PASSWORD=$sqlpass
-                    MYSQL_DATABASE=owncloud
+              
             coreos:
               etcd2:
                 name: "%H"
