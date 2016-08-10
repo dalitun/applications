@@ -232,10 +232,18 @@ Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte 
 # mkdir /mnt/datastore
 # mount -t glusterfs nom_de_votre_stack-gluster-dc1:datastore /mnt/datastore
 ~~~
-**Pour pour redémarrer le service gluterfs-server **
+
+**Pour pour redémarrer le service gluterfs-server**
 
 ~~~ bash
 # service glusterfs-server restart
+~~~
+
+###Troubleshooting
+
+Si master n'arrive pas à rejoindre le slave, relancez le playbook ansible sur le master.
+~~~bash
+# sudo ansible-playbook /root/install.yml -e @/etc/ansible/vars.yml
 ~~~
 
 

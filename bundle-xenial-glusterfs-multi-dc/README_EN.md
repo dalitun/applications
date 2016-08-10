@@ -230,6 +230,12 @@ You can mount the glusterfs volume in a client machine that connects to the same
 # service glusterfs-server restart
 ~~~
 
+###Troubleshooting
+
+If master can not reach the slave, run the playbook on the master ansible.
+~~~bash
+# sudo ansible-playbook /root/install.yml -e @/etc/ansible/vars.yml
+~~~
 
 ## So watt?
 
