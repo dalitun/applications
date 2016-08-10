@@ -49,9 +49,8 @@ resources:
     type: OS::Neutron::SecurityGroup
     properties:
       rules:
-        - { direction: ingress, protocol: TCP }
+        - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
         - { direction: ingress, protocol: ICMP }
-        - { direction: ingress, protocol: UDP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
@@ -65,7 +64,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 2b38d117-25ed-4efd-8967-fa012ee866d1
+      image: 88e19cab-4cb9-4665-b77a-a48c087a349c
       flavor: { get_param: flavor_name }
       name:
          str_replace:
@@ -81,7 +80,7 @@ resources:
         str_replace:
           template: |
             #!/bin/bash
-             SLAVE_HOST=$(echo $stack-dc2 | tr ‘[A-Z]’ ‘[a-z]’) 
+             SLAVE_HOST=$(echo $stack-dc2 | tr ‘[A-Z]’ ‘[a-z]’)
              echo "$slave_public_ip $SLAVE_HOST" >> /etc/hosts
              mkdir /etc/ansible
              cat << EOF >> /etc/ansible/vars.yml

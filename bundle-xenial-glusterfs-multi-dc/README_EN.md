@@ -224,7 +224,7 @@ You can mount the glusterfs volume in a client machine that connects to the same
 # mount -t glusterfs your_stack_name-gluster-dc1:datastore /mnt/datastore
 ~~~
 
-**To restart gluterfs-server service **
+**To restart gluterfs-server service**
 
 ~~~ bash
 # service glusterfs-server restart
