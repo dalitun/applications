@@ -218,11 +218,11 @@ C’est (déjà) FINI !
 
 Afin de tester l'état de la réplication entre les deux serveurs, connectez sur glusterfs fr1, puis exécuter la commande suivante.
 ~~~bash
-# gluster vol geo-rep datastore nom_de_votre_stack-gluster-dc2::datastore status
+# gluster vol geo-rep datastore nom_de_votre_stack-dc2::datastore status
 MASTER NODE            MASTER VOL    MASTER BRICK     SLAVE USER    SLAVE                             SLAVE NODE             STATUS    CRAWL STATUS       LAST_SYNCED                  
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-nom_de_votre_stack-gluster-dc1    datastore     /brick/brick1    root          nom_de_votre_stack-gluster-dc2::datastore    nom_de_votre_stack-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
-nom_de_votre_stack-gluster-dc1    datastore     /brick/brick2    root          nom_de_votre_stack-gluster-dc2::datastore    nom_de_votre_stack-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
+nom_de_votre_stack-dc1    datastore     /brick/brick1    root          nom_de_votre_stack-dc2::datastore    nom_de_votre_stack-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
+nom_de_votre_stack-dc1    datastore     /brick/brick2    root          nom_de_votre_stack-dc2::datastore    nom_de_votre_stack-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
 
 ~~~
 
@@ -230,7 +230,7 @@ Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte 
 ~~~bash
 # apt-get -y install gusterfs-client
 # mkdir /mnt/datastore
-# mount -t glusterfs nom_de_votre_stack-gluster-dc1:datastore /mnt/datastore
+# mount -t glusterfs nom_de_votre_stack-dc1:datastore /mnt/datastore
 ~~~
 
 **Pour pour redémarrer le service gluterfs-server**
@@ -243,14 +243,16 @@ Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte 
 
 Si master n'arrive pas à rejoindre le slave, relancez le playbook ansible sur le master.
 ~~~bash
-# sudo ansible-playbook /root/install.yml -e @/etc/ansible/vars.yml
+#gluster system:: execute gsec_create
+#gluster vol geo-rep datastore nom_de_votre_stack-dc2::datastore create push-pem
+#gluster vol geo-rep datastore nom_de_votre_stack-dc2::datastore start
 ~~~
 
 
 ## So watt?
 
 Sur chaque serveur glusterfs soit sur fr1 ou fr2, on a créé un volume replication `datastore` qui contient deux bricks `/brick/brick1` et `/brick/brick2`,pour savoir comment ajouter autres bricks, consultez ce [lien](https://access.redhat.com/documentation/en-US/Red_Hat_Storage/2.1/html/Administration_Guide/Expanding_Volumes.html).
-
+Si tout va bien N'oubliez pas de changer les resouces groupes pour chaque machine ne laissez pas les ports ouverts pour public.
 
 ### Autres sources pouvant vous intéresser:
 * [ GlusterFs Home page](http://www.gluster.org/)

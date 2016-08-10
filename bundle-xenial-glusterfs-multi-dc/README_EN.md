@@ -210,18 +210,18 @@ If you've reached this point, you're already done! Go enjoy Mail!
 
 In order to test the replication state between the both servers, connect to glusterfs fr1, then type the following command.
 ~~~bash
-# gluster vol geo-rep datastore your_stack_name-gluster-dc2::datastore status
+# gluster vol geo-rep datastore your_stack_name-dc2::datastore status
 MASTER NODE            MASTER VOL    MASTER BRICK     SLAVE USER    SLAVE                             SLAVE NODE             STATUS    CRAWL STATUS       LAST_SYNCED                  
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-your_stack_name-gluster-dc1    datastore     /brick/brick1    root          your_stack_name-gluster-dc2::datastore    your_stack_name-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
-your_stack_name-gluster-dc1    datastore     /brick/brick2    root          your_stack_name-gluster-dc2::datastore    your_stack_name-gluster-dc2    Active    Changelog Crawl    2016-06-23 10:35:56    
+your_stack_name-dc1    datastore     /brick/brick1    root          your_stack_name-dc2::datastore    your_stack_name-dc2    Active    Changelog Crawl    2016-06-23 10:35:56          
+your_stack_name-dc1    datastore     /brick/brick2    root          your_stack_name-dc2::datastore    your_stack_name-dc2    Active    Changelog Crawl    2016-06-23 10:35:56    
 ~~~
 
 You can mount the glusterfs volume in a client machine that connects to the same network as the server machine :
 ~~~bash
 # apt-get -y install gusterfs-client
 # mkdir /mnt/datastore
-# mount -t glusterfs your_stack_name-gluster-dc1:datastore /mnt/datastore
+# mount -t glusterfs your_stack_name-dc1:datastore /mnt/datastore
 ~~~
 
 **To restart gluterfs-server service**
@@ -234,7 +234,9 @@ You can mount the glusterfs volume in a client machine that connects to the same
 
 If master can not reach the slave, run the playbook on the master ansible.
 ~~~bash
-# sudo ansible-playbook /root/install.yml -e @/etc/ansible/vars.yml
+#gluster system:: execute gsec_create
+#gluster vol geo-rep datastore your_stack_name-dc2::datastore create push-pem
+#gluster vol geo-rep datastore your_stack_name-dc2::datastore start
 ~~~
 
 ## So watt?
