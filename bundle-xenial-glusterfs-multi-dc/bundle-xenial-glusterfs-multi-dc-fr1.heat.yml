@@ -92,6 +92,9 @@ resources:
             EOF
              sudo export ANSIBLE_HOST_KEY_CHECKING=False
              sudo ansible-playbook /root/install.yml -e @/etc/ansible/vars.yml
+             sudo gluster system:: execute gsec_create
+             sudo gluster vol geo-rep datastore $SLAVE_HOST::datastore create push-pem force
+             sudo gluster vol geo-rep datastore $SLAVE_HOST::datastore start
           params:
             $slave_public_ip : { get_param: slave_public_ip }
             $stack: { get_param: 'OS::stack_name' }

@@ -243,9 +243,9 @@ Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte 
 
 Si master n'arrive pas à rejoindre le slave, relancez le playbook ansible sur le master.
 ~~~bash
-#gluster system:: execute gsec_create
-#gluster vol geo-rep datastore nom_de_votre_stack-dc2::datastore create push-pem
-#gluster vol geo-rep datastore nom_de_votre_stack-dc2::datastore start
+# gluster system:: execute gsec_create
+# gluster vol geo-rep datastore nom_de_votre_stack-dc2::datastore create push-pem force
+# gluster vol geo-rep datastore nom_de_votre_stack-dc2::datastore start
 ~~~
 
 
