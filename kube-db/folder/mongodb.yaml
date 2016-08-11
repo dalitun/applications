@@ -492,6 +492,9 @@ resources:
                                    - rs0
                                    - "--smallfiles"
                                    - "--noprealloc"
+                                   - " --eval "
+                                   - "rs.slaveOk()" 
+                                   - "--shell"
                                  ports:
                                    - containerPort: 27017
                                      hostPort: 4000
