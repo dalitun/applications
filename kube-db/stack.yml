@@ -74,7 +74,7 @@ parameters:
           - n1.cw.standard-16
 
   node_count:
-    default: 2
+    default: 3
     label: Node Count
     description: Additional node counts
     type: number
@@ -125,6 +125,7 @@ resources:
         - { direction: ingress, remote_ip_prefix : 10.0.0.0/16, protocol: UDP, port_range_min: 1, port_range_max: 65535 }
         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 22, port_range_max: 22 }
         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 27017, port_range_max: 27017 }
+        - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 28017, port_range_max: 28017 }
         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 3306, port_range_max: 3306 }
         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 28015, port_range_max: 28015 }
         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 80, port_range_max: 80 }
@@ -181,6 +182,7 @@ resources:
           os_auth: { get_param: os_auth }
           os_region: fr1
           os_tenant_id: { get_param: 'OS::project_id' }
+          count: { get_param: node_count }
 
   pool_masters:
     type: OS::Neutron::Pool
