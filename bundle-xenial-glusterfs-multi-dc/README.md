@@ -241,7 +241,7 @@ Vous pouvez monter le volume glusterfs dans une machine cliente qui se connecte 
 
 ###Troubleshooting
 
-Si master n'arrive pas à rejoindre le slave, relancez le playbook ansible sur le master.
+Si master n'arrive pas à rejoindre le slave, relancez les commandes suivantes sur le master.
 ~~~bash
 # gluster system:: execute gsec_create
 # gluster vol geo-rep datastore nom_de_votre_stack-dc2::datastore create push-pem force
@@ -252,7 +252,8 @@ Si master n'arrive pas à rejoindre le slave, relancez le playbook ansible sur l
 ## So watt?
 
 Sur chaque serveur glusterfs soit sur fr1 ou fr2, on a créé un volume replication `datastore` qui contient deux bricks `/brick/brick1` et `/brick/brick2`,pour savoir comment ajouter autres bricks, consultez ce [lien](https://access.redhat.com/documentation/en-US/Red_Hat_Storage/2.1/html/Administration_Guide/Expanding_Volumes.html).
-Si tout va bien N'oubliez pas de changer les resouces groupes pour chaque machine ne laissez pas les ports ouverts pour public.
+
+Si tout va bien N'oubliez pas de changer les resources groups pour chaque machine, ne laissez pas les ports ouverts pour public.
 
 ### Autres sources pouvant vous intéresser:
 * [ GlusterFs Home page](http://www.gluster.org/)

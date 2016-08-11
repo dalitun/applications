@@ -232,7 +232,7 @@ You can mount the glusterfs volume in a client machine that connects to the same
 
 ###Troubleshooting
 
-If master can not reach the slave, run the playbook on the master ansible.
+If master can not reach the slave, run the following commands on master.
 ~~~bash
 # gluster system:: execute gsec_create
 # gluster vol geo-rep datastore your_stack_name-dc2::datastore create push-pem force
@@ -244,9 +244,11 @@ If master can not reach the slave, run the playbook on the master ansible.
 On each server glusterfs either fr1 or fr2, we created a replication volume `datastore` that contains two bricks `/brick/brick1` and `/brick/brick2`,
 so you can add other bricks for knowing how, click on this [link](https://access.redhat.com/documentation/en-US/Red_Hat_Storage/2.1/html/Administration_Guide/Expanding_Volumes.html).
 
+If everything goes well remember to change the resource groups for each machine, don't leave ports open for public.
+
 
 ### Other resources you could be interested in:
-*[ GlusterFs Home page](http://www.gluster.org/)
+* [ GlusterFs Home page](http://www.gluster.org/)
 
 ----
 Have fun. Hack in peace.
