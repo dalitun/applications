@@ -492,9 +492,6 @@ resources:
                                    - rs0
                                    - "--smallfiles"
                                    - "--noprealloc"
-                                   - " --eval "
-                                   - "rs.slaveOk()" 
-                                   - "--shell"
                                  ports:
                                    - containerPort: 27017
                                      hostPort: 4000
@@ -526,9 +523,9 @@ resources:
                       spec:
                         ports:
                          - port: 27017
-                           targetPort: 27017
+                           name: main
                          - port: 28017
-                           targerPort: 28017   
+                           name: cluster   
                         selector:
                            name: mongo       
               - path: /etc/environment
