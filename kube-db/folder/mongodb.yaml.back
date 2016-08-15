@@ -485,7 +485,13 @@ resources:
                             terminationGracePeriodSeconds: 0
                             containers:
                                - name: mongo
-                                 image: dalidocker/mongo-kube
+                                 image: mongo
+                                 command:
+                                   - mongod
+                                   - "--replSet"
+                                   - rs0
+                                   - "--smallfiles"
+                                   - "--noprealloc"
                                  ports:
                                    - containerPort: 27017
                                      hostPort: 4000
@@ -493,6 +499,11 @@ resources:
                                  volumeMounts:
                                   - name: mongopv
                                     mountPath: /data/db
+                               - name: mongo-sidecar
+                                 image: leportlabs/mongo-k8s-sidecar
+                                 env:
+                                  - name: MONGO_SIDECAR_POD_LABELS
+                                    value: "role=mongo,environment=prod"
                         volumeClaimTemplates:
                           - metadata:
                               name: mongopv

@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 set -x
@@ -8,34 +7,32 @@ POD_NAMESPACE=${POD_NAMESPACE:-default}
 POD_NAME=${POD_NAME:-"mongo"}
 token=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 URL="https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}/api/v1/namespaces/${POD_NAMESPACE}/endpoints/${POD_NAME}"
-IP=$(curl -s $URL --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt --header "Authorization: Bearer ${token}" | jq '.subsets[] .addresses[].ip')
-SIZE=$(echo $IP | awk '{ print NF }')
+IP=$(curl -s $URL --cacert /var/run/secrets/kubernetes.io/serviceaccount/ca.crt --header "Authorization: Bearer ${token}" | jq '.subsets[] .addresses[].ip')
+MEM=($(echo $IP))
+SIZE=${#MEM[@]}
+
+if [ $SIZE == $NODE_COUNT ]
+then
+   mongod --replSet rs0
+   mongo --host $MYHOST --port 27017 --eval "printjson( rs.initiate())"
 
 
-if [ $SIZE == $NODE_COUNT ] 
-then 
-
-   for (( i=1; i<=$SIZE; i++ ))
-   do
-
-   	  if [ $i == 1 ]
-      then
-      #config for primary 
-      member=$(echo $IP | awk '{ print $c }')
-      mongo --host $MYHOST --port 27017 --eval "printjson( rs.initiate())"
+ if [ ${MEM[0]} == "$MYHOST" ]
+ then
+  for (( i=1; i<$SIZE; i++ ));
+     do
+      #config for primary
+      member=$(echo ${MEM[$i]} | sed -e 's/^"//'  -e 's/"$//')
       mongo --host $MYHOST --port 27017 --eval "printjson(rs.add('$member:27017'))"
-      else
-      #config for secondry
-      mongo --host $MYHOST --port 27017 --eval "printjson(rs.slaveOk())"
-     
-      fi
-    done
+   done
 
- 
-else 
+ else
+     #config for primary
+     mongo --host $MYHOST --port 27017 --eval "printjson(rs.slaveOk())"
+
+ fi
+
+else
  echo "you have to wait when pods will be created"
 
 fi
-
-
-
