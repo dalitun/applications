@@ -488,7 +488,7 @@ resources:
                                  image: dalidocker/mongo-kube
                                  ports:
                                    - containerPort: 27017
-                                     hostPort: 4000
+                                     hostPort: 27017
                                    - containerPort: 28017
                                  volumeMounts:
                                   - name: mongopv
