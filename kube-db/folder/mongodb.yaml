@@ -486,6 +486,14 @@ resources:
                             containers:
                                - name: mongo
                                  image: dalidocker/mongo-kube
+                                 command:
+                                   - mongod
+                                   - "--replSet"
+                                   - rs0
+                                   - "--smallfiles"
+                                   - "--noprealloc"
+                                   - "&&"
+                                   - "/rs-config.sh"                                 
                                  ports:
                                    - containerPort: 27017
                                      hostPort: 27017
