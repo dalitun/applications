@@ -485,15 +485,7 @@ resources:
                             terminationGracePeriodSeconds: 0
                             containers:
                                - name: mongo
-                                 image: dalidocker/mongo-kube
-                                 command:
-                                   - mongod
-                                   - "--replSet"
-                                   - rs0
-                                   - "--smallfiles"
-                                   - "--noprealloc"
-                                   - "&&"
-                                   - "/rs-config.sh"                                 
+                                 image: dalidocker/mongo-kube                               
                                  ports:
                                    - containerPort: 27017
                                      hostPort: 27017
