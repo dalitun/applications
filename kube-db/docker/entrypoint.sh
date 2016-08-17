@@ -1,7 +1,7 @@
 #!/bin/bash
 mongod "$@" &
-echo "$@" | grep "repSet"
-if [ $? == 0]; then
-/rs-config
+echo "$@" | grep "replSet"
+if [ $? == 0 ]; then
+/rs-config.sh
 fi 
-mongo
+mongod "$@"

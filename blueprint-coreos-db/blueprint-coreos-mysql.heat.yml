@@ -6,7 +6,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS OwnCloud
+description: Blueprint CoreOS Mysql
 
 
 parameters:
@@ -246,9 +246,9 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: owncloud URL
+    description: Mysql url
     value:
       str_replace:
-        template: http://$floating_ip
+        template: mysql://floating_ip:3306
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }

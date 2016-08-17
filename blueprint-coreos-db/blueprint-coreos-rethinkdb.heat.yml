@@ -6,7 +6,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS OwnCloud
+description: Blueprint CoreOS Rethinkdb
 
 
 parameters:
@@ -140,7 +140,7 @@ resources:
                 content: |
                   #!/bin/bash
                   sudo mkdir -p /rethinkdb/data
-              
+
             coreos:
               etcd2:
                 name: "%H"
