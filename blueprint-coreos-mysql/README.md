@@ -12,7 +12,7 @@ Mysql est un serveur de base de données relationnelles SQL, il est multi-thread
 ### Les versions
   - CoreOS Stable 899.13.0
   - Docker 1.10.3
-  - MySQL 5.6
+  - MySQL 5.7
 
 ### Les pré-requis pour déployer cette stack
 
@@ -186,7 +186,7 @@ parameters:
 
  ~~~ bash
  sudo apt-get -y install  mysql-client
- mysql -h flottingIp -u root -psqlpass
+ mysql -h flottingIp -u root -p
  ~~~
 
 ##### Systemd - système d'initialisation de service MySQL

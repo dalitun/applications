@@ -21,7 +21,7 @@ Our MySQL hosting package is the best offer on the market - it has the lowest pr
 ### The version
   - CoreOS Stable 899.13.0
   - Docker 1.10.3
-  - MySQL 3.2
+  - MySQL 5.7
 
 ### The prerequisites to deploy this stack
 
@@ -195,7 +195,7 @@ You can connect to mysql server mongodb from mysql client.
 
  ~~~ bash
  sudo apt-get -y install mysql-clients
- mysql -h flottingIp -u root -psqlpass
+ mysql -h flottingIp -u root -p
  ~~~
 
 
