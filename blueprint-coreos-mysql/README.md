@@ -2,7 +2,7 @@
 
 ## Episode 25 : MySQL
 
-![mysql](img/MySQL.svg)
+![mysql](img/mysql.png)
 
 MySQL est un système de gestion de base de données ( SGBD ). Issu du monde libre, il est l'un des logiciels de gestion de base de données le plus utilisé au monde.
 

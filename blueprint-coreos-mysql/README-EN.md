@@ -2,7 +2,7 @@
 
 ## Episode 25 : MySQL
 
-![mysql](img/MySQL.svg)
+![mysql](img/mysql.png)
 
 MySQL is a freely available open source Relational Database Management System (RDBMS) that uses Structured Query Language (SQL).
 
