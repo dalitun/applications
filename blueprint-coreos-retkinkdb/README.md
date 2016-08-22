@@ -59,7 +59,7 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `blueprint-coreos-mongodb.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+Dans le fichier `blueprint-coreos-rethinkdb.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
@@ -174,6 +174,9 @@ parameters:
  ~~~
 
  Vous pouvez vous connecter sur l'inteface de RethinkDB via un navigateur web à partir de cet url http://flottingIp:8080
+
+ ![Rethinkdb1](img/rethinkdb1.png)
+
 
 ##### Systemd - système d'initialisation de service rethinkdb
 
