@@ -1,20 +1,19 @@
-# 5 Minutes Stacks, 25 episode : Drone #
+# 5 Minutes Stacks, 25 episode : Mongodb #
 
-## Episode 25 : Drone
+## Episode 25 : Mongodb
 
-![Drone](img/logo.png)
+![Mongodb](img/mongodb.jpg)
 
+MongoDB is a cross-platform and open-source document-oriented database, a kind of NoSQL database. As a NoSQL database, MongoDB shuns the relational database’s table-based structure to adapt JSON-like documents that have dynamic schemas which it calls BSON.
 
-Drone is a hosted continuous integration service. It enables you to conveniently set up projects to automatically build, test, and deploy as you make changes to your code.
-
-Drone integrates seamlessly with Github, Bitbucket and Google Code as well as third party services such as Heroku, Dotcloud, Google AppEngine and more.
+This makes data integration for certain types of applications faster and easier. MongoDB is built for scalability, high availability and performance from a single server deployment to large and complex multi-site infrastructures.
 
 ## Preparations
 
 ### The version
   - CoreOS Stable 899.13.0
   - Docker 1.10.3
-  - Drone v0.4
+  - MongoDb 3.2
 
 ### The prerequisites to deploy this stack
 
@@ -34,9 +33,9 @@ Drone integrates seamlessly with Github, Bitbucket and Google Code as well as th
 
 ## What will you find in the repository
 
-   Once you have cloned the github, you will find in the `blueprint-coreos-drone/` repository:
+   Once you have cloned the github, you will find in the `blueprint-coreos-mongodb/` repository:
 
-   * `blueprint-coreos-drone.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
+   * `blueprint-coreos-mongodb.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
    * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
 
 ## Start-up
@@ -59,60 +58,54 @@ Drone integrates seamlessly with Github, Bitbucket and Google Code as well as th
 
 ### Adjust the parameters
 
-  In the `blueprint-coreos-drone.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
+  In the `blueprint-coreos-mongodb.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
 
   Within these heat templates, you can also adjust (and set the defaults for) the instance type by playing with the `flavor_name` parameter accordingly.
 
-  By default, the stack network and subnet are generated for the stack. This behavior can be changed within the `blueprint-coreos-drone.heat.yml` file as well, if need be, although doing so may be cause for security concerns.
+  By default, the stack network and subnet are generated for the stack. This behavior can be changed within the `blueprint-coreos-mongodb.heat.yml` file as well, if need be, although doing so may be cause for security concerns.
 
 
 ~~~ yaml
 heat_template_version: 2013-05-23
+description: Blueprint CoreOS Mongodb
+parameters:
+    keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
 
-description: Bundle CoreOS Drone
-
-  parameters:
-    keypair_name:        <-- Indicate here your keypair
-      description: Keypair to inject in instance
-      label: SSH Keypair
-      type: string
-
-    flavor_name:      
-      default: n1.cw.standard-1     <-- Indicate here flavor size
-      description: Flavor to use for the deployed instance
-      type: string
-      label: Instance Type (Flavor)
-      constraints:
-        - allowed_values:
+  flavor_name:
+    default: n1.cw.standard-1
+    description: Flavor to use for the deployed instance
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
           - n1.cw.standard-1
           - n1.cw.standard-2
           - n1.cw.standard-4
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
-    drone_driver:
-      default: github     <-- Indicate here VCS type
-      description: Flavor to use for the deployed instance
-      type: string
-      label: drone driver
-      constraints:
-        - allowed_values:
-            - github
-            - gitlab
-            - bitbucket
-    drone_driver_url:     <-- Indicate here VCS url
-      default: https://github.com
-      description:  drone driver url for example https://github.com, https://bitbucket.org/ or your gitlab url
-      label:  drone github client
-      type: string
-    drone_client:        <-- Indicate here OAuth client id
-      description: OAuth id client
-      label:  OAuth id client
-      type: string
-    drone_secret:        <-- Indicate here secret code OAuth client for VCS used
-      description: OAuth secret client
-      label: OAuth secret client
-      type: string
+
+  volume_size:
+    default: 5
+    label: Backup Volume Size
+    description: Size of Volume for owncloud Storage (Gigabytes)
+    type: number
+    constraints:
+      - range: { min: 5, max: 10000 }
+        description: Volume must be at least 10 gigabytes
+
+  volume_type:
+    default: standard
+    label: Backup Volume Type
+    description: Performance flavor of the linked Volume for owncloud Storage
+    type: string
+    constraints:
+      - allowed_values:
+          - standard
+          - performant
  [...]
  ~~~
 ### Start the stack
@@ -120,11 +113,11 @@ description: Bundle CoreOS Drone
  In a shell, run the script `stack-start.sh`:
 
  ~~~ bash
- $ ./stack-start.sh Drone
+ $ ./stack-start.sh mongo
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | Drone    | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | mongo    | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+--------------------+----------------------+
  ~~~
 
@@ -135,7 +128,7 @@ description: Bundle CoreOS Drone
  +--------------------------------------+------------+-----------------+----------------------+
  | id                                   | stack_name | stack_status    | creation_time        |
  +--------------------------------------+------------+-----------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | Drone    | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | mongo    | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
 
@@ -144,103 +137,76 @@ description: Bundle CoreOS Drone
 Once all of this done, stack's description can be obtained with the following command :
 
  ~~~ bash
- $ heat stack-show Drone
+ $ heat stack-show mongo
  +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
 | Property              | Value                                                                                                                                |
 +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
 | capabilities          | []                                                                                                                                   |
-| creation_time         | 2016-06-09T10:53:33Z                                                                                                                 |
-| description           | Bundle CoreOS Drone                                                                                                                  |
+| creation_time         | 2016-08-22T09:49:50Z                                                                                                                 |
+| description           | Blueprint CoreOS Mongodb                                                                                                             |
 | disable_rollback      | True                                                                                                                                 |
-| id                    | a754ce3f-870b-47f9-9863-9ddbe41a0267                                                                                                 |
-| links                 | https://orchestration.fr1.cloudwatt.com/v1/7da34701e2fe488683d8a8382ee6f454/stacks/drone/a754ce3f-870b-47f9-9863-9ddbe41a0267 (self) |
+| id                    | 61a9b30f-2f94-420f-aecf-7c26871f3eb1                                                                                                 |
+| links                 | https://orchestration.fr1.cloudwatt.com/v1/467b00f998064f1688feeca95bdc7a88/stacks/mongo/61a9b30f-2f94-420f-aecf-7c26871f3eb1 (self) |
 | notification_topics   | []                                                                                                                                   |
 | outputs               | [                                                                                                                                    |
 |                       |   {                                                                                                                                  |
-|                       |     "output_value": "http://flottingIp",                                                                                           |
-|                       |     "description": "Drone URL",                                                                                                      |
-|                       |     "output_key": "floating_ip_url"                                                                                                  |
+|                       |     "output_value": "mongodb://floatingIP:27017",                                                                                   |
+|                       |     "description": "Mongodb URI",                                                                                                    |
+|                       |     "output_key": "floating_ip_uri"                                                                                                  |
 |                       |   }                                                                                                                                  |
 |                       | ]                                                                                                                                    |
 | parameters            | {                                                                                                                                    |
-|                       |   "OS::project_id": "7da34701e2fe488683d8a8382ee6f454",                                                                              |
-|                       |   "OS::stack_id": "a754ce3f-870b-47f9-9863-9ddbe41a0267",                                                                            |
-|                       |   "OS::stack_name": "drone",                                                                                                         |
-|                       |   "keypair_name": "testkey",                                                                                                         |
-|                       |   "drone_driver": "github",                                                                                                          |
-|                       |   "drone_client": "********************",                                                                                            |
-|                       |   "flavor_name": "n1.cw.standard-1",                                                                                                 |
-|                       |   "drone_secret": "****************************************",                                                                        |
-|                       |   "drone_url": "https://github.com"                                                                                                  |
+|                       |   "OS::project_id": "467b00f998064f1688feeca95bdc7a88",                                                                              |
+|                       |   "OS::stack_id": "61a9b30f-2f94-420f-aecf-7c26871f3eb1",                                                                            |
+|                       |   "OS::stack_name": "mongo",                                                                                                         |
+|                       |   "keypair_name": "yourkey",                                                                                                          |
+|                       |   "volume_type": "standard",                                                                                                         |
+|                       |   "volume_size": "5",                                                                                                                |
+|                       |   "flavor_name": "n1.cw.standard-1"                                                                                                  |
 |                       | }                                                                                                                                    |
 | parent                | None                                                                                                                                 |
-| stack_name            | drone                                                                                                                                |
-| stack_owner           | youremail@cloudwatt.com                                                                                                 |
+| stack_name            | mongo                                                                                                                                |
+| stack_owner           | youremail@cloudwatt.com                                                                                          |
 | stack_status          | CREATE_COMPLETE                                                                                                                      |
 | stack_status_reason   | Stack CREATE completed successfully                                                                                                  |
-| stack_user_project_id | eb79ff46f2e44090ada252dc32f62b4a                                                                                                     |
-| template_description  | Bleuprint CoreOS Drone                                                                                                                  |
+| stack_user_project_id | a7f3e8339c22451cb6f6fd1d1715ddfb                                                                                                     |
+| template_description  | Blueprint CoreOS Mongodb                                                                                                             |
 | timeout_mins          | 60                                                                                                                                   |
 | updated_time          | None                                                                                                                                 |
 +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
-
  ~~~
 
+You can connect to mongodb server mongodb from mongodb client.
 
-You can connect via a web browser on Drone application interface from this url http://flottingIp.
+ ~~~ bash
+ sudo apt-get -y install mongodb-clients
+ mongo --host flottingIp
+ ~~~
 
-![page1](./img/drone1.png)
+ Do not forget to add a passwords for users.
 
-Then authenticate on github, bitbucket or gitlab.
-
-![page2](./img/drone2.png)
-
-Then you arrive at this page.
-
-![Page 3](./img/drone3.png)
-
-You choose the drone project and activate it.
-
-![Page 4](./img/drone4.png)
-
-Then commit anything in this project and you will see the result of your commit.
-
-![Page5](./img/drone5.png)
-
-After the commit.
-
-![Page6](./img/drone6.png)
-
-For creating OAuth see this links:
-
-* [for github](http://readme.drone.io/setup/remotes/github/)
-* [for gitlab](http://readme.drone.io/setup/remotes/gitlab/)
-* [for bitbucket](http://readme.drone.io/setup/remotes/bitbucket/)
-
-##### systemd - init system for Drone service
+##### Systemd - init system for Mongodb service
 
  To start the service :
 ~~~ bash
-sudo systemctl start drone.service
+sudo systemctl start mongodb.service
 ~~~
 
 Logs can be seen with the following command:
 ~~~ bash
-journalctl -f -u drone.service
+journalctl -f -u mongodb.service
 ~~~
 
 To stop the service:
 ~~~ bash
-sudo systemctl stop drone.service
+sudo systemctl stop mongodb.service
 ~~~
-#### Fichiers configurations
-`/home/core/drone.env`: File contains the environment variables.
 
 #### Other resources you could be interested in:
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [Drone Documentatuion](https://drone.io/)
+* [Mongodb Documentatuion](https://www.mongodb.com/)
 
 -----
 
