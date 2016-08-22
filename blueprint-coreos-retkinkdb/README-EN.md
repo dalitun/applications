@@ -91,7 +91,7 @@ parameters:
   volume_size:
     default: 5
     label: Backup Volume Size
-    description: Size of Volume for mongodb Storage (Gigabytes)
+    description: Size of Volume for owncloud Storage (Gigabytes)
     type: number
     constraints:
       - range: { min: 5, max: 10000 }
@@ -100,7 +100,7 @@ parameters:
   volume_type:
     default: standard
     label: Backup Volume Type
-    description: Performance flavor of the linked Volume for mongodb Storage
+    description: Performance flavor of the linked Volume for owncloud Storage
     type: string
     constraints:
       - allowed_values:

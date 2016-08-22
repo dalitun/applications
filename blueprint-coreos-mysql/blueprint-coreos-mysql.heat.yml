@@ -6,7 +6,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS Mongodb
+description: Blueprint CoreOS Mysql
 
 
 parameters:
@@ -29,10 +29,17 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
+  sqlpass:
+    description: password root sql
+    label: Mysql password
+    type: string
+    hidden: true
+
+
   volume_size:
     default: 5
     label: Backup Volume Size
-    description: Size of Volume for mongodb Storage (Gigabytes)
+    description: Size of Volume for owncloud Storage (Gigabytes)
     type: number
     constraints:
       - range: { min: 5, max: 10000 }
@@ -41,7 +48,7 @@ parameters:
   volume_type:
     default: standard
     label: Backup Volume Type
-    description: Performance flavor of the linked Volume for mongodb Storage
+    description: Performance flavor of the linked Volume for owncloud Storage
     type: string
     constraints:
       - allowed_values:
@@ -84,7 +91,7 @@ resources:
     properties:
       rules:
         - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
-        - { direction: ingress, protocol: TCP, port_range_min: 27017, port_range_max: 27017 }
+        - { direction: ingress, protocol: TCP, port_range_min: 3306, port_range_max: 3306 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
@@ -119,6 +126,7 @@ resources:
           params:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
+            $sqlpass: { get_param: sqlpass }
           template: |
             #cloud-config
             write_files:
@@ -137,7 +145,13 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /mongodb/data
+                  sudo mkdir -p /mysql/data
+              - path: /home/core/mysql.env
+                permissions: 0775
+                owner: "core:core"
+                content: |
+                    MYSQL_ROOT_PASSWORD=$sqlpass
+                    MYSQL_DATABASE=mysql123
 
             coreos:
               etcd2:
@@ -175,37 +189,38 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: mongodb.mount
+                - name: mysql.mount
                   command: start
                   content: |
                     [Unit]
-                    Description=Mount ephemeral to /mongodb/
+                    Description=Mount ephemeral to /mysql
                     Requires=format.service
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/mongodb/
+                    Where=/mysql/
                     Type=ext4
                     [Service]
                     Type=oneshot
                     ExecStart=/home/core/mount.sh
-                - name: mongodb.service
+                - name: mysql.service
                   command: start
                   content: |
                     [Unit]
-                    Description=mongodb UI
+                    Description=mysql UI
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=-/usr/bin/docker kill mongo
-                    ExecStartPre=-/usr/bin/docker rm mongo
-                    ExecStartPre=/usr/bin/docker pull mongo
+                    ExecStartPre=-/usr/bin/docker kill mysql
+                    ExecStartPre=-/usr/bin/docker rm mysql
+                    ExecStartPre=/usr/bin/docker pull mysql
                     ExecStart=/usr/bin/docker run \
-                             --volume /mongodb/data:/data/db \
-                             --publish=27017:27017 \
-                             --name=mongo mongo
+                             --volume /mysql/data/:/var/lib/mysql \
+                             --env-file /home/core/mysql.env \
+                             --publish=3306:3306 \
+                             --name=mysql mysql
 
                     [Install]
                     WantedBy=multi-user.target
@@ -230,10 +245,10 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  floating_ip_uri:
-    description: Mongodb URI
+  floating_ip_url:
+    description: Mysql url
     value:
       str_replace:
-        template: mongodb://$floating_ip:27017
+        template: mysql://floating_ip:3306
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }

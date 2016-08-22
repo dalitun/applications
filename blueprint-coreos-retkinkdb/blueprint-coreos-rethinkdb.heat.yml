@@ -6,7 +6,7 @@
 heat_template_version: 2013-05-23
 
 
-description: Blueprint CoreOS Mongodb
+description: Blueprint CoreOS Rethinkdb
 
 
 parameters:
@@ -32,7 +32,7 @@ parameters:
   volume_size:
     default: 5
     label: Backup Volume Size
-    description: Size of Volume for mongodb Storage (Gigabytes)
+    description: Size of Volume for Rethinkdb Storage (Gigabytes)
     type: number
     constraints:
       - range: { min: 5, max: 10000 }
@@ -41,7 +41,7 @@ parameters:
   volume_type:
     default: standard
     label: Backup Volume Type
-    description: Performance flavor of the linked Volume for mongodb Storage
+    description: Performance flavor of the linked Volume for Rethinkdb Storage
     type: string
     constraints:
       - allowed_values:
@@ -84,7 +84,7 @@ resources:
     properties:
       rules:
         - { direction: ingress, protocol: TCP, port_range_min: 22, port_range_max: 22 }
-        - { direction: ingress, protocol: TCP, port_range_min: 27017, port_range_max: 27017 }
+        - { direction: ingress, protocol: TCP, port_range_min: 8080, port_range_max: 8080 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
@@ -137,7 +137,7 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p /mongodb/data
+                  sudo mkdir -p /rethinkdb/data
 
             coreos:
               etcd2:
@@ -175,7 +175,7 @@ resources:
                     Type=oneshot
                     RemainAfterExit=yes
                     ExecStart=/home/core/format.sh
-                - name: mongodb.mount
+                - name: rethinkdb.mount
                   command: start
                   content: |
                     [Unit]
@@ -184,28 +184,30 @@ resources:
                     After=format.service
                     [Mount]
                     What=/dev/vdb
-                    Where=/mongodb/
+                    Where=/rethinkdb/
                     Type=ext4
                     [Service]
                     Type=oneshot
                     ExecStart=/home/core/mount.sh
-                - name: mongodb.service
+                - name: rethinkdb.service
                   command: start
                   content: |
                     [Unit]
-                    Description=mongodb UI
+                    Description=rethinkdb UI
                     After=docker.service
                     Requires=docker.service
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=-/usr/bin/docker kill mongo
-                    ExecStartPre=-/usr/bin/docker rm mongo
-                    ExecStartPre=/usr/bin/docker pull mongo
+                    ExecStartPre=-/usr/bin/docker kill rethinkdb
+                    ExecStartPre=-/usr/bin/docker rm rethinkdb
+                    ExecStartPre=/usr/bin/docker pull rethinkdb
                     ExecStart=/usr/bin/docker run \
-                             --volume /mongodb/data:/data/db \
-                             --publish=27017:27017 \
-                             --name=mongo mongo
+                             --volume /rethinkdb/data:/data/ \
+                             --publish=8080:8080 \
+                             --publish=28015:28015 \
+                             --publish=29015:29015 \
+                             --name=rethinkdb -d rethinkdb
 
                     [Install]
                     WantedBy=multi-user.target
@@ -230,10 +232,10 @@ resources:
       server_id: { get_resource: server }
 
 outputs:
-  floating_ip_uri:
-    description: Mongodb URI
+  floating_ip_url:
+    description: Rethinkdb URL
     value:
       str_replace:
-        template: mongodb://$floating_ip:27017
+        template: http://$floating_ip:8080
         params:
           $floating_ip: { get_attr: [floating_ip, floating_ip_address] }

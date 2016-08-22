@@ -1,18 +1,18 @@
-# 5 Minutes Stacks, épisode 25 : CouchBase #
+# 5 Minutes Stacks, épisode 25 : RetkinkDb #
 
-## Episode 25 : CouchBase
+## Episode 25 : RethinkDb
 
-![couchebase](img/couchbase-logo.gif)
+![Rethinkdb](img/rethinkdb.png)
 
-CouchBase joue la carte de la base de données NoSQL dans une approche temps réel, et mise fortement sur une demande en devenir, le NoSQL sur le mobile via la synchronisation sur le modèle JSon.
-Avec le temps, les bases de données NoSQL se font de plus en plus efficaces. Il était temps. Car il faut affronter la problématique de l’augmentation exponentielle des volumes de données, en particulier non structurées. Couchbase propose sa solution, et va plus loin en misant sur l’arrivée du modèle JSon sur le mobile pour accompagner la synchronisation avec sa base et ses serveurs NoSQL.
-
+RethinkDB est un système de gestion de bases de données distribuées orienté documents qui permet
+de stocker des documents JSON. Il a été développé à partir de 2009 par une société du même nom.
+L’entreprise est domiciliée au 156 E.Dana St. Mountain View, CA 94041 aux Etats-Unis.
 ## Preparations
 
 ### Les versions
   - CoreOS Stable 899.13.0
   - Docker 1.10.3
-  - CoucheBase 4.5.0
+  - RethinkDb 2.3.4
 
 ### Les pré-requis pour déployer cette stack
 
@@ -34,9 +34,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-couchbase/`
+Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-rethinkdb/`
 
-* `blueprint-coreos-couchbase.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+* `blueprint-coreos-rethinkdb.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 
 * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 
@@ -59,12 +59,12 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `blueprint-coreos-couchbase.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+Dans le fichier `blueprint-coreos-mongodb.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
-description: Blueprint CoreOS Couchbase
+description: Blueprint CoreOS Rethinkdb
 parameters:
   keypair_name:
     description: Keypair to inject in instance
@@ -85,11 +85,10 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-
   volume_size:
     default: 5
     label: Backup Volume Size
-    description: Size of Volume for couchbase Storage (Gigabytes)
+    description: Size of Volume for Rethinkdb Storage (Gigabytes)
     type: number
     constraints:
       - range: { min: 5, max: 10000 }
@@ -98,13 +97,12 @@ parameters:
   volume_type:
     default: standard
     label: Backup Volume Type
-    description: Performance flavor of the linked Volume for couchbase Storage
+    description: Performance flavor of the linked Volume for Rethinkdb Storage
     type: string
     constraints:
       - allowed_values:
           - standard
           - performant
-
  [...]
  ~~~
 ### Démarrer la stack
@@ -112,11 +110,11 @@ parameters:
  Dans un shell, lancer le script `stack-start.sh` :
 
  ~~~ bash
- $ ./stack-start.sh couchbase
+ $ ./stack-start.sh rethinkdb
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | couchbase     | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | rethinkdb     | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+--------------------+----------------------+
  ~~~
 
@@ -127,7 +125,7 @@ parameters:
  +--------------------------------------+------------+-----------------+----------------------+
  | id                                   | stack_name | stack_status    | creation_time        |
  +--------------------------------------+------------+-----------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | couchbase     | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | rethinkdb     | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
 
@@ -136,65 +134,62 @@ parameters:
  Une fois tout ceci fait, vous pouvez récupérer la description du votre stack à partir de cette commande :
 
  ~~~ bash
- $ heat stack-show couchbase
+ $ heat stack-show rethinkdb
  +-----------------------+------------------------------------------------------------------------------------------------------------------------------------------+
 | Property              | Value                                                                                                                                    |
 +-----------------------+------------------------------------------------------------------------------------------------------------------------------------------+
 | capabilities          | []                                                                                                                                       |
-| creation_time         | 2016-08-22T12:41:20Z                                                                                                                     |
-| description           | Blueprint CoreOS Couchbase                                                                                                               |
+| creation_time         | 2016-08-22T13:28:15Z                                                                                                                     |
+| description           | Blueprint CoreOS Rethinkdb                                                                                                               |
 | disable_rollback      | True                                                                                                                                     |
-| id                    | 0cb5221a-c104-497a-92c1-47f49b7145cb                                                                                                     |
-| links                 | https://orchestration.fr1.cloudwatt.com/v1/467b00f998064f1688feeca95bdc7a88/stacks/couchbase/0cb5221a-c104-497a-92c1-47f49b7145cb (self) |
+| id                    | 84448c39-7813-4a42-8030-be4661fc551b                                                                                                     |
+| links                 | https://orchestration.fr1.cloudwatt.com/v1/467b00f998064f1688feeca95bdc7a88/stacks/rethinkdb/84448c39-7813-4a42-8030-be4661fc551b (self) |
 | notification_topics   | []                                                                                                                                       |
 | outputs               | [                                                                                                                                        |
 |                       |   {                                                                                                                                      |
-|                       |     "output_value": "http://floatingIp:8091",                                                                                          |
-|                       |     "description": "couchbase URL",                                                                                                      |
+|                       |     "output_value": "http://84.39.37.10:8080",                                                                                           |
+|                       |     "description": "Rethinkdb URL",                                                                                                      |
 |                       |     "output_key": "floating_ip_url"                                                                                                      |
 |                       |   }                                                                                                                                      |
 |                       | ]                                                                                                                                        |
 | parameters            | {                                                                                                                                        |
 |                       |   "OS::project_id": "467b00f998064f1688feeca95bdc7a88",                                                                                  |
-|                       |   "OS::stack_id": "0cb5221a-c104-497a-92c1-47f49b7145cb",                                                                                |
-|                       |   "OS::stack_name": "couchbase",                                                                                                         |
+|                       |   "OS::stack_id": "84448c39-7813-4a42-8030-be4661fc551b",                                                                                |
+|                       |   "OS::stack_name": "rethinkdb",                                                                                                         |
 |                       |   "keypair_name": "yourkey",                                                                                                              |
 |                       |   "volume_type": "standard",                                                                                                             |
 |                       |   "volume_size": "5",                                                                                                                    |
 |                       |   "flavor_name": "n1.cw.standard-1"                                                                                                      |
 |                       | }                                                                                                                                        |
 | parent                | None                                                                                                                                     |
-| stack_name            | couchbase                                                                                                                                |
+| stack_name            | rethinkdb                                                                                                                                |
 | stack_owner           | youremail@cloudwatt.com                                                                                                |
 | stack_status          | CREATE_COMPLETE                                                                                                                          |
 | stack_status_reason   | Stack CREATE completed successfully                                                                                                      |
-| stack_user_project_id | 65091a1295424361bb38d30f568bf150                                                                                                         |
-| template_description  | Blueprint CoreOS Couchbase                                                                                                               |
+| stack_user_project_id | c18212ee8fd0416dbe3f049db2e67b60                                                                                                         |
+| template_description  | Blueprint CoreOS Rethinkdb                                                                                                               |
 | timeout_mins          | 60                                                                                                                                       |
 | updated_time          | None                                                                                                                                     |
 +-----------------------+------------------------------------------------------------------------------------------------------------------------------------------+
  ~~~
 
- Vous pouvez vous connecter sur l'inteface de Couchbase via un navigateur web à partir de cet url http://flottingIp:8091 et continuez l'installation de Couchbase.
+ Vous pouvez vous connecter sur l'inteface de RethinkDB via un navigateur web à partir de cet url http://flottingIp:8080
 
- ![couchbase1](img/couchbase1.png)
-
-
-##### Systemd - système d'initialisation de service couchbase
+##### Systemd - système d'initialisation de service rethinkdb
 
 Pour démarrer le service :
 ~~~ bash
-sudo systemctl start couchbase.service
+sudo systemctl start rethinkdb.service
 ~~~
 
 Il est possible de consulter les logs en sortie du service lancé grâce à la commande suivante :
 ~~~ bash
-journalctl -f -u couchbase.service
+journalctl -f -u rethinkdb.service
 ~~~
 
 Le service se stop de la manière suivante :
 ~~~ bash
-sudo systemctl stop couchbase.service
+sudo systemctl stop rethinkdb.service
 ~~~
 
 
@@ -202,7 +197,7 @@ sudo systemctl stop couchbase.service
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [CouchBase Documentatuion](http://www.couchbase.com/)
+* [RethinkDb Documentatuion](https://www.rethinkdb.com/)
 
 -----
 Have fun. Hack in peace.
