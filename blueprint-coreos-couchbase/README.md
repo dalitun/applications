@@ -175,7 +175,7 @@ parameters:
 +-----------------------+------------------------------------------------------------------------------------------------------------------------------------------+
  ~~~
 
- Vous pouvez vous connecter sur l'inteface de Couchbase via un navigateur web à partir de cet url http://flottingIp:8091 et continuez l'installation de Couchbase.
+ Vous pouvez vous connecter sur l'inteface de Couchbase via un navigateur web à partir de cet url http://floatingIp:8091 et continuez l'installation de Couchbase.
 
  ![couchbase1](img/couchbase1.png)
 

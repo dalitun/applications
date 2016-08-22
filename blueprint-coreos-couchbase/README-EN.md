@@ -175,7 +175,7 @@ Once all of this done, stack's description can be obtained with the following co
 +-----------------------+------------------------------------------------------------------------------------------------------------------------------------------+
  ~~~
 
- You can connect via a web browser to couchbase server from this url http://flottingIp:8091 and setup your couchbase server.
+ You can connect via a web browser to couchbase server from this url http://floatingIp:8091 and setup your couchbase server.
 
 ![couchbase1](img/couchbase1.png)
 

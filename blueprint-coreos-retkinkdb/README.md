@@ -173,7 +173,7 @@ parameters:
 +-----------------------+------------------------------------------------------------------------------------------------------------------------------------------+
  ~~~
 
- Vous pouvez vous connecter sur l'inteface de RethinkDB via un navigateur web à partir de cet url http://flottingIp:8080
+ Vous pouvez vous connecter sur l'inteface de RethinkDB via un navigateur web à partir de cet url http://floatingIp:8080
 
  ![Rethinkdb1](img/rethinkdb1.png)
 

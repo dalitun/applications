@@ -172,7 +172,7 @@ Once all of this done, stack's description can be obtained with the following co
 +-----------------------+------------------------------------------------------------------------------------------------------------------------------------------+
  ~~~
 
-You can connect via a web browser to rethinkdb server from this url http://flottingIp:8080
+You can connect via a web browser to rethinkdb server from this url http://floatingIp:8080
 
 ![Rethinkdb1](img/rethinkdb1.png)
 
