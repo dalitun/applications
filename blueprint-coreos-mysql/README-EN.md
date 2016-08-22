@@ -198,8 +198,6 @@ You can connect to mysql server mongodb from mysql client.
  mysql -h flottingIp -u root -p
  ~~~
 
-
-
 ##### Systemd - init system for MySQL service
 
  To start the service :
