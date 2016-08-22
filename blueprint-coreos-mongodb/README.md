@@ -11,7 +11,7 @@ MongoDb est un système de base de données dans la mouvance NoSQL. Il est orien
 ### Les versions
   - CoreOS Stable 899.13.0
   - Docker 1.10.3
-  - MongoDb 3.0
+  - MongoDb 3.2
 
 ### Les pré-requis pour déployer cette stack
 
@@ -62,12 +62,8 @@ Dans le fichier `blueprint-coreos-mongodb.heat.yml` vous trouverez en haut une s
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
-hheat_template_version: 2013-05-23
-
-
+heat_template_version: 2013-05-23
 description: Blueprint CoreOS Mongodb
-
-
 parameters:
   keypair_name:
     description: Keypair to inject in instance
@@ -106,8 +102,6 @@ parameters:
       - allowed_values:
           - standard
           - performant
-
-
  [...]
  ~~~
 ### Démarrer la stack
@@ -176,10 +170,7 @@ parameters:
 | timeout_mins          | 60                                                                                                                                   |
 | updated_time          | None                                                                                                                                 |
 +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
-
-
  ~~~
-
 
 Vous pouvez vous connecter sur le serveur  mongodb à partir d'un client mongodb.
 
@@ -188,7 +179,7 @@ sudo apt-get -y install mongodb-clients
 mongo --host flottingIp
 ~~~
 
-N'oubliez pas d'ajouter un mot passe pour les utilisateurs.
+N'oubliez pas d'ajouter des mots de passe pour les utilisateurs.
 
 ##### Systemd - système d'initialisation de service mongodb
 
