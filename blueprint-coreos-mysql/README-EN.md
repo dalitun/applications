@@ -1,19 +1,27 @@
-# 5 Minutes Stacks, 25 episode : Mongodb #
+# 5 Minutes Stacks, 25 episode : MySQL #
 
-## Episode 25 : Mongodb
+## Episode 25 : MySQL
 
-![Mongodb](img/mongodb.jpg)
+![mysql](img/MySQL.svg)
 
-MongoDB is a cross-platform and open-source document-oriented database, a kind of NoSQL database. As a NoSQL database, MongoDB shuns the relational database’s table-based structure to adapt JSON-like documents that have dynamic schemas which it calls BSON.
+MySQL is a freely available open source Relational Database Management System (RDBMS) that uses Structured Query Language (SQL).
 
-This makes data integration for certain types of applications faster and easier. MongoDB is built for scalability, high availability and performance from a single server deployment to large and complex multi-site infrastructures.
+SQL is the most popular language for adding, accessing and managing content in a database. It is most noted for its quick processing, proven reliability, ease and flexibility of use. MySQL is an essential part of almost every open source PHP application. Good examples for PHP/MySQL-based scripts are phpBB, osCommerce and Joomla.
+
+One of the most important things about using MySQL is to have a MySQL specialized host. Here are some of the things SiteGround is proud of:
+
+    We have long experience in providing technical support for MySQL-based web sites. Thanks to it our servers are perfectly optimized to offer the best overall performance for most MySQL applications.
+    We offer a lot of FREE MySQL tools including CMS systems, forums, galleries, blogs, shopping carts and more.
+    We support both MySQL 4 and MySQL 5. We provide unlimited MySQL databases.
+
+Our MySQL hosting package is the best offer on the market - it has the lowest price for the quality and features it includes. Sign up now for our Professional MySQL Hosting!
 
 ## Preparations
 
 ### The version
   - CoreOS Stable 899.13.0
   - Docker 1.10.3
-  - MongoDb 3.2
+  - MySQL 3.2
 
 ### The prerequisites to deploy this stack
 
@@ -33,9 +41,9 @@ This makes data integration for certain types of applications faster and easier.
 
 ## What will you find in the repository
 
-   Once you have cloned the github, you will find in the `blueprint-coreos-mongodb/` repository:
+   Once you have cloned the github, you will find in the `blueprint-coreos-mysql/` repository:
 
-   * `blueprint-coreos-mongodb.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
+   * `blueprint-coreos-mysql.heat.yml`: HEAT orchestration template. It will be used to deploy the necessary infrastructure.
    * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
 
 ## Start-up
@@ -58,66 +66,72 @@ This makes data integration for certain types of applications faster and easier.
 
 ### Adjust the parameters
 
-  In the `blueprint-coreos-mongodb.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
+  In the `blueprint-coreos-mysql.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
 
   Within these heat templates, you can also adjust (and set the defaults for) the instance type by playing with the `flavor_name` parameter accordingly.
 
-  By default, the stack network and subnet are generated for the stack. This behavior can be changed within the `blueprint-coreos-mongodb.heat.yml` file as well, if need be, although doing so may be cause for security concerns.
+  By default, the stack network and subnet are generated for the stack. This behavior can be changed within the `blueprint-coreos-mysql.heat.yml` file as well, if need be, although doing so may be cause for security concerns.
 
-
-~~~ yaml
-heat_template_version: 2013-05-23
-description: Blueprint CoreOS Mongodb
-parameters:
+  ~~~ yaml
+  heat_template_version: 2013-05-23
+  description: Blueprint CoreOS Mysql
+  parameters:
     keypair_name:
-    description: Keypair to inject in instance
-    label: SSH Keypair
-    type: string
+      description: Keypair to inject in instance
+      label: SSH Keypair
+      type: string
 
-  flavor_name:
-    default: n1.cw.standard-1
-    description: Flavor to use for the deployed instance
-    type: string
-    label: Instance Type (Flavor)
-    constraints:
-      - allowed_values:
-          - n1.cw.standard-1
-          - n1.cw.standard-2
-          - n1.cw.standard-4
-          - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
+    flavor_name:
+      default: n1.cw.standard-1
+      description: Flavor to use for the deployed instance
+      type: string
+      label: Instance Type (Flavor)
+      constraints:
+        - allowed_values:
+            - n1.cw.standard-1
+            - n1.cw.standard-2
+            - n1.cw.standard-4
+            - n1.cw.standard-8
+            - n1.cw.standard-12
+            - n1.cw.standard-16
 
-  volume_size:
-    default: 5
-    label: Backup Volume Size
-    description: Size of Volume for owncloud Storage (Gigabytes)
-    type: number
-    constraints:
-      - range: { min: 5, max: 10000 }
-        description: Volume must be at least 10 gigabytes
+    sqlpass:
+      description: password root sql
+      label: Mysql password
+      type: string
+      hidden: true
 
-  volume_type:
-    default: standard
-    label: Backup Volume Type
-    description: Performance flavor of the linked Volume for owncloud Storage
-    type: string
-    constraints:
-      - allowed_values:
-          - standard
-          - performant
- [...]
- ~~~
+
+    volume_size:
+      default: 5
+      label: Backup Volume Size
+      description: Size of Volume for mysql Storage (Gigabytes)
+      type: number
+      constraints:
+        - range: { min: 5, max: 10000 }
+          description: Volume must be at least 10 gigabytes
+
+    volume_type:
+      default: standard
+      label: Backup Volume Type
+      description: Performance flavor of the linked Volume for mysql Storage
+      type: string
+      constraints:
+        - allowed_values:
+            - standard
+            - performant
+   [...]
+   ~~~
 ### Start the stack
 
  In a shell, run the script `stack-start.sh`:
 
  ~~~ bash
- $ ./stack-start.sh mongo
+ $ ./stack-start.sh mysql
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | mongo    | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | mysql    | CREATE_IN_PROGRESS | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+--------------------+----------------------+
  ~~~
 
@@ -128,7 +142,7 @@ parameters:
  +--------------------------------------+------------+-----------------+----------------------+
  | id                                   | stack_name | stack_status    | creation_time        |
  +--------------------------------------+------------+-----------------+----------------------+
- | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | mongo    | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
+ | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | mysql    | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
 
@@ -137,76 +151,77 @@ parameters:
 Once all of this done, stack's description can be obtained with the following command :
 
  ~~~ bash
- $ heat stack-show mongo
+ $ heat stack-show mysql
  +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
 | Property              | Value                                                                                                                                |
 +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
 | capabilities          | []                                                                                                                                   |
-| creation_time         | 2016-08-22T09:49:50Z                                                                                                                 |
-| description           | Blueprint CoreOS Mongodb                                                                                                             |
+| creation_time         | 2016-08-22T15:59:21Z                                                                                                                 |
+| description           | Blueprint CoreOS Mysql                                                                                                               |
 | disable_rollback      | True                                                                                                                                 |
-| id                    | 61a9b30f-2f94-420f-aecf-7c26871f3eb1                                                                                                 |
-| links                 | https://orchestration.fr1.cloudwatt.com/v1/467b00f998064f1688feeca95bdc7a88/stacks/mongo/61a9b30f-2f94-420f-aecf-7c26871f3eb1 (self) |
+| id                    | 505f01d0-1390-4cbf-869e-21aa6b031e8e                                                                                                 |
+| links                 | https://orchestration.fr1.cloudwatt.com/v1/467b00f998064f1688feeca95bdc7a88/stacks/mysql/505f01d0-1390-4cbf-869e-21aa6b031e8e (self) |
 | notification_topics   | []                                                                                                                                   |
 | outputs               | [                                                                                                                                    |
 |                       |   {                                                                                                                                  |
-|                       |     "output_value": "mongodb://floatingIP:27017",                                                                                   |
-|                       |     "description": "Mongodb URI",                                                                                                    |
-|                       |     "output_key": "floating_ip_uri"                                                                                                  |
+|                       |     "output_value": "mysql://floating_ip:3306",                                                                                      |
+|                       |     "description": "Mysql uri",                                                                                                      |
+|                       |     "output_key": "floating_ip_url"                                                                                                  |
 |                       |   }                                                                                                                                  |
 |                       | ]                                                                                                                                    |
 | parameters            | {                                                                                                                                    |
+|                       |   "sqlpass": "******",                                                                                                               |
 |                       |   "OS::project_id": "467b00f998064f1688feeca95bdc7a88",                                                                              |
-|                       |   "OS::stack_id": "61a9b30f-2f94-420f-aecf-7c26871f3eb1",                                                                            |
-|                       |   "OS::stack_name": "mongo",                                                                                                         |
-|                       |   "keypair_name": "yourkey",                                                                                                          |
+|                       |   "OS::stack_id": "505f01d0-1390-4cbf-869e-21aa6b031e8e",                                                                            |
+|                       |   "OS::stack_name": "mysql",                                                                                                         |
+|                       |   "keypair_name": "alikey",                                                                                                          |
 |                       |   "volume_type": "standard",                                                                                                         |
 |                       |   "volume_size": "5",                                                                                                                |
 |                       |   "flavor_name": "n1.cw.standard-1"                                                                                                  |
 |                       | }                                                                                                                                    |
 | parent                | None                                                                                                                                 |
-| stack_name            | mongo                                                                                                                                |
-| stack_owner           | youremail@cloudwatt.com                                                                                          |
+| stack_name            | mysql                                                                                                                                |
+| stack_owner           | youremail@cloudwatt.com                                                                                            |
 | stack_status          | CREATE_COMPLETE                                                                                                                      |
 | stack_status_reason   | Stack CREATE completed successfully                                                                                                  |
-| stack_user_project_id | a7f3e8339c22451cb6f6fd1d1715ddfb                                                                                                     |
-| template_description  | Blueprint CoreOS Mongodb                                                                                                             |
+| stack_user_project_id | 4a64954892f048e592d7c15fe292cdb9                                                                                                     |
+| template_description  | Blueprint CoreOS Mysql                                                                                                               |
 | timeout_mins          | 60                                                                                                                                   |
 | updated_time          | None                                                                                                                                 |
 +-----------------------+--------------------------------------------------------------------------------------------------------------------------------------+
  ~~~
 
-You can connect to mongodb server mongodb from mongodb client.
+You can connect to mysql server mongodb from mysql client.
 
  ~~~ bash
- sudo apt-get -y install mongodb-clients
- mongo --host flottingIp
+ sudo apt-get -y install mysql-clients
+ mysql -h flottingIp -u root -psqlpass
  ~~~
 
- Do not forget to add a passwords for users.
 
-##### Systemd - init system for Mongodb service
+
+##### Systemd - init system for MySQL service
 
  To start the service :
 ~~~ bash
-sudo systemctl start mongodb.service
+sudo systemctl start mysql.service
 ~~~
 
 Logs can be seen with the following command:
 ~~~ bash
-journalctl -f -u mongodb.service
+journalctl -f -u mysql.service
 ~~~
 
 To stop the service:
 ~~~ bash
-sudo systemctl stop mongodb.service
+sudo systemctl stop mysql.service
 ~~~
 
 #### Other resources you could be interested in:
 
 * [CoreOS homepage](https://coreos.com/)
 * [Docker Documentation](https://docs.docker.com/)
-* [Mongodb Documentatuion](https://www.mongodb.com/)
+* [MySQL Documentatuion](https://www.mysql.com/)
 
 -----
 
