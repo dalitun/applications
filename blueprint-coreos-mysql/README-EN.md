@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, 25 episode : MySQL #
+# 5 Minutes Stacks, 32 episode : MySQL #
 
-## Episode 25 : MySQL
+## Episode 32 : MySQL
 
 ![mysql](img/mysql.png)
 
@@ -19,7 +19,7 @@ Our MySQL hosting package is the best offer on the market - it has the lowest pr
 ## Preparations
 
 ### The version
-  - CoreOS Stable 899.13.0
+  - CoreOS Stable 1010.6
   - Docker 1.10.3
   - MySQL 5.7
 
@@ -77,12 +77,13 @@ Our MySQL hosting package is the best offer on the market - it has the lowest pr
   description: Blueprint CoreOS Mysql
   parameters:
     keypair_name:
+      default: keypair           <-- Indicate here your keypair
       description: Keypair to inject in instance
       label: SSH Keypair
       type: string
 
     flavor_name:
-      default: n1.cw.standard-1
+      default: n1.cw.standard-1   <-- Indicate here flavor size
       description: Flavor to use for the deployed instance
       type: string
       label: Instance Type (Flavor)
@@ -97,13 +98,14 @@ Our MySQL hosting package is the best offer on the market - it has the lowest pr
 
     sqlpass:
       description: password root sql
+      default: cloudwatt  <-- Indicate here mysql root password
       label: Mysql password
       type: string
       hidden: true
 
 
     volume_size:
-      default: 5
+      default: 5           <-- Indicate here volume size
       label: Backup Volume Size
       description: Size of Volume for mysql Storage (Gigabytes)
       type: number
@@ -112,7 +114,7 @@ Our MySQL hosting package is the best offer on the market - it has the lowest pr
           description: Volume must be at least 10 gigabytes
 
     volume_type:
-      default: standard
+      default: standard      <-- Indicate here volume type
       label: Backup Volume Type
       description: Performance flavor of the linked Volume for mysql Storage
       type: string
@@ -174,7 +176,7 @@ Once all of this done, stack's description can be obtained with the following co
 |                       |   "OS::project_id": "467b00f998064f1688feeca95bdc7a88",                                                                              |
 |                       |   "OS::stack_id": "505f01d0-1390-4cbf-869e-21aa6b031e8e",                                                                            |
 |                       |   "OS::stack_name": "mysql",                                                                                                         |
-|                       |   "keypair_name": "alikey",                                                                                                          |
+|                       |   "keypair_name": "yourkey",                                                                                                          |
 |                       |   "volume_type": "standard",                                                                                                         |
 |                       |   "volume_size": "5",                                                                                                                |
 |                       |   "flavor_name": "n1.cw.standard-1"                                                                                                  |

@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 25 : MySQL #
+# 5 Minutes Stacks, épisode 32 : MySQL #
 
-## Episode 25 : MySQL
+## Episode 32 : MySQL
 
 ![mysql](img/mysql.png)
 
@@ -10,7 +10,7 @@ Mysql est un serveur de base de données relationnelles SQL, il est multi-thread
 ## Preparations
 
 ### Les versions
-  - CoreOS Stable 899.13.0
+  - CoreOS Stable 1010.6
   - Docker 1.10.3
   - MySQL 5.7
 
@@ -67,12 +67,13 @@ heat_template_version: 2013-05-23
 description: Blueprint CoreOS Mysql
 parameters:
   keypair_name:
+    default: keypair            <-- Indiquer ici votre paire de clés par défaut
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
 
   flavor_name:
-    default: n1.cw.standard-1
+    default: n1.cw.standard-1    <-- Indiquer ici la taille de l’instance par défaut
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
@@ -86,6 +87,7 @@ parameters:
           - n1.cw.standard-16
 
   sqlpass:
+    default: cloudwatt  <-- Indiquer ici le mot de passe root du mysql
     description: password root sql
     label: Mysql password
     type: string
@@ -93,7 +95,7 @@ parameters:
 
 
   volume_size:
-    default: 5
+    default: 5        <-- Indiquer ici la taille du volume
     label: Backup Volume Size
     description: Size of Volume for mysql Storage (Gigabytes)
     type: number
@@ -102,7 +104,7 @@ parameters:
         description: Volume must be at least 10 gigabytes
 
   volume_type:
-    default: standard
+    default: standard    <-- Indiquer ici le type du volume
     label: Backup Volume Type
     description: Performance flavor of the linked Volume for mysql Storage
     type: string
@@ -164,7 +166,7 @@ parameters:
  |                       |   "OS::project_id": "467b00f998064f1688feeca95bdc7a88",                                                                              |
  |                       |   "OS::stack_id": "505f01d0-1390-4cbf-869e-21aa6b031e8e",                                                                            |
  |                       |   "OS::stack_name": "mysql",                                                                                                         |
- |                       |   "keypair_name": "alikey",                                                                                                          |
+ |                       |   "keypair_name": "yourkey",                                                                                                          |
  |                       |   "volume_type": "standard",                                                                                                         |
  |                       |   "volume_size": "5",                                                                                                                |
  |                       |   "flavor_name": "n1.cw.standard-1"                                                                                                  |
