@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, 25 episode : Mongodb #
+# 5 Minutes Stacks, 31 episode : Mongodb #
 
-## Episode 25 : Mongodb
+## Episode 31 : Mongodb
 
 ![Mongodb](img/mongodb.jpg)
 
@@ -11,7 +11,7 @@ This makes data integration for certain types of applications faster and easier.
 ## Preparations
 
 ### The version
-  - CoreOS Stable 899.13.0
+  - CoreOS Stable 1010.6
   - Docker 1.10.3
   - MongoDb 3.2
 
@@ -69,13 +69,14 @@ This makes data integration for certain types of applications faster and easier.
 heat_template_version: 2013-05-23
 description: Blueprint CoreOS Mongodb
 parameters:
-    keypair_name:
+  keypair_name:
+    default: keypair  <-- Indicate here your keypair
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
 
   flavor_name:
-    default: n1.cw.standard-1
+    default: n1.cw.standard-1  <-- Indicate here flavor size
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
@@ -89,7 +90,7 @@ parameters:
           - n1.cw.standard-16
 
   volume_size:
-    default: 5
+    default: 5               <-- Indicate here volume size
     label: Backup Volume Size
     description: Size of Volume for mongodb Storage (Gigabytes)
     type: number
@@ -98,7 +99,7 @@ parameters:
         description: Volume must be at least 10 gigabytes
 
   volume_type:
-    default: standard
+    default: standard        <-- Indicate here volume type
     label: Backup Volume Type
     description: Performance flavor of the linked Volume for mongodb Storage
     type: string

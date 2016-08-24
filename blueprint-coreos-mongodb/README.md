@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 25 : MongoDb #
+# 5 Minutes Stacks, épisode 31 : MongoDb #
 
-## Episode 25 : MongoDb
+## Episode 31 : MongoDb
 
 ![Mongodb](img/mongodb.jpg)
 
@@ -9,7 +9,7 @@ MongoDb est un système de base de données dans la mouvance NoSQL. Il est orien
 ## Preparations
 
 ### Les versions
-  - CoreOS Stable 899.13.0
+  - CoreOS Stable 1010.6
   - Docker 1.10.3
   - MongoDb 3.2
 
@@ -66,12 +66,13 @@ heat_template_version: 2013-05-23
 description: Blueprint CoreOS Mongodb
 parameters:
   keypair_name:
+    default: keypair          <-- Indiquer ici votre paire de clés par défaut
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
 
   flavor_name:
-    default: n1.cw.standard-1
+    default: n1.cw.standard-1  <-- Indiquer ici la taille de l’instance par défaut
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
@@ -85,7 +86,7 @@ parameters:
           - n1.cw.standard-16
 
   volume_size:
-    default: 5
+    default: 5                <-- Indiquer ici la taille du volume
     label: Backup Volume Size
     description: Size of Volume for mongodb Storage (Gigabytes)
     type: number
@@ -94,7 +95,7 @@ parameters:
         description: Volume must be at least 10 gigabytes
 
   volume_type:
-    default: standard
+    default: standard       <-- Indiquer ici le type du volume
     label: Backup Volume Type
     description: Performance flavor of the linked Volume for mongodb Storage
     type: string
