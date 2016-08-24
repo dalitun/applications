@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, 25 episode : CouchBase #
+# 5 Minutes Stacks, 30 episode : CouchBase #
 
-## Episode 25 : CouchBase
+## Episode 30 : CouchBase
 
 ![couchebase](img/couchbase-logo.gif)
 
@@ -9,7 +9,7 @@ Couchbase Server is a NoSQL document database with a distributed architecture fo
 ## Preparations
 
 ### The version
-  - CoreOS Stable 899.13.0
+  - CoreOS Stable 1010.6
   - Docker 1.10.3
   - CoucheBase 4.5.0
 
@@ -66,13 +66,14 @@ Couchbase Server is a NoSQL document database with a distributed architecture fo
   heat_template_version: 2013-05-23
   description: Blueprint CoreOS Couchbase
   parameters:
-    keypair_name:
+    keypair_name:  
+      default: keypair  <-- Indicate here your keypair     
       description: Keypair to inject in instance
       label: SSH Keypair
       type: string
 
     flavor_name:
-      default: n1.cw.standard-1
+      default: n1.cw.standard-1   <-- Indicate here flavor size
       description: Flavor to use for the deployed instance
       type: string
       label: Instance Type (Flavor)
@@ -87,7 +88,7 @@ Couchbase Server is a NoSQL document database with a distributed architecture fo
 
 
     volume_size:
-      default: 5
+      default: 5           <-- Indicate here volume size
       label: Backup Volume Size
       description: Size of Volume for couchbase Storage (Gigabytes)
       type: number
@@ -96,7 +97,7 @@ Couchbase Server is a NoSQL document database with a distributed architecture fo
           description: Volume must be at least 10 gigabytes
 
     volume_type:
-      default: standard
+      default: standard    <-- Indicate here volume type
       label: Backup Volume Type
       description: Performance flavor of the linked Volume for couchbase Storage
       type: string

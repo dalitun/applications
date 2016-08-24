@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 25 : CouchBase #
+# 5 Minutes Stacks, épisode 30 : CouchBase #
 
-## Episode 25 : CouchBase
+## Episode 30 : CouchBase
 
 ![couchebase](img/couchbase-logo.gif)
 
@@ -10,7 +10,7 @@ Avec le temps, les bases de données NoSQL se font de plus en plus efficaces. Il
 ## Preparations
 
 ### Les versions
-  - CoreOS Stable 899.13.0
+  - CoreOS Stable 1010.6
   - Docker 1.10.3
   - CoucheBase 4.5.0
 
@@ -66,13 +66,14 @@ C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par 
 heat_template_version: 2013-05-23
 description: Blueprint CoreOS Couchbase
 parameters:
-  keypair_name:
+  keypair_name:                 
+    default: keypair            <-- Indiquer ici votre paire de clés par défaut
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
 
   flavor_name:
-    default: n1.cw.standard-1
+    default: n1.cw.standard-1   <-- Indiquer ici la taille de l’instance par défaut
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
@@ -85,8 +86,7 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
 
-
-  volume_size:
+  volume_size:            <-- Indiquer ici la taille du volume
     default: 5
     label: Backup Volume Size
     description: Size of Volume for couchbase Storage (Gigabytes)
@@ -96,7 +96,7 @@ parameters:
         description: Volume must be at least 10 gigabytes
 
   volume_type:
-    default: standard
+    default: standard   <-- Indiquer ici le type du volume
     label: Backup Volume Type
     description: Performance flavor of the linked Volume for couchbase Storage
     type: string
