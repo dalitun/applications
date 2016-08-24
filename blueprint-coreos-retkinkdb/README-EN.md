@@ -9,7 +9,7 @@ RethinkDB is an open source, NoSQL, distributed document-oriented database. It s
 ## Preparations
 
 ### The version
-  - CoreOS Stable 899.13.0
+  - CoreOS Stable 1010.6
   - Docker 1.10.3
   - RethinkDb 2.3.4
 
@@ -67,11 +67,12 @@ RethinkDB is an open source, NoSQL, distributed document-oriented database. It s
   parameters:
     keypair_name:
       description: Keypair to inject in instance
+      default: keypair            <-- Indicate here your keypair
       label: SSH Keypair
       type: string
 
     flavor_name:
-      default: n1.cw.standard-1
+      default: n1.cw.standard-1   <-- Indicate here flavor size
       description: Flavor to use for the deployed instance
       type: string
       label: Instance Type (Flavor)
@@ -85,7 +86,7 @@ RethinkDB is an open source, NoSQL, distributed document-oriented database. It s
             - n1.cw.standard-16
 
     volume_size:
-      default: 5
+      default: 5          <-- Indicate here volume size
       label: Backup Volume Size
       description: Size of Volume for Rethinkdb Storage (Gigabytes)
       type: number
@@ -94,7 +95,7 @@ RethinkDB is an open source, NoSQL, distributed document-oriented database. It s
           description: Volume must be at least 10 gigabytes
 
     volume_type:
-      default: standard
+      default: standard   <-- Indicate here volume type
       label: Backup Volume Type
       description: Performance flavor of the linked Volume for Rethinkdb Storage
       type: string

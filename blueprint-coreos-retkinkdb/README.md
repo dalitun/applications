@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 25 : RetkinkDb #
+# 5 Minutes Stacks, épisode 33 : RetkinkDb #
 
-## Episode 25 : RethinkDb
+## Episode 33 : RethinkDb
 
 ![Rethinkdb](img/rethinkdb.png)
 
@@ -10,7 +10,7 @@ L’entreprise est domiciliée au 156 E.Dana St. Mountain View, CA 94041 aux Eta
 ## Preparations
 
 ### Les versions
-  - CoreOS Stable 899.13.0
+  - CoreOS Stable 1010.6
   - Docker 1.10.3
   - RethinkDb 2.3.4
 
@@ -26,7 +26,7 @@ Ceci devrait être une routine à présent:
 ### Taille de l'instance
 Par défaut, le script propose un déploiement sur une instance de type "standard-1" (n1.cw.standard-1). Il existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
-Vous pouvez ajuster les parametres de la stack à votre goût.
+Vous pouvez ajuster les paramétres de la stack à votre goût.
 
 ### Au fait...
 
@@ -67,12 +67,13 @@ heat_template_version: 2013-05-23
 description: Blueprint CoreOS Rethinkdb
 parameters:
   keypair_name:
+    default: keypair            <-- Indiquer ici votre paire de clés par défaut
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
 
   flavor_name:
-    default: n1.cw.standard-1
+    default: n1.cw.standard-1    <-- Indiquer ici la taille de l’instance par défaut
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
@@ -86,7 +87,7 @@ parameters:
           - n1.cw.standard-16
 
   volume_size:
-    default: 5
+    default: 5         <-- Indiquer ici la taille du volume
     label: Backup Volume Size
     description: Size of Volume for Rethinkdb Storage (Gigabytes)
     type: number
@@ -95,7 +96,7 @@ parameters:
         description: Volume must be at least 10 gigabytes
 
   volume_type:
-    default: standard
+    default: standard  <-- Indiquer ici le type du volume
     label: Backup Volume Type
     description: Performance flavor of the linked Volume for Rethinkdb Storage
     type: string
