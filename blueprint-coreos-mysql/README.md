@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 32 : MySQL #
+# 5 Minutes Stacks, épisode 33 : MySQL #
 
-## Episode 32 : MySQL
+## Episode 33 : MySQL
 
 ![mysql](img/mysql.png)
 
@@ -137,6 +137,35 @@ parameters:
  | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | mysql     | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
+
+ <a name="console" />
+
+ ## C’est bien tout ça, mais...
+
+ ### Une Ligne de commande semble aussi amical qu'un management à la militaire
+
+ Heureusement pour vous alors, la totalité de la configuration de MySQL peut être faite en utilisant uniquement l'interface web.
+
+ Pour créer votre stack Mysql depuis la [Console Cloudwatt](https://console.cloudwatt.com):
+
+ 1.	Allez sur le Github Cloudwatt dans le dépôt [applications/blueprint-coreos-mysql](https://github.com/cloudwatt/applications/edit/master/blueprint-coreos-mysql/)
+ 2.	Cliquez sur le fichier nommé `blueprint-coreos-mysql.heat.yml`
+ 3.	Cliquez sur RAW, une page web apparait avec uniquement le template
+ 4.	Enregistrez le fichier sur votre PC. Vous pouvez utiliser le nom proposé par défaut par votre navigateur (juste enlever le `.txt` si besoin)
+ 5.  Allez dans la section [Stacks](https://console.cloudwatt.com/project/stacks/) de la console
+ 6.	Cliquez sur `LAUNCH STACK`, puis `Browse` sous `Template file` et selectionnez le fichier que vous venez d'enregistrer sur votre PC et puis cliquez finalement sur `NEXT`
+ 7.	Nommez votre stack dans le champs `Stack Name`
+ 8.	Entrez le nom de votre keypair dans le champs `SSH Keypair` et remplissez les quelques autres champs
+ 9.	Choisissez votre instance flavor en utilisant le menu déroulant `Instance Type` et cliquez sur `LAUNCH`
+
+ La stack sera automatiquement générée (vous pourrez voir sa progression en cliquant sur son nom). Lorsque tous les modules passeront au vert, la création sera complète. Vous pouvez alors aller dans le menu "instances" pour trouver l'IP-flottante, ou simplement rafraîchir la page courante et vérifier l'onglet Présentation.
+
+ Si vous avez atteint ce point, alors votre stack est fonctionnelle ! Profitez de MySQL.
+
+ ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Coder maintenant !
+
 
 ### Enjoy
 
