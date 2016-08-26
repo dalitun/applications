@@ -172,7 +172,7 @@ Our MySQL hosting package is the best offer on the market - it has the lowest pr
 
  If you've reached this point, MySQL is running!
 
- ### A one-click sounds really nice...
+### A one-click sounds really nice...
 
  ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your MySQL!
 

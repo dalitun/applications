@@ -162,7 +162,7 @@ parameters:
 
  Si vous avez atteint ce point, alors votre stack est fonctionnelle ! Profitez de MySQL.
 
- ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
  Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Coder maintenant !
 

@@ -42,6 +42,35 @@ resources:
       cidr: 10.0.7.0/24
       allocation_pools:
         - { start: 10.0.7.100, end: 10.0.7.199 }
+  router:
+    type: OS::Neutron::Router
+    properties:
+      admin_state_up: true
+      external_gateway_info:
+          enable_snat: true
+          network: "public"
+
+  router_interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_resource: router }
+      subnet_id: { get_resource: subnet }
+
+  zabbix_port:
+    type: OS::Neutron::Port
+    properties:
+      network_id: { get_resource: network }
+      fixed_ips:
+        - subnet_id: { get_resource: subnet }
+      security_groups:
+          - { get_resource: security_group }
+
+  zabbix_floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
+      port_id: { get_resource: zabbix_port }
+
 
   security_group:
     type: OS::Neutron::SecurityGroup
@@ -58,16 +87,6 @@ resources:
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
 
-  floating_ip:
-    type: OS::Neutron::FloatingIP
-    properties:
-      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
-
-  floating_ip_link:
-    type: OS::Nova::FloatingIPAssociation
-    properties:
-      floating_ip: { get_resource: floating_ip }
-      server_id: { get_resource: server }
 
   server:
     type: OS::Nova::Server
@@ -76,9 +95,8 @@ resources:
       image: c53b9df1-bdbc-4bcb-a0be-89f9d360be8c
       flavor: { get_param: flavor_name }
       networks:
-        - network: { get_resource: network }
-      security_groups:
-        - { get_resource: security_group }
+       - port: { get_resource: zabbix_port }
+
 
 outputs:
   floating_ip_url:
@@ -87,4 +105,4 @@ outputs:
       str_replace:
         template: http://$floating_ip
         params:
-          $floating_ip: { get_attr: [floating_ip, floating_ip_address] }
+          $floating_ip: { get_attr: [zabbix_floating_ip, floating_ip_address] }
