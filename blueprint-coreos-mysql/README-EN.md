@@ -224,7 +224,7 @@ Once all of this done, stack's description can be obtained with the following co
 You can connect to mysql server from mysql client.
 
  ~~~ bash
- sudo apt-get -y install mysql-clients
+ sudo apt-get -y install mysql-client
  mysql -h flottingIp -u root -p
  ~~~
 

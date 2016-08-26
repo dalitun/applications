@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 33 : RetkinkDb #
+# 5 Minutes Stacks, épisode 34 : RetkinkDb #
 
-## Episode 33 : RethinkDb
+## Episode 34 : RethinkDb
 
 ![Rethinkdb](img/rethinkdb.png)
 
@@ -136,12 +136,12 @@ parameters:
 
 ### Une Ligne de commande semble aussi amical qu'un management à la militaire
 
- Heureusement pour vous alors, la totalité de la configuration de MySQL peut être faite en utilisant uniquement l'interface web.
+ Heureusement pour vous alors, la totalité de la configuration de RethinkDB peut être faite en utilisant uniquement l'interface web.
 
- Pour créer votre stack Mysql depuis la [Console Cloudwatt](https://console.cloudwatt.com):
+ Pour créer votre stack RethinkDB depuis la [Console Cloudwatt](https://console.cloudwatt.com):
 
- 1.	Allez sur le Github Cloudwatt dans le dépôt [applications/blueprint-coreos-mysql](https://github.com/cloudwatt/applications/edit/master/blueprint-coreos-mysql/)
- 2.	Cliquez sur le fichier nommé `blueprint-coreos-mysql.heat.yml`
+ 1.	Allez sur le Github Cloudwatt dans le dépôt [applications/blueprint-coreos-rethinkdb](https://github.com/cloudwatt/applications/edit/master/blueprint-coreos-rethinkdb/)
+ 2.	Cliquez sur le fichier nommé `blueprint-coreos-rethinkdb.heat.yml`
  3.	Cliquez sur RAW, une page web apparait avec uniquement le template
  4.	Enregistrez le fichier sur votre PC. Vous pouvez utiliser le nom proposé par défaut par votre navigateur (juste enlever le `.txt` si besoin)
  5.  Allez dans la section [Stacks](https://console.cloudwatt.com/project/stacks/) de la console
@@ -152,12 +152,11 @@ parameters:
 
  La stack sera automatiquement générée (vous pourrez voir sa progression en cliquant sur son nom). Lorsque tous les modules passeront au vert, la création sera complète. Vous pouvez alors aller dans le menu "instances" pour trouver l'IP-flottante, ou simplement rafraîchir la page courante et vérifier l'onglet Présentation.
 
- Si vous avez atteint ce point, alors votre stack est fonctionnelle ! Profitez de MySQL.
+ Si vous avez atteint ce point, alors votre stack est fonctionnelle ! Profitez de RethinkDB.
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
  Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Coder maintenant !
-
 
 
 
