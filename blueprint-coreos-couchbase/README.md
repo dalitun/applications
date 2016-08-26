@@ -141,7 +141,7 @@ Heureusement pour vous alors, la totalité de la configuration de CouchBase peut
 
 Pour créer votre stack CoucheBase depuis la [Console Cloudwatt](https://console.cloudwatt.com):
 
-1.	Allez sur le Github Cloudwatt dans le dépôt [applications/blueprint-coreos-couchbase](https://github.com/cloudwatt/applications/edit/master/blueprint-couchbase-couchbase/)
+1.	Allez sur le Github Cloudwatt dans le dépôt [applications/blueprint-coreos-couchbase](https://github.com/cloudwatt/applications/edit/master/blueprint-coreos-couchbase/)
 2.	Cliquez sur le fichier nommé `blueprint-coreos-couchbase.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec uniquement le template
 4.	Enregistrez le fichier sur votre PC. Vous pouvez utiliser le nom proposé par défaut par votre navigateur (juste enlever le `.txt` si besoin)
