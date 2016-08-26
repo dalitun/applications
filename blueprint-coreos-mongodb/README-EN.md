@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, 31 episode : Mongodb #
+# 5 Minutes Stacks, 32 episode : Mongodb #
 
-## Episode 31 : Mongodb
+## Episode 32 : Mongodb
 
 ![Mongodb](img/mongodb.jpg)
 
@@ -27,7 +27,7 @@ This makes data integration for certain types of applications faster and easier.
 
 ### Size of the instance
 
-   By default, the stack deploys on an instance of type "Standard 2" (n1.cw.standard-2). A variety of other instance flavors exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website).
+   By default, the stack deploys on an instance of type "Standard 2" (n1.cw.standard-2). A variety of other instance flavors exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/en/produits/tarifs.html) on the Cloudwatt website).
 
    Stack parameters, of course, are yours to tweak at your fancy.
 
@@ -132,6 +132,35 @@ parameters:
  | xixixx-xixxi-ixixi-xiixxxi-ixxxixixi | mongo    | CREATE_COMPLETE | 2025-10-23T07:27:69Z |
  +--------------------------------------+------------+-----------------+----------------------+
  ~~~
+
+ <a name="console" />
+
+ ## That's fine but...
+
+ ### I already came out of my shell in order to mongodb... do I have to go back?
+
+ Nah, you can keep your eyes on the browser: all MongoDb setup can be accomplished from the console.
+
+ To create our MongoDb stack from the console:
+
+ 1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-mongodb](https://github.com/cloudwatt/applications/edit/master/blueprint-coreos-mongodb/) repository
+ 2.	Click on the file named `blueprint-coreos-mongodb.heat.yml`
+ 3.	Click on RAW, a web page will appear containing purely the template
+ 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
+ 5.  Go to the «[Stacks](https://console.cloudwatt.com/project/stacks/)» section of the console
+ 6.	Click on «Launch stack», then «Template file» and select the file you just saved to your PC, and finally click on «NEXT»
+ 7.	Name your stack in the «Stack name» field
+ 8.	Enter the name of your keypair in the «SSH Keypair» field and few other fields required
+ 9.	Choose your instance size using the «Instance Type» dropdown and click on «LAUNCH»
+
+ The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
+
+ If you've reached this point, MongoDb is running!
+
+ ### A one-click sounds really nice...
+
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your MongoDb!
+
 
 ### Enjoy
 
