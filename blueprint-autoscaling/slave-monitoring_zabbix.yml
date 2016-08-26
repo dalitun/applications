@@ -1,0 +1,72 @@
+---
+#
+##
+### Written by the CAT (Cloudwatt Automation Team)
+##
+#
+- hosts: all
+  become: yes
+
+  tasks:
+    - apt: update_cache=true upgrade=full
+      when: "'slaves' in group_names"
+
+    - name: install packages
+      apt: pkg={{ item }} state=present
+      with_items:
+        - zabbix-agent
+        - ntp
+      notify: restart ntp
+      when: "'slaves' in group_names"
+
+    - name: get zabbix_server IP
+      lineinfile:
+        name=/etc/zabbix/zabbix_agentd.conf
+        regexp=".*Server=.*"
+        line="Server=10.0.7.100"
+      when: "'slaves' in group_names"
+
+    - name: zabbix slave hostname
+      lineinfile:
+        name=/etc/zabbix/zabbix_agentd.conf
+        regexp="^Hostname="
+        line="Hostname={{ ansible_hostname }}"
+      notify: restart zabbix
+      when: "'slaves' in group_names"
+
+    - name: register zabbix agent
+      local_action:
+          module: zabbix_host
+          server_url: "http://84.39.38.59/"
+          login_user: "admin"
+          login_password: "zabbix"
+          host_name: "{{ ansible_hostname }}"
+          link_templates:
+            - Template OS Linux
+          host_groups:
+            - Linux servers
+          status: enabled
+          state: present
+          interfaces:
+            - type: 1
+              main: 1
+              useip: 1
+              ip: "{{ ansible_default_ipv4.address }}"
+              dns: "{{ ansible_hostname }}"
+              port: 10050
+
+
+
+  handlers:
+    - name: restart ntp
+      service:
+        name=ntp
+        state=restarted
+        enabled=yes
+
+    - name: restart zabbix
+      service:
+        name=zabbix-agent
+        state=restarted
+        enabled=yes
+  
