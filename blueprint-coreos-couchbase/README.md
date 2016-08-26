@@ -137,12 +137,12 @@ parameters:
 
 ### Une Ligne de commande semble aussi amical qu'un management à la militaire
 
-Heureusement pour vous alors, la totalité de la configuration de Drone peut être faite en utilisant uniquement l'interface web.
+Heureusement pour vous alors, la totalité de la configuration de CouchBase peut être faite en utilisant uniquement l'interface web.
 
-Pour créer votre stack Drone depuis la [Console Cloudwatt](https://console.cloudwatt.com):
+Pour créer votre stack CoucheBase depuis la [Console Cloudwatt](https://console.cloudwatt.com):
 
-1.	Allez sur le Github Cloudwatt dans le dépôt [applications/blueprint-coreos-drone](https://github.com/cloudwatt/applications/edit/master/blueprint-coreos-drone/)
-2.	Cliquez sur le fichier nommé `blueprint-coreos-drone.heat.yml`
+1.	Allez sur le Github Cloudwatt dans le dépôt [applications/blueprint-coreos-couchbase](https://github.com/cloudwatt/applications/edit/master/blueprint-couchbase-couchbase/)
+2.	Cliquez sur le fichier nommé `blueprint-coreos-couchbase.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec uniquement le template
 4.	Enregistrez le fichier sur votre PC. Vous pouvez utiliser le nom proposé par défaut par votre navigateur (juste enlever le `.txt` si besoin)
 5.  Allez dans la section [Stacks](https://console.cloudwatt.com/project/stacks/) de la console
@@ -153,7 +153,7 @@ Pour créer votre stack Drone depuis la [Console Cloudwatt](https://console.clou
 
 La stack sera automatiquement générée (vous pourrez voir sa progression en cliquant sur son nom). Lorsque tous les modules passeront au vert, la création sera complète. Vous pouvez alors aller dans le menu "instances" pour trouver l'IP-flottante, ou simplement rafraîchir la page courante et vérifier l'onglet Présentation.
 
-Si vous avez atteint ce point, alors votre stack est fonctionnelle ! Profitez de Drone.
+Si vous avez atteint ce point, alors votre stack est fonctionnelle ! Profitez de Couchbase.
 
 ### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
 
