@@ -150,9 +150,9 @@ Our MySQL hosting package is the best offer on the market - it has the lowest pr
 
  <a name="console" />
 
- ## That's fine but...
+## That's fine but...
 
- ### I already came out of my shell in order to mysql... do I have to go back?
+### I already came out of my shell in order to mysql... do I have to go back?
 
  Nah, you can keep your eyes on the browser: all MySQL setup can be accomplished from the console.
 

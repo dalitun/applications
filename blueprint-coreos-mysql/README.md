@@ -140,9 +140,9 @@ parameters:
 
  <a name="console" />
 
- ## C’est bien tout ça, mais...
+## C’est bien tout ça, mais...
 
- ### Une Ligne de commande semble aussi amical qu'un management à la militaire
+### Une Ligne de commande semble aussi amical qu'un management à la militaire
 
  Heureusement pour vous alors, la totalité de la configuration de MySQL peut être faite en utilisant uniquement l'interface web.
 
