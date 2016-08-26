@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 30 : CouchBase #
+# 5 Minutes Stacks, épisode 31 : CouchBase #
 
-## Episode 30 : CouchBase
+## Episode 31 : CouchBase
 
 ![couchebase](img/couchbase-logo.gif)
 
