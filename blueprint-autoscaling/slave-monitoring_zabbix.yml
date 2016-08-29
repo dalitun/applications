@@ -4,27 +4,25 @@
 ### Written by the CAT (Cloudwatt Automation Team)
 ##
 #
-- hosts: all
+- hosts: local
+  user: cloud
   become: yes
 
   tasks:
+
     - apt: update_cache=true upgrade=full
-      when: "'slaves' in group_names"
 
     - name: install packages
       apt: pkg={{ item }} state=present
       with_items:
         - zabbix-agent
         - ntp
-      notify: restart ntp
-      when: "'slaves' in group_names"
 
     - name: get zabbix_server IP
       lineinfile:
         name=/etc/zabbix/zabbix_agentd.conf
         regexp=".*Server=.*"
         line="Server=10.0.7.100"
-      when: "'slaves' in group_names"
 
     - name: zabbix slave hostname
       lineinfile:
@@ -32,19 +30,18 @@
         regexp="^Hostname="
         line="Hostname={{ ansible_hostname }}"
       notify: restart zabbix
-      when: "'slaves' in group_names"
 
     - name: register zabbix agent
       local_action:
           module: zabbix_host
-          server_url: "http://84.39.38.59/"
+          server_url: "http://84.39.40.231/"
           login_user: "admin"
           login_password: "zabbix"
           host_name: "{{ ansible_hostname }}"
           link_templates:
-            - Template OS Linux
+             - Template Autoscaling
           host_groups:
-            - Linux servers
+             - Linux servers
           status: enabled
           state: present
           interfaces:
@@ -69,4 +66,3 @@
         name=zabbix-agent
         state=restarted
         enabled=yes
-  

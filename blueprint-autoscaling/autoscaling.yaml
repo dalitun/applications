@@ -27,11 +27,11 @@ parameters:
           - n2.cw.highmem-12
   network:
     type: string
-    default: b3a332c7-f3e2-4450-8be4-a24b94a5c821
+    default: 3be7c127-daf4-49f0-9137-165d0208edc8
     description: Network used by the server
   subnet_id:
     type: string
-    default: 618a1852-56eb-4698-a083-0bf551ad35e7
+    default: fcb9a240-642b-4884-af9a-3f24362c5012
     description: subnet on which the load balancer will be located
 
 resources:
@@ -50,8 +50,8 @@ resources:
   asg:
     type: OS::Heat::AutoScalingGroup
     properties:
-      min_size: 1
-      max_size: 3
+      min_size: 2
+      max_size: 6
       resource:
         type: lb_server.yaml
         properties:
