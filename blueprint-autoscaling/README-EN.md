@@ -1,20 +1,8 @@
-# Innovation Beta: MyCloudManager #
+# Autoscaling via zabbix MyCloudManager:
 
+ ![logo](img/images-2.jpg)
 
-This first version of MyCloudManager (Beta) is a different stack of everything the team was able to share with you so far. It aims to bring you a set of tools to **unify, harmonize and monitor your tenant**. In fact it contains a lot of different applications that aims to help you manage day by day your instances :
-* Monitoring and Supervision
-* Log management
-* Jobs Scheduler
-* Mirror ClamAV - Antivirus
-* Repository app manager
-* Time synchronization
-
-MyCloudManager has been completely developed by the CAT team ( Cloudwatt Automation Team).
-* it is based on a CoreOS instance
-* all applications are deployed via Docker containers on a Kubernetes infrastructure
-* The user interface is built in technology React
-* Also you can install or configure, from the GUI, all the applications on your instances via Ansible playbooks.
-* To secure maximum your Cloudmanager, no port is exposed on the internet apart from port 22 to the management of the stack of bodies and port 1723 for PPTP VPN access.
+Auto-scaling, also spelled autoscaling, is a cloud computing service feature that automatically adds or removes compute resources depending upon actual usage. Auto-scaling is sometimes referred to as automatic elasticity.
 
 ## Preparations
 
@@ -53,22 +41,29 @@ After entering your login / password to your account, launch the wizard appears:
 
 
 As you may have noticed the 1-Click wizard asked to reenter your password Openstack (this will be fixed in a future version of MyCloudManager)
-You will find [her]((https://console.cloudwatt.com/project/access_and_security/api_access/view_credentials/) your **tenant ID**, it's  same as **Projet ID**. It will be necessary to complete the wizard.
+You will find [here](https://console.cloudwatt.com/project/access_and_security/api_access/view_credentials/) your **tenant ID**, it's  same as **Projet ID**. It will be necessary to complete the wizard.
 
-By default, the wizard deploys two instances of type "standard-4" (n2.cw.standard-4). A variety of other instance types exist to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
+By default, the wizard deploys two instances of type "small-1" who will be the `masters` instances, these are necessary for the proper functioning of Kubernetes HA. Regarding `nodes` they support all your *"pods "(applications)* on the stack. They should be size according to the use you want to make of MyCloudManager by default we proposed to deploy flavor type "n2.cw.standart-1".
 
-You must indicate the type [(standard ou performant)](https://www.cloudwatt.com/en/products.html) and the size of the block volume that will be attached to your stack via the `volume_size` parameter.
+You'll see later that 3 "tiny" instances  will be created, they help Kubernetes to know all of the nodes and the application deployed on the cluster.
 
-Finally , you can set a number of nodes to distribute the load. By default, MyCloudManager will be deployed on 1 instance *master* and 1 *slave* node. At maximum, MyCloudManager Beta can be deployed on 1 instance *master* and 3 *slave* node.
+Also a variety of other instance types exists to suit your various needs, allowing you to pay only for the services you need. Instances are charged by the minute and capped at their monthly price (you can find more details on the [Pricing page](https://www.cloudwatt.com/en/pricing.html) on the Cloudwatt website).
+
+
+To persist the application data, we will create standard volume in your tenant and automatically attach to your stack to deploy each application through Kubernetes to contain all the data of your different applications.
+
+By default, MyCloudManager will be deployed on two *master* instances, 3 *worker* instances and 3 *etcd* instances.
 
 Press **DEPLOY**.
 
 The **1-click** handles the launch of the necessary calls on Cloudwatt API :
 
-* Start an instance based on CoreOS,
-* Create and attach a block volume standard or performed as you want,
-* Start the **toolbox** container,
-* Start the **SkyDNS** container
+* Start all cluster instances based on CoreOS,
+* Start the **toolbox-backend** container,
+* Start the **toolbox-frontend** container,
+* Start the **rethinkdb** container,
+* Start the **rabbitmq** container,
+* Start the **traefik** container
 
 The stack is created automatically. You can see its progression by clicking on its name which will take you to the Horizon console. When all modules become "green", the creation is finished.
 
@@ -132,15 +127,14 @@ It's (already) done !
 
 ## Enjoy
 
-Access to the interface and the various applications is via **DNS** names. Indeed a **SkyDNS** container is launched at startup allowing you to benefit all the names in place. You can access on the different web interfaces applications by clicking **Go** or via URL request (ex: http://zabbix.default.svc.mycloudmanager/).
+Interface access and the various applications is via **IP** address or **DNS** names if the user rights on your computer allow you to do this. Indeed a **SkyDNS** container is launched at startup allowing you to benefit all the names in place. You can access on the different web interfaces applications by clicking **Go** or via URL request (ex: http://10.0.1.250:30601/ or http://zabbix.default.svc.mycloudmanager/).
 
-We have attached a block volume to your stack in order to save all **data** MyCloudManager.
-The volume is mounted on the master instance and all nodes in your MyCloudManager in the `/dev/vdb`. This allows our stack to be much more robust. The data being synchronized on all nodes, it allows applications to have access to their data regardless of the node where the  are created.
+We place a block volume every time you deploy an application to save all the **datas**  of the application containers. The volume is mounted on the cluster node that support your application and automatically attached to the container. This makes our stack to be much more robust. For information if the application crash and goes on another node, Kubernetes will dismount and re-mount the volume on the new node, therefore the application finds all of its data.
 
 
 #### Interface Overview
 
-Here is the home of the MyCloudManager, each thumbnail representing an application ready to be launched. In order to be as scalable and flexible as possible, all applications of MyCloudManager are containers Docker.
+Here is the home of the MyCloudManager, each thumbnail representing an application ready to be launched. In order to be as scalable and flexible as possible, all applications of MyCloudManager are Docker's containers.
 
 ![accueil](img/accueil.png)
 
@@ -149,8 +143,10 @@ A menu is present in the top left of the page, it can move through the different
 * Instances: list of visible instances of MyCloudManager
 * Tasks : all ongoing or completed tasks
 * Audit: list of actions performed
+* Backups: list all backup jobs
 * My Instances> Console: access to the console Horizon
 * My account> Cockpit ; access to the dashboard
+* Support: allows sending mail to support and cloud coach
 
 
 ![menu](img/menu.png)
@@ -184,7 +180,63 @@ We also implemented a **audit** section so you can see all actions performed on 
 ![audit](img/audit.png)
 
 
+The **Backups** section allows you to backup all instances by your MyCloudManager. The backup may be performed in two ways, via a **snapshot** or via **duplicity** that has been called **soft**.
+* The snapshot backup will take a picture of the instance when you have schedule the backup.
+Then you can find it in the list of your images on your tenant.
+* The soft backup will deploy a duplicity container and backup all data in the repository (`/data`or `/config`) in a **swift** container which can also be found in **containers** section of your tenant (object storage).
+If you want to save a server group, then you have to select when creating the backup.
+Regarding the scheduling of backups, several choices are available to you:
+
+* **Daily**: one backup per day at the desired time,
+* **weekly**: one backup per week at day and time desired,
+* **Monthly**: one backup per month at day and time desired.
+
+
+To start a new backup configuration you must click on the button![button](img/plus.png)
+
+Give a name to your backup configuration:
+![newconfig](img/backupinfo.png)
+
+Select the servers to be added:
+![Backupselectsrv](img/selectsrv.png)
+
+Set now **when** and **how** the backup of those servers will be made:
+
+* Snapshot : Takes a "picture" of your instance and deposited in your image library on your tenant (Warning: a snapshot runs cold as mentioned in this article [End of the hot snapshot place to the cold snapshot!](https://dev.cloudwatt.com/en/blog/end-of-the-hot-snapshot-place-to-the-cold-snapshot.html))
+![bkpsnapshot](img/bkpsnapshot.png)
+
+* Soft: Copy all the selected directories in a swift container
+![bkpsoft](img/bkpsoft.png)
+
+Once you have clicked the button FINISH your configuration is now saved:
+
+![bkpsvg](img/bkpsvg.png)
+
+You can always change the configuration of a backup via the button **edit**![bkpedit](img/bkpedit.png) that allows you to add or remove servers, change the backup directory and when it will run.
+The **delete** button ![bkpdelete](img/bkpdelete.png), for its part, allows to completely remove the selected backup job.
+
+#### Who says said backup said restore:
+
+To restore a backup  **soft** or **snapshot** the approach stays the same. You must go to the menu **instances** of your MycloudManager. As you can see a new ![restore](img/restore.png) button appeared on all servers that have been saved.
+
+When you click on a pop-up open, you can now choose from the list the backup to restore  ![chooserestore](img/chooserestore.png).
+Once this has been done, if your backup was **snapshot**, the selected image will be restored instead of the current instance, if the backup is **soft** the selected files will be restored in the `restore` directory of your instance.
+
+##### Back to menu
 Finally , we integrated two navigation paths in the MyCloudManager menu : **My Instances** and **My Account**. They are respectively used to access the Cloudwatt Horizon console and to manage your account via the Cockpit interface.
+
+The **Support** section will allow you, as the name implies, contacts the Cloudwatt support organization if requested or incident in your MyCloudManager. You can also contact a **cloud coach** to have more information regarding our ecosystem or feasibility of your projects that you want to focus on the Cloudwatt public cloud.
+
+Email :
+* Choose your need **Email Support** or  **Contact a Cloud Coach**,
+* The  **type** field will allow you to choose between **demand** ** or **incident**,
+* The **Reply Email Address** field will allow the support or cloud coach to have your address in order to respond,
+* The  **Request / Problems Encountered** field constitutes the body of the email.
+
+![supportemail](img/supportemail.png)
+
+Sending email is via the button ![sendmail](img/sendmail.png). This becomes ![mailsend](img/mailsend.png) if the email has been sent or ![mailfail](img/mailfail.png) if the server encountered an error while sending.
+
 
 
 ### Add instances to MyCloudManager
@@ -215,7 +267,7 @@ Once this is done you are now in the ability to add your instance to MyCloudMana
 
 On MyCloudManager, go to the **instance** menu and click the button ![bouton](img/plus.png) at the bottom right.
 
-We offer two commands to choose: one **Curl** and one **Wget** and a command to run a script to create the instance.
+We offer two commands to choose: one **Curl** and one **Copy to Clipboard** command to run a script in instance build.
 
 ![addinstance](img/addinstance.png)
 
@@ -225,7 +277,7 @@ Once the script is applied to the selected instance it should appear in the menu
 ![appdisable](img/appdisable.png)
 
 
-**Trick** If you want to create an instance via the console horizon Cloudwatt and declare **directly** in your MyCloudManager, you should to select - in step 3 of the instance launch wizard - MyCloudManager network and the Security Group and - in step 4 - you can paste the command under the setence "If you want to register the instance automatically during the creation process, put this in the startup script within the horizon console :" command in the Custom Script field.
+**Trick** If you want to create an instance via the console horizon Cloudwatt and declare **directly** in your MyCloudManager, you should to select - in step 3 of the instance launch wizard - MyCloudManager network and the Security Group and - in step 4 - you can paste the command **Copy to Clipboard** command in the Custom Script field.
 
 ![attachnetwork](img/attachnetwork.png)
 
@@ -278,7 +330,7 @@ To go further, here are some helpful links :
 We have chosen to use *Rundeck*.
 The Rundeck application will allow you **to schedule and organize all jobs** that you want to deploy consistently on all of your holding via its web interface.
 
-In next version of MyCloudManager, we will give you the possibility to backup your servers like as we saw in the *bundle* Duplicity.
+In next version of MyCloudManager, we give you the possibility to backup your servers like as we saw in the *bundle* Duplicity.
 
 To go further, here are some helpful links :
 * http://rundeck.org/
@@ -310,17 +362,19 @@ NTP container is used here so that all of your instances without access to the i
 To go further, here are some helpful links :
   * http://www.pool.ntp.org/fr/
 
-### The MyCloudManager versions **v1** (Beta)
+### The MyCloudManager versions **v2** (Beta)
 
-  - CoreOS Stable 899.13.0
-  - Docker 1.10.3
-  - Zabbix 3.0
-  - Rundeck 2.6.2
-  - Graylog 1.3.4
-  - Artifactory 4.7.5
-  - Nginx 1.9.12
-  - SkyDNS 2.5.3a
-  - Etcd 2.0.3
+- CoreOS Stable 1010.6
+- Docker 1.10.3
+- Kubernetes 1.3
+- Zabbix 3.0
+- Rundeck 2.6.2
+- Graylog 2.0
+- Artifactory 4.9.1
+- Nginx 1.11.2
+- SkyDNS 2.5.3a
+- Etcd 2.0.3
+
 
 ### List of distributions supported by MyCloudManager
 
@@ -358,15 +412,12 @@ This article will acquaint you with this first version of MyCloudManager. It is 
 
 The intention of the CAT ( Cloudwatt Automation Team) is to provide improvements on a bimonthly basis. In our roadmap, we expect among others:
 * Instrumentalisation of Ubuntu 16.04 instance (possible today but only with the CURL command),
+* Instrumentalisation of Windows instances,
 * A French version,
-* Several operation effectiveness enhancements,
-* Add the backup function,
-* HA Version,
-* An additional menu to contact Cloudwatt supporting teams or command a cloud coaching prestation,
-* Support of second region
+* not having to re-enter your credentials,
 * many other things
 
-Suggestions for improvement ? Services that you would like ? do not hesitate to contact us [apps@cloudwatt.com](mailto:apps@cloudwatt.com)
+Suggestions for improvement ? Services that you would like ? do not hesitate to contact us [apps.cloudwatt@orange.com](mailto:apps.cloudwatt@orange.com)
 
 -----
 Have fun. Hack in peace.
