@@ -1,17 +1,19 @@
 
 #!/bin/bash
 
-if [[ $1 == dn ]];then
-then
 
- curl -X POST -k $(openstack stack output show  -f json  autoscale scale_dn_url | jq '.output_value')
 
-elif [[ $1 == up ]]; then
+if [[ $2 == up || $2 == dn ]];then
 
- curl -X POST -k $(openstack stack output show  -f json  autoscale scale_up_url | jq '.output_value')
+ URL=$(openstack stack output show  -f json  $1 scale_$2_url | jq '.output_value' | sed -e 's/^"//'  -e 's/"$//')
 
-else
+ echo $URL
 
-	echo "no autoscale"
+ curl -X POST -k "$URL"
 
-fi	
+else 
+
+
+echo "nothing else matters"
+
+fi

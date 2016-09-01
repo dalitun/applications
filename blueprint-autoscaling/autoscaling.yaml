@@ -25,17 +25,35 @@ parameters:
           - n2.cw.highmem-4
           - n2.cw.highmem-8
           - n2.cw.highmem-12
-  network:
+  router:
+    label: router
     type: string
-    default: 3be7c127-daf4-49f0-9137-165d0208edc8
-    description: Network used by the server
-  subnet_id:
-    type: string
-    default: fcb9a240-642b-4884-af9a-3f24362c5012
-    description: subnet on which the load balancer will be located
+    default: c8527f64-7008-429b-aba5-71aa0db1c71e     
 
 resources:
 
+  network:
+    type: OS::Neutron::Net
+
+  subnet:
+    type: OS::Neutron::Subnet
+    properties:
+      network_id: { get_resource: network }
+      ip_version: 4
+      dns_nameservers:
+        - 185.23.94.244
+        - 185.23.94.245
+      cidr: 192.168.2.0/24
+      allocation_pools:
+        - { start: 192.168.2.2, end: 192.168.2.100 }
+
+
+  interface:
+    type: OS::Neutron::RouterInterface
+    properties:
+      router_id: { get_param: router }
+      subnet_id: { get_resource: subnet }
+ 
   sec_group:
     type: OS::Neutron::SecurityGroup
     properties:
@@ -58,7 +76,7 @@ resources:
           flavor: {get_param: flavor_name}
           image: Ubuntu 14.04
           key_name: {get_param: keypair_name}
-          network: {get_param: network}
+          network: {get_resource: network}
           pool_id: {get_resource: pool}
           security_group: { get_resource: sec_group }
 
@@ -81,7 +99,7 @@ resources:
     type: OS::Neutron::Pool
     properties:
       protocol: HTTP
-      subnet_id: {get_param: subnet_id}
+      subnet_id: {get_resource: subnet}
       lb_method: ROUND_ROBIN
       vip:
         protocol_port: 80
