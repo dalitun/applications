@@ -24,6 +24,17 @@ Il faut passer par les étapes suivantes:
 
 Cliquez sur ce [lien] (https://github.com/cloudwatt/applications/blob/master/application-mycloudmanager-v2/README.md)
 
+#### 2) Lancer stack exemple autoscaling
+
+
+#### 3) Ajouter les noeuds à Zabbix de MycloudManager
+
+#### 4) Mise à jour le template OS Linux Zabbix
+
+
+#### 5) Créer les Actions scale up et scale download
+
+
 
 
 
