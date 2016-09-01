@@ -35,8 +35,7 @@ Cliquez sur ce [lien] (https://github.com/cloudwatt/applications/blob/master/app
 #### 5) Créer les Actions scale up et scale download
 
 
-
-
+N'oublie pas de ajouter chaque nouveau scalé à zabbix dans le Host Groupe de votre stack
 
 
 
