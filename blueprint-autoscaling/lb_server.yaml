@@ -18,8 +18,10 @@ parameters:
     description: Network used by the server
   security_group:
     label: security_group
-    type: string  
-
+    type: string
+  public_key:
+    label: public key
+    type: string
 resources:
 
 
@@ -29,15 +31,18 @@ resources:
     type: OS::Heat::CloudConfig
     properties:
       cloud_config:
-       #cloud-config 
-       ssh_authorized_keys: 
-         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDNfXari61ek4bTBDcB8uMNv9T2mtyQQ0goH716HICOsLBdSBWhYekw8Zzt8Wf4SK0d0HCM92EhPF4f2xORvJ3le6cNmMwoa0UtD1kug74fObmnI3y2Uohvge3O5xaIwT0I5ajl5HBux+HccK2njojNVuoCKgMEuWSpjYiqnhATMntKWwutxWGCQkDb4FDmHcK9tWos+RV523svER34nvXA5tXqYxHHaK9SoKXUaDgTsmEPtGgrAtwfTFVX16zKaiQ/GgCmyynWD83pNsOB8bj+w5xSL/ywwgn8u9jS4jlPwV64HfQFRKSyfMB4jXU4Hd5bXcLTMuUo4owHzPEC5om1 root@mycloudm-driver-0.novalocal
-       packages: 
-         - jq 
-         - curl 
-       runcmd: 
-         - [ sh, -xc, 'curl -s -H "Content-Type: application/json" -XPOST -d "{\"user\": \"cloud\"}" http://10.0.1.250:30000/api/servers/register/$(curl -s http://169.254.169.254/openstack/latest/meta_data.json| jq -r .uuid)' ] 
-
+        str_replace:
+          template: |
+             #cloud-config
+             ssh_authorized_keys:
+               - $public_key
+            packages:
+               - jq
+               - curl
+            runcmd:
+               - [ sh, -xc, 'curl -s -H "Content-Type: application/json" -XPOST -d "{\"user\": \"cloud\"}" http://10.0.1.250:30000/api/servers/register/$(curl -s http://169.254.169.254/openstack/latest/meta_data.json| jq -r .uuid)' ]
+          params:
+                 $public_key: { get_param: public_key }
   postboot:
     type: OS::Heat::SoftwareConfig
     properties:
@@ -47,9 +52,9 @@ resources:
                #!/bin/bash
                sudo apt-get -y update
                sudo apt-get install -y apache2 stress
-               #curl -sSL http://10.0.1.250:30000/api/servers/register | sh  >>/tmp/log.txt              
+               #curl -sSL http://10.0.1.250:30000/api/servers/register | sh  >>/tmp/log.txt
            params:
-               $flavor: { get_param: flavor }  
+               $flavor: { get_param: flavor }
 
   server_init:
     type: OS::Heat::MultipartMime
@@ -57,7 +62,7 @@ resources:
       parts:
       - config: {get_resource: cloud_init}
       - config: {get_resource: postboot}
-       
+
 
 
   server:

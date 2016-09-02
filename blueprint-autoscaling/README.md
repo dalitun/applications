@@ -26,6 +26,11 @@ Cliquez sur ce [lien] (https://github.com/cloudwatt/applications/blob/master/app
 
 #### 2) Lancer stack exemple autoscaling
 
+On a crée une petite template autoscaling:
+
+~~~bash
+heat stack-create nom_stack -f autoscaling.yaml --parameters="InstanceType=m1.small;DBUsername=dbuser;DBPassword=verybadpassword;DBRootPassword=anotherverybadpassword;KeyName=nectar_dev"
+~~~
 
 #### 3) Ajouter les noeuds à Zabbix de MycloudManager
 
