@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>3.0</version>
-    <date>2016-09-01T12:15:12Z</date>
+    <date>2016-09-02T14:37:15Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -483,6 +483,52 @@
                     <privatekey/>
                     <port/>
                     <description/>
+                    <inventory_link>0</inventory_link>
+                    <applications>
+                        <application>
+                            <name>CPU</name>
+                        </application>
+                        <application>
+                            <name>Performance</name>
+                        </application>
+                    </applications>
+                    <valuemap/>
+                    <logtimefmt/>
+                </item>
+                <item>
+                    <name>CPU usage in percentage</name>
+                    <type>7</type>
+                    <snmp_community/>
+                    <multiplier>0</multiplier>
+                    <snmp_oid/>
+                    <key>system.cpu.util[,,avg1]</key>
+                    <delay>30</delay>
+                    <history>90</history>
+                    <trends>365</trends>
+                    <status>0</status>
+                    <value_type>0</value_type>
+                    <allowed_hosts/>
+                    <units/>
+                    <delta>0</delta>
+                    <snmpv3_contextname/>
+                    <snmpv3_securityname/>
+                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
+                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
+                    <snmpv3_authpassphrase/>
+                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
+                    <snmpv3_privpassphrase/>
+                    <formula>1</formula>
+                    <delay_flex/>
+                    <params/>
+                    <ipmi_sensor/>
+                    <data_type>0</data_type>
+                    <authtype>0</authtype>
+                    <username/>
+                    <password/>
+                    <publickey/>
+                    <privatekey/>
+                    <port/>
+                    <description>this item is used for autoscaling</description>
                     <inventory_link>0</inventory_link>
                     <applications>
                         <application>
@@ -1865,12 +1911,12 @@
             </discovery_rules>
             <macros>
                 <macro>
-                    <macro>{$MAX}</macro>
-                    <value>5</value>
+                    <macro>{$CPU_MAX}</macro>
+                    <value>70</value>
                 </macro>
                 <macro>
-                    <macro>{$MIN}</macro>
-                    <value>0.3</value>
+                    <macro>{$CPU_MIN}</macro>
+                    <value>30</value>
                 </macro>
             </macros>
             <templates>
@@ -2103,8 +2149,18 @@
             <dependencies/>
         </trigger>
         <trigger>
-            <expression>{Template OS Linux:system.cpu.load[percpu,avg1].avg(5m)}&gt;{$MAX}</expression>
+            <expression>{Template OS Linux:system.cpu.util[,,avg1].last()}&gt;{$CPU_MAX}</expression>
             <name>Processor load is too high</name>
+            <url/>
+            <status>0</status>
+            <priority>0</priority>
+            <description>for scale up</description>
+            <type>0</type>
+            <dependencies/>
+        </trigger>
+        <trigger>
+            <expression>{Template OS Linux:system.cpu.load[percpu,avg1].avg(5m)}&gt;5</expression>
+            <name>Processor load is too high on {HOST.NAME}</name>
             <url/>
             <status>0</status>
             <priority>2</priority>
@@ -2113,12 +2169,12 @@
             <dependencies/>
         </trigger>
         <trigger>
-            <expression>{Template OS Linux:system.cpu.load[percpu,avg1].avg(5m)}&lt;{$MIN}</expression>
+            <expression>{Template OS Linux:system.cpu.util[,,avg1].last()}&lt;{$CPU_MIN}</expression>
             <name>Processor load is too low</name>
             <url/>
             <status>0</status>
-            <priority>2</priority>
-            <description/>
+            <priority>0</priority>
+            <description>for scale down</description>
             <type>0</type>
             <dependencies/>
         </trigger>

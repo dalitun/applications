@@ -19,30 +19,23 @@ parameters:
   security_group:
     label: security_group
     type: string
-  public_key:
-    label: public key
-    type: string
 resources:
-
 
   cloud_init:
     # this resource demonstrates multiple cloud-config resources
     # with a merge_how strategy
     type: OS::Heat::CloudConfig
     properties:
-      cloud_config:
-        str_replace:
-          template: |
-             #cloud-config
-             ssh_authorized_keys:
-               - $public_key
-            packages:
-               - jq
-               - curl
-            runcmd:
-               - [ sh, -xc, 'curl -s -H "Content-Type: application/json" -XPOST -d "{\"user\": \"cloud\"}" http://10.0.1.250:30000/api/servers/register/$(curl -s http://169.254.169.254/openstack/latest/meta_data.json| jq -r .uuid)' ]
-          params:
-                 $public_key: { get_param: public_key }
+     cloud_config:
+      #cloud-config
+      ssh_authorized_keys:
+         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+WV/HAcibBU5rceIk6GBQIvKRXQdrvPj/KDrs1bomgpzaHptrKpuEIvSsfvLq3KHG9P90AvjRgPs1PNfZIy+WOPjcBG91zr1qTaWqdknlDj3Gm2EajVLxKtafyVBaUQUKNDugx+hDAfc0psTJJyN45RuY+nHLCfzYf1ERzo6qgNhZCwrj6Yhjut1Js/7U0/tjLn8cVZB6oLnOQIp7s9VWCpFAc9jyLgQl1XsbLpdDI1nJkQnTbTtjdM4pJZgMbmj/7BQ4Xq2vJSJ/7mqcyMqMUQhzThEvE4OWkFaaXwDyP/Bh6S+sZ2uXh1AYXlWfhRydytKtsB+XT3wJaT2sXPNF root@mycloudm-driver-2.novalocal
+      packages:
+         - jq
+         - curl
+      runcmd:
+         - [ sh, -xc, 'curl -s -H "Content-Type: application/json" -XPOST -d "{\"user\": \"cloud\"}" http://10.0.1.250:30000/api/servers/register/$(curl -s http://169.254.169.254/openstack/latest/meta_data.json| jq -r .uuid)' ]
+
   postboot:
     type: OS::Heat::SoftwareConfig
     properties:
