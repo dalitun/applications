@@ -12,15 +12,6 @@ parameters:
   os_type:
     label: os type
     type: string
-  nodename:
-    label: nodename
-    type: string
-  index:
-    label: index
-    type: string
-  nodeip:
-    label: nodeip
-    type: string
   security_group:
     label: security_group
     type: string
@@ -30,32 +21,31 @@ parameters:
   flavor_name:
     type: string
     label: Instance Type (Flavor)
-
+  mcm_public_key:   
+    type: string
+    label: cloud init   
 resources:
 
-  glusterfs_port:
-      type: OS::Neutron::Port
-      properties:
-        network: { get_param: network }
-        fixed_ips:
-          - ip_address: { get_param: nodeip }
-            subnet_id: { get_param: subnet }
-        security_groups:
-          - { get_param: security_group }
-
-  node:
-    type: OS::Nova::Server
+  cloud_init:
+    type: OS::Heat::CloudConfig
     properties:
-      key_name: { get_param: keypair_name }
-      name: {get_param: nodename }
-      image: { get_param: os_type }
-      flavor: { get_param: flavor_name }
-      networks:
-        - port: { get_resource: glusterfs_port }
-      user_data_format: RAW
-      user_data:
-        str_replace:
-          template: |
+      cloud_config:
+          #cloud-config
+          ssh_authorized_keys:
+            - { get_param: mcm_public_key }
+          packages:
+            - jq
+            - curl
+          runcmd:
+            - [ sh, -xc, 'curl -s -H "Content-Type: application/json" -XPOST -d "{\"user\": \"cloud\"}" http://10.0.1.250:30000/api/servers/register/$(curl -s http://169.254.169.254/openstack/latest/meta_data.json| jq -r .uuid)' ]
+
+
+  postboot:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+         str_replace:
+             template: |
                   #!/bin/bash
                   mkdir /etc/ansible
                   echo "[local]" >> /etc/ansible/hosts
@@ -68,13 +58,76 @@ resources:
                          0: $prefix_net0
                          1: $prefix_net1
                   EOF
-
                   if [ "$os" == "Debian Jessie" ] ;
                   then
                   /usr/local/bin/ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/glusterfs.yml -e @/etc/ansible/vars.yml
                   else
                   ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/glusterfs.yml -e @/etc/ansible/vars.yml
                   fi
-          params:
-                $os: { get_param: os_type }
-                $prefix_net: { "Fn::Replace": [ {'.0/24': '.12'}, {get_param: cidr_net} ] }
+             params:
+                 $os: { get_param: os_type }
+                 $prefix_net: { "Fn::Replace": [ {'.0/24': '.12'}, {get_param: cidr_net} ] }
+  server_init:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+       - config: { get_resource: cloud_init }
+       - config: { get_resource: postboot }
+
+
+  glusterfs_port1:
+      type: OS::Neutron::Port
+      properties:
+        network: { get_param: network }
+        fixed_ips:
+          - ip_address: { "Fn::Replace": [ {'.0/24': '.120'}, {get_param: cidr_net} ] }
+            subnet_id: { get_param: subnet }
+        security_groups:
+          - { get_param: security_group }
+
+  glusterfs_port2:
+      type: OS::Neutron::Port
+      properties:
+        network: { get_param: network }
+        fixed_ips:
+          - ip_address: { "Fn::Replace": [ {'.0/24': '.121'}, {get_param: cidr_net} ] }
+            subnet_id: { get_param: subnet }
+        security_groups:
+          - { get_param: security_group }
+
+  gluster1:
+    type: OS::Nova::Server
+    properties:
+      name: 
+        str_replace:
+            template: $stack-glusterfs1
+            params:
+              $stack: { get_param: 'OS::stack_name' }
+      key_name: { get_param: keypair_name }
+      image: { get_param: os_type }
+      flavor: { get_param: flavor_name }
+      networks:
+        - port: { get_resource: glusterfs_port1 }
+      user_data_format: RAW
+      user_data:
+        get_resource: server_init
+
+
+  gluster2:
+    type: OS::Nova::Server
+    depends_on: gluster1
+    properties:
+      name: 
+          str_replace:
+              template: $stack-glusterfs2
+              params:
+                $stack: { get_param: 'OS::stack_name' }
+      key_name: { get_param: keypair_name }
+      image: { get_param: os_type }
+      flavor: { get_param: flavor_name }
+      networks:
+        - port: { get_resource: glusterfs_port2 }
+      user_data_format: RAW
+      user_data:
+        get_resource: server_init
+

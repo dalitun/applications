@@ -46,8 +46,82 @@ parameters:
   db_admin_password:
     label: database admin password
     type: string
+  mcm_public_key:   
+    type: string
+    label: cloud init
 
 resources:
+  cloud_init:
+    type: OS::Heat::CloudConfig
+    properties:
+      cloud_config:
+          #cloud-config
+          ssh_authorized_keys:
+            - { get_param: mcm_public_key }
+          packages:
+            - jq
+            - curl
+          runcmd:
+            - [ sh, -xc, 'curl -s -H "Content-Type: application/json" -XPOST -d "{\"user\": \"cloud\"}" http://10.0.1.250:30000/api/servers/register/$(curl -s http://169.254.169.254/openstack/latest/meta_data.json| jq -r .uuid)' ]
+
+
+  postboot:
+    type: OS::Heat::SoftwareConfig
+    properties:
+      config:
+         str_replace:
+             template: |
+               #!/bin/bash
+               mkdir /etc/ansible
+               echo "[local]" >> /etc/ansible/hosts
+               echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
+                 cat << EOF > /etc/ansible/vars.yml
+                  clusters_size: $clusters_size
+                  ip_node: $prefix_net$index
+                  hostname: node$index
+                  db_name: $db_name
+                  db_admin: $db_admin
+                  db_admin_password: $pass
+               EOF
+
+               if [ $index -eq 0 ]
+               then
+               echo "   master: true" >> /etc/ansible/vars.yml
+               else
+               echo "   master: false" >> /etc/ansible/vars.yml
+               fi
+               START=1
+               END=$clusters_size
+               echo "$prefix_net0 node0" >> /etc/hosts
+               TEMP="clusters:  $prefix_net0"
+               for ((i=1;i<$END;i++)); do
+               echo "$prefix_net$i node$i" >> /etc/hosts
+               TEMP=$TEMP,$prefix_net$i
+               done
+               echo "   $TEMP" >> /etc/ansible/vars.yml
+               if [ "$os" == "Debian Jessie" ] ;
+               then
+               /usr/local/bin/ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/db.yml -e @/etc/ansible/vars.yml
+               else
+               ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/db.yml -e @/etc/ansible/vars.yml
+               fi
+
+             params:
+               $index: { get_param: index }
+               $db_name: { get_param: db_name}
+               $db_admin: { get_param: db_admin }
+               $pass: { get_param: db_admin_password }
+               $os: { get_param: os_type }
+               $clusters_size: { get_param: clusters_size }
+               $prefix_net: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: cidr_net} ] }
+
+  server_init:
+    type: OS::Heat::MultipartMime
+    properties:
+      parts:
+      - config: {get_resource: cloud_init}
+      - config: {get_resource: postboot}
+
   db_port:
       type: OS::Neutron::Port
       properties:
@@ -68,53 +142,11 @@ resources:
       networks:
        - port: { get_resource: db_port }
       name: {get_param: nodename}
+      user_data_format: RAW
       user_data:
-        str_replace:
-          template: |
-             #!/bin/bash
-             mkdir /etc/ansible
-             echo "[local]" >> /etc/ansible/hosts
-             echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
-                cat << EOF > /etc/ansible/vars.yml
-                 clusters_size: $clusters_size
-                 ip_node: $prefix_net$index
-                 hostname: node$index
-                 db_name: $db_name
-                 db_admin: $db_admin
-                 db_admin_password: $pass
-             EOF
+        get_resource: server_init
 
-               if [ $index -eq 0 ]
-               then
-               echo "    master: true" >> /etc/ansible/vars.yml
-               else
-               echo "    master: false" >> /etc/ansible/vars.yml
-               fi
-               START=1
-               END=$clusters_size
-               echo "$prefix_net0 node0" >> /etc/hosts
-               TEMP="clusters:  $prefix_net0"
-               for ((i=1;i<$END;i++)); do
-               echo "$prefix_net$i node$i" >> /etc/hosts
-               TEMP=$TEMP,$prefix_net$i
-               done
-               echo "    $TEMP" >> /etc/ansible/vars.yml
-               if [ "$os" == "Debian Jessie" ] ;
-               then
-               /usr/local/bin/ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/db.yml -e @/etc/ansible/vars.yml
-               else
-               ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/db.yml -e @/etc/ansible/vars.yml
-               fi
 
-          params:
-
-            $index: { get_param: index }
-            $db_name: { get_param: db_name}
-            $db_admin: { get_param: db_admin }
-            $pass: { get_param: db_admin_password }
-            $os: { get_param: os_type }
-            $clusters_size: { get_param: clusters_size }
-            $prefix_net: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: cidr_net} ] }
   Data:
      type: OS::Cinder::Volume
      properties:

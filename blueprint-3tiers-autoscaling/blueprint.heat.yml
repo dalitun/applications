@@ -1,12 +1,35 @@
 heat_template_version: 2013-05-23
 description: All-in-one Blueprint 3-tier
-parameters:
+parameter_groups:
+ - label: General parameters
+   parameters:
+     - keypair_name
+     - router_id_mcm
+     - mcm_public_key
+     - os_type
+     - glusterfs_flavor_name
+ - label: front nodes parameters    
+   parameters:
+     - nodes_number
+     - nodes_flavor_name
+     - nodes_net_cidr
+     - Application_type
+     - Application_source
 
+ - label: databases nodes parameters 
+   parameters:
+     - number_db_clusters
+     - db_flavor_name
+     - db_net_cidr
+     - database_name
+     - database_admin
+     - database_admin_password    
+parameters:
  keypair_name:
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
-
+    default: alikey
  os_type:
     default: Ubuntu 14.04
     description: os type
@@ -36,7 +59,7 @@ parameters:
     type: string
 
  nodes_number:
-    default: 0
+    default: 1
     description: number of web servers 6 nodes
     label: Number of front nodes
     type: number
@@ -69,7 +92,6 @@ parameters:
     label: /24 cidr of databases network
     type: string
 
-
  glusterfs_flavor_name:
     default: n1.cw.standard-1
     description: Flavor to use for the deployed instance
@@ -84,7 +106,7 @@ parameters:
           - n1.cw.standard-12
           - n1.cw.standard-16
  number_db_clusters:
-    default: 0
+    default: 2
     description: number of web servers 6 nodes
     label: number of database clusters
     type: number
@@ -108,7 +130,8 @@ parameters:
     description: database password
     label: Database password
     type: string
-    hidden: true
+    #hidden: true
+    default: 1234
 
  db_flavor_name:
     default: n1.cw.standard-1
@@ -123,16 +146,22 @@ parameters:
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
+ router_id_mcm:
+    label: router_id mycloudmanager
+    type: string
+    default: 3eb0ebb7-36ec-4846-b642-d20039e31ba6
+ mcm_public_key:
+    type: string
+    label: mcm public key
+    default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3IeALS1ymhqkaLicduq4BADIKUPcd5P/SU2OCjUGYco4108aBzl+ZbWXhWnHxxhCXyWj1ka7X4UK63g1skCMw1FMLKxdFggfwnbwTOA2WufxFhnfAOG3IDWcwqPCCiYhutJo0231kmMrap9gb2uaWa3/ZR4O8ZXBBWugFQqBL3AFCdm07zOs/lPHS4Q/RrKejNrbqb3GSXyiDzR6PnDCxCSNJKoIj9Fh1if8gctpoiUOi4C7TqHqWWvJ2ctbFZpxxDvwaqI5HnJgfi0lU2goKvHOG02AnqHBU+N6Xh7Bt5f05bREUzwdeZK2XWmaVDsqleHkgxZ5GsQsDvWJR7UGj root@mcm-driver-0.novalocal              
+
+
 resources:
+
   db_net:
     type: OS::Neutron::Net
     properties:
       admin_state_up: true
-      name:
-        str_replace:
-            template: $stack-db-net
-            params:
-                $stack: { get_param: 'OS::stack_name' }
 
   db_subnet:
     type: OS::Neutron::Subnet
@@ -140,23 +169,11 @@ resources:
       network_id: { get_resource: db_net }
       cidr: { get_param: db_net_cidr }
       gateway_ip: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: db_net_cidr} ] }
-      name:
-        str_replace:
-            template: $stack-db-subnet
-            params:
-                $stack: { get_param: 'OS::stack_name' }
-
 
   nodes_net:
     type: OS::Neutron::Net
     properties:
       admin_state_up: true
-      name:
-        str_replace:
-            template: $stack-nodes-net
-            params:
-                $stack: { get_param: 'OS::stack_name' }
-
 
   nodes_subnet:
     type: OS::Neutron::Subnet
@@ -164,39 +181,21 @@ resources:
       network_id: { get_resource: nodes_net }
       ip_version: 4
       cidr: { get_param: nodes_net_cidr }
-      name:
-        str_replace:
-            template: $stack-nodes-subnet
-            params:
-                $stack: { get_param: 'OS::stack_name' }
       allocation_pools:
         - start: { "Fn::Replace": [ {'.0/24': '.10'}, {get_param: nodes_net_cidr} ] }
           end: { "Fn::Replace": [ {'.0/24': '.199'}, {get_param: nodes_net_cidr} ] }
 
-  router:
-    type: OS::Neutron::Router
-    properties:
-      name:
-        str_replace:
-            template: $stack-router
-            params:
-                $stack: { get_param: 'OS::stack_name' }
-
-      admin_state_up: true
-      external_gateway_info:
-        enable_snat: true
-        network: "public"
 
   router1_interface:
     type: OS::Neutron::RouterInterface
     properties:
-      router_id: { get_resource : router }
+      router_id: { get_param : router_id_mcm }
       subnet_id: { get_resource : nodes_subnet }
 
   router2_interface:
     type: OS::Neutron::RouterInterface
     properties:
-      router_id: { get_resource : router }
+      router_id: { get_param : router_id_mcm }
       subnet_id: { get_resource : db_subnet }
 
 
@@ -244,30 +243,16 @@ resources:
 
 
   glusterfs_nodes:
-    type: OS::Heat::ResourceGroup
+    type: heat-child/glusterfs.heat.yaml
     properties:
-      count: 2
-      resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprint/glusterfs.heat.yaml
-        properties:
-          nodename:
-            str_replace:
-               template: $stack-glusterfs-%index%
-               params:
-                  $stack: { get_param: 'OS::stack_name' }
-          security_group: { get_resource: sg_glusterfs }
-          network: { get_resource: nodes_net }
-          subnet: {get_resource: nodes_subnet }
-          cidr_net: { get_param: nodes_net_cidr }
-          index: "%index%"
-          nodeip:
-            str_replace:
-              template: $p
-              params:
-                 $p: { "Fn::Replace": [ {'.0/24': '.12%index%'}, {get_param: nodes_net_cidr} ] }
-          keypair_name: { get_param: keypair_name }
-          flavor_name: { get_param: glusterfs_flavor_name }
-          os_type: { get_param: os_type }
+      security_group: { get_resource: sg_glusterfs }
+      network: { get_resource: nodes_net }
+      subnet: {get_resource: nodes_subnet }
+      cidr_net: { get_param: nodes_net_cidr }
+      keypair_name: { get_param: keypair_name }
+      flavor_name: { get_param: glusterfs_flavor_name }
+      os_type: { get_param: os_type }
+      mcm_public_key: { get_param: mcm_public_key }
 
 
   db_nodes:
@@ -275,7 +260,7 @@ resources:
     properties:
       count: { get_param: number_db_clusters}
       resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprint/db.heat.yaml
+        type: heat-child/db.heat.yaml
         properties:
           nodename:
             str_replace:
@@ -300,38 +285,45 @@ resources:
           db_admin: { get_param: database_admin }
           db_admin_password: { get_param: database_admin_password }
           clusters_size:  { get_param: number_db_clusters }
-
-
+          mcm_public_key: { get_param: mcm_public_key }
 
 
   web_nodes:
-    type: OS::Heat::ResourceGroup
+    type: OS::Heat::AutoScalingGroup
+    depends_on: glusterfs_nodes
     properties:
-      count: { get_param: nodes_number}
-      resource_def:
-        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprint/node.heat.yaml
+      min_size: { get_param: nodes_number }
+      max_size: 6
+      resource:
+        type: heat-child/node.heat.yaml
         properties:
-          nodename:
-            str_replace:
-               template: $stack-web-%index%
-               params:
-                  $stack: { get_param: 'OS::stack_name' }
           security_group: { get_resource: sg_web }
           network: { get_resource: nodes_net }
           subnet: {get_resource: nodes_subnet }
           cidr_net: { get_param: nodes_net_cidr }
           pool_id: {get_resource: pool_web}
-          index: "%index%"
-          nodeip:
-            str_replace:
-              template: $p
-              params:
-                 $p: { "Fn::Replace": [ {'.0/24': '.11%index%'}, {get_param: nodes_net_cidr} ] }
           keypair_name: { get_param: keypair_name }
           flavor_name: { get_param: nodes_flavor_name }
           os_type: { get_param: os_type }
           Application_type: { get_param: Application_type }
           Application_source: { get_param: Application_source }
+          mcm_public_key: { get_param: mcm_public_key }
+
+
+  web_server_scaleup_policy:
+    type: OS::Heat::ScalingPolicy
+    properties:
+      adjustment_type: change_in_capacity
+      auto_scaling_group_id: {get_resource: web_nodes}
+      cooldown: 60
+      scaling_adjustment: 1
+  web_server_scaledown_policy:
+    type: OS::Heat::ScalingPolicy
+    properties:
+      adjustment_type: change_in_capacity
+      auto_scaling_group_id: {get_resource: web_nodes}
+      cooldown: 60
+      scaling_adjustment: -1
 
 
 #--------------------------#
@@ -429,3 +421,15 @@ outputs:
   Database_port:
     description: database port
     value: 3306
+  scale_up_url:
+    description: >
+      This URL is the webhook to scale up the autoscaling group.  You
+      can invoke the scale-up operation by doing an HTTP POST to this
+      URL; no body nor extra headers are needed.
+    value: {get_attr: [web_server_scaleup_policy, alarm_url]}
+  scale_dn_url:
+    description: >
+      This URL is the webhook to scale down the autoscaling group.
+      You can invoke the scale-down operation by doing an HTTP POST to
+      this URL; no body nor extra headers are needed.
+    value: {get_attr: [web_server_scaledown_policy, alarm_url]}  
