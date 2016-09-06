@@ -244,6 +244,7 @@ resources:
 
   glusterfs_nodes:
     type: heat-child/glusterfs.heat.yaml
+     depends_on: db_nodes
     properties:
       security_group: { get_resource: sg_glusterfs }
       network: { get_resource: nodes_net }

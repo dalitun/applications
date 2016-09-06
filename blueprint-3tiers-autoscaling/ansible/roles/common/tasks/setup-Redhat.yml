@@ -1,6 +1,6 @@
 
-#- name: upgrade all packages
-#  yum: name=* state=latest
+- name: upgrade all packages
+  yum: name=* state=latest
 
 - name: Fetch glusterfs repo file
   get_url: dest=/etc/yum.repos.d/glusterfs-epel.repo
@@ -36,4 +36,6 @@
 - name: change conf selinux Redhat
   lineinfile: dest=/etc/selinux/config  regexp="^SELINUX=" line="SELINUX=disabled"
 
+- name: change time zone
+  shell: timedatectl set-timezone {{ timezone }}
 

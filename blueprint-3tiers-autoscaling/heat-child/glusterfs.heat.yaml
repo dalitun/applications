@@ -60,9 +60,9 @@ resources:
                   EOF
                   if [ "$os" == "Debian Jessie" ] ;
                   then
-                  /usr/local/bin/ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/glusterfs.yml -e @/etc/ansible/vars.yml
+                  /usr/local/bin/ansible-pull -U https://github.com/dalitun/applications.git blueprint-3tiers-autoscaling/ansible/glusterfs.yml -e @/etc/ansible/vars.yml
                   else
-                  ansible-pull -U https://github.com/cloudwatt/applications.git blueprint-3tiers/ansible/glusterfs.yml -e @/etc/ansible/vars.yml
+                  ansible-pull -U https://github.com/dalitun/applications.git blueprint-3tiers-autoscaling/ansible/glusterfs.yml -e @/etc/ansible/vars.yml
                   fi
              params:
                  $os: { get_param: os_type }
