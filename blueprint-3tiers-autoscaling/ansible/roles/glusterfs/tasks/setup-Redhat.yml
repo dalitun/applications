@@ -1,3 +1,4 @@
+
 - name: Install glusterfs server packages (CentOS)
   yum: name={{item}} state=installed enablerepo="glusterfs-epel"
   with_items:
