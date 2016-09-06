@@ -2,17 +2,16 @@
 - name: upgrade all packages
   yum: name=* state=latest
 
-- name: Fetch glusterfs repo file
-  get_url: dest=/etc/yum.repos.d/glusterfs-epel.repo
-           url=http://download.gluster.org/pub/gluster/glusterfs/LATEST/EPEL.repo/glusterfs-epel.repo
 
-- name: Set repo file permissions
-  file: owner=root group=root mode=0644
-        path=/etc/yum.repos.d/glusterfs-epel.repo
+- name: install centos-release-gluster38
+  yum: name=centos-release-gluster38 state=latest  
 
 
+- name: enable repo
+  lineinfile: dest=/etc/yum.repos.d/CentOS-Gluster-3.8.repo  regexp="enabled=0" line="enabled=1"
+ 
 - name: Install glusterfs client  packages Redhat
-  yum: name={{item}} state=installed enablerepo="glusterfs-epel"
+  yum: name={{item}} state=installed enablerepo="centos-gluster38,epel"
   with_items:
      - glusterfs
      - glusterfs-fuse
@@ -29,7 +28,7 @@
      - mariadb
      - zip
      - unzip
-     
+
 - name: Set selinux into 'permissive' mode.
   selinux: policy=targeted state=permissive
 

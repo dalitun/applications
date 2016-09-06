@@ -1,4 +1,3 @@
-
 - name: fix bug ubunut xenial
   shell: | 
           killall aptitude

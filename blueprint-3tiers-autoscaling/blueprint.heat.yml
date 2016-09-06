@@ -31,7 +31,7 @@ parameters:
     type: string
     default: alikey
  os_type:
-    default: Ubuntu 14.04
+    default: Centos 7.2
     description: os type
     label: Os type
     type: string
@@ -244,7 +244,7 @@ resources:
 
   glusterfs_nodes:
     type: heat-child/glusterfs.heat.yaml
-     depends_on: db_nodes
+    depends_on: db_nodes
     properties:
       security_group: { get_resource: sg_glusterfs }
       network: { get_resource: nodes_net }

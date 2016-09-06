@@ -1,8 +1,29 @@
 
-- name: Install glusterfs server packages (CentOS)
-  yum: name={{item}} state=installed enablerepo="glusterfs-epel"
+- name: test repo exist
+  stat: path=/etc/yum.repos.d/CentOS-Gluster-{{ version }}.repo
+  register: repo_exist
+
+
+- name: version edit
+  shell: echo {{ version }}| tr -d "."
+   register: ver
+
+- name: install centos-release-gluster{{ ver.stdout }}
+  yum: name=centos-release-gluster38 state=latest  
+  when: repo_exist.stat.exists == False
+
+
+- name: enable repo
+  lineinfile: dest=/etc/yum.repos.d/CentOS-Gluster-{{ version }}.repo  regexp="enabled=0" line="enabled=1"
+  when: repo_exist.stat.exists == False
+
+
+- name: Install glusterfs client  packages Redhat
+  yum: name={{item}} state=installed enablerepo="centos-gluster{{ ver.stdout }},epel"
   with_items:
      - glusterfs-server
+     - glusterfs
+     - glusterfs-fuse
 
 - name: Ensure the GlusterFS service is running (CentOS)
   service: name=glusterd state=started
