@@ -28,7 +28,12 @@ parameters:
   router:
     label: router
     type: string
-    default: 9504b847-199d-4012-9948-f566e336a1d9
+    default: 3eb0ebb7-36ec-4846-b642-d20039e31ba6
+  mcm_public_key:
+    type: string
+    label: mcm public key
+    default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3IeALS1ymhqkaLicduq4BADIKUPcd5P/SU2OCjUGYco4108aBzl+ZbWXhWnHxxhCXyWj1ka7X4UK63g1skCMw1FMLKxdFggfwnbwTOA2WufxFhnfAOG3IDWcwqPCCiYhutJo0231kmMrap9gb2uaWa3/ZR4O8ZXBBWugFQqBL3AFCdm07zOs/lPHS4Q/RrKejNrbqb3GSXyiDzR6PnDCxCSNJKoIj9Fh1if8gctpoiUOi4C7TqHqWWvJ2ctbFZpxxDvwaqI5HnJgfi0lU2goKvHOG02AnqHBU+N6Xh7Bt5f05bREUzwdeZK2XWmaVDsqleHkgxZ5GsQsDvWJR7UGj root@mcm-driver-0.novalocal              
+resources:
 
 resources:
 

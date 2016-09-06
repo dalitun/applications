@@ -6,7 +6,7 @@
 
 - name: version edit
   shell: echo {{ version }}| tr -d "."
-   register: ver
+  register: ver
 
 - name: install centos-release-gluster{{ ver.stdout }}
   yum: name=centos-release-gluster38 state=latest  

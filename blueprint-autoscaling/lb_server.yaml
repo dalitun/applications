@@ -29,7 +29,11 @@ resources:
      cloud_config:
       #cloud-config
       ssh_authorized_keys:
-         - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+WV/HAcibBU5rceIk6GBQIvKRXQdrvPj/KDrs1bomgpzaHptrKpuEIvSsfvLq3KHG9P90AvjRgPs1PNfZIy+WOPjcBG91zr1qTaWqdknlDj3Gm2EajVLxKtafyVBaUQUKNDugx+hDAfc0psTJJyN45RuY+nHLCfzYf1ERzo6qgNhZCwrj6Yhjut1Js/7U0/tjLn8cVZB6oLnOQIp7s9VWCpFAc9jyLgQl1XsbLpdDI1nJkQnTbTtjdM4pJZgMbmj/7BQ4Xq2vJSJ/7mqcyMqMUQhzThEvE4OWkFaaXwDyP/Bh6S+sZ2uXh1AYXlWfhRydytKtsB+XT3wJaT2sXPNF root@mycloudm-driver-2.novalocal
+        str_replace:
+           template: |
+               - $mcm_public_key
+           params:
+               $mcm_public_key: { get_param: mcm_public_key }
       packages:
          - jq
          - curl
