@@ -13,8 +13,8 @@
 - name: connect gluster peers 
   shell: gluster peer probe {{ item }}
   with_items:
-       - nodes.0
-       - nodes.1
+       - {{ nodes.0 }}
+       - {{ nodes.1 }}
   when: gluster_master == "{{ ansible_default_ipv4.address }}"
 
 
