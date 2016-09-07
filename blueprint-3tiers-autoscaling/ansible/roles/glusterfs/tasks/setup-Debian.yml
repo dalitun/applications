@@ -4,7 +4,7 @@
 
 - name: installing repo for glusterfs debian
   shell: |
-          wget -O - http://download.gluster.org/pub/gluster/glusterfs/{{ version} }/LATEST/rsa.pub | apt-key add -
+          wget -O - http://download.gluster.org/pub/gluster/glusterfs/{{ version }}/LATEST/rsa.pub | apt-key add -
           echo deb http://download.gluster.org/pub/gluster/glusterfs/{{ version }}/LATEST/Debian/jessie/apt jessie main > /etc/apt/sources.list.d/gluster.list
   when: ansible_distribution == 'Debian'
 
