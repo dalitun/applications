@@ -31,7 +31,7 @@ parameters:
     type: string
     default: alikey
  os_type:
-    default: Debian Jessie
+    default: Ubuntu 14.04
     description: os type
     label: Os type
     type: string
