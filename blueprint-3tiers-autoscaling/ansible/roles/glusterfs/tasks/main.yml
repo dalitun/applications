@@ -6,8 +6,6 @@
   include: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
-
-
 - name: Ensure Gluster brick and mount directories exist.
   file: "path={{ item }} state=directory mode=0775"
   with_items:
