@@ -10,12 +10,14 @@
   file: "path={{ gluster_brick }} state=directory mode=0775"
 
 
-- name: connect gluster peers 
-  shell: gluster peer probe {{ item }}
-  with_items:
-       - {{ nodes.0 }}
-       - {{ nodes.1 }}
+- name: connect gluster peers  0
+  shell: gluster peer probe {{ nodes.0 }}
   when: gluster_master == "{{ ansible_default_ipv4.address }}"
+
+- name: connect gluster peers  1
+  shell: gluster peer probe {{ nodes.1 }}
+  when: gluster_master == "{{ ansible_default_ipv4.address }}"
+
 
 
 - name: Configure Gluster volume.
