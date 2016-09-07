@@ -15,7 +15,7 @@
   with_items:
        - nodes.0
        - nodes.1
-  when: gluster_master == {{ ansible_default_ipv4.address }}
+  when: gluster_master == "{{ ansible_default_ipv4.address }}"
 
 
 - name: Configure Gluster volume.
@@ -27,11 +27,11 @@
      cluster: "{{nodes.0}},{{nodes.1}} "
      host: "{{ ansible_default_ipv4.address }}"
      force: yes
-  when: gluster_master == {{ ansible_default_ipv4.address }}
+  when: gluster_master == "{{ ansible_default_ipv4.address }}"
 
 - name: Start Gluster volume
   gluster_volume: name={{ gluster_volume_name }} state=started
-  when: gluster_master == {{ ansible_default_ipv4.address }}
+  when: gluster_master == "{{ ansible_default_ipv4.address }}"
 
 
 

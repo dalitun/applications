@@ -51,7 +51,7 @@ resources:
                   echo "[local]" >> /etc/ansible/hosts
                   echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
                     cat << EOF > /etc/ansible/vars.yml
-                       gluster_master: $prefix_net1                       
+                       gluster_master: "$prefix_net1"                       
                        nodes:
                          0: $prefix_net0
                          1: $prefix_net1
