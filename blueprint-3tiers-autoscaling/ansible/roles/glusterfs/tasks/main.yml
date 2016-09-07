@@ -7,46 +7,31 @@
   when: ansible_os_family == 'Debian'
 
 - name: Ensure Gluster brick and mount directories exist.
-  file: "path={{ item }} state=directory mode=0775"
+  file: "path={{ gluster_brick }} state=directory mode=0775"
+
+
+- name: connect gluster peers 
+  shell: gluster peer probe {{ item }}
   with_items:
-    - "{{ gluster_brick_dir }}"
-    - "{{ gluster_mount_dir }}"
+       - nodes.0
+       - nodes.1
+  when: gluster_master == {{ ansible_default_ipv4.address }}
 
-
-- name: connect gluster peers 0
-  shell: gluster peer probe {{ node.0 }}
-  register: result0
-  ignore_errors: yes
-
-- debug: var=result0
-
-- name: connect gluster peers 1
-  shell: gluster peer probe {{ node.1 }}
-  register: result1
-  ignore_errors: yes
-- debug: var=result1
-
-- name: test No volumes present
-  shell: gluster volume info
-  register: result2
-  ignore_errors: yes
-- debug: var=result2
 
 - name: Configure Gluster volume.
   gluster_volume:
      state: present
-     name: "{{ gluster_brick_name }}"
-     brick: "{{ gluster_brick_dir }}"
+     name: "{{ gluster_volume_name }}"
+     brick: "{{ gluster_brick }}"
      replicas: 2
-     cluster: "{{ node.0 }},{{ node.1 }}"
+     cluster: "{{ nodes | join(",") }}"
      host: "{{ ansible_default_ipv4.address }}"
      force: yes
-  when: result0.stdout.find("success") != -1 and result1.stdout.find("success") != -1 and result2.stderr.find("No volumes present") != -1
-
+  when: gluster_master == {{ ansible_default_ipv4.address }}
 
 - name: Start Gluster volume
-  gluster_volume: name={{ gluster_brick_name }} state=started
-  when: result0.stdout.find("success") != -1 and result1.stdout.find("success") != -1 and result2.stderr.find("No volumes present") != -1
+  gluster_volume: name={{ gluster_volume_name }} state=started
+  when: gluster_master == {{ ansible_default_ipv4.address }}
 
 
 

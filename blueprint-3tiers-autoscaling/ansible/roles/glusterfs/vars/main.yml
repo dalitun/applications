@@ -1,6 +1,7 @@
 version: 3.8
-gluster_brick_dir: /srv/gluster/brick
-gluster_brick_name: gluster
-node:
-  0: 10.0.0.120
-  1: 10.0.0.121
+gluster_brick: /srv/gluster/brick
+gluster_volume_name: gluster
+gluster_master: 10.0.0.120
+nodes: 
+    - 10.0.0.120
+    - 10.0.0.121
