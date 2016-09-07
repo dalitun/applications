@@ -31,7 +31,7 @@ parameters:
     type: string
     default: alikey
  os_type:
-    default: Centos 7.2
+    default: Debian Jessie
     description: os type
     label: Os type
     type: string
@@ -59,7 +59,7 @@ parameters:
     type: string
 
  nodes_number:
-    default: 1
+    default: 2
     description: number of web servers 6 nodes
     label: Number of front nodes
     type: number

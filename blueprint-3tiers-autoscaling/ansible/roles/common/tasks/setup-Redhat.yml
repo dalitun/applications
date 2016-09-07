@@ -28,6 +28,7 @@
      - mariadb
      - zip
      - unzip
+     - stress
 
 - name: Set selinux into 'permissive' mode.
   selinux: policy=targeted state=permissive

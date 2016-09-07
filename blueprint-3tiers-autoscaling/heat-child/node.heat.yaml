@@ -128,6 +128,11 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
+      name:
+        str_replace:
+            template: $stack
+            params:
+               $stack: { get_param: 'OS::stack_name' }
       image: { get_param: os_type }
       flavor: { get_param: flavor_name }
       networks:

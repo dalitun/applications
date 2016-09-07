@@ -15,6 +15,7 @@
     name: "{{ item }}"
     state: installed
   with_items:
+    - python-software-properties
     - glusterfs-client
     - mysql-client
     - git
@@ -23,6 +24,7 @@
     - htop
     - zip
     - unzip
+    - stress
 
 
 - name: Set timezone variables
