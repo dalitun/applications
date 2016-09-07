@@ -31,7 +31,7 @@ parameters:
     type: string
     default: alikey
  os_type:
-    default: Ubuntu 14.04
+    default: Centos 7.2
     description: os type
     label: Os type
     type: string

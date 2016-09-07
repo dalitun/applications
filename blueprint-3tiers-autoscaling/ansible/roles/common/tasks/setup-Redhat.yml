@@ -3,19 +3,6 @@
   yum: name=* state=latest
 
 
-- name: install centos-release-gluster38
-  yum: name=centos-release-gluster38 state=latest  
-
-
-- name: enable repo
-  lineinfile: dest=/etc/yum.repos.d/CentOS-Gluster-3.8.repo  regexp="enabled=0" line="enabled=1"
- 
-- name: Install glusterfs client  packages Redhat
-  yum: name={{item}} state=installed enablerepo="centos-gluster38,epel"
-  with_items:
-     - glusterfs
-     - glusterfs-fuse
-
 - name: Ensure build dependencies are installed (RedHat).
   yum: 'name="{{ item }}" state=present'
   with_items:
@@ -28,7 +15,7 @@
      - mariadb
      - zip
      - unzip
-     - stress
+
 
 - name: Set selinux into 'permissive' mode.
   selinux: policy=targeted state=permissive
