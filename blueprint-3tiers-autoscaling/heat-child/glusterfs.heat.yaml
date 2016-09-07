@@ -100,7 +100,7 @@ resources:
     properties:
       name: 
         str_replace:
-            template: $stack-glusterfs1
+            template: $stack-0
             params:
               $stack: { get_param: 'OS::stack_name' }
       key_name: { get_param: keypair_name }
@@ -119,7 +119,7 @@ resources:
     properties:
       name: 
           str_replace:
-              template: $stack-glusterfs2
+              template: $stack-1
               params:
                 $stack: { get_param: 'OS::stack_name' }
       key_name: { get_param: keypair_name }
