@@ -2150,7 +2150,7 @@
         </trigger>
         <trigger>
             <expression>{Template OS Linux:system.cpu.util[,,avg1].last()}&gt;{$CPU_MAX}</expression>
-            <name>Processor load is too high</name>
+            <name>Processor % load is too high</name>
             <url/>
             <status>0</status>
             <priority>0</priority>
@@ -2170,7 +2170,7 @@
         </trigger>
         <trigger>
             <expression>{Template OS Linux:system.cpu.util[,,avg1].last()}&lt;{$CPU_MIN}</expression>
-            <name>Processor load is too low</name>
+            <name>Processor % load is too low</name>
             <url/>
             <status>0</status>
             <priority>0</priority>
