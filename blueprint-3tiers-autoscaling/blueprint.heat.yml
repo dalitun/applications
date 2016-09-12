@@ -31,13 +31,13 @@ parameters:
     type: string
     default: alikey
  os_type:
-    default: Centos 7.2
+    default: Debian Jessie
     description: os type
     label: Os type
     type: string
     constraints:
       - allowed_values:
-          - Ubuntu 14.04
+          - Ubuntu 16.04
           - Ubuntu 16.04
           - Debian Jessie
           - Centos 7.2
