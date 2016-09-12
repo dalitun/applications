@@ -21,9 +21,9 @@ parameters:
   flavor_name:
     type: string
     label: Instance Type (Flavor)
-  mcm_public_key:   
+  mcm_public_key:
     type: string
-    label: cloud init   
+    label: cloud init
 resources:
 
   cloud_init:
@@ -50,7 +50,7 @@ resources:
                   mkdir /etc/ansible
                   echo "[local]" >> /etc/ansible/hosts
                   echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
-                    cat << EOF > /etc/ansible/vars.yml                     
+                    cat << EOF > /etc/ansible/vars.yml
                        storage_nodes:
                           - $prefix_net0
                           - $prefix_net1
@@ -95,7 +95,7 @@ resources:
   gluster1:
     type: OS::Nova::Server
     properties:
-      name: 
+      name:
         str_replace:
             template: $stack-0
             params:
@@ -114,7 +114,7 @@ resources:
     type: OS::Nova::Server
     depends_on: gluster1
     properties:
-      name: 
+      name:
           str_replace:
               template: $stack-1
               params:
@@ -127,4 +127,3 @@ resources:
       user_data_format: RAW
       user_data:
         get_resource: server_init
-

@@ -48,7 +48,7 @@ parameters:
     type: string
   mcm_public_key:   
     type: string
-    label: cloud init
+    label: cloud init 
 
 resources:
   cloud_init:
