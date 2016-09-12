@@ -19,6 +19,9 @@ parameters:
   security_group:
     label: security_group
     type: string
+  mcm_public_key:
+    type: string
+    label: mcm public key  
 resources:
 
   cloud_init:
@@ -26,19 +29,19 @@ resources:
     # with a merge_how strategy
     type: OS::Heat::CloudConfig
     properties:
-     cloud_config:
-      #cloud-config
-      ssh_authorized_keys:
-        str_replace:
-           template: |
-               - $mcm_public_key
-           params:
-               $mcm_public_key: { get_param: mcm_public_key }
-      packages:
-         - jq
-         - curl
-      runcmd:
-         - [ sh, -xc, 'curl -s -H "Content-Type: application/json" -XPOST -d "{\"user\": \"cloud\"}" http://10.0.1.250:30000/api/servers/register/$(curl -s http://169.254.169.254/openstack/latest/meta_data.json| jq -r .uuid)' ]
+    cloud_init:
+    type: OS::Heat::CloudConfig
+    properties:
+      cloud_config:
+          #cloud-config
+          ssh_authorized_keys:
+            - { get_param: mcm_public_key }
+          packages:
+            - jq
+            - curl
+          runcmd:
+            - [ sh, -xc, 'curl -s -H "Content-Type: application/json" -XPOST -d "{\"user\": \"cloud\"}" http://10.0.1.250:30000/api/servers/register/$(curl -s http://169.254.169.254/openstack/latest/meta_data.json| jq -r .uuid)' ]
+
 
   postboot:
     type: OS::Heat::SoftwareConfig

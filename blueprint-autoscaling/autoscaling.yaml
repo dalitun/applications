@@ -25,6 +25,12 @@ parameters:
           - n2.cw.highmem-4
           - n2.cw.highmem-8
           - n2.cw.highmem-12
+  net_cidr:
+    default: 192.168.0.0/24
+    description: /24 cidr of fronts network
+    label: /24 cidr of fronts network
+    type: string
+
   router:
     label: router
     type: string
@@ -33,24 +39,21 @@ parameters:
     type: string
     label: mcm public key
     default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3IeALS1ymhqkaLicduq4BADIKUPcd5P/SU2OCjUGYco4108aBzl+ZbWXhWnHxxhCXyWj1ka7X4UK63g1skCMw1FMLKxdFggfwnbwTOA2WufxFhnfAOG3IDWcwqPCCiYhutJo0231kmMrap9gb2uaWa3/ZR4O8ZXBBWugFQqBL3AFCdm07zOs/lPHS4Q/RrKejNrbqb3GSXyiDzR6PnDCxCSNJKoIj9Fh1if8gctpoiUOi4C7TqHqWWvJ2ctbFZpxxDvwaqI5HnJgfi0lU2goKvHOG02AnqHBU+N6Xh7Bt5f05bREUzwdeZK2XWmaVDsqleHkgxZ5GsQsDvWJR7UGj root@mcm-driver-0.novalocal
-resources:
+
 
 resources:
 
-  network:
+  net:
     type: OS::Neutron::Net
+    properties:
+      admin_state_up: true
 
   subnet:
     type: OS::Neutron::Subnet
     properties:
-      network_id: { get_resource: network }
-      ip_version: 4
-      dns_nameservers:
-        - 185.23.94.244
-        - 185.23.94.245
-      cidr: 192.168.1.0/24
-      allocation_pools:
-        - { start: 192.168.1.2, end: 192.168.1.100 }
+      network_id: { get_resource: net }
+      cidr: { get_param: net_cidr }
+      gateway_ip: { "Fn::Replace": [ {'.0/24': '.1'}, {get_param: net_cidr} ] }
 
 
   interface:
