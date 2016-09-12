@@ -1,5 +1,5 @@
-version: 8
-release: 8.0.33
+version: 9
+release: 9.0.0.M10
 user: admin
 password: admin
 http_port: 8080

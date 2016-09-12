@@ -17,7 +17,7 @@ Here is the architecture diagram.
  - Ubuntu Xenial 16.04
  - Debian Jessie
  - Centos 7.2
- - Glustefs 3
+ - Glustefs 3.8
  - Mariadb 10.1
  - Lvm2
  - Mylvmbackup
