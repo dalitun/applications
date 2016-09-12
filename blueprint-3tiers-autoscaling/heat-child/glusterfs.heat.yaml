@@ -51,7 +51,7 @@ resources:
                   echo "[local]" >> /etc/ansible/hosts
                   echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
                     cat << EOF > /etc/ansible/vars.yml                     
-                       storage_nodes::
+                       storage_nodes:
                           - $prefix_net0
                           - $prefix_net1
                   EOF
