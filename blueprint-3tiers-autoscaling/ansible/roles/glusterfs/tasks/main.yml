@@ -13,7 +13,7 @@
 - name: Create Gluster volume
   gluster_volume: brick={{gluster_brick_dir}} force=true
                   cluster={{storage_nodes | join(",")}}
-                  replicas={{gluster_replicas}} name={{gluster_volume}}  host={{ ansible_default_ipv4.address }} state=present
+                  replicas={{gluster_replicas}} name={{gluster_volume}} state=present
   run_once: true
 
 - name: Start Gluster volume
