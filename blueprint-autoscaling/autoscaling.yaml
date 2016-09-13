@@ -34,11 +34,11 @@ parameters:
   router:
     label: router
     type: string
-    default: 3eb0ebb7-36ec-4846-b642-d20039e31ba6
+    default: 602565c8-ee30-4697-8a75-044898f381eb
   mcm_public_key:
     type: string
     label: mcm public key
-    default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC3IeALS1ymhqkaLicduq4BADIKUPcd5P/SU2OCjUGYco4108aBzl+ZbWXhWnHxxhCXyWj1ka7X4UK63g1skCMw1FMLKxdFggfwnbwTOA2WufxFhnfAOG3IDWcwqPCCiYhutJo0231kmMrap9gb2uaWa3/ZR4O8ZXBBWugFQqBL3AFCdm07zOs/lPHS4Q/RrKejNrbqb3GSXyiDzR6PnDCxCSNJKoIj9Fh1if8gctpoiUOi4C7TqHqWWvJ2ctbFZpxxDvwaqI5HnJgfi0lU2goKvHOG02AnqHBU+N6Xh7Bt5f05bREUzwdeZK2XWmaVDsqleHkgxZ5GsQsDvWJR7UGj root@mcm-driver-0.novalocal
+    default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3sBV85fs2QUTKo0wP+ik2uMnY07nBSt5jObshVSFV/8zzWTYDl23VsTuQcZQLm2D7yRE+5KIUYEuRckvl+/s/TadB+FUQmWP1uKr+51M090twdIhAn3OeDxR/4PHcIHI+y5HuWJCLF/vBqe1JvvyxArPNu91Z+5TCUP5j7Wn4EbO58bWLraE4pq/S/ax2bcispj+i9L7V+qM1ut/mz1JRssJk+iPVQ9KqFJrLIpAH/QuN1+b+jRUuBwsk85L4degI13nGzBbJzLZZ6sJpkFBOjsmtHLNGgKsM6dfFvbmjCa+vQcTAvHh3NC5k1OEbx0MJDEZPquzoX6g6qKLvgTHp root@mcm-driver-0.novalocal
 
 
 resources:
