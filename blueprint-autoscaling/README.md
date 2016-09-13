@@ -179,6 +179,7 @@ N'oubliez pas d'ajouter chaque nouveau stack apparu dans le Host Groupe de votre
 #### comment customiser votre template
 Dans cet article on a utilisé comme item c'est `system.cpu.util[,,avg1]` pour caculer en poucentage le moyen d'utlisation de cpu.
 Vous pouvez baser sur autres items ( calculer l'usage de RAM ou disque ...) pour avoir l'autoscaling.
+voilà [une liste des items](https://www.zabbix.com/documentation/2.0/manual/config/items/itemtypes/zabbix_agent)
 
 Pour créer un item.
 
