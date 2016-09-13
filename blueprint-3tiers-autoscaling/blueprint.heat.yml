@@ -243,7 +243,7 @@ resources:
 
 
   glusterfs_nodes:
-    type:  http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprintautoscaling/glusterfs.heat.yaml
+    type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprintautoscaling/glusterfs.heat.yaml
     depends_on: db_nodes
     properties:
       security_group: { get_resource: sg_glusterfs }
@@ -261,7 +261,7 @@ resources:
     properties:
       count: { get_param: number_db_clusters}
       resource_def:
-        type:  http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprintautoscaling/db.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprintautoscaling/db.heat.yaml
         properties:
           nodename:
             str_replace:
@@ -296,7 +296,7 @@ resources:
       min_size: { get_param: nodes_number }
       max_size: 6
       resource:
-        type:  http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprintautoscaling/node.heat.yaml
+        type: http://storage.fr1.cloudwatt.net:8080/v1/AUTH_7da34701e2fe488683d8a8382ee6f454/blueprintautoscaling/node.heat.yaml
         properties:
           security_group: { get_resource: sg_web }
           network: { get_resource: nodes_net }
