@@ -154,9 +154,8 @@ Ajouter les conditions.
 
 ![action3](img/action2.png)
 
-Mettez les commandes de scale down (scale up)
+Mettez les commandes suivantes de scale down (scale up) dans l'input Commands
 
-la commande
 ~~~bash
 export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
 export OS_TENANT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxx
@@ -177,9 +176,25 @@ Votre action est déjà créé
 
 N'oubliez pas d'ajouter chaque nouveau stack apparu dans le Host Groupe de votre stack.
 
+#### comment customiser votre template
+Dans cet article on a utilisé comme item c'est `system.cpu.util[,,avg1]` pour caculer en poucentage le moyen d'utlisation de cpu.
+Vous pouvez baser sur autres items ( calculer l'usage de RAM ou disque ...) pour avoir l'autoscaling.
+
+Pour créer un item.
+
+![item](img/item.png)
+
+Vous pouvez aussi changer ou créer le macro  
+
+![macro](img/macro.png)
+
+Vous créer le triggers qui va alerter .
+
+![triggers](img/triggers.png)
 
 
 ### Autres sources pouvant vous intéresser:
+
 * [ Autoscaling ](https://dev.cloudwatt.com/fr/blog/passez-votre-infrastructure-openstack-a-l-echelle-avec-heat.html)
 * [ Zabbix](https://www.zabbix.com/documentation/3.0/manual/introduction/features)
 * [ MycloudManager ](https://www.cloudwatt.com/fr/applications/mycloudmanager.html)
