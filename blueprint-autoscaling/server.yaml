@@ -21,15 +21,10 @@ parameters:
     type: string
   mcm_public_key:
     type: string
-    label: mcm public key  
+    label: mcm public key
 resources:
 
   cloud_init:
-    # this resource demonstrates multiple cloud-config resources
-    # with a merge_how strategy
-    type: OS::Heat::CloudConfig
-    properties:
-    cloud_init:
     type: OS::Heat::CloudConfig
     properties:
       cloud_config:

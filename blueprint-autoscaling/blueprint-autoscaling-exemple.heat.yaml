@@ -32,7 +32,7 @@ parameters:
     type: string
 
   router:
-    label: router
+    label: router_mcm
     type: string
     default: 602565c8-ee30-4697-8a75-044898f381eb
   mcm_public_key:
@@ -79,14 +79,15 @@ resources:
       min_size: 2
       max_size: 6
       resource:
-        type: lb_server.yaml
+        type: server.yaml
         properties:
           flavor: {get_param: flavor_name}
           image: Ubuntu 14.04
           key_name: {get_param: keypair_name}
-          network: {get_resource: network}
+          network: {get_resource: net}
           pool_id: {get_resource: pool}
           security_group: { get_resource: sec_group }
+          mcm_public_key: { get_param: mcm_public_key }
 
 
   web_server_scaleup_policy:
