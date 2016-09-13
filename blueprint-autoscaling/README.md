@@ -1,4 +1,4 @@
-# Autoscaling via zabbix de MyCloudManager:
+# Autoscaling via zabbix de MyCloudManager
  ![logo](img/images-2.jpg)
 Auto-scaling, autoscaling également orthographié, est une caractéristique de service de cloud computing qui ajoute ou supprime les ressources calcul en fonction de l'utilisation réelle automatiquement. Mise à l'échelle automatique est parfois appelée élasticité automatique.
 
@@ -18,11 +18,10 @@ Auto-scaling, autoscaling également orthographié, est une caractéristique de 
 
 ### Comment avoir l'autoscaling via zabbix de MyCloudManager
 
-#### 1) Lancer stack exemple autoscaling
+#### 1/ Lancer stack exemple autoscaling
 
 ##### Ajuster les paramètres
 
-Clonez le repo
 Dans le fichier `blueprint-autoscaling-exemple.heat.yml` vous trouverez en haut une section `parameters`.
 
 ~~~ yaml
@@ -111,12 +110,12 @@ $ heat resource-list nom_de_votre_stack
 ~~~
 
 
-#### 3) Ajouter les noeuds à Zabbix de MycloudManager
+#### 2/ Ajouter les noeuds à Zabbix de MycloudManager
 
 Install zabbix agent dans les instances via l'interface web de MyCloudManager
 ![mcm](img/ajouterinstances.png)
 
-#### 4) Mise à jour le template OS Linux Zabbix
+#### 3/ Mise à jour le template OS Linux Zabbix
 Mettez à jour le template OS Linux, ce template contient un nouveau item et 2 neaveaux triggers afin de calculer la pourcentage d'utilsation du cpu dans chaque 1 Minutes.
 
 
@@ -127,36 +126,63 @@ Puis sélectionnez le tempate et cliquez sur import
 ![template2](img/updatetemp2.png)
 
 
-#### 5) Créer les Actions scale up et scale download
+#### 4/ Créer les Actions scale up et scale download
 
-pour savoir url scaling up
-
-~~~bash
-openstack stack output show  -f json  autoscale scale_up_url | jq '.output_value' | sed -e 's/^"//'  -e 's/"$//'
-~~~
-
-pour savoir url scaling down
+Pour disposer des urls de scale up et down, vous devez interroger les sorties (Output) de votre stack via la commande Url de scale up :
 
 ~~~bash
-openstack stack output show  -f json  autoscale scale_dn_url | jq '.output_value' | sed -e 's/^"//'  -e 's/"$//'
+openstack stack output show  -f json  autoscale scale_up_url | jq '.output_value'
 ~~~
 
-les étapes pour créer les actions:
+Url de scale down :
+
+~~~bash
+openstack stack output show  -f json  autoscale scale_dn_url | jq '.output_value'
+~~~
+
+Les étapes pour créer les deux actions scale up et scale down:
+
+1/ Créer par exemple un host groups qui contient les instances.
 
 ![action1](img/hostgroups.png)
 
+2/ Créer l'action scale down (pour scale up c'est de la méme manière juste changez l'url)
+
 ![action2](img/action1.png)
+
+Ajouter les conditions.
 
 ![action3](img/action2.png)
 
+Mettez les commandes de scale down (scale up)
+
+la commande
+~~~bash
+export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
+export OS_TENANT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxx
+export OS_TENANT_NAME="xxxxxxxxxxxxxxxxxxxxx"
+export OS_PROJECT_NAME="xxxxxxxxxxxxxxxxxxxxx"
+export OS_USERNAME="xxxxxxxxxxxxxxx@cloudwatt.com"
+export OS_PASSWORD=*************************
+export OS_REGION_NAME="fr1"
+curl -k -X POST “url de scaling down ou scaling up“
+
+~~~
+
 ![action4](img/action3.png)
+
+Votre action est déjà créé
 
 ![action5](img/action4.png)
 
+N'oubliez pas d'ajouter chaque nouveau stack apparu dans le Host Groupe de votre stack.
 
-N'oubliez pas de ajouter chaque nouveau scalé à zabbix dans le Host Groupe de votre stack
 
 
+### Autres sources pouvant vous intéresser:
+* [ Autoscaling ](https://dev.cloudwatt.com/fr/blog/passez-votre-infrastructure-openstack-a-l-echelle-avec-heat.html)
+* [ Zabbix](https://www.zabbix.com/documentation/3.0/manual/introduction/features)
+* [ MycloudManager ](https://www.cloudwatt.com/fr/applications/mycloudmanager.html)
 
 
 -----
