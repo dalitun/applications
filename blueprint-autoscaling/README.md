@@ -174,7 +174,15 @@ Votre action est déjà créé
 
 ![action5](img/action4.png)
 
+3/ Pour tester le scaling up et scaling down
+ tapez la commande suivantes dans les serveurs:
+
+ ~~~bash
+ $ sudo apt-get install stress
+ $ stress --cpu 90 --io 2 --vm 2 --vm-bytes 512M --timeout 600
+ ~~~
 N'oubliez pas d'ajouter chaque nouveau stack apparu dans le Host Groupe de votre stack.
+
 
 #### comment customiser votre template
 Dans cet article on a utilisé comme item c'est `system.cpu.util[,,avg1]` pour caculer en poucentage le moyen d'utlisation de cpu.
@@ -192,6 +200,7 @@ Vous pouvez aussi changer ou créer le macro
 Vous créer le triggers qui va alerter .
 
 ![triggers](img/triggers.png)
+
 
 
 ### Autres sources pouvant vous intéresser:
