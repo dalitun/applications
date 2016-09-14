@@ -66,6 +66,10 @@ Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
 **SSH Keypair :** Votre key pair.
 
+**router-id mycloudmanager :** Id de MyCloudManger routeur.
+
+**mcm public key :** Clé public fournie par MyCloudManger.
+
 **Artefact in zip ,git, tar.gz or war :** Mettez l'url de l'artifact de votre application, il faut qu'il soit en git, zip ou tar.gz pour les applications php et nodejs et en war pour les applications java.
 
 **Application type :** Si vous choisissez php vous allez avoir un environnement apache2 et php, si vous choisissez nodejs vous allez avoir un environnement qui exécute les applications nodejs avec un reverse proxy nginx et si vous choisissez tomcat vous allez avoir un environnement tomcat 8 et openjdk8 avec nginx comme un reverse proxy.
@@ -112,6 +116,9 @@ Les sorties:
 
 **App_url_internal :** Url interne du load balancer des noeuds frontaux web.
 
+**scale_up_url :** Url de scale up
+
+**scale_dn_url :** Url de scale down
 
 ## Enjoy
 

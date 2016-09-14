@@ -66,6 +66,10 @@ Complete this fields and click LAUNCH.
 
 **SSH Keypair :** your key pair.
 
+**router-id mycloudmanager :**
+
+**mcm public key :**
+
 **Artefact in zip ,git, tar.gz or war :** Put the url artifact of your application, it must be in git, zip or tar.gz for PHP and nodejs applications and war for tomcat applications.
 **Application type :** If you choose php, you are going to have apache2 server and php environment, if you choose nodejs you are going to have an environment that runs nodejs applications with reverse proxy nginx and if you choose tomcat you will have a tomcat environment 8 and openjdk8 with nginx as a reverse proxy.
 **Flavor Type for nodes :** Web front nodes flavor.
@@ -109,6 +113,10 @@ Outputs:
 **App_url_external :** Your application external url.
 
 **App_url_internal :** Your application internal url.
+
+**scale_up_url :** Scale up url.
+
+**scale_dn_url :** Scale down url.
 
 ## Enjoy
 
