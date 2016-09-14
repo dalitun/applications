@@ -71,7 +71,7 @@ parameters:
 
 ##### Démarrer la stack
 
-Avant de lancer la stack, ouvrez le port 30000 pour que vos instances puissent connecter avec MyCloudManager en tapant la commande suivante.
+Avant de lancer la stack, ouvrez le port 30000 pour que vos instances puissent se communiquer avec MyCloudManager, en tapant la commande suivante.
 
 ~~~bash
 $ nova secgroup-add-rule SECURITY_GROUP_MCM tcp 30000 30000 cid_net_autoscaling
@@ -117,7 +117,7 @@ Install zabbix agent dans les instances via l'interface web de MyCloudManager
 ![mcm](img/ajouterinstances.png)
 
 #### 3/ Mise à jour le template OS Linux Zabbix
-Mettez à jour le template OS Linux, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macors` afin de calculer  le pourcentage d'utilisation du cpu dans chaque 1 minutes.
+Mettez à jour le template OS Linux, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macors` afin de calculer  le pourcentage d'utilisation du cpu dans chaque minute.
 
 ![template1](img/updatetemp1.png)
 
@@ -126,18 +126,18 @@ Puis sélectionnez le tempate et cliquez sur import.
 ![template2](img/updatetemp2.png)
 
 
-#### 4/ Créer les deux Actions scale up et scale download
+#### 4/ Créer les deux Actions scale up et scale down
 
 Pour disposer des urls de scale up et down, vous devez interroger les sorties (Output) de votre stack via la commande Url de scale up :
 
 ~~~bash
-openstack stack output show  -f json  autoscale scale_up_url | jq '.output_value'
+openstack stack output show -f json nom_de_votre_stack scale_up_url | jq '.output_value'
 ~~~
 
 Url de scale down :
 
 ~~~bash
-openstack stack output show  -f json  autoscale scale_dn_url | jq '.output_value'
+openstack stack output show -f json nom_de_votre_stack scale_dn_url | jq '.output_value'
 ~~~
 
 Ensuite on passe vers Les étapes pour créer les deux actions scale up et scale down:
@@ -165,7 +165,6 @@ export OS_USERNAME="xxxxxxxxxxxxxxx@cloudwatt.com"
 export OS_PASSWORD=*************************
 export OS_REGION_NAME="fr1"
 curl -k -X POST “url de scaling down ou scaling up“
-
 ~~~
 
 ![action4](img/action3.png)
@@ -174,8 +173,7 @@ Votre action est bien créée.
 
 ![action5](img/action4.png)
 
-3/ Pour tester le scaling up et scaling down.
- tapez la commande suivante dans les serveurs:
+3/ Pour tester le scaling up et scaling down, tapez la commande suivante dans les serveurs:
 
  ~~~bash
  $ sudo apt-get install stress
@@ -184,7 +182,7 @@ Votre action est bien créée.
 N'oubliez pas d'ajouter chaque nouveau stack apparu dans le `Host Groupe`  de votre stack.
 
 
-#### comment customiser votre template
+#### Comment customiser votre template
 Dans cet article on a utilisé comme item c'est `system.cpu.util[,,avg1]` pour caculer en poucentage le moyen d'utlisation de cpu.
 Vous pouvez baser sur autres items ( calculer l'usage de RAM ou disque ...) pour avoir l'autoscaling.
 voilà [une liste des items](https://www.zabbix.com/documentation/2.0/manual/config/items/itemtypes/zabbix_agent)
@@ -193,11 +191,11 @@ Pour créer un item.
 
 ![item](img/item.png)
 
-Vous pouvez aussi changer ou créer le macro  
+ Vous pouvez aussi changer les macros ou créer autres.
 
 ![macro](img/macro.png)
 
-Vous créer le triggers qui va alerter .
+Vous pouvez créer un trigger. 
 
 ![triggers](img/triggers.png)
 
