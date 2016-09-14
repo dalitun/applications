@@ -60,6 +60,7 @@ Here is the architecture diagram.
 ![from1](img/1.png)
 ![form2](img/2.png)
 ![form3](img/3.png)
+![form4](img/4.png)
 
 Complete this fields and click LAUNCH.
 
@@ -91,11 +92,11 @@ Complete this fields and click LAUNCH.
 
 Stack form :
 
-![stack](img/5.png)
+![stack](img/6.png)
 
 Outputs:
 
-![output](img/4.png)
+![output](img/5.png)
 
 **Database_ip :** Load blancer database cluster ip addresse.
 

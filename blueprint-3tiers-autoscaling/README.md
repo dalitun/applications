@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers#
+# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers autoscaling #
 
 ## Episode 27 : Blueprint 3 tiers
 
@@ -60,6 +60,7 @@ Voici le schema d'architecture :
 ![from1](img/1.png)
 ![form2](img/2.png)
 ![form3](img/3.png)
+![form4](img/4.png)
 
 Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
@@ -93,11 +94,11 @@ Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
 La forme du stack :
 
-![stack](img/5.png)
+![stack](img/6.png)
 
 Les sorties:
 
-![output](img/4.png)
+![output](img/5.png)
 
 **Database_ip :** L'adresse ip du load balancer de Galeracluster.
 
