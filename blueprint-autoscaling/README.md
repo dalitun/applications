@@ -1,5 +1,6 @@
 # Autoscaling via zabbix de MyCloudManager
  ![logo](img/images-2.jpg)
+
 Auto-scaling, autoscaling également orthographié, est une caractéristique de service de cloud computing qui ajoute ou supprime les ressources calcul en fonction de l'utilisation réelle automatiquement. Mise à l'échelle automatique est parfois appelée élasticité automatique.
 
 ## Préparations
@@ -70,13 +71,13 @@ parameters:
 
 ##### Démarrer la stack
 
-Avant de lancer la stack ajouter l'autorisation du port 30000 pour le réseau de la stack pour mcm
+Avant de lancer la stack, ouvrez le port 30000 pour que vos instances puissent connecter avec MyCloudManager en tapant la commande suivante.
 
 ~~~bash
 $ nova secgroup-add-rule SECURITY_GROUP_MCM tcp 30000 30000 cid_net_autoscaling
 ~~~
 
-Puis dans le shell lancer la commande suivante :
+Puis dans le shell lancez la commande suivante :
 
 ~~~bash
 $ heat stack-create nom_de_votre_stack -f blueprint-autoscaling-exemple.heat.yaml
@@ -116,17 +117,16 @@ Install zabbix agent dans les instances via l'interface web de MyCloudManager
 ![mcm](img/ajouterinstances.png)
 
 #### 3/ Mise à jour le template OS Linux Zabbix
-Mettez à jour le template OS Linux, ce template contient un nouveau item et 2 neaveaux triggers afin de calculer la pourcentage d'utilsation du cpu dans chaque 1 Minutes.
-
+Mettez à jour le template OS Linux, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macors` afin de calculer  le pourcentage d'utilisation du cpu dans chaque 1 minutes.
 
 ![template1](img/updatetemp1.png)
 
-Puis sélectionnez le tempate et cliquez sur import
+Puis sélectionnez le tempate et cliquez sur import.
 
 ![template2](img/updatetemp2.png)
 
 
-#### 4/ Créer les Actions scale up et scale download
+#### 4/ Créer les deux Actions scale up et scale download
 
 Pour disposer des urls de scale up et down, vous devez interroger les sorties (Output) de votre stack via la commande Url de scale up :
 
@@ -140,13 +140,13 @@ Url de scale down :
 openstack stack output show  -f json  autoscale scale_dn_url | jq '.output_value'
 ~~~
 
-Les étapes pour créer les deux actions scale up et scale down:
+Ensuite on passe vers Les étapes pour créer les deux actions scale up et scale down:
 
-1/ Créer par exemple un host groups qui contient les instances.
+1/ Créer `host groups` qui représente vos instances.
 
 ![action1](img/hostgroups.png)
 
-2/ Créer l'action scale down (pour scale up c'est de la méme manière juste changez l'url)
+2/ Créer l'action scale down (pour scale up utilisez les mémes étapes juste changez l'url).
 
 ![action2](img/action1.png)
 
@@ -154,7 +154,7 @@ Ajouter les conditions.
 
 ![action3](img/action2.png)
 
-Mettez les commandes suivantes de scale down (scale up) dans l'input Commands
+Mettez les commandes suivantes de scale down (scale up) dans l'input Commands.
 
 ~~~bash
 export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
@@ -170,18 +170,18 @@ curl -k -X POST “url de scaling down ou scaling up“
 
 ![action4](img/action3.png)
 
-Votre action est déjà créé
+Votre action est bien créée.
 
 ![action5](img/action4.png)
 
-3/ Pour tester le scaling up et scaling down
- tapez la commande suivantes dans les serveurs:
+3/ Pour tester le scaling up et scaling down.
+ tapez la commande suivante dans les serveurs:
 
  ~~~bash
  $ sudo apt-get install stress
  $ stress --cpu 90 --io 2 --vm 2 --vm-bytes 512M --timeout 600
  ~~~
-N'oubliez pas d'ajouter chaque nouveau stack apparu dans le Host Groupe de votre stack.
+N'oubliez pas d'ajouter chaque nouveau stack apparu dans le `Host Groupe`  de votre stack.
 
 
 #### comment customiser votre template
