@@ -248,6 +248,9 @@ mylvmbackup --user=root --mycnf=/etc/mysql/my.cnf --vgname=vg0 --lvname=global -
 swift upload your_back_contenair /var/cache/mylvmbackup/backup/*
 rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
+**Configuration autoscaling via zabbix de myCloudManager:**
+
+Cliquez sur ce lien.
 
 ## So watt ?
 
