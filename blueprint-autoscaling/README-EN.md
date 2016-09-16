@@ -68,7 +68,7 @@ Auto-scaling, also spelled autoscaling, is a cloud computing service feature tha
 
 ##### Start the stack
 
-Before starting the stack, open port 30000 for your instances can communicate with MyCloudManager, typing the following command.
+Before starting the stack, open port 30000 in MycloudManager security groupe for your instances can communicate with MyCloudManager, typing the following command.
 
  ~~~bash
  $ nova secgroup-add-rule SECURITY_GROUP_MCM tcp 30000 30000 cid_net_autoscaling
@@ -113,6 +113,7 @@ Install zabbix agent in instances via the web interface of MyCloudManager.
  ![mcm](img/ajouterinstances.png)
 
 #### 3/ Mise à jour le template OS Linux Zabbix
+
  Update the Linux OS template, this template contains a new `item` two new` `triggers` and two new macors` in order to calculate the percentage use of the CPU in every minute.
 
  ![template1](img/updatetemp1.png)
@@ -191,8 +192,6 @@ That [a list of items](https://www.zabbix.com/documentation/2.0/manual/config/it
 You can also change or create others.
 
 ![macro](img/macro.png)
-
-Vous créer un triggers qui va alerter.
 
 You can create a trigger.
 
