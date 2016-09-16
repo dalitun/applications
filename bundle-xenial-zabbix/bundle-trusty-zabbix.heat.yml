@@ -92,7 +92,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: c53b9df1-bdbc-4bcb-a0be-89f9d360be8c
+      image: b4b3610d-a7cc-465e-a353-45a41e415830
       flavor: { get_param: flavor_name }
       networks:
        - port: { get_resource: zabbix_port }
