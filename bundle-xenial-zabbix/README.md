@@ -14,9 +14,9 @@ On remarque dans cette architecture que le serveur Zabbix-server peut monitorer 
 
 ### Les versions
 
-* Ubuntu 14.04
-* Zabbix 2.2
-* Mysql 5.5
+* Ubuntu 16.04
+* Zabbix 3.2
+* Mysql 5.7
 
 ### Les pré-requis pour déployer cette stack
 
