@@ -7,7 +7,7 @@ Auto-scaling, autoscaling également orthographié, est une caractéristique de 
 
 ### Les versions
   - MyCloudManager v2
-  - zabbix 3
+  - Zabbix 3
 
 ### Les pré-requis
 
@@ -17,9 +17,9 @@ Auto-scaling, autoscaling également orthographié, est une caractéristique de 
  * Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
  * MycloudManager V2 [lien] (https://github.com/cloudwatt/applications/blob/master/application-mycloudmanager-v2/README.md)
 
-### Comment avoir l'autoscaling via zabbix de MyCloudManager
+### Comment avoir l'autoscaling via Zabbix de MyCloudManager
 
-#### 1/ Lancer stack exemple autoscaling
+#### 1/ Lancer un stack exemple autoscaling
 
 ##### Ajuster les paramètres
 
@@ -71,7 +71,7 @@ parameters:
 
 ##### Démarrer la stack
 
-Avant de lancer la stack, ouvrez le port 30000 pour que vos instances puissent se communiquer avec MyCloudManager, en tapant la commande suivante.
+Avant de lancer le stack, ouvrez le port 30000 dans le security groupe de MyCloudManager pour que vos instances puissent se communiquer avec MyCloudManager, en tapant la commande suivante.
 
 ~~~bash
 $ nova secgroup-add-rule SECURITY_GROUP_MCM tcp 30000 30000 cid_net_autoscaling
@@ -110,14 +110,14 @@ $ heat resource-list nom_de_votre_stack
 
 ~~~
 
-
 #### 2/ Ajouter les noeuds à Zabbix de MycloudManager
 
-Install zabbix agent dans les instances via l'interface web de MyCloudManager
+Installer Zabbix agent dans les instances via l'interface web de MyCloudManager.
 ![mcm](img/ajouterinstances.png)
 
 #### 3/ Mise à jour le template OS Linux Zabbix
-Mettez à jour le template OS Linux, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macors` afin de calculer  le pourcentage d'utilisation du cpu dans chaque minute.
+
+Mettez à jour le `template OS Linux`, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macors` afin de calculer  le pourcentage d'utilisation du cpu dans chaque minute.
 
 ![template1](img/updatetemp1.png)
 
@@ -125,10 +125,9 @@ Puis sélectionnez le tempate et cliquez sur import.
 
 ![template2](img/updatetemp2.png)
 
-
 #### 4/ Créer les deux Actions scale up et scale down
 
-Pour disposer des urls de scale up et down, vous devez interroger les sorties (Output) de votre stack via la commande Url de scale up :
+D'abord vous devez disposer les urls de scale up et down, vous devez interroger les sorties (Output) de votre stack via la commande Url de scale up :
 
 ~~~bash
 openstack stack output show -f json nom_de_votre_stack scale_up_url | jq '.output_value'
@@ -183,7 +182,7 @@ N'oubliez pas d'ajouter chaque nouveau stack apparu dans le `Host Groupe`  de vo
 
 
 #### Comment customiser votre template
-Dans cet article on a utilisé comme item c'est `system.cpu.util[,,avg1]` pour caculer en poucentage le moyen d'utlisation de cpu.
+Dans cet article on a utilisé comme item c'est `system.cpu.util[,,avg1]` pour calculer en pourcentage le moyen d'utlisation de cpu.
 Vous pouvez baser sur autres items ( calculer l'usage de RAM ou disque ...) pour avoir l'autoscaling.
 voilà [une liste des items](https://www.zabbix.com/documentation/2.0/manual/config/items/itemtypes/zabbix_agent)
 
@@ -195,7 +194,7 @@ Pour créer un item.
 
 ![macro](img/macro.png)
 
-Vous pouvez créer un trigger. 
+Vous pouvez créer un trigger.
 
 ![triggers](img/triggers.png)
 
