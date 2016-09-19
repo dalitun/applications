@@ -146,7 +146,7 @@ Ensuite on passe vers Les étapes pour créer les deux actions scale up et scale
 
 ![action1](img/hostgroups.png)
 
-2/ Créer l'action scale down (pour scale up utilisez les mémes étapes juste changez l'url).
+2/ Créer l'action scale down (pour scale up utilisez les mêmes étapes juste changez l'url).
 
 ![action2](img/action1.png)
 
@@ -183,9 +183,9 @@ N'oubliez pas d'ajouter chaque nouveau stack apparu dans le `Host Groupe`  de vo
 
 
 #### Comment customiser votre template
-Dans cet article on a utilisé comme item c'est `system.cpu.util[,,avg1]` pour calculer en pourcentage le moyen d'utlisation de cpu.
-Vous pouvez baser sur autres items ( calculer l'usage de RAM ou disque ...) pour avoir l'autoscaling.
-voilà [une liste des items](https://www.zabbix.com/documentation/2.0/manual/config/items/itemtypes/zabbix_agent)
+Dans cet article on a utilisé comme item `system.cpu.util[,,avg1]` pour calculer en pourcentage le moyen d'utlisation de CPU(s).
+Vous pouvez baser sur autres items (calculer l'usage de RAM ou disque ...) pour avoir l'autoscaling.
+Voilà [une liste des items](https://www.zabbix.com/documentation/2.0/manual/config/items/itemtypes/zabbix_agent)
 
 Pour créer un item.
 
