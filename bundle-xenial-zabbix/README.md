@@ -249,30 +249,6 @@ Ce playbook va faire toutes les opérations d'installation et de configuration s
 
 Maintenant, votre monitoring client - serveur est configuré. Vous pouvez à présent vous connecter sur l'interface web de votre zabbix via son adresse IP http://X.X.X.X
 
-Pour démarrer le monitoring, il vous faut faire les opérations suivantes :
-
- * Se connecter à l'interface web de Zabbix-server
- * Cliquer sur le menu `Configuration`
- * Cliquer sur le sous menu `Hosts`
- * Cliquer sur le bouton  en haut à droite `Create Hosts.
-
- Renseigner les differents champs en indiquant le nom du host à monitorer et son adresse IP  
-
- ![Ajouter un host zabbix ](https://www.zabbix.com/documentation/2.2/_media/manual/quickstart/new_host.png?cache=)
-
- Dans l'onglet template :
-
- *  Commencez à remplir le champ **Link new templates** pour obtenir des suggestions des templates de monitoring disponibles (pour notre cas **template OS linux** ira très bien)
- *  Cliquer sur `add`
- *  Cliquer sur `save`
-
- ![Lier un template](https://watilearnd2day.files.wordpress.com/2015/08/zabbix-configuration9.jpg?w=606&h=410)  
-
-Bravo ! vous pouvez visualiser les métriques des agents monitorés par le server Zabbix.
-
- ![Visualiser les métriques ](http://glpi.objetdirect.com/wp-content/uploads/2014/01/zabbix_webgraph.png)
-
-<a name="console" />
 
 ### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
 

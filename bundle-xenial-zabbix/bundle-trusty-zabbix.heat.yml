@@ -54,8 +54,8 @@ resources:
         - { direction: ingress, protocol: TCP, port_range_min: 80, port_range_max: 80 }
         - { direction: ingress, protocol: UDP, port_range_min: 161, port_range_max: 161 }
         - { direction: ingress, protocol: UDP, port_range_min: 123, port_range_max: 123 }
-        - { direction: ingress, protocol: UDP, port_range_min: 1050, port_range_max: 1050 }
-        - { direction: ingress, protocol: UDP, port_range_min: 1051, port_range_max: 1051 }
+        - { direction: ingress, protocol: UDP, port_range_min: 1050, port_range_max: 10050 }
+        - { direction: ingress, protocol: UDP, port_range_min: 1051, port_range_max: 10051 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
@@ -65,12 +65,12 @@ resources:
   port:
       type: OS::Neutron::Port
       properties:
-        network: { get_param: network }
+        network: { get_resource: network }
         fixed_ips:
           - ip_address: 10.0.7.100
-            subnet_id: { get_param: subnet }
+            subnet_id: { get_resource: subnet }
         security_groups:
-          - { get_param: security_group }
+          - { get_resource: security_group }
 
 
   floating_ip:
@@ -89,7 +89,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: b7dfb74e-cb82-45ef-9bbc-e23947df6868
+      image: c4549837-de6e-4124-9135-d69b2e6e9613
       flavor: { get_param: flavor_name }
       networks:
         - port: { get_resource: port }
