@@ -191,6 +191,7 @@ Cela permettra au serveur Zabbix de se connecter pour récupérer les métriques
 
     ~~~ bash
     $ neutron router-create Zabbix_GHOST
+    $ neutron router-gateway-set Zabbix_GHOST public
 
     Created a new router:
     +-----------------------+--------------------------------------+
