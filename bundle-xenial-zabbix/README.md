@@ -145,11 +145,11 @@ A ce niveau, vous pouvez vous connecter sur votre instance de serveur Zabbix ave
 
 **Pensez à changer ce mot de passe par défaut immédiatement après votre authentification.**
 
-![Interface connection zabbix](https://cdn-02.memo-linux.com/wp-content/uploads/2015/03/zabbix-07-300x253.png)
+![Interface connection zabbix](login.png)
 
 Une fois que l'authentification est faite, vous avez accès à l'interface graphique de Zabbix-server.
 
-![Bigger production setup](https://cdn-02.memo-linux.com/wp-content/uploads/2015/03/zabbix-08-300x276.png)
+![Bigger production setup](zabbix_cp.png)
 
 ### Pour monitorer plus de  machines
 
