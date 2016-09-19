@@ -2,13 +2,13 @@
 
 ## Episode 19 : Zabbix-server
 
-![Minimum setup](http://blog.stack.systems/wp-content/uploads/2015/01/5-passos-instalacao-zabbix-2-4-guia-definitivo.png)
+![Minimum setup](img/zabbix_logo.png)
 
 Zabbix est un logiciel libre permettant de surveiller l'état de divers services réseau, serveurs et autres matériels réseau; et produisant des graphiques dynamiques de consommation des ressources. Zabbix utilise MySQL, PostgreSQL ou Oracle pour stocker les données. Selon l'importance du nombre de machines et de données à surveiller, le choix du SGBD influe grandement sur les performances. Son interface web est écrite en PHP et fourni une vision temps réel sur les métriques collectées.
 
 Zabbix-server dans un réseau se présente comme suit :
 
-![Architecture réseau zabbix](http://image.slidesharecdn.com/zabbixfeaturesin5pictures-03-150131052309-conversion-gate02/95/zabbix-monitoring-in-5-pictures-2-638.jpg?cb=1440581062)
+![Architecture réseau zabbix](img/zabbix-monitoring-in-5-pictures-2-638.jpg)
 
 On remarque dans cette architecture que le serveur Zabbix-server peut monitorer les hôtes sur lesquels sont installés le daemon zabbix-agents ou via SNMP.
 
@@ -36,9 +36,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt git cloné, vous trouvez plusieurs fichiers dans le répertoire `images/bundle-trusty-zabbix/`:
+Une fois le dépôt git cloné, vous trouvez plusieurs fichiers dans le répertoire `images/bundle-xenial-zabbix/`:
 
-* `bundle-trusty-zabbix.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
+* `bundle-xenial.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
 * `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
 * `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
 
@@ -61,7 +61,7 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 
 ### Ajuster les paramètres
 
-Dans le fichier `bundle-trusty-zabbix.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur. C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
+Dans le fichier `bundle-xenial-zabbix.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur. C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -124,7 +124,7 @@ $ heat resource-list EXP_STACK
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu Trusty, pré-provisionnée avec la stack Zabbix-server et un zabbix-agent.
+* démarrer une instance basée sur Ubuntu Xenial, pré-provisionnée avec la stack Zabbix-server et un zabbix-agent.
 * l'exposer sur Internet via une IP flotante
 
 ### Enjoy
@@ -232,16 +232,16 @@ A présent, il faut effectuer de la configuration sur le serveur à monitorer. P
   ~~~bash         
   [...]
 
-  [slaves]
+  [servers]
   xx.xx.xx.xx ansible_ssh_user=cloud ansible_ssh_private_key_file=/home/cloud/.ssh/id_rsa_ghost_server.pem
 
   [...]
   ~~~
 
-  7. En root sur le serveur Zabbix, lancez le playbook `slave-monitoring_zabbix.yml` que nous avons déposé dans l'image serveur pour vous faciliter la vie :
+  7. En root sur le serveur Zabbix, lancez le playbook `servers-monitoring_zabbix.yml` que nous avons déposé dans l'image serveur pour vous faciliter la vie :
 
   ~~~
-  # ansible-playbook /root/slave-monitoring_zabbix.yml
+  # ansible-playbook /root/servers-monitoring_zabbix.yml
   ~~~
 
 Ce playbook va faire toutes les opérations d'installation et de configuration sur le serveur Ghost pour qu'il puisse être monitoré par le serveur Zabbix.
@@ -277,8 +277,8 @@ Bravo ! vous pouvez visualiser les métriques des agents monitorés par le serve
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur Zabbix :
 
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-zabbix
-2.	Cliquez sur le fichier nommé bundle-trusty-zabbix.heat.yml
+1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-xenial-zabbix
+2.	Cliquez sur le fichier nommé bundle-xenial-zabbix.heat.yml
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
