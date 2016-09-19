@@ -53,8 +53,8 @@ parameters:
           - n2.cw.highmem-4
           - n2.cw.highmem-8
           - n2.cw.highmem-12
-  net_cidr:               <-- Indiquer ici la taille de l’instance par défaut
-    default: 192.168.0.0/24
+  net_cidr:              
+    default: 192.168.0.0/24   <-- Indiquer ici la taille de l’instance par défaut
     description: /24 cidr of fronts network
     label: /24 cidr of fronts network
     type: string
@@ -118,16 +118,17 @@ Installer Zabbix agent dans les instances via l'interface web de MyCloudManager.
 #### 3/ Mise à jour le template OS Linux Zabbix
 
 Mettez à jour le `template OS Linux`, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macors` afin de calculer  le pourcentage d'utilisation du cpu dans chaque minute.
+Cliquez sur `Configuration` puis sur `Templates`.
 
 ![template1](img/updatetemp1.png)
 
-Puis sélectionnez le tempate et cliquez sur import.
+Cliquez sur `Import`, sélectionnez le tempate `template_os_linux.xml`et cliquez sur `Import`.
 
 ![template2](img/updatetemp2.png)
 
 #### 4/ Créer les deux Actions scale up et scale down
 
-D'abord vous devez disposer les urls de scale up et down, vous devez interroger les sorties (Output) de votre stack via la commande Url de scale up :
+D'abord vous devez disposer les urls de scale up et down donc vous devez interroger les sorties (Output) de votre stack via la commande Url de scale up :
 
 ~~~bash
 openstack stack output show -f json nom_de_votre_stack scale_up_url | jq '.output_value'
