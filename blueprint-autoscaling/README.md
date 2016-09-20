@@ -1,7 +1,7 @@
-# Autoscaling via zabbix de MyCloudManager
+# Autoscaling d'instance via un evenement Zabbix de MyCloudManager
  ![logo](img/images-2.jpg)
 
-Auto-scaling, autoscaling également orthographié, est une caractéristique de service de cloud computing qui ajoute ou supprime les ressources calcul en fonction de l'utilisation réelle automatiquement. Mise à l'échelle automatique est parfois appelée élasticité automatique.
+L'autoscaling, est l'une des caractéristiques du cloud computing qui permet d'ajouter ou supprimer des ressources en fonction de l'utilisation réelle d'une application de façon automatique.La mise à l'échelle automatique est aussi appelée parfois élasticité automatique.
 
 ## Préparations
 
@@ -17,13 +17,23 @@ Auto-scaling, autoscaling également orthographié, est une caractéristique de 
  * Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
  * MycloudManager V2 [lien] (https://github.com/cloudwatt/applications/blob/master/application-mycloudmanager-v2/README.md)
 
-### Comment avoir l'autoscaling via Zabbix de MyCloudManager
+### Comment optenir l'autoscaling via le Zabbix de MyCloudManager
 
-#### 1/ Lancer un stack exemple autoscaling
+#### 1/ Lancer une stack d'exemple avec l'option d'autoscaling
 
 ##### Ajuster les paramètres
 
-Dans le fichier `blueprint-autoscaling-exemple.heat.yml` vous trouverez en haut une section `parameters`.
+Dans un premier temps, lancer la stack MyCloudManager dans votre tenant. Une fois cette opération effectuée, vous pouvez à présent récupérer la clé publique de votre MyCloudManager.
+
+Aller dans le menu instance, cliquer sur le bouton + .....
+
+Récupérer à présent l'id de votre routeur MyCloudManager
+
+............................................
+
+
+
+Dans le fichier `blueprint-autoscaling-exemple.heat.yml`. Vous y trouverez en haut une section `parameters`. Il faut y renseigner le routeur de votre MyCloudManager via le paramètre `router` et la clé publique précédement récupérée `mcm_public_key`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -110,51 +120,56 @@ $ heat resource-list nom_de_votre_stack
 
 ~~~
 
-#### 2/ Ajouter les noeuds à Zabbix de MycloudManager
+#### Ajouter les noeuds à Zabbix de MycloudManager
 
-Installer Zabbix agent dans les instances via l'interface web de MyCloudManager.
+Installer l'agent Zabbix dans les instances que vous souhaitez monitorer via l'interface web de MyCloudManager.
 ![mcm](img/ajouterinstances.png)
 
-#### 3/ Mise à jour le template OS Linux Zabbix
+#### Mettre à jour le template OS Linux Zabbix
 
-Mettez à jour le `template OS Linux`, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macors` afin de calculer  le pourcentage d'utilisation du cpu dans chaque minute.
+Mettez à jour le `template OS Linux`, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macros` afin de calculer  le pourcentage d'utilisation des cpu par minute.
+
 Cliquez sur `Configuration` puis sur `Templates`.
 
 ![template1](img/updatetemp1.png)
 
-Cliquez sur `Import`, sélectionnez le tempate `template_os_linux.xml`et cliquez sur `Import`.
+Cliquez sur `Import`, sélectionnez le template `template_os_linux.xml`et cliquez sur `Import`.
 
 ![template2](img/updatetemp2.png)
 
-#### 4/ Créer les deux Actions scale up et scale down
+#### Créer les deux Actions scale up et scale down
 
-D'abord vous devez disposer les urls de scale up et down donc vous devez interroger les sorties (Output) de votre stack via la commande Url de scale up :
-
-~~~bash
-openstack stack output show -f json nom_de_votre_stack scale_up_url | jq '.output_value'
-~~~
-
-Url de scale down :
+D'abord vous devez disposer des urls de scale up et down que vous retrouverez dans la partie Output de votre stack myCloudManager sur la console Horizon ou via les commandes suivantes:
+ 
+  - Url de scale up :
 
 ~~~bash
-openstack stack output show -f json nom_de_votre_stack scale_dn_url | jq '.output_value'
+openstack stack output show -f json `nom_de_votre_stack` `scale_up_url` | jq '.output_value'
 ~~~
 
-Ensuite on passe vers Les étapes pour créer les deux actions scale up et scale down:
+  - Url de scale down :
 
-1/ Créer `host groups` qui représente vos instances.
+~~~bash
+openstack stack output show -f json `nom_de_votre_stack` `scale_dn_url` | jq '.output_value'
+~~~
+
+A présent nous pouvons passer aux étapes de scale UP et scale Down 
+
+* Créer `host groups` qui représente vos instances.
 
 ![action1](img/hostgroups.png)
 
-2/ Créer l'action scale down (pour scale up utilisez les mêmes étapes juste changez l'url).
+* Créer l'action scale down (pour scale up utilisez les mêmes étapes juste changez l'url).
 
 ![action2](img/action1.png)
 
-Ajouter les conditions.
+* Ajouter les conditions.
 
 ![action3](img/action2.png)
 
-Mettez les commandes suivantes de scale down (scale up) dans l'input Commands.
+Afin de créer l'action dans Zabbix de scale up ou down. 
+
+* Récupérer via votre CLI vos identifiant openstack que vous devriez avec copier dans le fichier .profile de votre user courant.
 
 ~~~bash
 export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
@@ -164,34 +179,42 @@ export OS_PROJECT_NAME="xxxxxxxxxxxxxxxxxxxxx"
 export OS_USERNAME="xxxxxxxxxxxxxxx@cloudwatt.com"
 export OS_PASSWORD=*************************
 export OS_REGION_NAME="fr1"
+
+* Récupérer maintenant votre URL de scale
+
+~~~
 curl -k -X POST “url de scaling down ou scaling up“
 ~~~
 
+* Copiez à présent le tout dans la partie `Command` de Zabbix comme dans l'exemple ci-dessous.
+
 ![action4](img/action3.png)
 
-Votre action est bien créée.
+A présent votre action est bien créée.
 
 ![action5](img/action4.png)
 
-3/ Pour tester le scaling up et scaling down, tapez la commande suivante dans les serveurs:
+#### Pour tester le scaling up et scaling down, tapez la commande suivante dans les serveurs:
 
  ~~~bash
  $ sudo apt-get install stress
  $ stress --cpu 90 --io 2 --vm 2 --vm-bytes 512M --timeout 600
  ~~~
-N'oubliez pas d'ajouter chaque nouveau stack apparu dans le `Host Groupe`  de votre stack.
+ 
+N'oubliez pas d'ajouter chaque nouvelle stack apparue dans le `Host Group` dans le zabbix de MyCloudManager afin de la monitorer.
 
 
 #### Comment customiser votre template
+
 Dans cet article on a utilisé comme item `system.cpu.util[,,avg1]` pour calculer en pourcentage le moyen d'utlisation de CPU(s).
-Vous pouvez baser sur autres items (calculer l'usage de RAM ou disque ...) pour avoir l'autoscaling.
+Vous pouvez vous baser sur d'autres items (calculer l'usage de RAM ou disque ...) pour avoir l'autoscaling.
 Voilà [une liste des items](https://www.zabbix.com/documentation/2.0/manual/config/items/itemtypes/zabbix_agent)
 
 Pour créer un item.
 
 ![item](img/item.png)
 
- Vous pouvez aussi changer les macros ou créer autres.
+Vous pouvez aussi changer les macros ou créer autres.
 
 ![macro](img/macro.png)
 
