@@ -110,22 +110,49 @@ Puis attendez 5 minutes que le déploiement soit complet.
 
 ~~~ bash
 $ heat resource-list EXP_STACK
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
++------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name    | physical_resource_id                                                                | resource_type                   | resource_status | updated_time         |
++------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| floating_ip      | 8aa20b7a-129a-4b8c-9d8c-dfec4a25897f                                                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| floating_ip_link | 632178                                                                              | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| interface        | 5b83fc95-0e3c-41eb-8933-b299b3530045:subnet_id=3109449f-47a0-4a1d-a35d-cb81d2a6a31d | OS::Neutron::RouterInterface    | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| network          | be3d1095-19e7-4221-84a2-f5846a836fc9                                                | OS::Neutron::Net                | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| port             | 82c260c2-058b-475a-a055-adfe08aee8df                                                | OS::Neutron::Port               | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| router           | 5b83fc95-0e3c-41eb-8933-b299b3530045                                                | OS::Neutron::Router             | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| security_group   | 95ca1f46-855e-4b7f-bf93-d3d244a68785                                                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| server           | c592398a-a347-4c4d-8b08-729d375f77d6                                                | OS::Nova::Server                | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| subnet           | 3109449f-47a0-4a1d-a35d-cb81d2a6a31d                                                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
++------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
 ~~~
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
 * démarrer une instance basée sur Ubuntu Xenial, pré-provisionnée avec la stack Zabbix-server et un zabbix-agent.
 * l'exposer sur Internet via une IP flotante
+
+## C’est bien tout ça,
+### mais vous n’auriez pas un moyen de lancer l’application par la console ?
+
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
+
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-mail](https://github.com/cloudwatt/applications/tree/master/bundle-xenial-zabbix)
+2.	Cliquez sur le fichier nommé `bundle-xenial-zabbix.heat.yml`
+3.	Cliquez sur RAW, une page web apparait avec le détail du script
+4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
+5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
+6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
+7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
+8.	Entrez votre keypair dans le champ « keypair_name »
+9.  Donner votre passphrase qui servira pour le chiffrement des sauvegardes
+10.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
+
+C’est (déjà) FINI !
+
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Zabbix !
 
 ### Enjoy
 
@@ -174,53 +201,22 @@ Cela permettra au serveur Zabbix de se connecter pour récupérer les métriques
   1. Récupérez l'identifiant de sous-réseau de la stack Ghost :
 
   ~~~ bash
-  $ heat resource-list $NOM_DE_STACK_GHOST | grep subnet
+  $ heat resource-list NOM_DE_STACK_GHOST | grep subnet
 
   | subnet           | bd69c3f5-ddc8-4fe4-8cbe-19ecea0fdf2c              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
   ~~~
 
-  2. Récupérez l'identifiant de sous-réseau de la stack Zabbix :
-
-  ~~~ bash
-  $ heat resource-list $NOM_DE_STACK_Zabbix | grep subnet
-
-  | subnet           | babdd078-ddc8-4280-8cbe-0f77951a5933              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
-  ~~~
-
-  3. Créez un nouveau routeur :
+  2. Ajoutez au routeur une interface sur le sous-réseau de la stack Ghost et une sur le sous-réseau de la stack Zabbix :
 
     ~~~ bash
-    $ neutron router-create Zabbix_GHOST
-    $ neutron router-gateway-set Zabbix_GHOST public
-
-    Created a new router:
-    +-----------------------+--------------------------------------+
-    | Field                 | Value                                |
-    +-----------------------+--------------------------------------+
-    | admin_state_up        | True                                 |
-    | external_gateway_info |                                      |
-    | id                    | babdd078-c0c6-4280-88f5-0f77951a5933 |
-    | name                  | Zabbix_GHOST                         |
-    | status                | ACTIVE                               |
-    | tenant_id             | 8acb072da1b14c61b9dced19a6be3355     |
-    +-----------------------+--------------------------------------+
+    $ neutron router-interface-add Zabbix_ROUTER_ID GHOST_SUBNET_ID
     ~~~
 
-  4. Ajoutez au routeur une interface sur le sous-réseau de la stack Ghost et une sur le sous-réseau de la stack Zabbix :
-
-    ~~~ bash
-    $ neutron router-interface-add $Zabbix_GHOST_ROUTER_ID $Zabbix_SUBNET_ID
-
-    $ neutron router-interface-add $Zabbix_GHOST_ROUTER_ID $GHOST_SUBNET_ID
-
-    ~~~
-
-Quelques minutes plus tard, le serveur Zabbix et le serveur Ghost pourront se contacter directement.
+Quelques secondes plus tard, le serveur Zabbix et le serveur Ghost pourront se contacter directement.
 
 A présent, il faut effectuer de la configuration sur le serveur à monitorer. Pour vous faciliter la prise en main, nous vous avons préparé un playbook Ansible qui automatise ces tâches.
 
-  5. Assurez vous de pouvoir vous connecter :
-
+  3. Assurez vous de pouvoir vous connecter :
 
     * En SSH
     * Avec l'utilisateur `cloud`
@@ -228,43 +224,23 @@ A présent, il faut effectuer de la configuration sur le serveur à monitorer. P
     * Depuis le serveur Zabbix
 
 
-  6. Sur le serveur Zabbix, ajoutez les informations de connexion dans l'inventaire `/etc/ansible/hosts` :
+  4. Sur le serveur Zabbix, ajoutez les informations de connexion dans l'inventaire `/etc/ansible/hosts` :
 
   ~~~bash         
-  [...]
-
   [servers]
   xx.xx.xx.xx ansible_ssh_user=cloud ansible_ssh_private_key_file=/home/cloud/.ssh/id_rsa_ghost_server.pem
-
-  [...]
   ~~~
 
-  7. En root sur le serveur Zabbix, lancez le playbook `servers-monitoring_zabbix.yml` que nous avons déposé dans l'image serveur pour vous faciliter la vie :
+  5. Sur le serveur Zabbix, lancez le playbook `/home/cloud/servers-monitoring_zabbix.yml` que nous avons déposé dans l'image serveur pour vous faciliter la vie :
 
   ~~~
-  # ansible-playbook /root/servers-monitoring_zabbix.yml
+  $ ansible-playbook /root/servers-monitoring_zabbix.yml
   ~~~
 
 Ce playbook va faire toutes les opérations d'installation et de configuration sur le serveur Ghost pour qu'il puisse être monitoré par le serveur Zabbix.
 
 Maintenant, votre monitoring client - serveur est configuré. Vous pouvez à présent vous connecter sur l'interface web de votre zabbix via son adresse IP http://X.X.X.X
 
-
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
-
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur Zabbix :
-
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-xenial-zabbix
-2.	Cliquez sur le fichier nommé bundle-xenial-zabbix.heat.yml
-3.	Cliquez sur RAW, une page web apparait avec le détail du script
-4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
-5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
-6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
-7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
-
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
 
 ## So watt ?
 
@@ -275,11 +251,9 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 Vous pouvez commencer à faire vivre votre monitoring en prenant la main sur votre serveur.
 
 ###Les points d'entrée utiles :
-
-* `/etc/default/zabbix-server`: le répertoire contenant le fichier de configuation zabbix-server
 * `/etc/zabbix/zabbix_server.conf`: le répertoire contenant le fichier de configuration permettant à Zabbix-server de se connecter à la base de données
-* `/usr/share/zabbix-server-mysql/`: le répertoire contenant les fichiers de la base de donnée de zabbix-server-mysql
-* `/var/log/zabbix-server/zabbix_server.log`: le répertoire contenant les log.
+* `/var/lib/mysql`: le répertoire contenant les fichiers de la base de donnée de zabbix
+* `/var/log/zabbix/zabbix_server.log`: le répertoire contenant les log.
 * `/etc/zabbix/zabbix.conf.php`: le répertoire contenant  le fichier de configuration de l'interface Zabbix
 
 #### Autres sources pouvant vous intéresser:
