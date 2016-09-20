@@ -119,19 +119,48 @@ Within 5 minutes the stack will be fully operational.
 
 ~~~ bash
 $ heat resource-list EXP_STACK
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
++------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name    | physical_resource_id                                                                | resource_type                   | resource_status | updated_time         |
++------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| floating_ip      | 8aa20b7a-129a-4b8c-9d8c-dfec4a25897f                                                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| floating_ip_link | 632178                                                                              | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| interface        | 5b83fc95-0e3c-41eb-8933-b299b3530045:subnet_id=3109449f-47a0-4a1d-a35d-cb81d2a6a31d | OS::Neutron::RouterInterface    | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| network          | be3d1095-19e7-4221-84a2-f5846a836fc9                                                | OS::Neutron::Net                | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| port             | 82c260c2-058b-475a-a055-adfe08aee8df                                                | OS::Neutron::Port               | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| router           | 5b83fc95-0e3c-41eb-8933-b299b3530045                                                | OS::Neutron::Router             | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| security_group   | 95ca1f46-855e-4b7f-bf93-d3d244a68785                                                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| server           | c592398a-a347-4c4d-8b08-729d375f77d6                                                | OS::Nova::Server                | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| subnet           | 3109449f-47a0-4a1d-a35d-cb81d2a6a31d                                                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
++------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
 ~~~
 
-### Stack URL with a terminal
+
+## All of this is fine,
+### but you do not have a way to create the stack from the console?
+
+We do indeed! Using the console, you can deploy a mail server:
+
+1.	Go the Cloudwatt Github in the [applications/bundle-xenial-zabbix]https://github.com/cloudwatt/applications/tree/master/bundle-xenial-zabbix) repository
+2.	Click on the file named `bundle-xenial-zabbix.heat.yml` (or `bundle-xenial-zabbix.restore.heat.yml` to [restore from backup](#backup))
+3.	Click on RAW, a web page will appear containing purely the template
+4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
+5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
+6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
+7.	Name your stack in the « Stack name » field
+8.	Enter the name of your keypair in the « SSH Keypair » field
+9.  Write a passphrase that will be used for encrypting backups
+10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
+
+The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
+
+If you've reached this point, you're already done! Go enjoy Mail!
+
+### A one-click chat sounds really nice...
+
+... Good! Go to the [Apps page](https://www.cloudwatt.com/fr/applications/index.html) on the Cloudwatt website, choose the apps, press **DEPLOYER** and follow the simple steps... 2 minutes later, a green button appears... **ACCEDER**: you have your mail server!
+
+
+### Enjoy
 
 Once all of this done, you can run the `stack-get-url.sh` script to get the floating_network_id
 
@@ -148,12 +177,11 @@ For now, our monitoring server and client are configured. We need to access the 
 
 **Remember to change the default password immediately after your authentication.**
 
-![Interface connection zabbix](https://cdn-02.memo-linux.com/wp-content/uploads/2015/03/zabbix-07-300x253.png)
+![Interface connection zabbix](img/login.png)
 
 Once authentication is complete you will have access to Zabbix-server.
 
-![Bigger production setup](https://cdn-02.memo-linux.com/wp-content/uploads/2015/03/zabbix-08-300x276.png)
-
+![Bigger production setup](img/zabbix_cp.png)
 
 
 <a name="console" />
@@ -187,123 +215,46 @@ This will allow the Zabbix server to connect to retrieve the metric of the machi
 
   ~~~ bash
 
-  $ heat resource-list $NOM_DE_STACK_GHOST | grep subnet
+  $ heat resource-list NOM_DE_STACK_GHOST | grep subnet
 
   | subnet           | bd69c3f5-ddc8-4fe4-8cbe-19ecea0fdf2c              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
   ~~~
 
-  2. Get the subnet ID of the stack Zabbix:
-
-  ~~~ bash
-
-  $ heat resource-list $NOM_DE_STACK_Zabbix | grep subnet
-
-  | subnet           | babdd078-ddc8-4280-8cbe-0f77951a5933              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
-  ~~~
-
-  3. Create a new router :
+  2. Add to a router interface, the subnet of the Ghost stack and  the subnet of the stack Zabbix:
 
     ~~~bash
-    $ neutron router-create Zabbix_GHOST
-
-    Created a new router:
-    +-----------------------+--------------------------------------+
-    | Field                 | Value                                |
-    +-----------------------+--------------------------------------+
-    | admin_state_up        | True                                 |
-    | external_gateway_info |                                      |
-    | id                    | babdd078-c0c6-4280-88f5-0f77951a5933 |
-    | name                  | Zabbix_GHOST                        |
-    | status                | ACTIVE                               |
-    | tenant_id             | 8acb072da1b14c61b9dced19a6be3355     |
-    +-----------------------+--------------------------------------+
+    $ neutron router-interface-add Zabbix_ROUTER_ID GHOST_SUBNET_ID
     ~~~
 
-  4. Add to a router interface, the subnet of the Ghost stack and  the subnet of the stack Zabbix:
-
-    ~~~bash
-    $ neutron router-interface-add $Zabbix_GHOST_ROUTER_ID $Zabbix_SUBNET_ID
-
-    $ neutron router-interface-add $Zabbix_GHOST_ROUTER_ID $GHOST_SUBNET_ID
-
-    ~~~
-
-  A few minutes later, the Zabbix and the Ghost servers's will contact each other directly.
+  A few seconds later, the Zabbix and the Ghost servers's will contact each other directly.
 
   At the moment, it is necessary to make some configuration on the server to monitor. To facilitate you the handling, we prepared you a playbook Ansible which is going to automate these tasks.
 
-  5. Make sure you can logon:
+  3. Make sure you can logon:
       * SSH
       * user `cloud`
       * Ghost server
       * since Zabbix-server
 
-  6. Since the Zabbix-server, add the connection information in the inventory `/etc/ansible/hosts` :
+  4. Since the Zabbix-server, add the connection information in the inventory `/etc/ansible/hosts` :
 
   ~~~bash         
-  [...]
-
-  [slaves]
+  [servers]
   xx.xx.xx.xx ansible_ssh_user=cloud ansible_ssh_private_key_file=/home/cloud/.ssh/id_rsa_ghost_server.pem
-
-  [...]
   ~~~
 
-  7. Start the playbook `slave-monitoring_zabbix.yml` as Zabbix root on the server:
+  7. Start the playbook `servers-monitoring_zabbix.yml` as Zabbix root on the server:
   ~~~bash
-   ansible-playbook /root/slave-monitoring_zabbix.yml
+  $ ansible-playbook ~cloud/servers-monitoring_zabbix.yml
   ~~~
 
 This playbook  will do all the installation and setup on the Ghost server to integrate monitoring on Zabbix server.
 
+This playbook `servers-monitoring_zabbix.yml` supports these operating systems: Centos (6 et 7), Debian (jessie et wheezy) and Ubuntu (trusty,xenial).
+
+
 Now, our monitoring server and client are configured. We need to access the Zabbix Web UI using the IP address of our server http://X.X.X.X
 
-For your host (server Ghost here), can be monitoring by the Zabbix server, you must do the following operations:
-
-  *   Click on `Configuration Menu`
-  *   Click on `Hosts submenu`
-  *   Click on `Create Host` button at right side
-
-Inform the various fields by indicating the name of the host to monitor and its IP address
-
-  ![Ajouter un host zabbix ](https://www.zabbix.com/documentation/2.2/_media/manual/quickstart/new_host.png?cache=)
-
-In template tab:
-
-  *   Click on add `link` (chose for exemple **template OS linux**)
-  *   Select desired Template : Please select carefully, Because it will enabled all checks for the host
-  *   Click on `save` button
-
-  ![Lier un template ](https://watilearnd2day.files.wordpress.com/2015/08/zabbix-configuration9.jpg?w=606&h=410)
-
-
-  Congratulation! You can view the metric of your zabbix agents monitor by Zabbix-server.
-
- ![Visualiser les métriques ](http://glpi.objetdirect.com/wp-content/uploads/2014/01/zabbix_webgraph.png)
-
-
-<a name="console" />
-
-
-### Please console me
-
-There it's okay... Zabbix stacks can be spawned from our console as well!
-
-To create our Zabbix stack from the console:
-
-1.	Go the Cloudwatt Github in the [applications/bundle-trusty-zabbix](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-zabbix) repository
-2.	Click on the file named `bundle-trusty-Zabbix.heat.yml`
-3.	Click on RAW, a web page will appear containing the script
-4.	Save the page to your PC. You can use the default name proposed by your browser (just remove the .txt if needed)
-5.  Go to the [Stacks](https://console.cloudwatt.com/project/stacks/) section of the console
-6.	Click on **Launch stack**, then **Template file** and select the file you just saved to your PC, and finally click
-    on **NEXT**
-7.	Name your stack in the **Stack name** field
-8.	Enter the name of your keypair in the **SSH Keypair** field
-9.	Enter your new admin password
-10.	Choose your instance size using the **Instance Type** dropdown and click on **LAUNCH**
-
-The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating-IP, or simply refresh the current page and check the Overview tab for a handy link.
 
 ## So watt?
 
@@ -313,10 +264,9 @@ You can start to live your monitoring taking hold of your server.
 
 #### The interesting directories are:
 
-* `/etc/default/zabbix-server`: the directory containing the Zabbix-server configuration file
 * `/etc/zabbix/zabbix_server.conf`: Containing directory tea tea zabbix-server configuration file
-* `/usr/share/zabbix-server-mysql/`: the directory containing the files in the database zabbix-server-mysql
-* `/var/log/zabbix-server/zabbix_server.log`: the directory containing the log.
+* `/var/lib/mysql`: the directory containing the files in the database zabbix-server-mysql
+* `var/log/zabbix/zabbix_server.log`: the file containing the log.
 * `/etc/zabbix/zabbix.conf.php`: the directory containing the interface configuration file Zabbix
 
 #### Other resources you could be interested in:

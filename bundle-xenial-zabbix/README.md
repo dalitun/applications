@@ -234,7 +234,7 @@ A présent, il faut effectuer de la configuration sur le serveur à monitorer. P
   5. Sur le serveur Zabbix, lancez le playbook `/home/cloud/servers-monitoring_zabbix.yml` que nous avons déposé dans l'image serveur pour vous faciliter la vie :
 
   ~~~
-  $ ansible-playbook /root/servers-monitoring_zabbix.yml
+  $ ansible-playbook ~cloud/servers-monitoring_zabbix.yml
   ~~~
 
 Ce playbook va faire toutes les opérations d'installation et de configuration sur le serveur Ghost pour qu'il puisse être monitoré par le serveur Zabbix.
@@ -252,10 +252,10 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 Vous pouvez commencer à faire vivre votre monitoring en prenant la main sur votre serveur.
 
-###Les points d'entrée utiles :
+### Les points d'entrée utiles :
 * `/etc/zabbix/zabbix_server.conf`: le répertoire contenant le fichier de configuration permettant à Zabbix-server de se connecter à la base de données
 * `/var/lib/mysql`: le répertoire contenant les fichiers de la base de donnée de zabbix
-* `/var/log/zabbix/zabbix_server.log`: le répertoire contenant les log.
+* `/var/log/zabbix/zabbix_server.log`: le fichier contenant les log.
 * `/etc/zabbix/zabbix.conf.php`: le répertoire contenant  le fichier de configuration de l'interface Zabbix
 
 #### Autres sources pouvant vous intéresser:
