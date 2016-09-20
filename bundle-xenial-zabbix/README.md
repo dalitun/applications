@@ -239,7 +239,9 @@ A présent, il faut effectuer de la configuration sur le serveur à monitorer. P
 
 Ce playbook va faire toutes les opérations d'installation et de configuration sur le serveur Ghost pour qu'il puisse être monitoré par le serveur Zabbix.
 
-Maintenant, votre monitoring client - serveur est configuré. Vous pouvez à présent vous connecter sur l'interface web de votre zabbix via son adresse IP http://X.X.X.X
+Le playbook `servers-monitoring_zabbix.yml` supporte les OS Centos (6 et 7), Debian (jessie et wheezy) et Ubuntu (trusty,xenial).
+
+Maintenant, votre monitoring client - serveur est configuré. Vous pouvez à présent vous connecter sur l'interface web de votre zabbix via son adresse IP http://X.X.X.X.
 
 
 ## So watt ?
