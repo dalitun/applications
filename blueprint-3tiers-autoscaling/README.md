@@ -1,15 +1,16 @@
-# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers autoscaling #
+# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers avec autoscaling #
 
 ## Episode 27 : Blueprint 3 tiers
 
-Ce blueprint va vous aider à mettre en place une architecture 3-tiers.
+Ce blueprint va vous aider à mettre en place une architecture 3-tiers avec un autoscaling group.
 Nous avons automatisé le déploiement des différents noeuds composant l'architecture.
-A travers ce blueprint nous vous proposons de mettre en place frontaux web, du glusterfs avec un cluster de base de données.
+A travers ce blueprint nous vous proposons de mettre en place des frontaux web, du glusterfs et un cluster de base de données.
 Vous aurez le choix de déployer sur les frontaux web différentes applications (Apache & php, tomcat 8 ou nodejs).
 Voici le schema d'architecture :
 
 ![arch](img/arch.png)
 
+**Pour rappel** un autoscaling group est un groupe de machine qui est capable de s'adapter à la charge d'une application afin de coller aux besoins de celle-ci lors d'un pique de charge par exemple.
 
 ## Preparations
 
@@ -55,70 +56,79 @@ Voici le schema d'architecture :
 
 ## Initialiser Blueprint
 
-### 1 clic
+### En One-click
+
+via l'url https://www.cloudwatt.com/fr/applications/blueprint.html cliquez ensuite sur déployer.
+
+* Remplissez  les champs suivants puis cliquez sur LAUNCH.
 
 ![from1](img/1.png)
 ![form2](img/2.png)
 ![form3](img/3.png)
 ![form4](img/4.png)
 
-Remplissez  les champs suivants puis cliquez sur LAUNCH.
+**SSH Keypair :** Votre key pair Cloudwatt.
 
-**SSH Keypair :** Votre key pair.
-
-**router-id mycloudmanager :** Id de MyCloudManger routeur.
+**router-id mycloudmanager :** Id du routeur MyCloudManger.
 
 **mcm public key :** Clé public fournie par MyCloudManger.
+voici comment la récupérer :
 
-**Artefact in zip ,git, tar.gz or war :** Mettez l'url de l'artifact de votre application, il faut qu'il soit en git, zip ou tar.gz pour les applications php et nodejs et en war pour les applications java.
+Connectez en ssh sur le noeud master de votre MyCloudManager puis tapez cette commande.
 
-**Application type :** Si vous choisissez php vous allez avoir un environnement apache2 et php, si vous choisissez nodejs vous allez avoir un environnement qui exécute les applications nodejs avec un reverse proxy nginx et si vous choisissez tomcat vous allez avoir un environnement tomcat 8 et openjdk8 avec nginx comme un reverse proxy.
+~~~bash
+$ etcdctl get /ssh/key.pub
+~~~
 
-**Flavor Type for nodes :** Le flavor de noeuds frontaux web.
+**Artefact in zip ,git, tar.gz or war :** Mettez l'url de l'artifact de votre application, il faut qu'il soit en git, zip ou tar.gz pour les applications php et nodejs ou en war pour les applications java.
 
-**Number of front nodes :** Nombre de noeudes fontaux web.
+**Application type :** choisissez ici l'application correspondant à l'artifact précedement copié à savoir php, nodejs ou tomcat
 
-**Flavor Type for glusterfs :** Le flavor des deux noeuds glusterfs.
+**Flavor Type for nodes :** Choississez le type d'instance des frontaux web.
 
-**/24 cidr of fronts network :** L'adresse réseaux des noeuds frontaux web et glusterfs sous la forme: 192.168.0.0/24.
+**Number of front nodes :** Le nombre de noeuds frontaux web.
 
-**Database user :** L'ultisateur de la base de données.
+**Flavor Type for glusterfs :** La flavor des deux noeuds glusterfs.
 
-**Database password :** Le mot de passe de l'utlisateur de la base de données.
+**/24 cidr of fronts network :** L'adresse réseaux des frontaux web et du glusterfs sous la forme: x.x.x.0/24.
+
+**Database user :** L'utilisateur de la base de données.
+
+**Database password :** Le mot de passe de l'utilisateur de la base de données.
 
 **Database name :** Le nom de la base de données.
 
-**Flavor Type for databases :** Le flavor des noeuds de la base de données.
+**Flavor Type for databases :** Choississez le type d'instance des noeuds de la base de données.
 
-**Number of database clusters :** Nombre de noeudes de base la données.
+**Number of database clusters :** Le nombre de noeuds de la base de données.
 
-**/24 cidr of databases network :** L'adresse réseaux des noeuds de la base données sous la forme: 192.168.0.0/24.
+**/24 cidr of databases network :** L'adresse réseaux des noeuds de la base données sous la forme: x.x.x.0/24.
 
-**OS type :** Vous choisissez l'OS qui vous convient, soit Ubuntu 14.04, Ubuntu 16.04, Debian Jessie ou Centos 7.2
+**OS type :** Choisissez l'OS qui vous convient à savoir Ubuntu 14.04, Ubuntu 16.04, Debian Jessie ou Centos 7.2
 
-La forme du stack :
+Voici l'ensemble des composant de la  stack :
+![stack](img/5.png)
 
-![stack](img/6.png)
+Ci-dessous les informations données à la sortie de la stack:
 
-Les sorties:
+![output](img/6.png)
 
-![output](img/5.png)
 
-**Database_ip :** L'adresse ip du load balancer de Galeracluster.
+**Database_ip :** L'adresse ip du load balancer du cluster Galera.
 
 **Database_name :** Nom de la base de données.
 
-**Database_user :** Nom de l'utlisateur de la base de données.
+**Database_user :** Le nom de l'utlisateur de la base de données.
 
 **Database_port :** Le port de la base de données.
 
-**App_url_external :** Url externe du load balancer des noeuds frontaux web.
+**App_url_external :** L'url externe du load balancer des noeuds frontaux web.
 
-**App_url_internal :** Url interne du load balancer des noeuds frontaux web.
+**App_url_internal :** L'url interne du load balancer des noeuds frontaux web.
 
-**scale_up_url :** Url de scale up
+**scale_up_url :** L'url de scale up
 
-**scale_dn_url :** Url de scale down
+**scale_dn_url :** L'url de scale down
 
 ## Enjoy
 
@@ -152,7 +162,7 @@ Les sorties:
 
 #### Les dossiers et fichiers de configuration pour les noeuds galera:
 
-`/DbStorage/mysql`: le datadir des neudes Mariadb est un volume cinder.
+`/DbStorage/mysql`: le datadir des noeuds Mariadb du volume cinder.
 
 `/etc/mysql`: Le répertoire de configuration de Mariadb sous Debian and Ubuntu.
 
@@ -207,8 +217,8 @@ service mysql restart
 
 **Les noeuds Frontaux :**
 
-`/root/deploy.sh` : est un cron pour deployer les applications, vous pouvez l'arrêter si l'application est bien deployée.
-si vous voulez redeployer l'application, juste supprimez le contenue du dossier de l'application, lancer ces commandes:
+`/root/deploy.sh` : c'est une tache scheduler (cron) pour deployer les applications, vous pouvez l'arrêter si l'application est bien deployée.
+Si vous voulez redeployer l'application ou juste supprimez le contenu du dossier de l'application, lancer ces commandes suivantes:
 ~~~bash
 rm -rf /var/www/html/*
 ##si type de l'application est php.
@@ -225,10 +235,10 @@ Le volume gluster est sous la fome ip:/gluster, pour tester qu'il fonctionne bie
 ~~~bash
 gluster volume info
 ~~~
-**Les noeuds de Galeracluster :**
+**Les noeuds dcluster Galera :**
 
-`/root/sync.sh`: est cron pour démarrer les noeuds de Galera, vous pouvez l'arrêter si les noeuds sont bien démarrés,
-pour tester, tapez la commande suivante:
+`/root/sync.sh`:  c'est une tache scheduler (cron) pour démarrer les noeuds de Galera, vous pouvez l'arrêter si les noeuds sont bien démarrés,
+pour tester si c'est bien le cas tapez la commande suivante:
 
 ~~~bash
 mysql -u root -e 'SELECT VARIABLE_VALUE as "cluster size" FROM INFORMATION_SCHEMA.GLOBAL_STATUS  WHERE VARIABLE_NAME="wsrep_cluster_size"'
@@ -257,11 +267,11 @@ rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
 **Configuration autoscaling via zabbix de myCloudManager:**
 
-Cliquez sur ce lien.
+Cliquez sur ce lien(https://github.com/dalitun/applications/blob/master/blueprint-autoscaling/README.md).
 
 ## So watt ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
+Ce tutoriel à pour but d'accélérer votre démarrage. A ce stade vous êtes maître(sse) à bord.
 
 Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
 
