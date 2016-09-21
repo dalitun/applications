@@ -10,7 +10,7 @@ Zabbix-server dans un réseau se présente comme suit :
 
 ![Architecture réseau zabbix](http://image.slidesharecdn.com/zabbixfeaturesin5pictures-03-150131052309-conversion-gate02/95/zabbix-monitoring-in-5-pictures-2-638.jpg?cb=1440581062)
 
-On remarque dans cette architecture que le serveur Zabbix-server peut monitorer les hôtes sur lesquels sont installés le daemon zabbix-agents ou via SNMP.
+On remarque dans cette architecture que le serveur Zabbix peut monitorer les hôtes sur lesquels sont installés les agents zabbix ou via SNMP.
 
 ### Les versions
 
@@ -124,7 +124,7 @@ $ heat resource-list EXP_STACK
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu Trusty, pré-provisionnée avec la stack Zabbix-server et un zabbix-agent.
+* démarrer une instance basée sur Ubuntu Xenial, pré-provisionnée avec la stack Zabbix et un agent Zabbix.
 * l'exposer sur Internet via une IP flotante
 
 ### Enjoy
@@ -138,16 +138,16 @@ $ ./stack-get-url.sh EXP_STACK
 EXP_STACK `floating IP `
 ~~~
 
-A ce niveau, vous pouvez vous connecter sur votre instance de serveur Zabbix avec un navigateur web en pointant sur votre floating IP, sur le port 80 (http://xx.xx.xx.xx). Pour s'authentifier sur l'interface web :
+A ce niveau, vous pouvez vous connecter sur votre instance Zabbix avec un navigateur web en pointant sur votre floating IP, sur le port 80 (http://xx.xx.xx.xx). Pour s'authentifier sur l'interface web :
 
-  * login : admin
+  * login : Admin
   * mot de passe : zabbix
 
 **Pensez à changer ce mot de passe par défaut immédiatement après votre authentification.**
 
 ![Interface connection zabbix](https://cdn-02.memo-linux.com/wp-content/uploads/2015/03/zabbix-07-300x253.png)
 
-Une fois que l'authentification est faite, vous avez accès à l'interface graphique de Zabbix-server.
+Une fois que l'authentification est faite, vous avez accès à l'interface graphique de Zabbix.
 
 ![Bigger production setup](https://cdn-02.memo-linux.com/wp-content/uploads/2015/03/zabbix-08-300x276.png)
 
@@ -155,9 +155,9 @@ Une fois que l'authentification est faite, vous avez accès à l'interface graph
 
 Il faut s'assurer que les machines à monitorer :
 
-  * sont visibles sur le réseau depuis le serveur Zabbix-server
+  * sont visibles sur le réseau depuis le serveur Zabbix
   * ont un agent Zabbix fonctionnel
-  * acceptent les communications UDP et TCP entrantes sur le port 10050, port d'écoute des agents Zabbix par défaut.
+  * acceptent les communications UDP et TCP entrantes sur le port 10050 qui est leport d'écoute des agents Zabbix par défaut.
 
 ### Exemple de monitoring d'un serveur Ghost
 
@@ -214,20 +214,18 @@ Cela permettra au serveur Zabbix de se connecter pour récupérer les métriques
 
     ~~~
 
-Quelques minutes plus tard, le serveur Zabbix et le serveur Ghost pourront se contacter directement.
+Quelques minutes plus tard, le serveur Zabbix et le serveur Ghost pourront se contacter directement via leur réseau LAN.
 
-A présent, il faut effectuer de la configuration sur le serveur à monitorer. Pour vous faciliter la prise en main, nous vous avons préparé un playbook Ansible qui automatise ces tâches.
+A présent, il faut effectuer de la configuration sur le serveur à monitorer. Pour vous faciliter la prise en main, nous vous avons préparé un playbook Ansible qui automatiser ces tâches.
 
-  5. Assurez vous de pouvoir vous connecter :
-
-
+  5. Assurez vous de pouvoir vous connecter au serveur :
     * En SSH
     * Avec l'utilisateur `cloud`
     * Sur le serveur Ghost
     * Depuis le serveur Zabbix
 
 
-  6. Sur le serveur Zabbix, ajoutez les informations de connexion dans l'inventaire `/etc/ansible/hosts` :
+  6. Sur le serveur Zabbix, ajoutez les informations de connexion dans l'inventaire ansible `/etc/ansible/hosts` :
 
   ~~~bash         
   [...]
@@ -250,10 +248,10 @@ Maintenant, votre monitoring client - serveur est configuré. Vous pouvez à pr�
 
 Pour démarrer le monitoring, il vous faut faire les opérations suivantes :
 
- * Se connecter à l'interface web de Zabbix-server
+ * Se connecter à l'interface web de Zabbix
  * Cliquer sur le menu `Configuration`
  * Cliquer sur le sous menu `Hosts`
- * Cliquer sur le bouton  en haut à droite `Create Hosts.
+ * Cliquer sur le bouton  en haut à droite `Create Hosts`.
 
  Renseigner les differents champs en indiquant le nom du host à monitorer et son adresse IP  
 
@@ -297,7 +295,7 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 Vous pouvez commencer à faire vivre votre monitoring en prenant la main sur votre serveur.
 
-###Les points d'entrée utiles :
+### Les points d'entrée utiles :
 
 * `/etc/default/zabbix-server`: le répertoire contenant le fichier de configuation zabbix-server
 * `/etc/zabbix/zabbix_server.conf`: le répertoire contenant le fichier de configuration permettant à Zabbix-server de se connecter à la base de données
@@ -309,3 +307,7 @@ Vous pouvez commencer à faire vivre votre monitoring en prenant la main sur vot
 
 * [Zabbix-monitoring Homepage](http://www.zabbix.com/)
 * [Zabbix documentation](https://www.zabbix.com/documentation/2.2/start)
+
+
+---
+Have fun. Hack in peace.
