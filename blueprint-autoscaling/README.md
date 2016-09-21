@@ -24,17 +24,19 @@ L'objectif dans cet article comment obtenir l'autoscaling en configurant Zabbix 
 
 ##### Ajuster les paramètres
 
-Dans un premier temps, lancer la stack [MyCloudManager](https://www.cloudwatt.com/fr/applications/mycloudmanager.html) dans votre tenant. Une fois cette opération effectuée, vous pouvez à présent récupérer la clé publique de votre MyCloudManager en Connectant avec ssh sur le master de votre MyCloudManager et en tapant cette commande.
+Dans un premier temps, lancez la stack [MyCloudManager](https://www.cloudwatt.com/fr/applications/mycloudmanager.html) dans votre tenant. Une fois cette opération effectuée, vous pouvez à présent récupérer la clé publique de votre MyCloudManager en se connectant en ssh sur le master de votre MyCloudManager et en tapant cette commande.
+
 ~~~bash
 $ etcdctl get /ssh/key.pub
 ~~~
 
 Récupérez à présent l'id de votre routeur MyCloudManager en tapant cette commande:
+
 ~~~bash
-$ neutron router-list | grep nom_stack_myCloudManager
+$ neutron router-list | grep `nom_stack_myCloudManager`
 ~~~
 
-Dans le fichier `blueprint-autoscaling-exemple.heat.yml`. Vous y trouverez en haut une section `parameters`. Il faut y renseigner le routeur de votre MyCloudManager via le paramètre `router` et la clé publique précédement récupérée `mcm_public_key`.
+Dans le fichier `blueprint-autoscaling-exemple.heat.yml`. Vous y trouverez en haut une section `parameters`. Il faut y renseigner le routeur de votre MyCloudManager via le paramètre `router_id_mcm` et la clé publique précédement récupérée `mcm_public_key`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -69,7 +71,6 @@ parameters:
     description: /24 cidr of fronts network
     label: /24 cidr of fronts network
     type: string
-
   router_id_mcm:
     label: router id mcm
     type: string
@@ -82,7 +83,7 @@ parameters:
 
 ##### Démarrer la stack
 
-Avant de lancer le stack, ouvrez le port 30000 dans le security groupe de MyCloudManager pour que vos instances puissent se communiquer avec MyCloudManager, en tapant la commande suivante.
+Avant de lancer la stack, ouvrez le port 30000 dans le security groupe de MyCloudManager pour que vos instances puissent se communiquer avec MyCloudManager, en tapant la commande suivante.
 
 ~~~bash
 $ nova secgroup-add-rule `SECURITY_GROUP_MCM` tcp 30000 30000 `cid_net_autoscaling`
@@ -128,7 +129,7 @@ Installer l'agent Zabbix dans les instances que vous souhaitez monitorer via l'i
 
 #### Mettre à jour le template OS Linux Zabbix
 
-Mettez à jour le `template OS Linux`, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macros` afin de calculer  le pourcentage d'utilisation des cpu par minute.
+Mettez à jour le `template OS Linux`, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macros` afin de calculer  le pourcentage d'utilisation des CPU(s) par minute.
 
 Cliquez sur `Configuration` puis sur `Templates`.
 
@@ -140,7 +141,7 @@ Cliquez sur `Import`, sélectionnez le template `template_os_linux.xml`et clique
 
 #### Créer les deux Actions scale up et scale down
 
-D'abord vous devez disposer des urls de scale up et down que vous retrouverez dans la partie Output de votre stack myCloudManager sur la console Horizon ou via les commandes suivantes:
+D'abord vous devez disposer des urls de scale up et down que vous retrouverez dans la partie Output de votre stack autoscaling via les commandes suivantes:
 
   - Url de scale up :
 
@@ -195,7 +196,7 @@ A présent votre action est bien créée.
 
 ![action5](img/action4.png)
 
-#### Pour tester le scaling up et scaling down, tapez la commande suivante dans les serveurs:
+#### Pour tester le scaling up et scaling down, essayez de `Stress` vos instances, en tapant la commande suivante dans les serveurs:
 
  ~~~bash
  $ sudo apt-get install stress
