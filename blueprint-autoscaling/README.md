@@ -20,7 +20,7 @@ L'objectif dans cet article comment obtenir l'autoscaling en configurant Zabbix 
 
 ### Comment optenir l'autoscaling via le Zabbix de MyCloudManager
 
-#### 1/ Lancer une stack d'exemple avec l'option d'autoscaling
+#### Lancer une stack d'exemple avec l'option d'autoscaling
 
 ##### Ajuster les paramètres
 
