@@ -31,7 +31,7 @@ parameters:
     label: /24 cidr of fronts network
     type: string
 
-  router:
+  router_id_mcm:
     label: router_mcm
     type: string
     default: 602565c8-ee30-4697-8a75-044898f381eb
@@ -59,7 +59,7 @@ resources:
   interface:
     type: OS::Neutron::RouterInterface
     properties:
-      router_id: { get_param: router }
+      router_id: { get_param: router_id_mcm }
       subnet_id: { get_resource: subnet }
 
   sec_group:

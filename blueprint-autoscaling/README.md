@@ -7,7 +7,7 @@ L'autoscaling, est l'une des caractéristiques du cloud computing qui permet d'a
 
 ### Les versions
   - MyCloudManager v2
-  - Zabbix 3
+  - Zabbix 3.2
 
 ### Les pré-requis
 
@@ -23,15 +23,15 @@ L'autoscaling, est l'une des caractéristiques du cloud computing qui permet d'a
 
 ##### Ajuster les paramètres
 
-Dans un premier temps, lancer la stack MyCloudManager dans votre tenant. Une fois cette opération effectuée, vous pouvez à présent récupérer la clé publique de votre MyCloudManager.
+Dans un premier temps, lancer la stack [MyCloudManager](https://www.cloudwatt.com/fr/applications/mycloudmanager.html) dans votre tenant. Une fois cette opération effectuée, vous pouvez à présent récupérer la clé publique de votre MyCloudManager en Connectant avec ssh sur le master de votre MyCloudManager et en tapant cette commande.
+~~~bash
+$ etcdctl get /ssh/key.pub
+~~~
 
-Aller dans le menu instance, cliquer sur le bouton + .....
-
-Récupérer à présent l'id de votre routeur MyCloudManager
-
-............................................
-
-
+Récupérez à présent l'id de votre routeur MyCloudManager en tapant cette commande:
+~~~bash
+$ neutron router-list | grep nom_stack_myCloudManager
+~~~
 
 Dans le fichier `blueprint-autoscaling-exemple.heat.yml`. Vous y trouverez en haut une section `parameters`. Il faut y renseigner le routeur de votre MyCloudManager via le paramètre `router` et la clé publique précédement récupérée `mcm_public_key`.
 
@@ -69,8 +69,8 @@ parameters:
     label: /24 cidr of fronts network
     type: string
 
-  router:
-    label: router
+  router_id_mcm:
+    label: router id mcm
     type: string
     default: 602565c8-ee30-4697-8a75-044898f381eb    <-- Indiquer ici la taille de l’instance par défaut
   mcm_public_key:
@@ -84,13 +84,13 @@ parameters:
 Avant de lancer le stack, ouvrez le port 30000 dans le security groupe de MyCloudManager pour que vos instances puissent se communiquer avec MyCloudManager, en tapant la commande suivante.
 
 ~~~bash
-$ nova secgroup-add-rule SECURITY_GROUP_MCM tcp 30000 30000 cid_net_autoscaling
+$ nova secgroup-add-rule `SECURITY_GROUP_MCM` tcp 30000 30000 `cid_net_autoscaling`
 ~~~
 
 Puis dans le shell lancez la commande suivante :
 
 ~~~bash
-$ heat stack-create nom_de_votre_stack -f blueprint-autoscaling-exemple.heat.yaml
+$ heat stack-create `nom_de_votre_stack` -f blueprint-autoscaling-exemple.heat.yaml
 
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
@@ -102,7 +102,7 @@ $ heat stack-create nom_de_votre_stack -f blueprint-autoscaling-exemple.heat.yam
 Puis attendez quelques minutes que le déploiement soit complet.
 
 ~~~bash
-$ heat resource-list nom_de_votre_stack
+$ heat resource-list `nom_de_votre_stack`
 +-----------------------------+-------------------------------------------------------------------------------------+------------------------------+-----------------+----------------------+
 | resource_name               | physical_resource_id                                                                | resource_type                | resource_status | updated_time         |
 +-----------------------------+-------------------------------------------------------------------------------------+------------------------------+-----------------+----------------------+
@@ -140,7 +140,7 @@ Cliquez sur `Import`, sélectionnez le template `template_os_linux.xml`et clique
 #### Créer les deux Actions scale up et scale down
 
 D'abord vous devez disposer des urls de scale up et down que vous retrouverez dans la partie Output de votre stack myCloudManager sur la console Horizon ou via les commandes suivantes:
- 
+
   - Url de scale up :
 
 ~~~bash
@@ -153,7 +153,7 @@ openstack stack output show -f json `nom_de_votre_stack` `scale_up_url` | jq '.o
 openstack stack output show -f json `nom_de_votre_stack` `scale_dn_url` | jq '.output_value'
 ~~~
 
-A présent nous pouvons passer aux étapes de scale UP et scale Down 
+A présent nous pouvons passer aux étapes de scale UP et scale Down
 
 * Créer `host groups` qui représente vos instances.
 
@@ -167,7 +167,7 @@ A présent nous pouvons passer aux étapes de scale UP et scale Down
 
 ![action3](img/action2.png)
 
-Afin de créer l'action dans Zabbix de scale up ou down. 
+Afin de créer l'action dans Zabbix de scale up ou down.
 
 * Récupérer via votre CLI vos identifiant openstack que vous devriez avec copier dans le fichier .profile de votre user courant.
 
@@ -200,7 +200,7 @@ A présent votre action est bien créée.
  $ sudo apt-get install stress
  $ stress --cpu 90 --io 2 --vm 2 --vm-bytes 512M --timeout 600
  ~~~
- 
+
 N'oubliez pas d'ajouter chaque nouvelle stack apparue dans le `Host Group` dans le zabbix de MyCloudManager afin de la monitorer.
 
 
