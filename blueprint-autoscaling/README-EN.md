@@ -24,18 +24,21 @@ Auto-scaling, also spelled autoscaling, is a cloud computing service feature tha
 #### Lanch  exemple autoscaling stack
 
 ##### Adjust the parameters
-First, start the stack [MyCloudManager] (https://www.cloudwatt.com/fr/applications/mycloudmanager.html) in your piece. Once this is done, you can now retrieve the public key of your MyCloudManager by logging in ssh on the master node of your MyCloudManager and typing this command.
+First, start the stack [MyCloudManager](https://www.cloudwatt.com/fr/applications/mycloudmanager.html) in your piece. Once this is done, you can now retrieve the public key of your MyCloudManager by logging in ssh on the master node of your MyCloudManager and type this command.
 
 ~~~ bash
 $ Etcdctl get /ssh/key.pub
 ~~~
 
-Recover now id MyCloudManager your router by typing this command:
+Recover now router id  of MyCloudManager by typing this command:
 
 ~~~ bash
 $ Neutron router-list | `grep nom_stack_myCloudManager`
 ~~~
- There must inform the id of My Cloud Manager router via the `router_id_mcm` parameter and public key previously recovered in the` mcm_public_key` parameter.
+
+
+In the `blueprint-coreos-mongodb.heat.yml` file (heat template), you will find a section named `parameters` near the top.
+ There must inform the id of MyCloudManager router via the `router_id_mcm` parameter and public key previously recovered in the` mcm_public_key` parameter.
 
  ~~~ yaml
  heat_template_version: 2013-05-23
@@ -131,36 +134,38 @@ Install zabbix agent in instances via the web interface of MyCloudManager.
 
  Update the Linux OS template, this template contains a new `item` two new` `triggers` and two new macors` in order to calculate the percentage use of the CPU(s) in every minute.
 
+Click on `Configuration` then `Templates`
+
  ![template1](img/updatetemp1.png)
 
- Then select the `template_os_linux.xml`template and click `Import`.
+ Then select the `template_os_linux.xml`template and click on `Import`.
 
  ![template2](img/updatetemp2.png)
 
 
 #### Create the both actions scale up and scale down
 
- First you must have the urls to scale up and down as you find in the output portion of your stack autoscaling of Cloudwatt horizon console or through the following CLI commands:
+ First of all you need to have the urls to scale up and down, you find them in the output portion of your stack autoscaling of Cloudwatt horizon console or through the following CLI commands:
 
    - Url de scale up :
 
  ~~~bash
- openstack stack output show -f json `nom_de_votre_stack` `scale_up_url` | jq '.output_value'
+ openstack stack output show -f json `your_stack_name` `scale_up_url` | jq '.output_value'
  ~~~
 
    - Url de scale down :
 
  ~~~bash
- openstack stack output show -f json `nom_de_votre_stack` `scale_dn_url` | jq '.output_value'
+ openstack stack output show -f json `your_stack_name` `scale_dn_url` | jq '.output_value'
  ~~~
 
-Now we can go to scale UP steps and Scale Down
+Now we can go to scale UP steps and Scale Down.
 
  * Create `host groups` who represents your instances.
 
  ![action1](img/hostgroups.png)
 
- * Create an action of scale down for scale up doing the same thing but with the URL scale UP output data of your stack).
+ * Create an action of scale down (for scale up do the same things juste your change the URL scale down by URL scale up).
 
  ![action2](img/action1.png)
 
@@ -170,7 +175,7 @@ Now we can go to scale UP steps and Scale Down
 
  In order to create the action in Zabbix to scale up or down.
 
-* Recover your CLI via your OpenStack identifying with that you should copy the profile file of your current user and scale your URL (up or down), form the block below.
+* Recover your OpenStack identifying via CLI, with that you should copy the profile file of your current user and scale your URL (up or down), form the block below.
 
 ~~~bash
  export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
@@ -189,7 +194,7 @@ Now we can go to scale UP steps and Scale Down
 
  ![action5](img/action4.png)
 
-#### To test the scaling up and scaling down, try `Stress` (upping supported) your instances by typing the following command in the server:
+#### For testing the scaling up and scaling down, try `Stress` your instances by typing the following command in the server:
 
 ~~~bash
 $ sudo apt-get install stress
