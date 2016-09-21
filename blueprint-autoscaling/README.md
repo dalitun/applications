@@ -24,7 +24,7 @@ L'objectif dans cet article comment obtenir l'autoscaling en configurant Zabbix 
 
 ##### Ajuster les paramètres
 
-Dans un premier temps, lancez la stack [MyCloudManager](https://www.cloudwatt.com/fr/applications/mycloudmanager.html) dans votre tenant. Une fois cette opération effectuée, vous pouvez à présent récupérer la clé publique de votre MyCloudManager en se connectant en ssh sur le master de votre MyCloudManager et en tapant cette commande.
+Dans un premier temps, lancez la stack [MyCloudManager](https://www.cloudwatt.com/fr/applications/mycloudmanager.html) dans votre tenant. Une fois cette opération effectuée, vous pouvez à présent récupérer la clé publique de votre MyCloudManager en se connectant en ssh sur le noeud master de votre MyCloudManager et en tapant cette commande.
 
 ~~~bash
 $ etcdctl get /ssh/key.pub
@@ -36,7 +36,7 @@ Récupérez à présent l'id de votre routeur MyCloudManager en tapant cette com
 $ neutron router-list | grep `nom_stack_myCloudManager`
 ~~~
 
-Dans le fichier `blueprint-autoscaling-exemple.heat.yml`. Vous y trouverez en haut une section `parameters`. Il faut y renseigner le routeur de votre MyCloudManager via le paramètre `router_id_mcm` et la clé publique précédement récupérée `mcm_public_key`.
+Dans le fichier `blueprint-autoscaling-exemple.heat.yml`. Vous y trouverez en haut une section `parameters`. Il faut y renseigner l'id du routeur du MyCloudManager via le paramètre `router_id_mcm` et la clé publique précédement récupérée dans le paramètre `mcm_public_key`.
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -122,7 +122,7 @@ $ heat resource-list `nom_de_votre_stack`
 
 ~~~
 
-#### Ajouter les noeuds à Zabbix de MycloudManager
+#### Ajouter les noeuds au Zabbix de MycloudManager
 
 Installer l'agent Zabbix dans les instances que vous souhaitez monitorer via l'interface web de MyCloudManager.
 ![mcm](img/ajouterinstances.png)
@@ -141,7 +141,7 @@ Cliquez sur `Import`, sélectionnez le template `template_os_linux.xml`et clique
 
 #### Créer les deux Actions scale up et scale down
 
-D'abord vous devez disposer des urls de scale up et down que vous retrouverez dans la partie Output de votre stack autoscaling via les commandes suivantes:
+D'abord vous devez disposer des urls de scale up et down que vous retrouverez dans la partie Output de votre stack autoscaling de la console horizon Cloudwatt ou via les commandes CLI suivantes:
 
   - Url de scale up :
 
@@ -157,21 +157,21 @@ openstack stack output show -f json `nom_de_votre_stack` `scale_dn_url` | jq '.o
 
 A présent nous pouvons passer aux étapes de scale UP et scale Down
 
-* Créer `host groups` qui représente vos instances.
+* Créer un `host groups` qui représente vos instances.
 
 ![action1](img/hostgroups.png)
 
-* Créer l'action scale down (pour scale up utilisez les mêmes étapes juste changez l'url).
+* Créer une action de scale down (pour scale up faites la même chose mais avec l'URL scale UP donnée en sortie de votre stack).
 
 ![action2](img/action1.png)
 
-* Ajouter les conditions.
+* Ajouter les conditions souhaitées.
 
 ![action3](img/action2.png)
 
 Afin de créer l'action dans Zabbix de scale up ou down.
 
-* Récupérer via votre CLI vos identifiant openstack que vous devriez avec copier dans le fichier .profile de votre user courant.
+* Récupérer via votre CLI vos identifiant openstack que vous devriez avec copier dans le fichier .profile de votre user courant ainsi que votre URL de scale (up ou down), former le block ci-dessous.
 
 ~~~bash
 export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
@@ -181,29 +181,25 @@ export OS_PROJECT_NAME="xxxxxxxxxxxxxxxxxxxxx"
 export OS_USERNAME="xxxxxxxxxxxxxxx@cloudwatt.com"
 export OS_PASSWORD=*************************
 export OS_REGION_NAME="fr1"
-
-* Récupérer maintenant votre URL de scale
-
-~~~
-curl -k -X POST “url de scaling down ou scaling up“
+curl -k -X POST 'url de scaling down ou scaling up'
 ~~~
 
 * Copiez à présent le tout dans la partie `Command` de Zabbix comme dans l'exemple ci-dessous.
 
 ![action4](img/action3.png)
 
-A présent votre action est bien créée.
+Maintenant votre action est bien créée.
 
 ![action5](img/action4.png)
 
-#### Pour tester le scaling up et scaling down, essayez de `Stress` vos instances, en tapant la commande suivante dans les serveurs:
+#### Pour tester le scaling up et scaling down, essayez de `Stresser` (faire monter en charge) vos instances , en tapant la commande suivante dans les serveurs:
 
  ~~~bash
  $ sudo apt-get install stress
  $ stress --cpu 90 --io 2 --vm 2 --vm-bytes 512M --timeout 600
  ~~~
 
-N'oubliez pas d'ajouter chaque nouvelle stack apparue dans le `Host Group` dans le zabbix de MyCloudManager afin de la monitorer.
+N'oubliez pas d'ajouter chaque nouvelle instance apparue dans le `Host Group` du zabbix de MyCloudManager afin de la monitorer.
 
 
 #### Comment customiser votre template
@@ -212,15 +208,15 @@ Dans cet article on a utilisé comme item `system.cpu.util[,,avg1]` pour calcule
 Vous pouvez vous baser sur d'autres items (calculer l'usage de RAM ou disque ...) pour avoir l'autoscaling.
 Voilà [une liste des items](https://www.zabbix.com/documentation/2.0/manual/config/items/itemtypes/zabbix_agent)
 
-Pour créer un item.
+* Pour créer un item.
 
 ![item](img/item.png)
 
-Vous pouvez aussi changer les macros ou créer autres.
+* Vous pouvez aussi changer les macros ou en créer autres.
 
 ![macro](img/macro.png)
 
-Vous pouvez créer un trigger.
+* Vous pouvez aussi créer un trigger.
 
 ![triggers](img/triggers.png)
 
