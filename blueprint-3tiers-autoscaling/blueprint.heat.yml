@@ -222,6 +222,8 @@ resources:
         - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: TCP, port_range_min: 3306, port_range_max: 3306 }
         - { direction: ingress,remote_ip_prefix: { get_attr: [db_subnet, cidr] }, protocol: TCP }
         - { direction: ingress,remote_ip_prefix: { get_attr: [db_subnet, cidr] }, protocol: UDP }
+        - { direction: ingress, protocol: TCP, port_range_min: 10050, port_range_max: 10050 }
+        - { direction: ingress, protocol: UDP, port_range_min: 10050, port_range_max: 10050 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
@@ -238,6 +240,8 @@ resources:
         - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: TCP, port_range_min: 38465 , port_range_max: 38469 }
         - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: TCP, port_range_min:  49152 , port_range_max:  49152 }
         - { direction: ingress, remote_ip_prefix: { get_attr: [nodes_subnet, cidr] },protocol: UDP, port_range_min: 111 , port_range_max: 111 }
+        - { direction: ingress, protocol: TCP, port_range_min: 10050, port_range_max: 10050 }
+        - { direction: ingress, protocol: UDP, port_range_min: 10050, port_range_max: 10050 }
         - { direction: ingress, protocol: ICMP }
         - { direction: egress, protocol: ICMP }
         - { direction: egress, protocol: TCP }
