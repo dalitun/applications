@@ -1,8 +1,9 @@
 # Autoscaling d'instance via un evenement Zabbix de MyCloudManager
- ![logo](img/images-2.jpg)
+ ![logo](img/images-2.jpg) ![zabbix](img/zabbix_logo.png) ![mcm](img/mycloudmanager.png)
 
 L'autoscaling, est l'une des caractéristiques du cloud computing qui permet d'ajouter ou supprimer des ressources en fonction de l'utilisation réelle d'une application de façon automatique.La mise à l'échelle automatique est aussi appelée parfois élasticité automatique.
 
+L'objectif dans cet article comment obtenir l'autoscaling en configurant Zabbix de MyCloudManager.
 ## Préparations
 
 ### Les versions
