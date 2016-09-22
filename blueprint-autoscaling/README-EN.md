@@ -24,16 +24,16 @@ Auto-scaling, also spelled autoscaling, is a cloud computing service feature tha
 #### Lanch  exemple autoscaling stack
 
 ##### Adjust the parameters
-First, start the stack [MyCloudManager](https://www.cloudwatt.com/fr/applications/mycloudmanager.html) in your piece. Once this is done, you can now retrieve the public key of your MyCloudManager by logging in ssh on the master node of your MyCloudManager and type this command.
+First, start the stack [MyCloudManager](https://www.cloudwatt.com/fr/applications/mycloudmanager.html) in your piece. Once this is done, you can now retrieve the public key of your MyCloudManager by logging in ssh on the node master of your MyCloudManager and type this command.
 
 ~~~ bash
-$ Etcdctl get /ssh/key.pub
+$ etcdctl get /ssh/key.pub
 ~~~
 
-Recover now router id  of MyCloudManager by typing this command:
+Recover now router id of MyCloudManager by typing this command:
 
 ~~~ bash
-$ Neutron router-list | `grep nom_stack_myCloudManager`
+$ neutron router-list | `grep nom_stack_myCloudManager`
 ~~~
 
 
@@ -49,7 +49,6 @@ In the `blueprint-coreos-mongodb.heat.yml` file (heat template), you will find a
      default: yourkey   <-- Indicate here your keypair  
      label: SSH Keypair
      type: string
-
    flavor_name:
      default: n2.cw.standard-1   <-- Indicate here flavor size
      description: Flavor to use for the deployed instance
@@ -73,8 +72,7 @@ In the `blueprint-coreos-mongodb.heat.yml` file (heat template), you will find a
      description: /24 cidr of fronts network
      label: /24 cidr of fronts network
      type: string
-
-   router:
+   router_id_mcm:
      label: router
      type: string
      default: 602565c8-ee30-4697-8a75-044898f381eb     <-- Indicate here MyCloudManager router id
@@ -132,7 +130,7 @@ Install zabbix agent in instances via the web interface of MyCloudManager.
 
 #### Update OS Linux Zabbix template
 
- Update the Linux OS template, this template contains a new `item` two new` `triggers` and two new macors` in order to calculate the percentage use of the CPU(s) in every minute.
+ Update the Linux OS template, this template contains a new `item`, two new triggers` and two new `macors` in order to calculate the percentage use of the CPU(s) in every minute.
 
 Click on `Configuration` then `Templates`
 

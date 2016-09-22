@@ -47,7 +47,6 @@ parameters:
     default: votrekey   <-- Indiquer ici votre paire de clés par défaut
     label: SSH Keypair
     type: string
-
   flavor_name:
     default: n2.cw.standard-1   <-- Indiquer ici la taille de l’instance par défaut
     description: Flavor to use for the deployed instance
