@@ -2,13 +2,13 @@
 
 ## Episode 19 : Zabbix-server
 
-![Minimum setup](http://blog.stack.systems/wp-content/uploads/2015/01/5-passos-instalacao-zabbix-2-4-guia-definitivo.png)
+![Minimum setup](img/zabbix_logo.png)
 
 Zabbix is free software to monitor the status of various network services, servers and other network equipment; and producing dynamic graphics resource consumption. Zabbix uses MySQL, PostgreSQL or Oracle to store data. According to the importance of the number of machines and data to monitor, the choice of the DBMS greatly affects performance. Its web interface is written in PHP.
 
 Zabbix-server in a network is as follows:
 
-![Architecture réseau zabbix](http://image.slidesharecdn.com/zabbixfeaturesin5pictures-03-150131052309-conversion-gate02/95/zabbix-monitoring-in-5-pictures-2-638.jpg?cb=1440581062)
+![Architecture réseau zabbix](img/zabbix-monitoring-in-5-pictures-2-638.jpg)
 
 We note in this architecture as Zabbix-server can monitor the hosts that are installed zabbix-agent or via SNMP daemon.
 
@@ -16,9 +16,9 @@ We note in this architecture as Zabbix-server can monitor the hosts that are ins
 
 ### The version
 
-* Ubuntu 14.04
-* Zabbix 2.2
-* Mysql  5.5
+* Ubuntu 16.04
+* Zabbix 3.2
+* Mysql 5.7
 
 ### The prerequisites to deploy this stack
 
@@ -38,9 +38,9 @@ Stack parameters, of course, are yours to tweak at your fancy.
 
 ## What will you find in the repository
 
-Once you have cloned the github repository, you will find in the `bundle-trusty-zabbix/` directory:
+Once you have cloned the github repository, you will find in the `bundle-xenial-zabbix/` directory:
 
-* `bundle-trusty-zabbix.heat.yml`: Heat orchestration template. It will be use to deploy the necessary infrastructure.
+* `bundle-xenial-zabbix.heat.yml`: Heat orchestration template. It will be use to deploy the necessary infrastructure.
 * `stack-start.sh`: Stack launching script, which simplifies the parameters and secures the admin password creation.
 * `stack-get-url.sh`: Returns the floating-IP in a URL, which can also be found in the stack output.
 
@@ -64,7 +64,7 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `bundle-trusty-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `bundle-xenial-zabbix.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
 
@@ -255,6 +255,7 @@ This playbook `servers-monitoring_zabbix.yml` supports these operating systems: 
 
 Now, our monitoring server and client are configured. We need to access the Zabbix Web UI using the IP address of our server http://X.X.X.X
 
+![Visualiser les métriques ](http://glpi.objetdirect.com/wp-content/uploads/2014/01/zabbix_webgraph.png)
 
 ## So watt?
 
