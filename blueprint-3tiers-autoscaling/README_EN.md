@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode 27 : Blueprint 3 tier#
+# 5 Minutes Stacks, episode 27 : Blueprint 3 tier Autoscaling #
 
-## Episode 27 : Blueprint 3 tier
+## Episode 27 : Blueprint 3 tier Autoscaling
 
 This blueprint will help you to set up a 3-tier architecture.
 We have automated the deployment of various nodes component architecture.
@@ -26,7 +26,7 @@ Here is the architecture diagram.
  - Apache 2.4
  - Php 5 & 7
  - Openjdk 8
- - Tomcat 8
+ - Tomcat 9
  - Nginx 1.10
 
 ## Preparations
@@ -66,15 +66,18 @@ Complete this fields and click LAUNCH.
 
 **SSH Keypair :** your key pair.
 
-**router-id mycloudmanager :**
+**router-id mycloudmanager :** MyCloudManger Router Id.
 
-**mcm public key :**
-
+**mcm public key :** MyCloudManger public key.
+~~~bash
+$ etcdctl get /ssh/key.pub
+~~~
 **Artefact in zip ,git, tar.gz or war :** Put the url artifact of your application, it must be in git, zip or tar.gz for PHP and nodejs applications and war for tomcat applications.
 **Application type :** If you choose php, you are going to have apache2 server and php environment, if you choose nodejs you are going to have an environment that runs nodejs applications with reverse proxy nginx and if you choose tomcat you will have a tomcat environment 8 and openjdk8 with nginx as a reverse proxy.
 **Flavor Type for nodes :** Web front nodes flavor.
 
 **Number of front nodes :** Number of front web nodes.
+You can now retrieve the public key of your MyCloudManager by logging in ssh on the node master of your MyCloudManager and type this command.
 
 **Flavor Type for glusterfs :**  Nodes Glusterfs flavor.
 
@@ -252,6 +255,9 @@ mylvmbackup --user=root --mycnf=/etc/mysql/my.cnf --vgname=vg0 --lvname=global -
 swift upload your_back_contenair /var/cache/mylvmbackup/backup/*
 rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
+**Configuration autoscaling via MyCloudManager Zabbix:**
+
+Click on this link(https://github.com/dalitun/applications/blob/master/blueprint-autoscaling/README.md).
 
 ## So watt ?
 

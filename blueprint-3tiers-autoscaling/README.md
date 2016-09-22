@@ -4,7 +4,7 @@
 
 Ce blueprint va vous aider à mettre en place une architecture 3-tiers avec un autoscaling group.
 Nous avons automatisé le déploiement des différents noeuds composant l'architecture.
-A travers ce blueprint nous vous proposons de mettre en place des frontaux web, du glusterfs et un cluster de base de données.
+A travers ce blueprint nous vous proposons de mettre en place des frontaux web sur la forme de groupe Autoscaling, du glusterfs et un cluster de base de données.
 Vous aurez le choix de déployer sur les frontaux web différentes applications (Apache & php, tomcat 8 ou nodejs).
 Voici le schema d'architecture :
 
@@ -23,12 +23,12 @@ Voici le schema d'architecture :
  - Mariadb 10.1
  - Lvm2
  - Mylvmbackup
- - Galeracluster 3
+ - Galeracluster 3.8
  - Nodejs 6.x
  - Apache 2.4
  - Php 5 & 7
  - Openjdk 8
- - Tomcat 8
+ - Tomcat 9
  - Nginx 1.10
 
 ### Les pré-requis
