@@ -10,7 +10,7 @@ Zabbix-server dans un réseau se présente comme suit :
 
 ![Architecture réseau zabbix](img/zabbix-monitoring-in-5-pictures-2-638.jpg)
 
-On remarque dans cette architecture que le serveur Zabbix-server peut monitorer les hôtes sur lesquels sont installés le daemon zabbix-agents ou via SNMP.
+On remarque dans cette architecture que le serveur Zabbix peut monitorer les hôtes sur lesquels sont installés l'agent Zabbix ou via SNMP.
 
 ### Les versions
 
@@ -127,7 +127,7 @@ $ heat resource-list EXP_STACK
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu Xenial, pré-provisionnée avec la stack Zabbix-server et un zabbix-agent.
+* démarrer une instance basée sur Ubuntu Xenial, pré-provisionnée avec la stack Zabbix et un agent Zabbix.
 * l'exposer sur Internet via une IP flotante
 
 ## C’est bien tout ça,
@@ -167,7 +167,7 @@ EXP_STACK `floating IP `
 
 A ce niveau, vous pouvez vous connecter sur votre instance de serveur Zabbix avec un navigateur web en pointant sur votre floating IP, sur le port 80 (http://xx.xx.xx.xx). Pour s'authentifier sur l'interface web :
 
-  * login : admin
+  * login : Admin
   * mot de passe : zabbix
 
 **Pensez à changer ce mot de passe par défaut immédiatement après votre authentification.**
@@ -182,7 +182,7 @@ Une fois que l'authentification est faite, vous avez accès à l'interface graph
 
 Il faut s'assurer que les machines à monitorer :
 
-  * sont visibles sur le réseau depuis le serveur Zabbix-server
+  * sont visibles sur le réseau depuis le serveur Zabbix
   * ont un agent Zabbix fonctionnel
   * acceptent les communications UDP et TCP entrantes sur le port 10050, port d'écoute des agents Zabbix par défaut.
 
@@ -206,13 +206,15 @@ Cela permettra au serveur Zabbix de se connecter pour récupérer les métriques
   | subnet           | bd69c3f5-ddc8-4fe4-8cbe-19ecea0fdf2c              | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-24T15:18:30Z |
   ~~~
 
-  2. Ajoutez au routeur une interface sur le sous-réseau de la stack Ghost et une sur le sous-réseau de la stack Zabbix :
+  2. Ajoutez au routeur une interface avec le sous-réseau de la stack Ghost et une autre avec le sous-réseau de la stack Zabbix :
 
     ~~~ bash
-    $ neutron router-interface-add Zabbix_ROUTER_ID GHOST_SUBNET_ID
+    $ neutron router-interface-add `$Zabbix_ROUTER_ID` `$GHOST_SUBNET_ID`
+    $ neutron router-interface-add `$Zabbix_GHOST_ROUTER_ID` `$Zabbix_SUBNET_ID`
+
     ~~~
 
-Quelques secondes plus tard, le serveur Zabbix et le serveur Ghost pourront se contacter directement.
+Quelques minutes plus tard, le serveur Zabbix et le serveur Ghost pourront se contacter directement via leur réseau LAN.
 
 A présent, il faut effectuer de la configuration sur le serveur à monitorer. Pour vous faciliter la prise en main, nous vous avons préparé un playbook Ansible qui automatise ces tâches.
 
@@ -239,10 +241,11 @@ A présent, il faut effectuer de la configuration sur le serveur à monitorer. P
 
 Ce playbook va faire toutes les opérations d'installation et de configuration sur le serveur Ghost pour qu'il puisse être monitoré par le serveur Zabbix.
 
-Le playbook `servers-monitoring_zabbix.yml` supporte les systèmes exploitation suivants: Centos (6 et 7), Debian (jessie et wheezy) et Ubuntu (trusty,xenial).
+Le playbook `servers-monitoring_zabbix.yml` supporte les systèmes d'exploitation suivants: Centos (6 et 7), Debian (jessie et wheezy) et Ubuntu (trusty,xenial).
 
-Maintenant, votre monitoring client - serveur est configuré. Vous pouvez à présent vous connecter sur l'interface web de votre zabbix via son adresse IP http://X.X.X.X.
+Maintenant, votre monitoring client - serveur est configuré. Vous pouvez à présent vous connecter sur l'interface web de votre zabbix via son adresse IP http://X.X.X.X et ainsi vous pouvez maintenant visualiser les métriques des agents monitorés par le server Zabbix.
 
+ ![Visualiser les métriques ](http://glpi.objetdirect.com/wp-content/uploads/2014/01/zabbix_webgraph.png)
 
 ## So watt ?
 
@@ -262,3 +265,6 @@ Vous pouvez commencer à faire vivre votre monitoring en prenant la main sur vot
 
 * [Zabbix-monitoring Homepage](http://www.zabbix.com/)
 * [Zabbix documentation](https://www.zabbix.com/documentation/2.2/start)
+
+---
+Have fun. Hack in peace.
