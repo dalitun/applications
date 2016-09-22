@@ -30,15 +30,14 @@ First, start the stack [MyCloudManager](https://www.cloudwatt.com/fr/application
 $ etcdctl get /ssh/key.pub
 ~~~
 
-Recover now router id of MyCloudManager by typing this command:
+Recover now router id of MyCloudManager by typing this command :
 
 ~~~ bash
 $ neutron router-list | `grep nom_stack_myCloudManager`
 ~~~
 
-
 In the `blueprint-coreos-mongodb.heat.yml` file (heat template), you will find a section named `parameters` near the top.
- There must inform the id of MyCloudManager router via the `router_id_mcm` parameter and public key previously recovered in the` mcm_public_key` parameter.
+ There must inform the id of MyCloudManager router via the `router_id_mcm` parameter and public key previously recovered in the `mcm_public_key` parameter.
 
  ~~~ yaml
  heat_template_version: 2013-05-23
@@ -132,7 +131,7 @@ Install zabbix agent in instances via the web interface of MyCloudManager.
 
  Update the Linux OS template, this template contains a new `item`, two new triggers` and two new `macors` in order to calculate the percentage use of the CPU(s) in every minute.
 
-Click on `Configuration` then `Templates`
+Click on `Configuration` then `Templates`.
 
  ![template1](img/updatetemp1.png)
 
@@ -157,7 +156,7 @@ Click on `Configuration` then `Templates`
  openstack stack output show -f json `your_stack_name` `scale_dn_url` | jq '.output_value'
  ~~~
 
-Now we can go to scale UP steps and Scale Down.
+Now we can go to scale Up steps and Scale Down.
 
  * Create `host groups` who represents your instances.
 
@@ -167,7 +166,7 @@ Now we can go to scale UP steps and Scale Down.
 
  ![action2](img/action1.png)
 
- *  Add the desired conditions.
+ * Add the desired conditions.
 
  ![action3](img/action2.png)
 
