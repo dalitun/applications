@@ -1,12 +1,17 @@
-# Autoscaling via zabbix MyCloudManager:
-
- ![logo](img/images-2.jpg)
+# Instance Autoscaling  via zabbix of MyCloudManager:
+![logo](img/images-2.jpg) ![zabbix](img/zabbix_logo.png) ![mcm](img/mycloudmanager.png)
 
 Auto-scaling, also spelled autoscaling, is a cloud computing service feature that automatically adds or removes compute resources depending upon actual usage. Auto-scaling is sometimes referred to as automatic elasticity.
 
 ## Preparations
 
 ### The prerequisites
+
+### The version
+- MyCloudManager v2
+- Zabbix 3.2
+
+### The prerequisites to deploy this stack
 
  * Internet access
  * A Linux shell
@@ -16,11 +21,24 @@ Auto-scaling, also spelled autoscaling, is a cloud computing service feature tha
 
 ### How to get autoscaling via MyCloudManager's Zabbix
 
-#### 1/ Lanch  exemple autoscaling stack
+#### Lanch  exemple autoscaling stack
 
 ##### Adjust the parameters
+First, start the stack [MyCloudManager](https://www.cloudwatt.com/fr/applications/mycloudmanager.html) in your piece. Once this is done, you can now retrieve the public key of your MyCloudManager by logging in ssh on the master node of your MyCloudManager and type this command.
 
- In the `blueprint-autoscaling-exemple.heat.yml` file (heat template), you will find a section named `parameters` near the top.
+~~~ bash
+$ Etcdctl get /ssh/key.pub
+~~~
+
+Recover now router id  of MyCloudManager by typing this command:
+
+~~~ bash
+$ Neutron router-list | `grep nom_stack_myCloudManager`
+~~~
+
+
+In the `blueprint-coreos-mongodb.heat.yml` file (heat template), you will find a section named `parameters` near the top.
+ There must inform the id of MyCloudManager router via the `router_id_mcm` parameter and public key previously recovered in the` mcm_public_key` parameter.
 
  ~~~ yaml
  heat_template_version: 2013-05-23
@@ -71,13 +89,13 @@ Auto-scaling, also spelled autoscaling, is a cloud computing service feature tha
 Before starting the stack, open port 30000 in MycloudManager security groupe for your instances can communicate with MyCloudManager, typing the following command.
 
  ~~~bash
- $ nova secgroup-add-rule SECURITY_GROUP_MCM tcp 30000 30000 cid_net_autoscaling
+ $ nova secgroup-add-rule `SECURITY_GROUP_MCM` tcp 30000 30000 `cid_net_autoscaling`
  ~~~
 
  In a shell, run the following command:
 
  ~~~bash
- $ heat stack-create your_stack_name -f blueprint-autoscaling-exemple.heat.yaml
+ $ heat stack-create `your_stack_name` -f blueprint-autoscaling-exemple.heat.yaml
 
  +--------------------------------------+-----------------+--------------------+----------------------+
  | id                                   | stack_name      | stack_status       | creation_time        |
@@ -107,51 +125,57 @@ Before starting the stack, open port 30000 in MycloudManager security groupe for
 
  ~~~
 
-#### 2/ Add nodes to MyCloudManager 's Zabbix
+#### Add nodes to MyCloudManager 's Zabbix
 
 Install zabbix agent in instances via the web interface of MyCloudManager.
  ![mcm](img/ajouterinstances.png)
 
-#### 3/ Mise à jour le template OS Linux Zabbix
+#### Update OS Linux Zabbix template
 
- Update the Linux OS template, this template contains a new `item` two new` `triggers` and two new macors` in order to calculate the percentage use of the CPU in every minute.
+ Update the Linux OS template, this template contains a new `item` two new` `triggers` and two new macors` in order to calculate the percentage use of the CPU(s) in every minute.
+
+Click on `Configuration` then `Templates`
 
  ![template1](img/updatetemp1.png)
 
- Then select the template and click import.
+ Then select the `template_os_linux.xml`template and click on `Import`.
 
  ![template2](img/updatetemp2.png)
 
 
-#### 4/ Create the both actions scale up and scale down
+#### Create the both actions scale up and scale down
 
- To have the urls to scale up and down, you have to query the outputs (Output) of your stack via the Url control scale up:
+ First of all you need to have the urls to scale up and down, you find them in the output portion of your stack autoscaling of Cloudwatt horizon console or through the following CLI commands:
 
- ~~~bash
- openstack stack output show -f json your_stack_name scale_up_url | jq '.output_value'
- ~~~
-
- Scale down url :
+   - Url de scale up :
 
  ~~~bash
- openstack stack output show -f json your_stack_name scale_dn_url | jq '.output_value'
+ openstack stack output show -f json `your_stack_name` `scale_up_url` | jq '.output_value'
  ~~~
 
-Then we go to the steps in order to create the both actions scale up and scale down:
+   - Url de scale down :
 
- 1/ Create `host groups` who represents your instances.
+ ~~~bash
+ openstack stack output show -f json `your_stack_name` `scale_dn_url` | jq '.output_value'
+ ~~~
+
+Now we can go to scale UP steps and Scale Down.
+
+ * Create `host groups` who represents your instances.
 
  ![action1](img/hostgroups.png)
 
- 2/ Create action scale down (use the same way for creating scale up)
+ * Create an action of scale down (for scale up do the same things juste your change the URL scale down by URL scale up).
 
  ![action2](img/action1.png)
 
- Add the conditions.
+ *  Add the desired conditions.
 
  ![action3](img/action2.png)
 
- Put the following commands to scale down (scale up) in the input Commands.
+ In order to create the action in Zabbix to scale up or down.
+
+* Recover your OpenStack identifying via CLI, with that you should copy the profile file of your current user and scale your URL (up or down), form the block below.
 
 ~~~bash
  export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
@@ -166,11 +190,11 @@ Then we go to the steps in order to create the both actions scale up and scale d
 
  ![action4](img/action3.png)
 
- Your action is created.
+ Now your action is created.
 
  ![action5](img/action4.png)
 
- 3/ For testing the scaling up and scaling down, type the following command in server:
+#### For testing the scaling up and scaling down, try `Stress` your instances by typing the following command in the server:
 
 ~~~bash
 $ sudo apt-get install stress
@@ -185,15 +209,15 @@ In this article we used as `system.cpu.util [,, AVG1]` item in order to calculat
 You can use others items (usage of RAM or disk ...) for the autoscaling.
 That [a list of items](https://www.zabbix.com/documentation/2.0/manual/config/items/itemtypes/zabbix_agent)
 
- For creating item.
+ * For creating item.
 
 ![item](img/item.png)
 
-You can also change or create others.
+* You can also change or create others.
 
 ![macro](img/macro.png)
 
-You can create a trigger.
+* You can create a trigger.
 
 ![triggers](img/triggers.png)
 

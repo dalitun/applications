@@ -20,7 +20,7 @@ L'objectif dans cet article comment obtenir l'autoscaling en configurant Zabbix 
 
 ### Comment optenir l'autoscaling via le Zabbix de MyCloudManager
 
-#### 1/ Lancer une stack d'exemple avec l'option d'autoscaling
+#### Lancer une stack d'exemple avec l'option d'autoscaling
 
 ##### Ajuster les paramètres
 
@@ -155,7 +155,7 @@ openstack stack output show -f json `nom_de_votre_stack` `scale_up_url` | jq '.o
 openstack stack output show -f json `nom_de_votre_stack` `scale_dn_url` | jq '.output_value'
 ~~~
 
-A présent nous pouvons passer aux étapes de scale UP et scale Down
+A présent nous pouvons passer aux étapes de scale UP et scale Down.
 
 * Créer un `host groups` qui représente vos instances.
 
