@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 19 : Zabbix #
+# 5 Minutes Stacks, épisode 36 : Zabbix #
 
-## Episode 19 : Zabbix-server
+## Episode 36 : Zabbix-server
 
 ![Minimum setup](img/zabbix_logo.png)
 
