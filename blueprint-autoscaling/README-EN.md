@@ -83,10 +83,12 @@ In the `blueprint-coreos-mongodb.heat.yml` file (heat template), you will find a
 
 ##### Start the stack
 
-Before starting the stack, open port 30000 in MycloudManager security groupe for your instances can communicate with MyCloudManager, typing the following command.
+Before starting the stack, open ports 30000,30602 and 30603 in MycloudManager security groupe for your instances can communicate with MyCloudManager, typing the following command.
 
  ~~~bash
  $ nova secgroup-add-rule `SECURITY_GROUP_MCM` tcp 30000 30000 `cid_net_autoscaling`
+ $ nova secgroup-add-rule `SECURITY_GROUP_MCM` tcp 30602 30602 `cid_net_autoscaling`
+ $ nova secgroup-add-rule `SECURITY_GROUP_MCM` tcp 30603 30603 `cid_net_autoscaling`
  ~~~
 
  In a shell, run the following command:
@@ -147,13 +149,13 @@ Click on `Configuration` then `Templates`.
    - Url de scale up :
 
  ~~~bash
- openstack stack output show -f json `your_stack_name` `scale_up_url` | jq '.output_value'
+ openstack stack output show -f json `your_stack_name` scale_up_url | jq '.output_value'
  ~~~
 
    - Url de scale down :
 
  ~~~bash
- openstack stack output show -f json `your_stack_name` `scale_dn_url` | jq '.output_value'
+ openstack stack output show -f json `your_stack_name` scale_dn_url | jq '.output_value'
  ~~~
 
 Now we can go to scale Up steps and Scale Down.
@@ -162,11 +164,12 @@ Now we can go to scale Up steps and Scale Down.
 
  ![action1](img/hostgroups.png)
 
- * Create an action of scale down (for scale up do the same things juste your change the URL scale down by URL scale up).
+ * Create an action of scale down (for scale up do the same things juste your change the URL scale down by URL scale up) and
+add the desired conditions.
 
  ![action2](img/action1.png)
 
- * Add the desired conditions.
+* Add the desired operation.
 
  ![action3](img/action2.png)
 

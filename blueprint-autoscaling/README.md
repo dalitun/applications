@@ -82,10 +82,12 @@ parameters:
 
 ##### Démarrer la stack
 
-Avant de lancer la stack, ouvrez le port 30000 dans le security groupe de MyCloudManager pour que vos instances puissent se communiquer avec MyCloudManager, en tapant la commande suivante.
+Avant de lancer la stack, ouvrez les ports 30000,30602 et 30603 dans le security groupe de MyCloudManager pour que vos instances puissent se communiquer avec MyCloudManager, en tapant la commande suivante.
 
 ~~~bash
 $ nova secgroup-add-rule `SECURITY_GROUP_MCM` tcp 30000 30000 `cid_net_autoscaling`
+$ nova secgroup-add-rule `SECURITY_GROUP_MCM` tcp 30602 30602 `cid_net_autoscaling`
+$ nova secgroup-add-rule `SECURITY_GROUP_MCM` tcp 30603 30603 `cid_net_autoscaling`
 ~~~
 
 Puis dans le shell lancez la commande suivante :
@@ -145,13 +147,13 @@ D'abord vous devez disposer des urls de scale up et down que vous retrouverez da
   - Url de scale up :
 
 ~~~bash
-openstack stack output show -f json `nom_de_votre_stack` `scale_up_url` | jq '.output_value'
+openstack stack output show -f json `nom_de_votre_stack` scale_up_url | jq '.output_value'
 ~~~
 
   - Url de scale down :
 
 ~~~bash
-openstack stack output show -f json `nom_de_votre_stack` `scale_dn_url` | jq '.output_value'
+openstack stack output show -f json `nom_de_votre_stack` scale_dn_url | jq '.output_value'
 ~~~
 
 A présent nous pouvons passer aux étapes de scale UP et scale Down.
@@ -160,13 +162,15 @@ A présent nous pouvons passer aux étapes de scale UP et scale Down.
 
 ![action1](img/hostgroups.png)
 
-* Créer une action de scale down (pour scale up faites la même chose mais avec l'URL scale UP donnée en sortie de votre stack).
+* Créer une action de scale down (pour scale up faites la même chose mais avec l'URL scale UP donnée en sortie de votre stack) et
+ ajouter les conditions souhaitées.
 
 ![action2](img/action1.png)
 
-* Ajouter les conditions souhaitées.
+* Ajouter l'opération souhaitée.
 
 ![action3](img/action2.png)
+
 
 Afin de créer l'action dans Zabbix de scale up ou down.
 

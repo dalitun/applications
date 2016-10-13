@@ -34,11 +34,11 @@ parameters:
   router_id_mcm:
     label: router_mcm
     type: string
-    default: 04e28c0f-9dd9-4796-a773-b44221e242a6
+    default: fad04224-4288-44f7-bb64-b4a28000b94f
   mcm_public_key:
     type: string
     label: mcm public key
-    default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDJYZy/0xlAovmsIIIOlv8epVAqOF+hHDQRpOksx3dGrl2BUL/nwqqPYNY23JSbJp+MsJopRa46EylKAh+e9RDBL3dIHHH6E89USMNYHN7ZOncLkYLZHezGYYB13Ni/lUTUT2Ezz+5zcAsWknGfBjL4C+juAukpExym9X0qTk2/i1w9GwVAsNDn1gyEWLcuac3jF7dzjM6/W6kRbOMN/S0SBITFXa1FF5+n97AdkANAIPlKBtg5DE/vwqsHb/fU/58Rl5O7bnDV0BHeMT8vGvuQRlJwWjtqKY11YbPvfhfbRwUfSqz4bv90i2oqYPZeb3+rF8bDbFBV30OPBIUy3oFh root@mcm-driver-0.novalocal
+    default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6NoBjx4nygL08uastfzj0hptKY3I+QptDMdtELrDAjJzj+V2aBE+KAFdHIvMfF//EEGfCB+H7iGbH6uRw7UZ6/Kal/OsSkNgdgMR3EqHypICCXZDFievoJ3799vc/7tWnlvBbai54J04p9tpLwFaOXkv40Wa0cfKwjTBosptnx1DpSqmckrVNdRA1Pj2Db6UK2mK1QgPwNImF+gfAj15miB9y+lCso0dcpjh3lNDYEDEzGnpB5F8jIwbubwi18myOqIDNMibL67zZPjUBtZYVtjwzz3Dn0tICJ9hBZBIshZFFtRZXk284l+7dZAiw6DBN4l0oshUbVJ1lprXRumi7 root@mcm-1-driver-1.novalocal
 resources:
   net:
     type: OS::Neutron::Net
@@ -148,4 +148,4 @@ outputs:
           host: { get_attr: [lb_floating, floating_ip_address] }
     description: >
       This URL is the "external" URL that can be used to access the
-      Wordpress site.
+      site.
