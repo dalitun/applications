@@ -267,7 +267,7 @@ rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
 **Configuration autoscaling via zabbix de myCloudManager:**
 
-Cliquez sur ce lien(https://github.com/dalitun/applications/blob/master/blueprint-autoscaling/README.md).
+Cliquez sur ce [lien](https://github.com/dalitun/applications/blob/master/autoscaling-zabbix-mcm/README.md).
 
 ## So watt ?
 

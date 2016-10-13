@@ -29,7 +29,6 @@ parameters:
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
-    default: alikey
  os_type:
     default: Ubuntu 14.04
     description: os type
@@ -130,8 +129,8 @@ parameters:
     description: database password
     label: Database password
     type: string
-    #hidden: true
-    default: 1234
+    hidden: true
+
 
  db_flavor_name:
     default: n1.cw.standard-1
@@ -149,12 +148,9 @@ parameters:
  router_id_mcm:
     label: router_id mycloudmanager
     type: string
-    default: 602565c8-ee30-4697-8a75-044898f381eb
  mcm_public_key:
     type: string
     label: mcm public key
-    default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD3sBV85fs2QUTKo0wP+ik2uMnY07nBSt5jObshVSFV/8zzWTYDl23VsTuQcZQLm2D7yRE+5KIUYEuRckvl+/s/TadB+FUQmWP1uKr+51M090twdIhAn3OeDxR/4PHcIHI+y5HuWJCLF/vBqe1JvvyxArPNu91Z+5TCUP5j7Wn4EbO58bWLraE4pq/S/ax2bcispj+i9L7V+qM1ut/mz1JRssJk+iPVQ9KqFJrLIpAH/QuN1+b+jRUuBwsk85L4degI13nGzBbJzLZZ6sJpkFBOjsmtHLNGgKsM6dfFvbmjCa+vQcTAvHh3NC5k1OEbx0MJDEZPquzoX6g6qKLvgTHp root@mcm-driver-0.novalocal
-
 
 resources:
 
