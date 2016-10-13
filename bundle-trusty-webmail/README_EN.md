@@ -143,16 +143,19 @@ flavor_name:
  ~~~
  ~~~bash
 $ watch heat resource-list your_stack_name
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
-  +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
++------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name    | physical_resource_id                                                                | resource_type                   | resource_status | updated_time         |
++------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| floating_ip      | 8aa20b7a-129a-4b8c-9d8c-dfec4a25897f                                                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| floating_ip_link | 632178                                                                              | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| interface        | 5b83fc95-0e3c-41eb-8933-b299b3530045:subnet_id=3109449f-47a0-4a1d-a35d-cb81d2a6a31d | OS::Neutron::RouterInterface    | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| network          | be3d1095-19e7-4221-84a2-f5846a836fc9                                                | OS::Neutron::Net                | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| port             | 82c260c2-058b-475a-a055-adfe08aee8df                                                | OS::Neutron::Port               | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| router           | 5b83fc95-0e3c-41eb-8933-b299b3530045                                                | OS::Neutron::Router             | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| security_group   | 95ca1f46-855e-4b7f-bf93-d3d244a68785                                                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| server           | c592398a-a347-4c4d-8b08-729d375f77d6                                                | OS::Nova::Server                | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
+| subnet           | 3109449f-47a0-4a1d-a35d-cb81d2a6a31d                                                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2016-09-20T14:01:23Z |
++------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
 ~~~
 
 The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
