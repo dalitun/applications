@@ -177,13 +177,6 @@ Afin de créer l'action dans Zabbix de scale up ou down.
 * Récupérer via votre CLI vos identifiant openstack que vous devriez avec copier dans le fichier .profile de votre user courant ainsi que votre URL de scale (up ou down), former le block ci-dessous.
 
 ~~~bash
-export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
-export OS_TENANT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxx
-export OS_TENANT_NAME="xxxxxxxxxxxxxxxxxxxxx"
-export OS_PROJECT_NAME="xxxxxxxxxxxxxxxxxxxxx"
-export OS_USERNAME="xxxxxxxxxxxxxxx@cloudwatt.com"
-export OS_PASSWORD=*************************
-export OS_REGION_NAME="fr1"
 curl -k -X POST 'url de scaling down ou scaling up'
 ~~~
 

@@ -33,9 +33,11 @@ parameters:
   router_id_mcm:
     label: router_mcm
     type: string
+
   mcm_public_key:
     type: string
     label: mcm public key
+  
 resources:
   net:
     type: OS::Neutron::Net
