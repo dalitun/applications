@@ -3,7 +3,6 @@ description: AutoScaling blueprint exemple
 parameters:
   keypair_name:
     description: Keypair to inject in instance
-    default: alikey
     label: SSH Keypair
     type: string
 
@@ -34,11 +33,9 @@ parameters:
   router_id_mcm:
     label: router_mcm
     type: string
-    default: fad04224-4288-44f7-bb64-b4a28000b94f
   mcm_public_key:
     type: string
     label: mcm public key
-    default: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC6NoBjx4nygL08uastfzj0hptKY3I+QptDMdtELrDAjJzj+V2aBE+KAFdHIvMfF//EEGfCB+H7iGbH6uRw7UZ6/Kal/OsSkNgdgMR3EqHypICCXZDFievoJ3799vc/7tWnlvBbai54J04p9tpLwFaOXkv40Wa0cfKwjTBosptnx1DpSqmckrVNdRA1Pj2Db6UK2mK1QgPwNImF+gfAj15miB9y+lCso0dcpjh3lNDYEDEzGnpB5F8jIwbubwi18myOqIDNMibL67zZPjUBtZYVtjwzz3Dn0tICJ9hBZBIshZFFtRZXk284l+7dZAiw6DBN4l0oshUbVJ1lprXRumi7 root@mcm-1-driver-1.novalocal
 resources:
   net:
     type: OS::Neutron::Net
