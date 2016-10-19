@@ -46,7 +46,7 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 Dans un shell, lancer cette commande.
 
 ~~~bash
-$ nova boot --flavor m1.tiny --image bundle-biolinux-8 --nic net-id=NET_ID --security-group your_sec_groupe --key-name your_key your_instance
+$ nova boot --flavor m1.tiny --image bundle-biolinux-8 --nic net-id=NET_ID --security-group your_sec_groupe --key-name your_key_pair your_instance
 ~~~
 
 
@@ -57,7 +57,7 @@ Pour accéder la machine vous avez 2 choix :
 1) Par ssh.
 bash
 ~~~
- $ ssh cloud@floating_ip -i your_key
+ $ ssh cloud@floating_ip -i your_key_pair.pem
 ~~~
 
 2) Par client nomachine.
@@ -73,7 +73,7 @@ l'utilsateur est `cloud` et le mot de passe par défaut est `cloudwatt`.
 Je vous conseille de changer le mot de passe par défaut en se connectant par ssh.
 
 ~~~bash
-$ssh cloud@floating_ip -i your_key
+$ssh cloud@floating_ip -i your_key_pair.pem
 $ passwd
 ~~~
 
