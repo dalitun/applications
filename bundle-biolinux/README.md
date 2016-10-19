@@ -2,6 +2,7 @@
 
 ## Episode 25 : BioLinux
 
+![logo](images/Biolinux.png)
 
 
 
@@ -60,9 +61,18 @@ bash
 ~~~
 
 2) par client nomachine
+l'utilsateur est `cloud` et le mot de passe par défaut est `cloudwatt`.
 
-l'utilsateur c 'est cloud et le mot de passe par défaut c 'est cloudwatt.
+![img1](images/1.png)
+![img2](images/2.png)
+![img3](images/3.png)
+![img4](images/4.png)
+![img5](images/5.png)
+![img6](images/6.png)
+
+
 je vous conseille de changer le mot de passe en se connectant par ssh
+
 
 ~~~bash
 $ssh cloud@floating_ip -i your_key
