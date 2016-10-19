@@ -41,9 +41,9 @@ Please enter your OpenStack Password:
 Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
 
 
-### Démarrer BioLinux
+### Démarrer une instance BioLinux
 
-Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom que vous souhaitez lui attribuer :
+Dans un shell, lancer cette commande.
 
 ~~~bash
 $ nova boot --flavor m1.tiny --image bundle-biolinux-8 --nic net-id=NET_ID --security-group your_sec_groupe --key-name your_key your_instance
