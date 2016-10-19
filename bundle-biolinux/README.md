@@ -54,13 +54,13 @@ $ nova boot --flavor m1.tiny --image bundle-biolinux-8 --nic net-id=NET_ID --sec
 
 Pour accéder la machine vous avez 2 choix :
 
-1) par ssh
+1) Par ssh.
 bash
 ~~~
  $ ssh cloud@floating_ip -i your_key
 ~~~
 
-2) par client nomachine
+2) Par client nomachine.
 l'utilsateur est `cloud` et le mot de passe par défaut est `cloudwatt`.
 
 ![img1](images/1.png)
@@ -70,16 +70,16 @@ l'utilsateur est `cloud` et le mot de passe par défaut est `cloudwatt`.
 ![img5](images/5.png)
 ![img6](images/6.png)
 
-
-je vous conseille de changer le mot de passe en se connectant par ssh
-
+Je vous conseille de changer le mot de passe par défaut en se connectant par ssh.
 
 ~~~bash
 $ssh cloud@floating_ip -i your_key
 $ passwd
 ~~~
 
+#### Autres sources pouvant vous intéresser:
 
+* [BioLinux homepage](http://environmentalomics.org/bio-linux/)
 
 -----
 Have fun. Hack in peace.
