@@ -1,25 +1,15 @@
-# 5 minutes stacks episode one: LAMP - English version #
+## BioLinux #
 
-Welcome to the inauguration of the 5 Minutes Stacks series !
+## BioLinux
 
-## The concept
+![logo](images/Biolinux.png)
 
-Regularly, Cloudwatt will publish on his technical blog and his github, applicative stacks with their associated deployement guide. Its goal is to facilitate your life while starting up projects. The procedure takes few minutes to prepare and 5 minutes to deploy.
 
-Once the stack is deployed, you become its master and you can immediately play with it.
 
-If you have any questions, remarks or enhancement requests, do not hesitate to open an issue on the github or to submit a pull request.
-
-## Episode One : Linux-Apache-MySQL-PHP5
-
-The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers are deployed on a single instance.
 
 ### The versions
 
-* Ubuntu 14.04.2
-* Apache 2.4.7
-* MySQL 5.5.43
-* PHP 5.5.9
+* BioLinux 8
 
 ### The prerequisites to deploy this stack
 
@@ -33,27 +23,15 @@ The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers 
 
 Per default, the script is proposing a deployement on an instance type "Small" (s1.cw.small-1).  Instances are charged by the minute and capped at their monthly price (you can find more details on the [Tarifs page](https://www.cloudwatt.com/fr/produits/tarifs.html) on the Cloudwatt website). Obviously, you can adjust the stack parameters, particularly its defaut size.
 
-### By the way...
-
-If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console) 
-
-## What will you find in the repository
-
-Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repository:
-
-* `bundle-trusty-lamp.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
-* `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
-* `stack-get-url.sh`: Flotting IP recovery script.
-
 
 ## Start-up
 
 ### Initialize the environment
 
-Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). 
+Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
 If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell acccesses towards the Cloudwatt APIs.
 
-Source the downloaded file in your shell. Your password will be requested. 
+Source the downloaded file in your shell. Your password will be requested.
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
@@ -63,89 +41,44 @@ Please enter your OpenStack Password:
 
 Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
-### Adjust the parameters
 
-With the `bundle-trusty-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+### Start up the instance
 
-~~~ yaml
-heat_template_version: 2013-05-23
+In a shell, run this command :
 
-
-description: Basic all-in-one LAMP stack
-
-
-parameters:
-  keypair_name:
-    default: amaury-ext-compute         <-- Indicate here your keypair
-    description: Keypair to inject in instances
-    type: string
-
-  flavor_name:
-    default: s1.cw.small-1              <-- indicate here the flavor size
-    description: Flavor to use for the deployed instance
-    type: string
-    constraints:
-      - allowed_values:
-          - s1.cw.small-1
-          - n1.cw.standard-1
-          - n1.cw.standard-2
-          - n1.cw.standard-4
-          - n1.cw.standard-8
-          - n1.cw.standard-12
-          - n1.cw.standard-16
-
-[...]
+~~~bash
+$ nova boot --flavor m1.tiny --image bundle-biolinux-8 --nic net-id=NET_ID --security-group your_sec_groupe --key-name your_key_pair your_instance_name
 ~~~
-
-### Start up the stack
-
-In a shell, run the script `stack-start.sh` with the name you want to give it as parameter:
-
-~~~ bash
-./stack-start.sh MA_LAMPE
-~~~
-
-Last, wait 5 minutes until the deployement been completed.
-
-The `start-stack.sh` script is taking care of running the API necessary requests to:
-
-* start up an Ubuntu Trusty Tahr instance, pre-provisionned with the LAMP stack
-* Show a flotting IP on the internet
 
 ### Enjoy
 
-Once all of this done, you can run the `stack-get-url.sh` script. It will gather the entry url of your stack.
+To access the machine, you have 2 choices:
 
-<a name="console" />
+1) By ssh.
+~~~bash
+ $ ssh cloud@floating_ip -i your_key_pair.pem
+~~~
 
-### All of this is fine, but you do not have a way to run the stack thru the console ?
+2) By nomachine client.
+User is `cloud` and the default password `cloudwatt`.
 
-Yes ! Using the console, you can deploy a LAMP server:
+![img1](images/1.png)
+![img2](images/2.png)
+![img3](images/3.png)
+![img4](images/4.png)
+![img5](images/5.png)
+![img6](images/6.png)
 
-1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
-2.	Click on the file nammed bundle-trusty-lamp.heat.yml
-3.	Click on RAW, a web page appear with the script details
-4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
-5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
-6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
-7.	Named your stack in the « Stack name » field
-8.	Enter your keypair in the « keypair_name » field
-9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
+I advise you to change the default password by logging in via ssh.
 
-The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
+~~~bash
+$ssh cloud@floating_ip -i your_key_pair.pem
+$ passwd
+~~~
 
-It is (already) FINISH !
+### Resources you could be interested in:
 
-
-## So watt ?
-
-The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
-You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
-
-You can start building your internet website on your virtual instance. Its entry access points are:
-
-* `/etc/apache2/sites-available/default-cw.conf`:  default Apache configuration 
-* `/var/www/cw`: the deployement repository of the little php website exemple
+* [BioLinux homepage](http://environmentalomics.org/bio-linux/)
 
 -----
 Have fun. Hack in peace.

@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode premier : BioLinux #
+# BioLinux #
 
-## Episode 25 : BioLinux
+## BioLinux
 
 ![logo](images/Biolinux.png)
 
@@ -9,7 +9,6 @@
 ### Les versions
 
 * BioLinux 8
-
 
 ### Les pré-requis pour déployer cette stack
 
@@ -46,22 +45,20 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 Dans un shell, lancer cette commande.
 
 ~~~bash
-$ nova boot --flavor m1.tiny --image bundle-biolinux-8 --nic net-id=NET_ID --security-group your_sec_groupe --key-name your_key_pair your_instance
+$ nova boot --flavor m1.tiny --image bundle-biolinux-8 --nic net-id=NET_ID --security-group your_sec_groupe --key-name your_key_pair your_instance_name
 ~~~
-
 
 ### Enjoy
 
-Pour accéder la machine vous avez 2 choix :
+Pour accéder à la machine, vous avez 2 choix :
 
 1) Par ssh.
-bash
-~~~
+~~~bash
  $ ssh cloud@floating_ip -i your_key_pair.pem
 ~~~
 
 2) Par client nomachine.
-l'utilsateur est `cloud` et le mot de passe par défaut est `cloudwatt`.
+L'utilsateur est `cloud` et le mot de passe par défaut est `cloudwatt`.
 
 ![img1](images/1.png)
 ![img2](images/2.png)
