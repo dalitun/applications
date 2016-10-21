@@ -11,14 +11,12 @@ parameters:
     type: string
 
   flavor_name:
-    default: t1.cw.tiny
+    default: n1.cw.highcpu-2
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
     constraints:
       - allowed_values:
-        - t1.cw.tiny
-        - s1.cw.small-1
         - n1.cw.highcpu-2
         - n1.cw.highcpu-4
         - n1.cw.highcpu-8
@@ -36,7 +34,7 @@ parameters:
     description: desktop_password
     label: desktop_password
     type: string
-    hidden: true
+
 resources:
   network:
     type: OS::Neutron::Net
@@ -77,7 +75,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: {{ result_img_id }}
+      image: 264cb6fe-96bc-4653-b4a8-663cbe63dfec
       flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
@@ -88,8 +86,10 @@ resources:
         str_replace:
           template: |
                   #!/bin/bash
-                  mkdir -p .nx/config
-                  cp -p  .ssh/authorized_keys .nx/config/authorized.crt
+                  wget http://download.nomachine.com/download/5.1/Linux/nomachine_5.1.54_1_amd64.deb
+                  sudo dpkg -i /home/cloud/nomachine_5.1.54_1_amd64.deb
+                  mkdir -p /home/cloud/.nx/config
+                  curl http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key > /home/cloud/.nx/config/authorized.crt
                   sudo su - root -c "echo cloud:$desktop_password | chpasswd"
           params:
                 $desktop_password: { get_param: desktop_password }
