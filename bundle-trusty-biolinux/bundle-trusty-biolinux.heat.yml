@@ -88,8 +88,8 @@ resources:
         str_replace:
           template: |
                   #!/bin/bash
-                  mkdir -p /.nx/config
-                  cp -p  .ssh/authorized_keys  .nx/config/authorized.crt
+                  mkdir -p .nx/config
+                  cp -p  .ssh/authorized_keys .nx/config/authorized.crt
                   sudo su - root -c "echo cloud:$desktop_password | chpasswd"
           params:
                 $desktop_password: { get_param: desktop_password }
