@@ -1,4 +1,4 @@
-# Instance Autoscaling  via zabbix of MyCloudManager:
+# Instance Autoscaling  via Zabbix of MyCloudManager:
 ![logo](img/images-2.jpg) ![zabbix](img/zabbix_logo.png) ![mcm](img/mycloudmanager.png)
 
 Auto-scaling, also spelled autoscaling, is a cloud computing service feature that automatically adds or removes compute resources depending upon actual usage. Auto-scaling is sometimes referred to as automatic elasticity.
