@@ -260,10 +260,9 @@ rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
 **Configuration autoscaling via une alerte zabbix**
 
-#### Ajouter des agents
+#### Ajouter l'agent Zabbix pour les noeuds
 
-Installer l'agent Zabbix dans les instances que vous souhaitez monitorer.
-![mcm](img/ajouterinstances.png)
+Voir l'article [bundle-xenial-zabbix](https://github.com/dalitun/applications/tree/master/bundle-xenial-zabbix).
 
 #### Mettre à jour le template OS Linux Zabbix
 

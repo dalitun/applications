@@ -256,10 +256,10 @@ swift upload your_back_contenair /var/cache/mylvmbackup/backup/*
 rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
 **Configuration autoscaling via MyCloudManager Zabbix:**
-#### Add nodes to MyCloudManager 's Zabbix
 
-Install zabbix agent in instances via the web interface of MyCloudManager.
- ![mcm](img/ajouterinstances.png)
+#### Add Zabbix Agent to nodes.
+
+See [bundle-xenial-zabbix](https://github.com/dalitun/applications/tree/master/bundle-xenial-zabbix) article.
 
 #### Update OS Linux Zabbix template
 
