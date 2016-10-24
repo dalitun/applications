@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 # 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers avec autoscaling d'instance via un evenement Zabbix #
+=======
+<<<<<<< HEAD
+# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers avec autoscaling via alerte Zabbix #
+=======
+# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers avec autoscaling d'instance via un evenement Zabbix de MyCloudManager #
+>>>>>>> 1128bd6f177aa1bd80847b617f86b5978fef425a
+>>>>>>> db6959fb009cb18e48eb1efcfa7aff542a1ff8e4
 
 ## Episode 27 : Blueprint 3 tiers avec autoscaling d'instance via un evenement Zabbix
 
@@ -30,6 +38,7 @@ Voici le schema d'architecture :
  - Openjdk 8
  - Tomcat 9
  - Nginx 1.10
+ - Zabbix 3.2
 
 ### Les pré-requis
 
@@ -69,10 +78,8 @@ via l'url https://www.cloudwatt.com/fr/applications/blueprint.html cliquez ensui
 
 **SSH Keypair :** Votre key pair Cloudwatt.
 
-**router-id mycloudmanager :** Id du routeur MyCloudManger.
+**router-id Stack-Zabbix :** Id du routeur Zabbix.
 
-**mcm public key :** Clé public fournie par MyCloudManger.
-voici comment la récupérer :
 
 Connectez en ssh sur le noeud master de votre MyCloudManager puis tapez cette commande.
 
@@ -265,9 +272,100 @@ mylvmbackup --user=root --mycnf=/etc/mysql/my.cnf --vgname=vg0 --lvname=global -
 swift upload your_back_contenair /var/cache/mylvmbackup/backup/*
 rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
-**Configuration autoscaling via zabbix de myCloudManager:**
+**Configuration autoscaling via une alerte zabbix**
 
-Cliquez sur ce [lien](https://github.com/dalitun/applications/blob/master/autoscaling-zabbix-mcm/README.md).
+#### Ajouter des agents
+
+Installer l'agent Zabbix dans les instances que vous souhaitez monitorer.
+![mcm](img/ajouterinstances.png)
+
+#### Mettre à jour le template OS Linux Zabbix
+
+Mettez à jour le `template OS Linux`, ce template contient un nouveau `item` ,deux nouveaux `triggers` et deux nouveaux `macros` afin de calculer  le pourcentage d'utilisation des CPU(s) par minute.
+
+Cliquez sur `Configuration` puis sur `Templates`.
+
+![template1](img/updatetemp1.png)
+
+Cliquez sur `Import`, sélectionnez le template `template_os_linux.xml`et cliquez sur `Import`.
+
+![template2](img/updatetemp2.png)
+
+#### Créer les deux Actions scale up et scale down
+
+D'abord vous devez disposer des urls de scale up et down que vous retrouverez dans la partie Output de votre stack autoscaling de la console horizon Cloudwatt ou via les commandes CLI suivantes:
+
+  - Url de scale up :
+
+~~~bash
+openstack stack output show -f json `nom_de_votre_stack` scale_up_url | jq '.output_value'
+~~~
+
+  - Url de scale down :
+
+~~~bash
+openstack stack output show -f json `nom_de_votre_stack` scale_dn_url | jq '.output_value'
+~~~
+
+A présent nous pouvons passer aux étapes de scale UP et scale Down.
+
+* Créer un `host groups` qui représente vos instances.
+
+![action1](img/hostgroups.png)
+
+* Créer une action de scale down (pour scale up faites la même chose mais avec l'URL scale UP donnée en sortie de votre stack) et
+ ajouter les conditions souhaitées.
+
+![action2](img/action1.png)
+
+* Ajouter l'opération souhaitée.
+
+![action3](img/action2.png)
+
+
+Afin de créer l'action dans Zabbix de scale up ou down.
+
+* Récupérer via votre CLI vos identifiant openstack que vous devriez avec copier dans le fichier .profile de votre user courant ainsi que votre URL de scale (up ou down), former le block ci-dessous.
+
+~~~bash
+curl -k -X POST 'url de scaling down ou scaling up'
+~~~
+
+* Copiez à présent le tout dans la partie `Command` de Zabbix comme dans l'exemple ci-dessous.
+
+![action4](img/action3.png)
+
+Maintenant votre action est bien créée.
+
+![action5](img/action4.png)
+
+#### Pour tester le scaling up et scaling down, essayez de `Stresser` (faire monter en charge) vos instances , en tapant la commande suivante dans les serveurs:
+
+ ~~~bash
+ $ sudo apt-get install stress
+ $ stress --cpu 90 --io 2 --vm 2 --vm-bytes 512M --timeout 600
+ ~~~
+
+N'oubliez pas d'ajouter chaque nouvelle instance apparue dans le `Host Group` du zabbix afin de la monitorer.
+
+
+#### Comment customiser votre template
+
+Dans cet article on a utilisé comme item `system.cpu.util[,,avg1]` pour calculer en pourcentage le moyen d'utlisation de CPU(s).
+Vous pouvez vous baser sur d'autres items (calculer l'usage de RAM ou disque ...) pour avoir l'autoscaling.
+Voilà [une liste des items](https://www.zabbix.com/documentation/2.0/manual/config/items/itemtypes/zabbix_agent)
+
+* Pour créer un item.
+
+![item](img/item.png)
+
+* Vous pouvez aussi changer les macros ou en créer autres.
+
+![macro](img/macro.png)
+
+* Vous pouvez aussi créer un trigger.
+
+![triggers](img/triggers.png)
 
 ## So watt ?
 
@@ -282,6 +380,7 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 * [ Tomcat Documentation](http://tomcat.apache.org/)
 * [ Nodejs Documentation](https://nodejs.org/en/)
 * [ Nginx Documentation](https://www.nginx.com/resources/wiki/)
-
+* [ Autoscaling ](https://dev.cloudwatt.com/fr/blog/passez-votre-infrastructure-openstack-a-l-echelle-avec-heat.html)
+* [ Zabbix](https://www.zabbix.com/documentation/3.0/manual/introduction/features)
 ----
 Have fun. Hack in peace.
