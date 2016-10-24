@@ -1,5 +1,5 @@
 heat_template_version: 2013-05-23
-description: All-in-one Blueprint 3-tier
+description: All-in-one Blueprint 3-tier AutoScaling
 parameter_groups:
  - label: General parameters
    parameters:
@@ -40,7 +40,6 @@ parameters:
           - Ubuntu 16.04
           - Debian Jessie
           - Centos 7.2
-
  Application_type:
     default: tomcat
     description: Application type
