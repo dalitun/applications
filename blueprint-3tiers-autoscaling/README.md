@@ -1,14 +1,7 @@
-<<<<<<< HEAD
-# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers avec autoscaling d'instance via un evenement Zabbix #
-=======
-<<<<<<< HEAD
-# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers avec autoscaling via alerte Zabbix #
-=======
-# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers avec autoscaling d'instance via un evenement Zabbix de MyCloudManager #
->>>>>>> 1128bd6f177aa1bd80847b617f86b5978fef425a
->>>>>>> db6959fb009cb18e48eb1efcfa7aff542a1ff8e4
 
-## Episode 27 : Blueprint 3 tiers avec autoscaling d'instance via un evenement Zabbix
+# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers avec autoscaling via alerte Zabbix #
+
+## Episode 27 : Blueprint 3 tiers avec autoscaling d'instance via alerte Zabbix
 
 Ce blueprint va vous aider à mettre en place une architecture 3-tiers avec un autoscaling group via un evenement Zabbix.
 Nous avons automatisé le déploiement des différents noeuds composant l'architecture.
@@ -79,13 +72,6 @@ via l'url https://www.cloudwatt.com/fr/applications/blueprint.html cliquez ensui
 **SSH Keypair :** Votre key pair Cloudwatt.
 
 **router-id Stack-Zabbix :** Id du routeur Zabbix.
-
-
-Connectez en ssh sur le noeud master de votre MyCloudManager puis tapez cette commande.
-
-~~~bash
-$ etcdctl get /ssh/key.pub
-~~~
 
 **Artefact in zip ,git, tar.gz or war :** Mettez l'url de l'artifact de votre application, il faut qu'il soit en git, zip ou tar.gz pour les applications php et nodejs ou en war pour les applications java.
 
