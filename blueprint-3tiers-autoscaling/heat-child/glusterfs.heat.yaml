@@ -21,25 +21,8 @@ parameters:
   flavor_name:
     type: string
     label: Instance Type (Flavor)
-  mcm_public_key:
-    type: string
-    label: cloud init
+
 resources:
-
-  cloud_init:
-    type: OS::Heat::CloudConfig
-    properties:
-      cloud_config:
-          #cloud-config
-          ssh_authorized_keys:
-            - { get_param: mcm_public_key }
-          packages:
-            - jq
-            - curl
-          runcmd:
-            - [ sh, -xc, 'curl -s -H "Content-Type: application/json" -XPOST -d "{\"user\": \"cloud\"}" http://10.0.1.250:30000/api/servers/register/$(curl -s http://169.254.169.254/openstack/latest/meta_data.json| jq -r .uuid)' ]
-
-
   postboot:
     type: OS::Heat::SoftwareConfig
     properties:
@@ -68,7 +51,6 @@ resources:
     type: OS::Heat::MultipartMime
     properties:
       parts:
-       - config: { get_resource: cloud_init }
        - config: { get_resource: postboot }
 
 

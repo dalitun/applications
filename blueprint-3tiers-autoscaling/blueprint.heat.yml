@@ -4,8 +4,7 @@ parameter_groups:
  - label: General parameters
    parameters:
      - keypair_name
-     - router_id_mcm
-     - mcm_public_key
+     - router_id_zabbix
      - os_type
      - glusterfs_flavor_name
  - label: front nodes parameters
@@ -144,12 +143,10 @@ parameters:
           - n1.cw.standard-8
           - n1.cw.standard-12
           - n1.cw.standard-16
- router_id_mcm:
-    label: router_id mycloudmanager
+ router_id_zabbix:
+    label: router_id Zabbix
     type: string
- mcm_public_key:
-    type: string
-    label: mcm public key
+
 
 resources:
 
@@ -184,13 +181,13 @@ resources:
   router1_interface:
     type: OS::Neutron::RouterInterface
     properties:
-      router_id: { get_param : router_id_mcm }
+      router_id: { get_param : router_id_zabbix }
       subnet_id: { get_resource : nodes_subnet }
 
   router2_interface:
     type: OS::Neutron::RouterInterface
     properties:
-      router_id: { get_param : router_id_mcm }
+      router_id: { get_param : router_id_zabbix }
       subnet_id: { get_resource : db_subnet }
 
 
@@ -254,7 +251,6 @@ resources:
       keypair_name: { get_param: keypair_name }
       flavor_name: { get_param: glusterfs_flavor_name }
       os_type: { get_param: os_type }
-      mcm_public_key: { get_param: mcm_public_key }
 
 
   db_nodes:
@@ -287,7 +283,6 @@ resources:
           db_admin: { get_param: database_admin }
           db_admin_password: { get_param: database_admin_password }
           clusters_size:  { get_param: number_db_clusters }
-          mcm_public_key: { get_param: mcm_public_key }
 
 
   web_nodes:
@@ -309,7 +304,7 @@ resources:
           os_type: { get_param: os_type }
           Application_type: { get_param: Application_type }
           Application_source: { get_param: Application_source }
-          mcm_public_key: { get_param: mcm_public_key }
+
 
 
   web_server_scaleup_policy:
