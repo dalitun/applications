@@ -1,6 +1,6 @@
 # 5 Minutes Stacks, episode 27 : Blueprint 3 tier with instance autoscaling  via Zabbix #
 
-## Episode 27 : Blueprint 3 tier with instance autoscaling  via Zabbix 
+## Episode 27 : Blueprint 3 tier with instance autoscaling  via Zabbix
 
 This blueprint will help you to set up a 3-tier architecture.
 We have automated the deployment of various nodes component architecture.
@@ -256,8 +256,96 @@ swift upload your_back_contenair /var/cache/mylvmbackup/backup/*
 rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
 **Configuration autoscaling via MyCloudManager Zabbix:**
+#### Add nodes to MyCloudManager 's Zabbix
 
-Click on this [link](https://github.com/dalitun/applications/blob/master/autoscaling-zabbix-mcm/README-EN.md).
+Install zabbix agent in instances via the web interface of MyCloudManager.
+ ![mcm](img/ajouterinstances.png)
+
+#### Update OS Linux Zabbix template
+
+ Update the Linux OS template, this template contains a new `item`, two new triggers` and two new `macors` in order to calculate the percentage use of the CPU(s) in every minute.
+
+Click on `Configuration` then `Templates`.
+
+ ![template1](img/updatetemp1.png)
+
+ Then select the `template_os_linux.xml`template and click on `Import`.
+
+ ![template2](img/updatetemp2.png)
+
+
+#### Create the both actions scale up and scale down
+
+ First of all you need to have the urls to scale up and down, you find them in the output portion of your stack autoscaling of Cloudwatt horizon console or through the following CLI commands:
+
+   - Url de scale up :
+
+ ~~~bash
+ openstack stack output show -f json `your_stack_name` scale_up_url | jq '.output_value'
+ ~~~
+
+   - Url de scale down :
+
+ ~~~bash
+ openstack stack output show -f json `your_stack_name` scale_dn_url | jq '.output_value'
+ ~~~
+
+Now we can go to scale Up steps and Scale Down.
+
+ * Create `host groups` who represents your instances.
+
+ ![action1](img/hostgroups.png)
+
+ * Create an action of scale down (for scale up do the same things juste your change the URL scale down by URL scale up) and
+add the desired conditions.
+
+ ![action2](img/action1.png)
+
+* Add the desired operation.
+
+ ![action3](img/action2.png)
+
+ In order to create the action in Zabbix to scale up or down.
+
+* Recover your OpenStack identifying via CLI, with that you should copy the profile file of your current user and scale your URL (up or down), form the block below.
+
+~~~bash
+ curl -k -X POST “url de scaling down ou scaling up“
+~~~
+
+ ![action4](img/action3.png)
+
+ Now your action is created.
+
+ ![action5](img/action4.png)
+
+#### For testing the scaling up and scaling down, try `Stress` your instances by typing the following command in the server:
+
+~~~bash
+$ sudo apt-get install stress
+$ stress --cpu 90 --io 2 --vm 2 --vm-bytes 512M --timeout 600
+~~~
+
+Don't forget to add each new stack appeared in the `Host Groupe` of your stack.
+
+#### How to customize your template
+
+In this article we used as `system.cpu.util [,, AVG1]` item in order to calculate cpu usage poucentage.
+You can use others items (usage of RAM or disk ...) for the autoscaling.
+That [a list of items](https://www.zabbix.com/documentation/2.0/manual/config/items/itemtypes/zabbix_agent)
+
+ * For creating item.
+
+![item](img/item.png)
+
+* You can also change or create others.
+
+![macro](img/macro.png)
+
+* You can create a trigger.
+
+![triggers](img/triggers.png)
+
 
 ## So watt ?
 
