@@ -67,17 +67,16 @@ parameters:
     label: SSH Keypair
     description: Keypair to inject in instance
     type: string
-    default: my-keypair-name                <-- Mettez ici le nom de votre keypair
-  desktop_password:
-     description: Mysql password
-     label: Mysql password
-     type: string
-     default: changeme                     <-- Mettez ici le mot de passe de votre base de données
+    default: my-keypair-name            <-- Mettez ici le nom de votre keypair
+    description: desktop_password
+    label: desktop_password
+    type: string
+    default: password                   <-- Mettez ici le mot de passe d'utilsateur cloud Gui
   flavor_name:
     label: Instance Type (Flavor)
     description: Flavor to use for the deployed instance
     type: string
-    default: n2.cw.standard-1
+    default: n2.cw.standard-1            <-- Mettez ici l'identifiant de votre flavor
     constraints:
       - allowed_values:
         - t1.cw.tiny
@@ -108,7 +107,7 @@ $ ./stack-start.sh EXP_STACK
 +--------------------------------------+-----------------+--------------------+----------------------+
 | id                                   | stack_name      | stack_status       | creation_time        |
 +--------------------------------------+-----------------+--------------------+----------------------+
-| ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
+| ee873a3a-a306-4127-8647-4bc80469cec4 | nom_de_votre_stack       | CREATE_IN_PROGRESS | 2016-10-21T11:03:51Z |
 +--------------------------------------+-----------------+--------------------+----------------------+
 ~~~
 
@@ -119,12 +118,12 @@ $ heat resource-list nom_de_votre_stack
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
 | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
+| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2016-10-21T11:03:51Z |
+| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2016-10-21T11:03:52Z |
+| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2016-10-21T11:03:56Z |
+| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2016-10-21T11:03:57Z |
+| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2016-10-21T11:03:00Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2016-10-21T11:03:30Z |
 +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------
 ~~~
 
@@ -159,15 +158,16 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ### Enjoy
 
-Pour accéder à la machine, vous avez 2 choix :
+Pour accéder à la machine, vous avez deux choix :
 
-1) Par ssh.
+1) Via ssh.
 ~~~bash
  $ ssh cloud@floating_ip -i your_key_pair.pem
 ~~~
 
-2) Par client nomachine.
-L'utilsateur est `cloud` et le mot de passe par défaut est `cloudwatt`.
+2) Via le client [nomachine](https://www.nomachine.com/download) pour vous connecter à l'interface graphique GNOME.
+L'utilsateur est `cloud` et le mot de passe ce que vous avez choisi en lanceant la stack.
+les étapes 
 
 ![img1](images/1.png)
 ![img2](images/2.png)
@@ -180,13 +180,6 @@ L'utilsateur est `cloud` et le mot de passe par défaut est `cloudwatt`.
 ![img9](images/9.png)
 ![img10](images/10.png)
 
-
-Je vous conseille de changer le mot de passe par défaut en se connectant par ssh.
-
-~~~bash
-$ssh cloud@floating_ip -i your_key_pair.pem
-$ passwd
-~~~
 
 #### Autres sources pouvant vous intéresser:
 
