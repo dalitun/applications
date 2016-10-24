@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode 27 : Blueprint 3 tier with instance autoscaling  via Zabbix #
+# 5 Minutes Stacks, episode 27 : Blueprint 3 tier with instance autoscaling  via Zabbix alert #
 
-## Episode 27 : Blueprint 3 tier with instance autoscaling  via Zabbix
+## Episode 27 : Blueprint 3 tier with instance autoscaling via Zabbix alert
 
 This blueprint will help you to set up a 3-tier architecture.
 We have automated the deployment of various nodes component architecture.
@@ -28,6 +28,7 @@ Here is the architecture diagram.
  - Openjdk 8
  - Tomcat 9
  - Nginx 1.10
+ - Zabbix 3.2
 
 ## Preparations
 
@@ -66,14 +67,12 @@ Complete this fields and click LAUNCH.
 
 **SSH Keypair :** your key pair.
 
-**router-id mycloudmanager :** MyCloudManger Router Id.
+**router-id Zabbix :** MyCloudManger Router Id.
 
-**mcm public key :** MyCloudManger public key.
-~~~bash
-$ etcdctl get /ssh/key.pub
-~~~
 **Artefact in zip ,git, tar.gz or war :** Put the url artifact of your application, it must be in git, zip or tar.gz for PHP and nodejs applications and war for tomcat applications.
+
 **Application type :** If you choose php, you are going to have apache2 server and php environment, if you choose nodejs you are going to have an environment that runs nodejs applications with reverse proxy nginx and if you choose tomcat you will have a tomcat environment 8 and openjdk8 with nginx as a reverse proxy.
+
 **Flavor Type for nodes :** Web front nodes flavor.
 
 **Number of front nodes :** Number of front web nodes.
@@ -257,7 +256,7 @@ rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
 **Configuration autoscaling via MyCloudManager Zabbix:**
 
-#### Add Zabbix Agent to nodes.
+#### Install Zabbix Agent in nodes.
 
 See [bundle-xenial-zabbix](https://github.com/dalitun/applications/tree/master/bundle-xenial-zabbix) article.
 
@@ -360,6 +359,8 @@ You now have an SSH access point on your virtual machine through the floating-IP
 * [ Tomcat Documentation](http://tomcat.apache.org/)
 * [ Nodejs Documentation](https://nodejs.org/en/)
 * [ Nginx Documentation](https://www.nginx.com/resources/wiki/)
+* [ Autoscaling ](https://dev.cloudwatt.com/fr/blog/passez-votre-infrastructure-openstack-a-l-echelle-avec-heat.html)
+* [ Zabbix](https://www.zabbix.com/documentation/3.0/manual/introduction/features)
 
 ----
 Have fun. Hack in peace.

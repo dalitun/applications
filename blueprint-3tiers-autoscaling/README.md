@@ -224,7 +224,6 @@ rm -rf /var/www/html/*
 **Les deux noeuds Glusterfs:**
 
 Le volume gluster est sous la fome ip:/gluster, pour tester qu'il fonctionne bien ,tapez la commande suivante:
-
 ~~~bash
 gluster volume info
 ~~~
@@ -260,7 +259,7 @@ rm -rf /var/cache/mylvmbackup/backup/*
 ~~~
 **Configuration autoscaling via une alerte zabbix**
 
-#### Ajouter l'agent Zabbix pour les noeuds
+#### Installer l'agent Zabbix dans les noeuds
 
 Voir l'article [bundle-xenial-zabbix](https://github.com/dalitun/applications/tree/master/bundle-xenial-zabbix).
 
