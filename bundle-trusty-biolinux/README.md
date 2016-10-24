@@ -167,17 +167,26 @@ Pour accéder à la machine, vous avez deux choix :
 
 2) Via le client [nomachine](https://www.nomachine.com/download) pour vous connecter à l'interface graphique GNOME.
 L'utilsateur est `cloud` et le mot de passe ce que vous avez choisi en lanceant la stack.
-les étapes 
+
 
 ![img1](images/1.png)
+
 ![img2](images/2.png)
+
 ![img3](images/3.png)
+
 ![img4](images/4.png)
+
 ![img5](images/5.png)
+
 ![img6](images/6.png)
+
 ![img7](images/7.png)
+
 ![img8](images/8.png)
+
 ![img9](images/9.png)
+
 ![img10](images/10.png)
 
 

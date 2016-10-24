@@ -171,26 +171,28 @@ To access the machine, you have 2 choices:
 ~~~
 
 2) By nomachine client.
-User is `cloud` and the default password `cloudwatt`.
+User is `cloud` and and the password that you choose.
 
 ![img1](images/1.png)
+
 ![img2](images/2.png)
+
 ![img3](images/3.png)
+
 ![img4](images/4.png)
+
 ![img5](images/5.png)
+
 ![img6](images/6.png)
+
 ![img7](images/7.png)
+
 ![img8](images/8.png)
+
 ![img9](images/9.png)
+
 ![img10](images/10.png)
 
-
-I advise you to change the default password by logging in via ssh.
-
-~~~bash
-$ssh cloud@floating_ip -i your_key_pair.pem
-$ passwd
-~~~
 
 ### Resources you could be interested in:
 
