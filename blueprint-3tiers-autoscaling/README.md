@@ -1,8 +1,8 @@
-# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers avec autoscaling d'instance via un evenement Zabbix de MyCloudManager #
+# 5 Minutes Stacks, épisode 27 : Blueprint 3 tiers avec autoscaling d'instance via un evenement Zabbix #
 
-## Episode 27 : Blueprint 3 tiers avec autoscaling d'instance via un evenement Zabbix de MyCloudManager
+## Episode 27 : Blueprint 3 tiers avec autoscaling d'instance via un evenement Zabbix
 
-Ce blueprint va vous aider à mettre en place une architecture 3-tiers avec un autoscaling group.
+Ce blueprint va vous aider à mettre en place une architecture 3-tiers avec un autoscaling group via un evenement Zabbix.
 Nous avons automatisé le déploiement des différents noeuds composant l'architecture.
 A travers ce blueprint nous vous proposons de mettre en place des frontaux web sur la forme de groupe Autoscaling, du glusterfs et un cluster de base de données.
 Vous aurez le choix de déployer sur les frontaux web différentes applications (Apache & php, tomcat 8 ou nodejs).

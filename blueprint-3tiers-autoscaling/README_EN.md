@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode 27 : Blueprint 3 tier with instance autoscaling  via Zabbix of MyCloudManager #
+# 5 Minutes Stacks, episode 27 : Blueprint 3 tier with instance autoscaling  via Zabbix #
 
-## Episode 27 : Blueprint 3 tier with instance autoscaling  via Zabbix of MyCloudManager
+## Episode 27 : Blueprint 3 tier with instance autoscaling  via Zabbix 
 
 This blueprint will help you to set up a 3-tier architecture.
 We have automated the deployment of various nodes component architecture.
