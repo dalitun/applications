@@ -190,7 +190,7 @@ L'utilsateur est `cloud` et le mot de passe ce que vous avez choisi en lanceant 
 ![img10](images/10.png)
 
 
-#### Autres sources pouvant vous intéresser:
+### Autres sources pouvant vous intéresser:
 
 * [BioLinux homepage](http://environmentalomics.org/bio-linux/)
 
