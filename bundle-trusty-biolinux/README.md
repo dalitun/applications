@@ -187,7 +187,7 @@ L'utilsateur est **cloud** et le mot de passe par defaut **cloud**.
 
 Pour changer le mot de passe de l'ulisateur cloud tapez la commande suivante.
 ~~~ bash
-$ passwd cloud
+$ sudo passwd cloud
 ~~~
 
 ### Autres sources pouvant vous intéresser:

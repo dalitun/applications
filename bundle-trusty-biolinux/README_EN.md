@@ -190,7 +190,7 @@ User is **cloud** and the default password **cloud**
 
 In order to change cloud password use this command :
 ~~~bash
-$ passwd cloud
+$ sudo passwd cloud
 ~~~
 
 ### Resources you could be interested in:
