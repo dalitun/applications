@@ -68,10 +68,6 @@ parameters:
     description: Keypair to inject in instance
     type: string
     default: my-keypair-name            <-- Mettez ici le nom de votre keypair
-    description: desktop_password
-    label: desktop_password
-    type: string
-    default: password                   <-- Mettez ici le mot de passe d'utilsateur cloud Gui
   flavor_name:
     label: Instance Type (Flavor)
     description: Flavor to use for the deployed instance
@@ -166,7 +162,7 @@ Pour accéder à la machine, vous avez deux choix :
 ~~~
 
 2) Via le client [nomachine](https://www.nomachine.com/download) pour vous connecter à l'interface graphique GNOME.
-L'utilsateur est `cloud` et le mot de passe ce que vous avez choisi en lanceant la stack.
+L'utilsateur est `cloud` et le mot de passe par defaut `cloud`.
 
 
 ![img1](images/1.png)
@@ -189,6 +185,10 @@ L'utilsateur est `cloud` et le mot de passe ce que vous avez choisi en lanceant 
 
 ![img10](images/10.png)
 
+Pour changer le mot de passe de l'ulisateur cloud tapez la commande suivante.
+~~~ bash
+$ passwd cloud
+~~~
 
 ### Autres sources pouvant vous intéresser:
 

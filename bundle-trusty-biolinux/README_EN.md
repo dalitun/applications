@@ -63,11 +63,6 @@ Bio-Linux 8 is a powerful, free bioinformatics workstation platform that can be 
      default: keypair_name        <-- Indicate here your keypair
      description: Keypair to inject in instances
      type: string
-  desktop_password:
-     description: Mysql password
-     label: Mysql password
-     type: string
-     default: changeme            <-- Indicate here your database password
 flavor_name:
      default: n2.cw.standard-1              <-- indicate here the flavor size
      description: Flavor to use for the deployed instance
@@ -171,7 +166,7 @@ To access the machine, you have 2 choices:
 ~~~
 
 2) By nomachine client.
-User is `cloud` and and the password that you choose.
+User is `cloud` and the default password `cloud`
 
 ![img1](images/1.png)
 
@@ -193,6 +188,10 @@ User is `cloud` and and the password that you choose.
 
 ![img10](images/10.png)
 
+In order to change cloud password use this command :
+~~~bash
+$ passwd cloud
+~~~
 
 ### Resources you could be interested in:
 

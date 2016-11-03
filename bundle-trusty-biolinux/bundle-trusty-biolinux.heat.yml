@@ -30,11 +30,6 @@ parameters:
         - n1.cw.highmem-4
         - n1.cw.highmem-8
         - n1.cw.highmem-12
-  desktop_password:
-    description: desktop_password
-    label: desktop_password
-    type: string
-    hidden: true
 
 resources:
   network:
@@ -83,18 +78,10 @@ resources:
       security_groups:
         - { get_resource: security_group }
       user_data_format: RAW
-      user_data:
-        str_replace:
-          template: |
+      user_data: |
                   #!/bin/bash
-                  wget http://download.nomachine.com/download/5.1/Linux/nomachine_5.1.54_1_amd64.deb
-                  sudo dpkg -i nomachine_5.1.54_1_amd64.deb
                   mkdir -p /home/cloud/.nx/config
                   curl http://169.254.169.254/latest/meta-data/public-keys/0/openssh-key > /home/cloud/.nx/config/authorized.crt
-                  sudo su - root -c "echo cloud:$desktop_password | chpasswd"
-          params:
-                $desktop_password: { get_param: desktop_password }
-
 
 outputs:
   floating_ip_url:
