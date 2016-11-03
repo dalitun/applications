@@ -166,7 +166,7 @@ To access the machine, you have 2 choices:
 ~~~
 
 2) By nomachine client.
-User is `cloud` and the default password `cloud`
+User is **cloud** and the default password **cloud**
 
 ![img1](images/1.png)
 

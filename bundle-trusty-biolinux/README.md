@@ -162,7 +162,7 @@ Pour accéder à la machine, vous avez deux choix :
 ~~~
 
 2) Via le client [nomachine](https://www.nomachine.com/download) pour vous connecter à l'interface graphique GNOME.
-L'utilsateur est `cloud` et le mot de passe par defaut `cloud`.
+L'utilsateur est **cloud** et le mot de passe par defaut **cloud**.
 
 
 ![img1](images/1.png)
