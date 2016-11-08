@@ -11,7 +11,7 @@ parameters:
     type: string
 
   flavor_name:
-    default: n1.cw.highcpu-2
+    default: n1.cw.standard-1
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
