@@ -20,7 +20,7 @@ Bio-Linux 8 est une plate-forme puissante bioinformatique libres, poste de trava
 * un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
-Par défaut, le script propose un déploiement sur une instance de type "Small" (n1.cw.standard-1). Il
+Par défaut, le script propose un déploiement sur une instance de type "Standard" (n1.cw.standard-1). Il
 existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 Vous pouvez ajuster les parametres de la stack à votre goût.
@@ -74,20 +74,24 @@ parameters:
     label: Instance Type (Flavor)
     description: Flavor to use for the deployed instance
     type: string
-    default: n2.cw.standard-1            <-- Mettez ici l'identifiant de votre flavor
+    default: n1.cw.standard-1            <-- Mettez ici l'identifiant de votre flavor
     constraints:
       - allowed_values:
-        - t1.cw.tiny
-        - s1.cw.small-1
-        - n2.cw.standard-1
-        - n2.cw.standard-2
-        - n2.cw.standard-4
-        - n2.cw.standard-8
-        - n2.cw.standard-16
-        - n2.cw.highmem-2
-        - n2.cw.highmem-4
-        - n2.cw.highmem-8
-        - n2.cw.highmem-12
+        - n1.cw.highcpu-2
+        - n1.cw.highcpu-4
+        - n1.cw.highcpu-8
+        - n1.cw.standard-1
+        - n1.cw.standard-2
+        - n1.cw.standard-4
+        - n1.cw.standard-8
+        - n1.cw.standard-12
+        - n1.cw.standard-16
+        - n1.cw.highmem-2
+        - n1.cw.highmem-4
+        - n1.cw.highmem-8
+        - n1.cw.highmem-12
+
+resources:
 [...]
 ~~~
 ### Démarrer la stack
