@@ -189,9 +189,9 @@ ne fois tout ceci est fait vous pouvez vous connecter sur l'inteface de roundcub
 
 Vous devez arriver sur ces pages :
 
-![auth](./img/auth.jpg)
+![auth](./img/webmail.jpg)
 
-![inbox](./img/interface.jpg)
+![inbox](./img/webmail1.jpg)
 
 user1 envoie un email à user2.
 
