@@ -74,37 +74,71 @@ C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par 
 
 ~~~ yaml
 heat_template_version: 2013-05-23
+description: All-in-one Mail stack
 
+parameter_groups:
+ - label: General parameters
+   parameters:
+     - keypair_name
+     - flavor_name
+ - label: Mail parameters
+   parameters:
+     - hostname
+     - mail_domain
+     - admin_pass
+     - floating_ip_id
 
-description: All-in-one Web mail stack
-
-
+ - label: Mailjet parameters
+   parameters:
+     - mailjet_smtp
+     - mailjet_username
+     - mailjet_password
 parameters:
   keypair_name:
-    label: SSH Keypair
     description: Keypair to inject in instance
+    label: SSH Keypair
     type: string
-    default: my-keypair-name                <-- Mettez ici le nom de votre keypair
-  mysql_password:
-     description: Mysql password
-     label: Mysql password
-     type: string
-     default: changeme                     <-- Mettez ici le mot de passe de votre base de données
-  postfix_admin_pass:
-     description: postfixadmin password
-     label: postfixadmin password
-     type: string
-     default: changeme                    <-- Mettez ici le mot de passe de votre admin postfix
+  admin_pass:
+    description: admin password
+    label: admin password
+    type: string
+    hidden: true
   mail_domain:
-     description: mail domain
-     label: mail domain
+    description: mail domain
+    label: mail domain
+    type: string
+    default: dalitun.fr
+  hostname:
+     description: host name machine
+     label: hostname
      type: string
-     default: exemple.com                 <-- Mettez ici votre nom de domaine
+     default: mail
+  floating_ip_id:
+     description: floating ip id
+     label: floating ip id
+     type: string
+     default: 5e1ac44c-4513-4d80-8860-68e80fb6fd8c
+  smtp_server:
+     description: mailjet_smtp
+     label: relay SMTP
+     type: string
+     default: in-v3.mailjet.com
+  smtp_username:
+     description: Username (API Key)
+     label: Username (API Key)
+     type: string
+     default: xxxxxxxxxxxxxxxxxxxxxxxxxxx
+  smtp_password:
+     description: Password (Secret Key)
+     label: Password (Secret Key)
+     type: string
+     hidden: true
+     default: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
   flavor_name:
-    label: Instance Type (Flavor)
+    default: n2.cw.standard-1
     description: Flavor to use for the deployed instance
     type: string
-    default: n2.cw.standard-1
+    label: Openstack Flavor
     constraints:
       - allowed_values:
         - t1.cw.tiny
@@ -117,7 +151,7 @@ parameters:
         - n2.cw.highmem-2
         - n2.cw.highmem-4
         - n2.cw.highmem-8
-        - n2.cw.highmem-12
+        - n2.cw.highmem-16
 [...]
 ~~~
 ### Démarrer la stack

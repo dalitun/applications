@@ -18,11 +18,11 @@ parameter_groups:
      - admin_pass
      - floating_ip_id
 
- - label: Mailjet parameters
+ - label: Relay smtp parameters
    parameters:
-     - mailjet_smtp
-     - mailjet_username
-     - mailjet_password
+     - smtp_server
+     - smtp_username
+     - smtp_password
 parameters:
   keypair_name:
     description: Keypair to inject in instance
@@ -48,17 +48,17 @@ parameters:
      label: floating ip id
      type: string
      default: 5e1ac44c-4513-4d80-8860-68e80fb6fd8c
-  mailjet_smtp:
-     description: mailjet_smtp
+  smtp_server:
+     description: smtp server Mailjet or SenGrid
      label: relay SMTP
      type: string
      default: in-v3.mailjet.com
-  mailjet_username:
+  smtp_username:
      description: Username (API Key)
      label: Username (API Key)
      type: string
      default: a4f71dca9d9001933b4728ab4793713d
-  mailjet_password:
+  smtp_password:
      description: Password (Secret Key)
      label: Password (Secret Key)
      type: string
@@ -139,18 +139,18 @@ resources:
                   password_admin: '$admin_pass'
                   email_admin: 'admin@$mail_domain'
                   mail_domain: '$mail_domain'
-                  mailjet_smtp: '$mailjet_smtp'
-                  mailjet_username: '$mailjet_username'
-                  mailjet_password: '$mailjet_password'
+                  smtp_server: '$smtp_server'
+                  smtp_username: '$smtp_username'
+                  smtp_password: '$smtp_password'
                   EOF
                   ansible-playbook ~cloud/conf.yml -e @/etc/ansible/mail-vars.yml
 
           params:
                 $admin_pass: { get_param: admin_pass }
                 $mail_domain: { get_param: mail_domain }
-                $mailjet_smtp: { get_param: mailjet_smtp }
-                $mailjet_username: { get_param:  mailjet_username }
-                $mailjet_password: { get_param: mailjet_password }
+                $smtp_server: { get_param: smtp_server }
+                $smtp_username: { get_param:  smtp_username }
+                $smtp_password: { get_param: smtp_password }
 
   server_init:
     type: OS::Heat::MultipartMime
