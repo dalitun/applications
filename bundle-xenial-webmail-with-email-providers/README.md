@@ -207,7 +207,7 @@ Suivez les etapes suivantes
 
 ![mailjet1](./img/mailjet1.png)
 
-Cliquez Cliquez Mailjet >Account >Sender addresses
+Cliquez Mailjet >Account >Sender addresses
 
 
 ![mailjet2](./img/mailjet2.png)
