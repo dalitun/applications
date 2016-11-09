@@ -108,6 +108,10 @@ resources:
         - { direction: egress, protocol: TCP }
         - { direction: egress, protocol: UDP }
 
+  floating_ip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      floating_network_id: 6ea98324-0f14-49f6-97c0-885d1b8dc517
 
   cloud_init:
     type: OS::Heat::CloudConfig
@@ -184,7 +188,7 @@ resources:
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation
     properties:
-      floating_ip: { get_param: floating_ip_id }
+      floating_ip: { get_resource: floating_ip }
       server_id: { get_resource: server }
 
 outputs:

@@ -42,9 +42,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le dépôt cloné, vous trouverez le répertoire `bundle-trusty-webmail/`
+Une fois le dépôt cloné, vous trouverez le répertoire `bundle-xenial-webmail-with-email-providers/`
 
-* `bundle-trusty-webmail.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
+* `bundle-xenial-webmail-with-email-providers.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 * `stack-start.sh`: Scipt de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
 * `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
@@ -68,68 +68,47 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 
 ### Ajuster les paramètres
 
-Dans le fichier `bundle-trusty-webmail.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster
-est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+Dans le fichier `bundle-xenial-webmail-with-email-providers.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
-description: All-in-one Mail stack
-
-parameter_groups:
- - label: General parameters
-   parameters:
-     - keypair_name
-     - flavor_name
- - label: Mail parameters
-   parameters:
-     - hostname
-     - mail_domain
-     - admin_pass
-     - floating_ip_id
-
- - label: Mailjet parameters
-   parameters:
-     - mailjet_smtp
-     - mailjet_username
-     - mailjet_password
+[...]
 parameters:
   keypair_name:
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
+    default: my-keypair-name                 <-- Mettez ici le nom de votre keypair
   admin_pass:
     description: admin password
     label: admin password
     type: string
-    defaulte: your_password
-    hidden: true
+    default: changeme                         <-- Mettez ici le mot de passe de votre base de données
   mail_domain:
     description: mail domain
     label: mail domain
     type: string
-    default: exemple.fr
+    default: exemple.com                       <-- Mettez ici votre nom de domaine
   hostname:
      description: host name machine
      label: hostname
      type: string
-     default: mail
+     default: mail                             <-- Mettez ici votre nom de la machine
   smtp_server:
-     description: mailjet_smtp
+     description: smtp server Mailjet or SenGrid
      label: relay SMTP
      type: string
-     default: in-v3.mailjet.com
+     default: in-v3.mailjet.com                <-- Mettez ici le nom du serveur smtp relay
   smtp_username:
      description: Username (API Key)
      label: Username (API Key)
      type: string
-     default: xxxxxxxxxxxxxxxxxxxxxxxxxxx
+     default: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx    <-- Mettez ici l'username
   smtp_password:
      description: Password (Secret Key)
      label: Password (Secret Key)
      type: string
-     hidden: true
-     default: xxxxxxxxxxxxxxxxxxxxxxxxxxxx
+     default: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   <-- Mettez ici le password
   flavor_name:
     default: n2.cw.standard-1
     description: Flavor to use for the deployed instance
@@ -194,8 +173,8 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
 
-1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-mail](https://github.com/cloudwatt/applications/tree/master/bundle-trusty-webmail)
-2.	Cliquez sur le fichier nommé `bundle-trusty-webmail.heat.yml`
+1.	Allez sur le Github Cloudwatt dans le répertoire [applications/bundle-trusty-mail](https://github.com/cloudwatt/applications/tree/master/bundle-xenial-webmail-with-email-providers)
+2.	Cliquez sur le fichier nommé `bundle-xenial-webmail-with-email-providers.heat.yml`
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
@@ -223,7 +202,7 @@ Vous devez arriver sur ces pages :
 
 ![inbox](./img/webmail2.png)
 
-Avant de commencer à envoyer et recevoir vos emails Autorisez les emails à partir de votre plateforme email providers dans notre exemple Mailjet.
+Avant de commencer à envoyer et recevoir vos emails Autorisez les emails à partir de la plateforme d'email providers dans notre exemple Mailjet.
 Suivez les etapes suivantes
 
 ![mailjet1](./img/mailjet1.png)
