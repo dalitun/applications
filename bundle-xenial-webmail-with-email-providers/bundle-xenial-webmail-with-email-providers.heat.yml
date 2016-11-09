@@ -164,7 +164,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 90ff07b6-9794-4030-bf9c-742370ccd41a
+      image: e7c8f3a4-eaf2-4ea4-9461-4aba6847e356
       flavor: { get_param: flavor_name }
       name:
         str_replace:
@@ -189,7 +189,7 @@ resources:
 
 outputs:
   floating_ip_url:
-    description: MAIL URL
+    description: WEBMAIL URL
     value:
       str_replace:
         template: http://$hostname.$mail_domain

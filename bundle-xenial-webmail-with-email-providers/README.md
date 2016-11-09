@@ -102,22 +102,18 @@ parameters:
     description: admin password
     label: admin password
     type: string
+    defaulte: your_password
     hidden: true
   mail_domain:
     description: mail domain
     label: mail domain
     type: string
-    default: dalitun.fr
+    default: exemple.fr
   hostname:
      description: host name machine
      label: hostname
      type: string
      default: mail
-  floating_ip_id:
-     description: floating ip id
-     label: floating ip id
-     type: string
-     default: 5e1ac44c-4513-4d80-8860-68e80fb6fd8c
   smtp_server:
      description: mailjet_smtp
      label: relay SMTP
@@ -227,17 +223,22 @@ Vous devez arriver sur ces pages :
 
 ![inbox](./img/webmail2.png)
 
-user1 envoie un email à user2.
+Avant de commencer à envoyer et recevoir vos emails Autorisez les emails à partir de votre plateforme email providers dans notre exemple Mailjet.
+Suivez les etapes suivantes
 
-![inbox1](./img/sent.jpg)
+![mailjet1](./img/mailjet1.png)
 
-user2 reçoit l'email de user1.
+![mailjet2](./img/mailjet2.png)
 
-![inbox](./img/receive.jpg)
+![mailjet3](./img/mailjet3.png)
+
+Puis confimer l'email réçu.
 
 
+Enfin vous pouvez envoyer et recevoir vos emails.
 
-Pour ajouter des utilisateurs(des boites emails), vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `https://hostname.mail_domain/postfixadmin` ou `https://floatingIP/postfixadmin`  pour s'authentifier vous utilisez le login **admin@hostname.mail_domain** et le password  **password_admin**:
+
+Pour ajouter des utilisateurs(des boites emails), vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `https://hostname.mail_domain/postfixadmin` ou `https://floatingIP/postfixadmin`  pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**:
 
 ![postfixadmin](./img/postfixadmin.png)
 
