@@ -194,7 +194,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 
 ## Enjoy
-ne fois tout ceci est fait vous pouvez vous connecter sur l'inteface de roundcube via un navigateur web à partir de cet url `http://hostname.mail_domain/` ou `http://floatingIP/` afin d'ajouter votre domaines et emails pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**:
+Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de roundcube via un navigateur web à partir de cet url `http://hostname.mail_domain/` ou `http://floatingIP/` pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**:
 
 Vous devez arriver sur ces pages :
 
@@ -202,17 +202,22 @@ Vous devez arriver sur ces pages :
 
 ![inbox](./img/webmail2.png)
 
-Avant de commencer à envoyer et recevoir vos emails Autorisez les emails à partir de la plateforme d'email providers dans notre exemple Mailjet.
+Avant de commencer à envoyer et recevoir vos emails, Autorisez la boix email à partir de la plateforme d'email provider (dans notre exemple Mailjet).
 Suivez les etapes suivantes
 
 ![mailjet1](./img/mailjet1.png)
 
+Cliquez Cliquez Mailjet >Account >Sender addresses
+
+
 ![mailjet2](./img/mailjet2.png)
+
+Cliquez Mailjet >Account >Sender addresses> Add
+
 
 ![mailjet3](./img/mailjet3.png)
 
-Puis confimer l'email réçu.
-
+Puis confimez l'email réçu par Mailjet.
 
 Enfin vous pouvez envoyer et recevoir vos emails.
 
