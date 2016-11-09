@@ -192,7 +192,7 @@ outputs:
     description: MAIL URL
     value:
       str_replace:
-      template: http://$hostname.$mail_domain
-      params:
-          $hostname: { get_param: hostname }
-          $mail_domain: { get_param: mail_domain }
+        template: http://$hostname.$mail_domain
+        params:
+           $hostname: { get_param: hostname }
+           $mail_domain: { get_param: mail_domain }
