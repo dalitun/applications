@@ -1,13 +1,14 @@
-# 5 Minutes Stacks, épisode 26 : Webmail Antispam #
+# 5 Minutes Stacks, épisode 26 : Webmail with email providers #
 
-## Episode 26 : Webmail Antispam
+## Episode 26 :  Webmail with email providers
 
-![rainloop](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
+![roundcube](http://www.rainloop.net/static/img/logo-256x256-tiny.png)
 
 Un serveur de messagerie électronique est un logiciel serveur de courrier électronique (courriel). Il a pour vocation de transférer les messages électroniques d'un serveur à un autre. Un utilisateur n'est jamais en contact direct avec ce serveur mais utilise soit un client de messagerie, soit un Webmail, qui se charge de contacter le serveur pour envoyer ou recevoir les messages.
 Dans cet episode nous avons utilisé Rainloop comme webmail opensource qui est développé en PHP et qui se veut complet et simple d'utilisation. Il gère très bien les protocoles IMAP/SMTP et dispose d'une interface moderne (HTML5/CSS3) très érgonomique, c'est plutôt agréable. Du côté des fonctionnalités, on retrouve toutes celles d'un client mail classique, avec en plus un système de plugins.
 
-Dans cet épisode, nous allons vous montrer comment monter votre stack webmail et comment la sécuriser grâce à **ClamAV** et **SpamAssassin**, respectivement un antivirus et un antispam.
+Dans cet épisode, nous allons vous montrer comment monter votre stack webmail en utilisant un email service provides comme Mailjet.
+Il y a plusieurs email service providers comme Sendgrid, Mandrill,  Sendy ...
 
 ## Preparations
 
@@ -30,7 +31,7 @@ Ceci devrait être une routine à présent:
 * Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
-Par défaut, le script propose un déploiement sur une instance de type "Small" (s1.cw.small-1). Il
+Par défaut, le script propose un déploiement sur une instance de type "Standard" (n2.cw.standard-1). Il
 existe une variété d'autres types d'instances pour la satisfaction de vos multiples besoins. Les instances sont facturées à la minute, vous permettant de payer uniquement pour les services que vous avez consommés et plafonnées à leur prix mensuel (vous trouverez plus de détails sur la [Page tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt).
 
 Vous pouvez ajuster les parametres de la stack à votre goût.
@@ -124,9 +125,8 @@ parameters:
 Dans un shell,lancer le script `stack-start.sh`:
 
 ~~~
-./stack-start.sh nom_de_votre_stack votre_nom_clé mysql_password postfix_admin_pass mail_domain
+./stack-start.sh nom_de_votre_stack
 ~~~
-
 Exemple :
 
 ~~~bash
@@ -185,14 +185,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 
 ## Enjoy
-Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `https://ip-floatingip.rev.cloudwatt.com/postfixadmin` ou `https://floatingIP/postfixadmin` afin d'ajouter votre domaines et emails pour s'authentifier vous utilisez le login **admin@ip-floatingip.rev.cloudwatt.com** et le password  **password_admin**:
-
-![postfixadmin](./img/postfixadmin.png)
-
-Pour savoir comment administrer le postfixadmin vous pouvez
-Consulter ce lien [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
-
-Pour consulter les boites emails vous consultez cet url  `https://ip-floatingip.rev.cloudwatt.com/` ou `https://floatingIP`.
+ne fois tout ceci est fait vous pouvez vous connecter sur l'inteface de roundcube via un navigateur web à partir de cet url `http://hostname.mail_domain/` ou `http://floatingIP/` afin d'ajouter votre domaines et emails pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**:
 
 Vous devez arriver sur ces pages :
 
@@ -208,65 +201,20 @@ user2 reçoit l'email de user1.
 
 ![inbox](./img/receive.jpg)
 
-Pour tester le spamassassin ça marche bien ,envoyez un email qui contient ce texte `XJS*C4JDBQADN1.NSBN3*2IDNEN*GTUBE-STANDARD-ANTI-UBE-TEST-EMAIL*C.34X`
-Vous allez avoir un email qui est marqué [SPAM].
-
-![spam](./img/spam.png)
-
-Pour tester le ClamAv ça marche bien ,envoyez ce virus `http://eicar.org/download/eicar_com.zip`
-Vous n'allez pas recevoir l'email car il va être bloqué par le ClamAv,vous pouvez vérifier les logs dans le fichier `/var/log/mail.log`.
-
-![clamav1](./img/clamav1.png)
-
-Voici les logs dans le fichier `/var/log/mail.log`.
-
-![clamav2](./img/clamav2.png)
 
 
-Dans cet exemple nous avons utilisé le nom de domaine fourni par Cloudwatt(`https://ip-floatingip.rev.cloudwatt.com`  remplacez les "." par "-" de votre floatingIP ( example: ip-10-11-12-13.rev.cloudwatt.com )).
+Pour ajouter des utilisateurs(des boites emails), vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `https://hostname.mail_domain/postfixadmin` ou `https://floatingIP/postfixadmin`  pour s'authentifier vous utilisez le login **admin@hostname.mail_domain** et le password  **password_admin**:
 
-Si vous voulez changer le domaine de votre serveur de mail, afin de pouvoir y paramétrer le votre, voici la méthode:
+![postfixadmin](./img/postfixadmin.png)
 
-Dans `/etc/postfix/main.cf` inscrire votre nom de domaine dans les paramètres ci-dessous:
+Pour savoir comment administrer le postfixadmin vous pouvez
+Consulter ce lien [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
-      - mydomain:
-      - myhostname:
-      - mydestination:
+Pour que le nouveau utilsateur puisse envoyer et recevoir email il faut le donner l'accéer à partir de la platforme email service providers dans notre exemple c'est mailjet:
 
-
-Dans `/etc/apache2/sites-available/vhost.conf` inscrire votre nom de domaine dans les paramètres ci-dessous :
-
-      - ServerName
-      - ServerAdmin: ce paramètre permet de définir l'adresse Email de l'administrateur
+Suivez les étapes suivantes.
 
 
-Dans `/var/www/cw/data/_data_/_default_/domains/domain.ini`:
-
-      - smtp_host
-      - imap_host
-
-N'oubliez pas d'éditer les deux fichiers `/etc/hosts` et `/etc/hostname` .
-
-**Redémarrez ensuite  les services suivants Postfix, Dovecot et Apache2**
-
-~~~ bash
-# service postfix restart
-# service dovecot restart
-# service apache2 restart
-~~~
-Faites un refresh sur l'url `http://floatingIP/`
-
-
-**Si vous voulez changer la configuration de rainloop**
-
- Connectez vous sur l'interface d'admin sur l'adresse `https://floatingIP/?admin` ou `https://ip-floatingip.rev.cloudwatt.com/?admin` à partir de votre navigateur. Il faut ensuite s'authenfier avec l'utilisateur **admin** et le mot de passe **12345**.
- ![admin1](./img/admin1.jpg)
-
-**Pour plus de sécurité** n'oubliez pas de changer le mot de passe admin à partir de cette interface.
-![admin1](./img/admin2.jpg)
-
-Un certificat SSL est automatiquement généré via Let's encrypt et celui-ci est renouvellé via un job CRON tous les 90 jours.
-Les signatures Clamav et SpamAssassin sont mises à jour via un job cron chaque jour.
 ## So watt?
 
 Les chemins intéressants sur votre machine :
@@ -277,18 +225,14 @@ Les chemins intéressants sur votre machine :
 
 `/etc/dovecot`: Fichiers de configuration Dovecot
 
-`/etc/clamsmtpd.conf`:Fichier de configuration Clamav
+`/var/www/roundcube`: Fichiers de configuration Roundcube
 
-`/etc/spamassassin/`: Fichiers de configuration SpamAssassin
-
-`/var/www/cw/data/_data_/_default_/`: Fichiers de configuration Rainloop
 
 
 ### Autres sources pouvant vous intéresser:
 * [ Postfix Home page](http://www.postfix.org/documentation.html)
 * [ Dovecot Documentation](http://www.dovecot.org/)
 * [ Rainloop Documentation](http://www.rainloop.net)
-* [ ClamAv Documentation](http://www.clamav.net/)
 
 ----
 Have fun. Hack in peace.

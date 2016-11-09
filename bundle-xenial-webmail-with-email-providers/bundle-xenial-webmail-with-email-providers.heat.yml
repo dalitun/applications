@@ -14,7 +14,6 @@ parameter_groups:
  - label: Mail parameters
    parameters:
      - hostname
-     - fqdn
      - mail_domain
      - admin_pass
      - floating_ip_id
@@ -44,11 +43,6 @@ parameters:
      label: hostname
      type: string
      default: mail
-  fqdn:
-     description: fqdn
-     label: fqdn
-     type: string
-     default: mail.dalitun.fr
   floating_ip_id:
      description: floating ip id
      label: floating ip id
@@ -56,7 +50,7 @@ parameters:
      default: 5e1ac44c-4513-4d80-8860-68e80fb6fd8c
   mailjet_smtp:
      description: mailjet_smtp
-     label: mailjet SMTP
+     label: relay SMTP
      type: string
      default: in-v3.mailjet.com
   mailjet_username:
@@ -70,7 +64,7 @@ parameters:
      type: string
      hidden: true
   flavor_name:
-    default: n2.cw.standard-1
+    default: n1.cw.standard-1
     description: Flavor to use for the deployed instance
     type: string
     label: Openstack Flavor
@@ -78,7 +72,7 @@ parameters:
       - allowed_values:
         - t1.cw.tiny
         - s1.cw.small-1
-        - n2.cw.standard-1
+        - n1.cw.standard-1
         - n2.cw.standard-2
         - n2.cw.standard-4
         - n2.cw.standard-8
@@ -121,7 +115,12 @@ resources:
       cloud_config:
           #cloud-config
           hostname: { get_param: hostname }
-          fqdn: { get_param: fqdn}
+          fqdn:
+             str_replace:
+             template: $hostname.$mail_domain
+             params:
+                 $hostname: { get_param: hostname }
+                 $mail_domain: { get_param: mail_domain }
           manage_etc_hosts: true
 
   postboot:
@@ -165,13 +164,14 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: 72b93f6e-4f84-4571-8c86-ba81b4942134
+      image: 65f24476-c3ce-4fb9-9d0e-cef9d6c83c69
       flavor: { get_param: flavor_name }
       name:
         str_replace:
-            template: $hostname
+            template: $hostname.$mail_domain
             params:
                 $hostname: { get_param: hostname }
+                $mail_domain: { get_param: mail_domain }
       networks:
         - network: { get_resource: network }
       security_groups:

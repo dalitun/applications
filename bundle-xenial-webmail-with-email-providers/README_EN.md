@@ -119,7 +119,7 @@ flavor_name:
  In a shell, run the script `stack-start.sh`:
 
  ~~~ bash
- ./stack-start.sh your_stack_name your_keypair_name mysql_password postfix_admin_pass mail_domain
+ ./stack-start.sh your_stack_name 
  ~~~
  Exemple :
 
