@@ -1,4 +1,4 @@
-# 5 Minutes Stacks, épisode 40 : Webmail with email providers #
+# 5 Minutes Stacks, épisode 40 : Webmail with email providers(Smtp relay) #
 
 ## Episode 40 :  Webmail with email providers
 
@@ -8,17 +8,17 @@ Un serveur de messagerie électronique est un logiciel serveur de courrier élec
 Dans cet episode nous avons utilisé Rainloop comme webmail opensource qui est développé en PHP et qui se veut complet et simple d'utilisation. Il gère très bien les protocoles IMAP/SMTP et dispose d'une interface moderne (HTML5/CSS3) très érgonomique, c'est plutôt agréable. Du côté des fonctionnalités, on retrouve toutes celles d'un client mail classique, avec en plus un système de plugins.
 
 Dans cet épisode, nous allons vous montrer comment monter votre stack webmail en utilisant un email service provides comme Mailjet.
-Il y a plusieurs email service providers comme Sendgrid, Mandrill,  Sendy ...
+Il y a plusieurs email service providers comme Sendgrid, Mandrill, Sendy ...
 
 ## Preparations
 
 ### Les versions
- - Ubuntu Trusty 14.04
- - Postfix 2.11.0
- - Postfixadmin-2.93
- - Dovecot 2.2.9
- - Apache 2.4.7
- - Mysql 5.5.47
+ - Ubuntu Xenial 16.04
+ - Postfix 3.1.0
+ - Postfixadmin 3.0
+ - Dovecot 2.2.22
+ - Apache 2.4.18
+ - Mysql 5.7.16
  - Roundcube
 
 ### Les pré-requis pour déployer cette stack
@@ -78,7 +78,7 @@ parameters:
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
-    default: my-keypair-name                 <-- Mettez ici le nom de votre keypair
+    default: my-keypair-name                  <-- Mettez ici le nom de votre keypair
   admin_pass:
     description: admin password
     label: admin password
@@ -103,12 +103,12 @@ parameters:
      description: Username (API Key)
      label: Username (API Key)
      type: string
-     default: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx    <-- Mettez ici l'username
+     default: xxxxxxxxxxxxxxxxxxxxxxxxxxxxx    <-- Mettez ici l'username (API Key)
   smtp_password:
      description: Password (Secret Key)
      label: Password (Secret Key)
      type: string
-     default: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   <-- Mettez ici le password
+     default: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   <-- Mettez ici le password (Secret Key)
   flavor_name:
     default: n2.cw.standard-1
     description: Flavor to use for the deployed instance
@@ -165,7 +165,7 @@ $ heat resource-list nom_de_votre_stack
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu trusty, pré-provisionnée avec la stack Webmail
+* démarrer une instance basée sur Ubuntu xenial, pré-provisionnée avec la stack Webmail
 * l'exposer sur Internet via une IP flottante
 
 ## C’est bien tout ça,
@@ -194,6 +194,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 
 ## Enjoy
+
 Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de roundcube via un navigateur web à partir de cet url `http://hostname.mail_domain/` ou `http://floatingIP/` pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**:
 
 Vous devez arriver sur ces pages :
@@ -203,16 +204,16 @@ Vous devez arriver sur ces pages :
 ![inbox](./img/webmail2.png)
 
 Avant de commencer à envoyer et recevoir vos emails, Autorisez la boix email à partir de la plateforme d'email provider (dans notre exemple Mailjet).
-Suivez les etapes suivantes
+
+Suivez les etapes suivantes:
+
+Cliquez sur Mailjet >Account >Sender addresses
 
 ![mailjet1](./img/mailjet1.png)
 
-Cliquez Mailjet >Account >Sender addresses
-
+Cliquez sur Mailjet >Account >Sender addresses> Add
 
 ![mailjet2](./img/mailjet2.png)
-
-Cliquez Mailjet >Account >Sender addresses> Add
 
 
 ![mailjet3](./img/mailjet3.png)
@@ -229,7 +230,7 @@ Pour ajouter des utilisateurs(des boites emails), vous pouvez vous connecter sur
 Pour savoir comment administrer le postfixadmin vous pouvez
 Consulter ce lien [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
-Pour que le nouveau utilsateur puisse envoyer et recevoir email il faut le donner l'accéer à partir de la platforme email service providers dans notre exemple c'est mailjet:
+Pour que le nouveau utilsateur puisse envoyer et recevoir email, il faut le donner l'accéer à partir de la platforme d'email service providers dans notre exemple c'est mailjet:
 
 Suivez les étapes suivantes.
 
@@ -245,8 +246,6 @@ Les chemins intéressants sur votre machine :
 `/etc/dovecot`: Fichiers de configuration Dovecot
 
 `/var/www/roundcube`: Fichiers de configuration Roundcube
-
-
 
 ### Autres sources pouvant vous intéresser:
 * [ Postfix Home page](http://www.postfix.org/documentation.html)

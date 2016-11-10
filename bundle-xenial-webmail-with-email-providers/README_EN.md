@@ -12,15 +12,13 @@ We will show you how to build your webmail stack and how to secure it, thanks to
 ## Preparations
 
 ### The version
- - Ubuntu Trusty 14.04
- - Postfix 2.11.0
- - Postfixadmin-2.93
- - Dovecot 2.2.9
- - SpamAssassin 3.4.0
- - Clamsmtpd 1.10
- - Apache 2.4.7
- - Mysql 5.5.47
- - Rainloop
+ - Ubuntu Xenial 16.04
+ - Postfix 3.1.0
+ - Postfixadmin 3.0
+ - Dovecot 2.2.22
+ - Apache 2.4.18
+ - Mysql 5.7.16
+ - Roundcube
 
 ### The prerequisites to deploy this stack
 
@@ -62,11 +60,11 @@ We will show you how to build your webmail stack and how to secure it, thanks to
 
  ~~~
 
- Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
+Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
 ### Adjust the parameters
 
- With the `bundle-trusty-webmail.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+ With the `bundle-webmail.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
  ~~~ yaml
  heat_template_version: 2013-05-23
@@ -119,7 +117,7 @@ flavor_name:
  In a shell, run the script `stack-start.sh`:
 
  ~~~ bash
- ./stack-start.sh your_stack_name 
+ ./stack-start.sh your_stack_name
  ~~~
  Exemple :
 
@@ -291,18 +289,14 @@ The interesting directories and files are:
 
 `/etc/dovecot`: Dovecot configuration files
 
-`/etc/clamsmtpd.conf`: ClamAv configuration file
-
-`/etc/spamassassin/`: SpamAssassin configuration files
-
-`/var/www/cw/data/_data_/_default_/`: Rainloop configuration files
+`/var/www/roundcube`: Roundcube configuration files
 
 
 ### Other resources you could be interested in:
 * [ Postfix Home page](http://www.postfix.org/documentation.html)
 * [ Dovecot Documentation](http://www.dovecot.org/)
-* [ Rainloop Documentation](http://www.rainloop.net)
-* [ ClamAv Documentation](http://www.clamav.net/)
+* [ Roundcube Documentation](https://roundcube.net/)
+* [ Postfixadmin Documentation ](http://postfixadmin.sourceforge.net/)
 
 ----
 Have fun. Hack in peace.
