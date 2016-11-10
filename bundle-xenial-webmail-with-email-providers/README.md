@@ -1,11 +1,11 @@
-# 5 Minutes Stacks, épisode 40 : Webmail with email providers(Smtp relay) #
+# 5 Minutes Stacks, épisode 40 : Webmail with email providers (relay SMTP) #
 
 ## Episode 40 :  Webmail with email providers
 
 ![roundcube](./img/roundcube.png)
 
 Un serveur de messagerie électronique est un logiciel serveur de courrier électronique (courriel). Il a pour vocation de transférer les messages électroniques d'un serveur à un autre. Un utilisateur n'est jamais en contact direct avec ce serveur mais utilise soit un client de messagerie, soit un Webmail, qui se charge de contacter le serveur pour envoyer ou recevoir les messages.
-Dans cet episode nous avons utilisé Rainloop comme webmail opensource qui est développé en PHP et qui se veut complet et simple d'utilisation. Il gère très bien les protocoles IMAP/SMTP et dispose d'une interface moderne (HTML5/CSS3) très érgonomique, c'est plutôt agréable. Du côté des fonctionnalités, on retrouve toutes celles d'un client mail classique, avec en plus un système de plugins.
+Dans cet episode nous avons utilisé Roundcube comme webmail opensource qui est développé en PHP et qui se veut complet et simple d'utilisation. Il gère très bien les protocoles IMAP/SMTP et dispose d'une interface moderne (HTML5/CSS3) très érgonomique, c'est plutôt agréable. Du côté des fonctionnalités, on retrouve toutes celles d'un client mail classique, avec en plus un système de plugins.
 
 Dans cet épisode, nous allons vous montrer comment monter votre stack webmail en utilisant un email service provides comme Mailjet.
 Il y a plusieurs email service providers comme Sendgrid, Mandrill, Sendy ...
@@ -83,7 +83,7 @@ parameters:
     description: admin password
     label: admin password
     type: string
-    default: changeme                         <-- Mettez ici le mot de passe de votre base de données
+    default: changeme                         <-- Mettez ici le mot de passe de l'admin
   mail_domain:
     description: mail domain
     label: mail domain
@@ -110,7 +110,7 @@ parameters:
      type: string
      default: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx   <-- Mettez ici le password (Secret Key)
   flavor_name:
-    default: n2.cw.standard-1
+    default: n2.cw.standard-1                  <-- Mettez ici l'identifiant de votre flavor
     description: Flavor to use for the deployed instance
     type: string
     label: Openstack Flavor
@@ -165,7 +165,7 @@ $ heat resource-list nom_de_votre_stack
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu xenial, pré-provisionnée avec la stack Webmail
+* démarrer une instance basée sur Ubuntu Xenial, pré-provisionnée avec la stack Webmail
 * l'exposer sur Internet via une IP flottante
 
 ## C’est bien tout ça,
@@ -201,7 +201,7 @@ Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de roundcu
 
 ![inbox](./img/webmail2.png)
 
-Avant de commencer à envoyer et recevoir vos emails, autorisez vos boites email à partir de la plateforme d'email provider (dans notre cas [Mailjet](https://app.mailjet.com/signup)), suivez les etapes suivantes:
+Avant de commencer à envoyer et recevoir vos emails, autorisez vos boites email à partir de la plateforme d'email provider (dans notre exemple [Mailjet](https://app.mailjet.com/signup)), suivez les etapes suivantes:
 
 Vous vous connectez avec votre email et votre mot de passe vous arrivez sur cette page.
 
@@ -215,13 +215,12 @@ Ensuite cliquez sur `Add a Sender Domain or Address` afin d'autorisez une boite 
 
 ![mailjet2](./img/mailjet2.png)
 
-Pour ajouter des utilisateurs(des boites emails), vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `https://hostname.mail_domain/postfixadmin` ou `https://floatingIP/postfixadmin`  pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**:
+Pour ajouter des utilisateurs(des boites emails), vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `http://hostname.mail_domain/postfixadmin` ou `http://floatingIP/postfixadmin`  pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**.
 
 ![postfixadmin](./img/postfixadmin.png)
 
 Pour savoir comment administrer le postfixadmin vous pouvez consulter ce lien
 [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
-
 
 ## So watt?
 
