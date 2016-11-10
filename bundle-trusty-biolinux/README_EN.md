@@ -9,7 +9,7 @@ Bio-Linux 8 is a powerful, free bioinformatics workstation platform that can be 
 ### The versions
 
 * BioLinux 8
-* You will find The Softwares List on this [link](http://environmentalomics.org/bio-linux-software-list/).
+* You will find The Softwares List in this [page](http://environmentalomics.org/bio-linux-software-list/)
 
 ### The prerequisites to deploy this stack
 

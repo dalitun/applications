@@ -10,7 +10,7 @@ Bio-Linux 8 est une plate-forme puissante bioinformatique libres, poste de trava
 ### Les versions
 
 * BioLinux 8
-* Vous trouverez la liste des packages dans ce [lien](http://environmentalomics.org/bio-linux-software-list/)
+* Vous trouverez la liste des packages dans cette [page](http://environmentalomics.org/bio-linux-software-list/)
 
 ### Les pré-requis pour déployer cette stack
 
