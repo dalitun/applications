@@ -195,19 +195,15 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ## Enjoy
 
-Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de roundcube via un navigateur web à partir de cet url `http://hostname.mail_domain/` ou `http://floatingIP/` pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**:
-
-Vous devez arriver sur ces pages :
+Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de roundcube via un navigateur web à partir de cet url `http://hostname.mail_domain/` ou `http://floatingIP/` pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**, vous devez arriver sur ces pages.
 
 ![auth](./img/webmail1.png)
 
 ![inbox](./img/webmail2.png)
 
-Avant de commencer à envoyer et recevoir vos emails, Autorisez la boix email à partir de la plateforme d'email provider (dans notre exemple Mailjet).
+Avant de commencer à envoyer et recevoir vos emails, autorisez vos boites email à partir de la plateforme d'email provider (dans notre cas [Mailjet](https://app.mailjet.com/signup)), suivez les etapes suivantes:
 
-Suivez les etapes suivantes:
-
-Vous vous connectez avec votre email et password vous arrivez sur cette page.
+Vous vous connectez avec votre email et votre mot de passe vous arrivez sur cette page.
 
 ![mailjet](./img/mailjet.png)
 
@@ -215,10 +211,9 @@ Puis cliquez sur `My account`.
 
 ![mailjet1](./img/mailjet1.png)
 
-Ensuite cliquez sur `Add a Sender Domain or Address` afin de commencer à envoyer et recevoir vos emails, Autorisez la boix email à partir de la plateforme d'email provider (dans notre exemple Mailjet) ou autorisez tous les emails de votre domaines.
+Ensuite cliquez sur `Add a Sender Domain or Address` afin d'autorisez une boite email ou tous les boites emails de votre domaines pour qu'ils puissent envoyer et recevoir des emails.
 
 ![mailjet2](./img/mailjet2.png)
-
 
 Pour ajouter des utilisateurs(des boites emails), vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `https://hostname.mail_domain/postfixadmin` ou `https://floatingIP/postfixadmin`  pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**:
 
@@ -226,7 +221,6 @@ Pour ajouter des utilisateurs(des boites emails), vous pouvez vous connecter sur
 
 Pour savoir comment administrer le postfixadmin vous pouvez consulter ce lien
 [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
-
 
 
 ## So watt?
@@ -239,7 +233,7 @@ Les chemins intéressants sur votre machine :
 
 `/etc/dovecot`: Fichiers de configuration Dovecot
 
-`/var/www/roundcube`: Fichiers de configuration Roundcube
+`/var/www/cw`: Dossier de Roundcube et postfixadmin
 
 ### Autres sources pouvant vous intéresser:
 * [ Postfix Home page](http://www.postfix.org/documentation.html)
