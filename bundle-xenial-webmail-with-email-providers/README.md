@@ -207,32 +207,26 @@ Avant de commencer à envoyer et recevoir vos emails, Autorisez la boix email à
 
 Suivez les etapes suivantes:
 
-Cliquez sur Mailjet >Account >Sender addresses
+Vous vous connectez avec votre email et password vous arrivez sur cette page.
+
+![mailjet](./img/mailjet.png)
+
+Puis cliquez sur `My account`.
 
 ![mailjet1](./img/mailjet1.png)
 
-Cliquez sur Mailjet >Account >Sender addresses> Add
+Ensuite cliquez sur `Add a Sender Domain or Address` afin de commencer à envoyer et recevoir vos emails, Autorisez la boix email à partir de la plateforme d'email provider (dans notre exemple Mailjet) ou autorisez tous les emails de votre domaines.
 
 ![mailjet2](./img/mailjet2.png)
-
-
-![mailjet3](./img/mailjet3.png)
-
-Puis confimez l'email réçu par Mailjet.
-
-Enfin vous pouvez envoyer et recevoir vos emails.
 
 
 Pour ajouter des utilisateurs(des boites emails), vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `https://hostname.mail_domain/postfixadmin` ou `https://floatingIP/postfixadmin`  pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**:
 
 ![postfixadmin](./img/postfixadmin.png)
 
-Pour savoir comment administrer le postfixadmin vous pouvez
-Consulter ce lien [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
+Pour savoir comment administrer le postfixadmin vous pouvez consulter ce lien
+[postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
-Pour que le nouveau utilsateur puisse envoyer et recevoir email, il faut le donner l'accéer à partir de la platforme d'email service providers dans notre exemple c'est mailjet:
-
-Suivez les étapes suivantes.
 
 
 ## So watt?
