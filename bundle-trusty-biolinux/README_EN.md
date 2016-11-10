@@ -4,12 +4,12 @@
 
 ![logo](images/Biolinux.png)
 
-Bio-Linux 8 is a powerful, free bioinformatics workstation platform that can be installed on anything from a laptop to a large server, or run as a virtual machine. Bio-Linux 8 adds more than 250 bioinformatics packages to an Ubuntu Linux 14.04 LTS base, providing around 50 graphical applications and several hundred command line tools. The Galaxy environment for browser-based data analysis and workflow construction is also incorporated in Bio-Linux 8.The Bio-Linux Software List on this [link](http://environmentalomics.org/bio-linux-software-list/).
-
+Bio-Linux 8 is a powerful, free bioinformatics workstation platform that can be installed on anything from a laptop to a large server, or run as a virtual machine. Bio-Linux 8 adds more than 250 bioinformatics packages to an Ubuntu Linux 14.04 LTS base, providing around 50 graphical applications and several hundred command line tools. The Galaxy environment for browser-based data analysis and workflow construction is also incorporated in Bio-Linux 8.
 
 ### The versions
 
 * BioLinux 8
+* You will find The Softwares List on this [link](http://environmentalomics.org/bio-linux-software-list/).
 
 ### The prerequisites to deploy this stack
 
