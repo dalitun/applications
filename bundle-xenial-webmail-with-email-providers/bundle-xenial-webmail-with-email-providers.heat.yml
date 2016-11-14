@@ -37,27 +37,19 @@ parameters:
     description: mail domain
     label: mail domain
     type: string
-    default: dalitun.fr
   hostname:
      description: host name machine
      label: hostname
      type: string
      default: mail
-  floating_ip_id:
-     description: floating ip id
-     label: floating ip id
-     type: string
-     default: 5e1ac44c-4513-4d80-8860-68e80fb6fd8c
   smtp_server:
      description: smtp server Mailjet or SenGrid
      label: relay SMTP
      type: string
-     default: in-v3.mailjet.com
   smtp_username:
      description: Username (API Key)
      label: Username (API Key)
      type: string
-     default: a4f71dca9d9001933b4728ab4793713d
   smtp_password:
      description: Password (Secret Key)
      label: Password (Secret Key)
