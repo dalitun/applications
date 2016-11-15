@@ -16,7 +16,7 @@ parameter_groups:
      - hostname
      - mail_domain
      - admin_pass
-     - floating_ip_id
+    
 
  - label: Relay smtp parameters
    parameters:
