@@ -1,7 +1,7 @@
 #!/usr/local/bin/php -f
 <?php
 
-# PROVIDE: cw_setup
+# PROVIDE: cw_setup.sh
 ### Written by the CAT (Cloudwatt Automation Team)
 #/usr/local/etc/rc.d/cw_setup.sh
 require("globals.inc");
