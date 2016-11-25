@@ -11,7 +11,7 @@ This stack will deploy two instances: one is Pfsense application, the second for
 ![pfsense_schema](img/pfsense.png)
 
 ### The Versions
-- Pfsense 2.2.6
+- Pfsense 2.3
 - Ubuntu Trusty 14.04
 
 ### The prerequisites to deploy this stack
@@ -167,7 +167,7 @@ You can install a GUI interface on your Admin machine or you can use also window
 1) Type the following command:
 
 ~~~bash
-$ sudo ssh privateIpPfsense -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
+$ sudo ssh privateIpPfsense -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:443 -i private_key
 ~~~
 
 in this case you have to use your private key.
@@ -175,7 +175,7 @@ in this case you have to use your private key.
 or
 
 ~~~bash
-$ sudo ssh privateIpPfsense -l root -L 80:localhost:80
+$ sudo ssh privateIpPfsense -l root -L 80:localhost:443
 ~~~
 
 root's password is "pfsense". I advise you to change it.
