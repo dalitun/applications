@@ -6,7 +6,7 @@
 
 pfSense est un routeur/pare-feu open source basé sur le système d'exploitation FreeBSD. À l'origine d'un fork de m0n0wall, il utilise le pare-feu à états Packet Filter, des fonctions de routage et de NAT lui permettant de connecter plusieurs réseaux informatiques.Il a pour but d'assurer la sécurité périmétrique.Il comporte l'équivalent libre des outils et services utilisés habituellement sur des routeurs professionnels propriétaires.
 
-Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schemà d'architecture.
+Cette stack va déployer 2 instances: l'une portant l'application Pfsense, la deuxième servant à l'administration de Pfsense et basée sur Ubuntu. Voici le schema d'architecture.
 
 ![pfsense_schema](img/pfsense.png)
 
@@ -95,9 +95,11 @@ $ ./stack-start.sh Pfsense Votre_keypair_name private_net public_net
 +--------------------------------------+------------+--------------------+----------------------+
 | id                                   | stack_name | stack_status       | creation_time        |
 +--------------------------------------+------------+--------------------+----------------------+
-| ed4ac18a-4415-467e-928c-1bef193e4f38 | Pfsense  | CREATE_IN_PROGRESS | 2016-03-16T08:29:45Z |
+| ed4ac18a-4415-467e-928c-1bef193e4f38 | Pfsense    | CREATE_IN_PROGRESS | 2016-03-16T08:29:45Z |
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
+* private_net : Adresse du réseau Lan (ex: 192.168.0.0/24)
+* public_net : Adresse du réseau Wan (ex : 10.0.0.0/24)
 
 Enfin, attendez **5 minutes** que le déploiement soit complet.
 
@@ -132,6 +134,8 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 * Démarrer une instance basée sur freebsd, pré-provisionnée avec la stack pfsense.
 * `flotting_ip_admin` est la flotting Ip de la machine Admin.  
 
+<a name="console" />
+
 ## C’est bien tout ça, mais...
 
 ### Vous n’auriez pas un moyen de lancer l’application par la console ?
@@ -153,9 +157,6 @@ La stack va se créer automatiquement (vous pouvez en voir la progression cliqua
 
 C’est (déjà) FINI !
 
-### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
-
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre pfsense !
 
 ## Enjoy
 Dans cet exemple vous avez un serveur pfsense qui est connecté sur deux réseaux LAN et WAN et vous avez aussi une machine ubuntu 14.04 qui est connecté sur le même réseaux LAN que pfsense.
@@ -178,7 +179,7 @@ sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de 
 1) Tapez la commande suivante dans la machine Admin(ubuntu)
 
 ~~~bash
-$ sudo ssh private_ip_pfsene -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
+$ sudo ssh private_ip_pfsense -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:80 -i private_key
 ~~~
 
 dans ce cas il faut utliser votre clé privée.
@@ -186,7 +187,7 @@ dans ce cas il faut utliser votre clé privée.
 ou
 
 ~~~bash
-$ sudo ssh private_ip_pfsene -l root -L 80:localhost:80
+$ sudo ssh private_ip_pfsense -l root -L 80:localhost:80
 ~~~
 
 le mot de passe de root c'est **pfsense**, je vous conseille de le changer.
@@ -208,7 +209,7 @@ Maintenant vous pouvez configurer votre firewall:
 ![pfsense2](img/pfsense2.png)
 
 ------
-## So watt  ?
+## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
 
@@ -216,7 +217,8 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 
 * Vous avez accès à l'interface web en https via l'adresse ip lan que vous avez défini pour Pfsense depuis le server ubuntu.
 
-### Voici quelques sites d'informations avant d'aller plus loin :
+### Voici quelques sites d'informations pour aller plus loin
+
 - https://www.pfsense.org/
 - https://forum.pfsense.org
 
