@@ -244,6 +244,8 @@ The interesting directories and files are:
 * [ Dovecot Documentation](http://www.dovecot.org/)
 * [ Roundcube Documentation](https://roundcube.net/)
 * [ Postfixadmin Documentation ](http://postfixadmin.sourceforge.net/)
+* [Mailjet](https://www.mailjet.com/)
+* [SendGrid](https://sendgrid.com/)
 
 ----
 Have fun. Hack in peace.
