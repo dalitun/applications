@@ -170,7 +170,7 @@ $ heat resource-list Pfsense
 ~~~
 The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
-* Starts pfsense based instance
+*  Start up an Pfsense instance, pre-provisionned with the Pfsense stack
 * `admin_floating_ip` is admin machine flotting Ip .  
 
 <a name="console" />
