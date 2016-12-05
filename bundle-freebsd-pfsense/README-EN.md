@@ -200,7 +200,7 @@ You can go to this page **System>Advanced>Networking**, check this option **Disa
 ![pfsense3](img/pfsense3.png)
 
 The bandwidth is based on the flavor size of the Pfsense instance.
-To know the bandwidths of each flavor click on this [link](https://www.cloudwatt.com/en/products/servers/tarifs.html)
+To know the bandwidths of each flavor click on this [link](https://www.cloudwatt.com/en/products/servers/tarifs.html).
 
 ## So watt ?
 

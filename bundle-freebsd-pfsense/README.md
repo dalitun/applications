@@ -214,7 +214,7 @@ Vous pouvez aller sur la page **System>Advanced>Networking**, puis cocher l'opti
 ![pfsense3](img/pfsense3.png)
 
 La bande passante est en fonction de la taille du flavor de l'instance Pfsense.
-Pour savoir les bandes passantes de chaque flavor cliquez sur ce [lien](https://www.cloudwatt.com/fr/produits/serveurs/tarifs.html)
+Pour savoir les bandes passantes de chaque flavor cliquez sur ce [lien](https://www.cloudwatt.com/fr/produits/serveurs/tarifs.html).
 
 ------
 ## So watt ?
