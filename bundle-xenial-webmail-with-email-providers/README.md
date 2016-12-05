@@ -201,9 +201,9 @@ Une fois tout ceci est fait vous pouvez vous connecter sur l'inteface de roundcu
 
 ![inbox](./img/webmail2.png)
 
-Avant de commencer à envoyer et recevoir vos emails, il faut autoriser votre adresse e-mail à envoyer des mail sur votre service d'envoi de mail (dans notre exemple [Mailjet](https://app.mailjet.com/signup)), suivez les étapes suivantes:
+Avant de commencer à envoyer et recevoir vos emails, il faut autoriser votre adresse e-mail à envoyer des e-mails sur votre service d'envoi d'e-mail (dans notre exemple [Mailjet](https://app.mailjet.com/signup)), suivez les étapes suivantes:
 
-Connectez vous avec votre login et votre mot de passe
+Connectez vous avec votre login et votre mot de passe.
 
 ![mailjet](./img/mailjet.png)
 
@@ -211,11 +211,11 @@ Puis cliquez sur `My account`.
 
 ![mailjet1](./img/mailjet1.png)
 
-Ensuite cliquez sur `Add a Sender Domain or Address` afin d'autorisez une boite e-mail ou toutes les adresses mails de votre domaines à envoyer et recevoir des mails via Mailjet .
+Ensuite cliquez sur `Add a Sender Domain or Address` afin d'autorisez une boite e-mail ou toutes les adresses e-mails de votre domaines à envoyer et recevoir des e-mails via Mailjet.
 
 ![mailjet2](./img/mailjet2.png)
 
-Pour créer des nouvelles boites mails, vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `http://hostname.mail_domai/postfixadmin` ou `http://floatingIP/postfixadmin`  pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**.
+Pour créer des nouvelles boites e-mails, vous pouvez vous connecter sur l'inteface de postfixamdin via un navigateur web à partir de cet url `http://hostname.mail_domai/postfixadmin` ou `http://floatingIP/postfixadmin`  pour s'authentifier vous utilisez le login **admin@mail_domain** et le password  **password_admin**.
 
 ![postfixadmin](./img/postfixadmin.png)
 

@@ -1,13 +1,13 @@
-# 5 Minutes Stacks, 26 episode : Webmail with email providers (relay SMTP) #
+# 5 Minutes Stacks, 45 episode : Webmail with email providers (relay SMTP) #
 
-## Episode 26 : Webmail with email providers
+## Episode 45 : Webmail with email providers
 
 ![roundcube](./img/roundcube.png)
 
 An email server is a mail server software (email). It aims to transfer emails from one server to another. An user is never in direct contact with this server uses either a mail client or a webmail client, which is responsible to contact the server to send or receive messages.
 In this episode we used Roundcube as open source webmail that is developed in PHP and designed to be comprehensive and easy to use. It manages very well IMAP / SMTP protocols and has a modern interface (HTML5 / CSS3) very ergonomic, it is rather pleasant. In terms of features, there are all those of a conventional mail client, plus a system of plugins.
 
-In this episode we'll show you how to build your stack webmail using Provides email services like Mailjet.
+In this episode we'll show you how to build your stack webmail using email service like Mailjet.
 There are many email providers service as SendGrid, Mandrill, Sendy ...
 
 ## Preparations
@@ -65,7 +65,7 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
- With the `bundle-xenial-webmail-with-email-providers.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+ With the `bundle-xenial-webmail-with-email-providers.heat.yml` file, you will find at the top a section named `parameters`.In order to be able to deploy your stack without problems, you complete all the parameters below.
 
  ~~~ yaml
  [...]
@@ -185,10 +185,9 @@ We do indeed! Using the console, you can deploy a mail server:
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
 6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
-7.	Name your stack in the « Stack name » field
-8.	Enter the name of your keypair in the « SSH Keypair » field
-9.  Write a passphrase that will be used for encrypting backups
-10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
+7.	Name your stack in the « Stack name » fieldd
+8.  Fill in all required parameters
+9.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
@@ -207,9 +206,9 @@ Once this is done you can connect via a web browser on roundcube interface from 
 
 ![inbox](./img/webmail2.png)
 
-Before you start sending and receiving emails, allow your email inboxes from the email platform provider (in our example [Mailjet] (https://app.mailjet.com/signup)), follow these steps:
+Before you start sending and receiving emails, you must allow your email address to send email on your email sending service (in our example [Mailjet](https://app.mailjet.com/signup)), follow these steps:
 
-You connect with your email and password you arrive on this page.
+Connect with your email and your password.
 
 ![Mailjet](./img/mailjet.png)
 
@@ -217,12 +216,12 @@ Then click on `My account`.
 
 ![mailjet1](./img/mailjet1.png)
 
-Then click on `Add a Sender Domain or Address` to allow an inbox or all email inboxes in your domain in order to be able to send and receive emails.
+Then click on `Add a Sender Domain or Address` in order to allow an email box or all the email boxes of your domains so that they can send and receive e-mails.
 
 ![mailjet2](./img/mailjet2.png)
 
-For adding users (email boxes), you can log on postfixamdin inteface via a web browser from this URL
-`http://hostname.mail_domain/postfixadmin` or `http://floatingIP/postfixadmin` to authenticate using the login **admin@mail_domain** and password **password_admin**.
+For creating new email boxes, you can log on postfixamdin inteface via a web browser from this URL
+`http://hostname.mail_domain/postfixadmin` or `http://floatingIP/postfixadmin`, to authenticate using the login **admin@mail_domain** and the password **password_admin**.
 
 ![postfixadmin](./img/postfixadmin.png)
 
