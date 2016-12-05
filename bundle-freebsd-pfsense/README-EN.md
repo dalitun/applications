@@ -194,11 +194,13 @@ Now you can configure your firewall:
 
 ![pfsense2](img/pfsense2.png)
 
-in order the instances have the best connexion of internet.
+In order the instances have the best connexion of internet.
 You can go to this page **System>Advanced>Networking**, check this option **Disable hardware checksum offload**
 
 ![pfsense3](img/pfsense3.png)
 
+The bandwidth is based on the flavor size of the Pfsense instance(for example in order to have a bandwidth equils 800 Mb/s it is necessary to choose one of these flavors n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
+For knowing the bandwidths of each flavor click on this [link](https://www.cloudwatt.com/en/products/servers/tarifs.html).
 
 ## So watt ?
 
