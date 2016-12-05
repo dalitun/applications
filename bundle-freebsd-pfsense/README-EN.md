@@ -194,11 +194,11 @@ Now you can configure your firewall:
 
 ![pfsense2](img/pfsense2.png)
 
-If you encounter flow problems on the instances connected to your PFsense, you can go to the page **System>Advanced>Networking**, then check this option **Disable hardware checksum offload**
+If you have problems in the connection speed on the instances, connecte to your PFsense, you can go to the page **System>Advanced>Networking**, then check this option **Disable hardware checksum offload**
 
 ![pfsense3](img/pfsense3.png)
 
-If this does not correct the problem, we remind you that the rates of the instances are not all the same for example to have a bandwidth equal to 800 Mb/s you must choose one of these flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
+If this does not correct the problem, we remind you that the bandwidths of the instances are not all the same for example to have a bandwidth equal to 800 Mb/s you must choose one of these flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
 For knowing the bandwidths of our flavors click on this [link](https://www.cloudwatt.com/en/products/servers/tarifs.html).
 
 ## So watt ?

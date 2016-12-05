@@ -244,7 +244,7 @@ Si vous rencontrez des problèmes de débit sur les instances connecté à votre
 
 ![pfsense3](img/pfsense3.png)
 
-Si cela ne corrige pas le problème, nous vous rappelons que les débits des instances ne sont pas tous les mêmes par exemple pour avoir une bande passante égale à 800 Mb/s il faut choisir l'une de ces flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
+Si cela ne corrige pas le problème, nous vous rappelons que la bande passante des instances ne sont pas tous les mêmes par exemple pour avoir une bande passante égale à 800 Mb/s il faut choisir l'une de ces flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
 Pour connaître la bande passante de nos flavors [Cliquez-ici](https://www.cloudwatt.com/fr/produits/serveurs/tarifs.html).
 
 ------
