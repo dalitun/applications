@@ -65,26 +65,61 @@ With the `bundle-freebsd-pfsense.heat.yml` file, you will find at the top a sect
 
 
 ~~~ yaml
-heat_template_version: 2013-05-23
-
-
-description: All-in-one Pfsense stack
-
-
 parameters:
   keypair_name:
-    default: my-keypair-name                   <-- Rajoutez cette ligne avec le nom de votre paire de clés
-    description: Keypair to inject in instance
+    description: Keypair for IPSEC server access
     label: SSH Keypair
     type: string
 
-  flavor_name:
-    default: n1.cw.standard-2
+  flavor_name_fw:
+    default: n2.cw.standard-1
     description: Flavor to use for the deployed instance
     type: string
-    label: Instance Type (Flavor)
-[...]
+    label: Flavor for Pfsense
+    constraints:
+      - allowed_values:
+        - t1.cw.tiny
+        - s1.cw.small-1
+        - n2.cw.standard-1
+        - n2.cw.standard-2
+        - n2.cw.standard-4
+        - n2.cw.standard-8
+        - n2.cw.standard-16
+        - n2.cw.highmem-2
+        - n2.cw.highmem-4
+        - n2.cw.highmem-8
+        - n2.cw.highmem-16
+  flavor_name_client:
+      default: t1.cw.tiny
+      description: Flavor to use for the deployed instance
+      type: string
+      label: Flavor for clients and admin machine
+      constraints:
+        - allowed_values:
+          - t1.cw.tiny
+          - s1.cw.small-1
+          - n2.cw.standard-1
+          - n2.cw.standard-2
+          - n2.cw.standard-4
+          - n2.cw.standard-8
+          - n2.cw.standard-16
+          - n2.cw.highmem-2
+          - n2.cw.highmem-4
+          - n2.cw.highmem-8
+          - n2.cw.highmem-16
+
+  public_net_cidr:
+    description: /24 cidr of public network
+    type: string
+
+
+  private_net_cidr:
+    description: /24 cidr of private network
+    type: string
+ [...]
 ~~~
+
+### Start stack
 In a shell, run the script `stack-start.sh`:
 
 ~~~bash
@@ -109,17 +144,29 @@ $ ./stack-start.sh Pfsense your_keypair_name private_net public_net
 Within **5 minutes** the stack will be fully operational. (Use `watch` to see the status in real-time)
 
 ~~~bash
-$ watch heat resource-list Pfsense
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
-+------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
-| floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
-| security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
-| network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
-| subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
-| server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`admin_floating_ip`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
-  +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
+$ heat resource-list Pfsense
++--------------------------+---------------------------------------------------------------------------+------------------------------------+-----------------+----------------------+
+| resource_name            | physical_resource_id                                                      | resource_type                      | resource_status | updated_time         |
++--------------------------+---------------------------------------------------------------------------+------------------------------------+-----------------+----------------------+
+| admin_floating_ip        | 2c97b35b-5beb-4aec-b1d4-845161d956ef                                      | OS::Neutron::FloatingIP            | CREATE_COMPLETE | 2016-03-18T13:39:39Z |
+| admin_sg                 | f29f1bee-ddba-4647-b172-84b4a06cfab1                                      | OS::Neutron::SecurityGroup         | CREATE_COMPLETE | 2016-03-18T13:39:40Z |
+| network                  | af9e4d4c-d6ff-481a-be4e-9c454c4a4b1f                                      | OS::Neutron::Net                   | CREATE_COMPLETE | 2016-03-18T13:39:40Z |
+| privatenet               | d24b9ce1-c405-414c-bc82-adcb710bcd47                                      | OS::Neutron::Net                   | CREATE_COMPLETE | 2016-03-18T13:39:40Z |
+| fw_sg                    | 995c7cfc-4801-4faf-8c92-dacf601ad243                                      | OS::Neutron::SecurityGroup         | CREATE_COMPLETE | 2016-03-18T13:39:42Z |
+| fw_floating_ip           | abb864b2-ca78-444a-a142-6223f1083264                                      | OS::Neutron::FloatingIP            | CREATE_COMPLETE | 2016-03-18T13:39:43Z |
+| fw_postboot              | 3d4b341c-89b2-4405-9073-1438952c1166                                      | OS::Heat::SoftwareConfig           | CREATE_COMPLETE | 2016-03-18T13:39:43Z |
+| fw_init                  | 09e2052d-474c-4879-8d90-109f94e98676                                      | OS::Heat::MultipartMime            | CREATE_COMPLETE | 2016-03-18T13:39:44Z |
+| subnet_private           | 467c9629-4456-4f39-9b02-fa240910ac46                                      | OS::Neutron::Subnet                | CREATE_COMPLETE | 2016-03-18T13:39:44Z |
+| admin_postboot           | 7b670a20-3259-4071-895c-44a37e4ea94d                                      | OS::Heat::SoftwareConfig           | CREATE_COMPLETE | 2016-03-18T13:39:46Z |
+| subnet_public            | bed623b8-57d2-47fd-8da7-414ae30afb8d                                      | OS::Neutron::Subnet                | CREATE_COMPLETE | 2016-03-18T13:39:47Z |
+| admin_init               | bb6de5bc-79d8-4108-a19b-1e36c705ed8d                                      | OS::Heat::MultipartMime            | CREATE_COMPLETE | 2016-03-18T13:39:49Z |
+| fw_private_port          | 738ec53e-2f35-4cf0-a34e-8311ab5b387e                                      | OS::Neutron::Port                  | CREATE_COMPLETE | 2016-03-18T13:39:50Z |
+| fw_public_port           | 2642a85e-1f92-4398-b136-8db010dabdb8                                      | OS::Neutron::Port                  | CREATE_COMPLETE | 2016-03-18T13:39:50Z |
+| firewall                 | 94c3797e-760a-4d65-8bb4-b5ed50866b43                                      | OS::Nova::Server                   | CREATE_COMPLETE | 2016-03-18T13:39:51Z |
+| admingw                  | 88aeceff-e7b8-4ada-a92e-d3dd7c5afcc2                                      | OS::Nova::Server                   | CREATE_COMPLETE | 2016-03-18T13:39:53Z |
+| fw_floating_ass          | abb864b2-ca78-444a-a142-6223f1083264:2642a85e-1f92-4398-b136-8db010dabdb8 | OS::Neutron::FloatingIPAssociation | CREATE_COMPLETE | 2016-03-18T13:39:54Z |
+| admingw_internet_surface | 2c97b35b-5beb-4aec-b1d4-845161d956ef-`admin_floating_ip`                         | OS::Nova::FloatingIPAssociation    | CREATE_COMPLETE | 2016-03-18T13:40:14Z |
++--------------------------+---------------------------------------------------------------------------+------------------------------------+-----------------+----------------------+
 ~~~
 The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
@@ -158,7 +205,7 @@ $ lynx https://privateip_pfsense
 
 ![lynx](img/lynx.png)
 
-for logging you use  **Username: admin** and **Password: pfsense**.
+For logging you use  **Username:admin** and **Password:pfsense**.
 
 ![lynx1](img/lynx2.png)
 
@@ -170,9 +217,9 @@ You can install a GUI interface on your Admin machine or you can use also window
 $ sudo ssh privateIpPfsense -l root -i $YOU_KEYPAIR_PATH -L 443:localhost:443 -i private_key
 ~~~
 
-in this case you have to use your private key.
+In this case you have to use your private key.
 
-or
+Or
 
 ~~~bash
 $ sudo ssh privateIpPfsense -l root -L 443:localhost:443
@@ -198,9 +245,10 @@ If you have problems in the connection speed on the instances, connecte to your 
 
 ![pfsense3](img/pfsense3.png)
 
-If this does not correct the problem, we remind you that the bandwidths of the instances are not all the same for example to have a bandwidth equal to 800 Mb/s you must choose one of these flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
-For knowing the bandwidths of our flavors click on this [link](https://www.cloudwatt.com/en/products/servers/tarifs.html).
+If this does not correct the problem, we remind you that the bandwidths of the instances are not all the same for example to have a bandwidth equal to 800 Mb/s you must choose one of these flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 or i2.cw.largessd-4).
+For knowing the bandwidths of our flavors [click here](https://www.cloudwatt.com/en/products/servers/tarifs.html).
 
+------
 ## So watt ?
 
 The goal of this tutorial is to accelerate your start. At this point **you** are the master of the stack.

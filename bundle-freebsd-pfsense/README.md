@@ -200,7 +200,7 @@ $ lynx https://private_ip_pfsense
 
 ![lynx](img/lynx.png)
 
-pour s'authenfier vous utilisez **Username:admin** et **Password:pfsense**.
+Pour s'authenfier vous utilisez **Username:admin** et **Password:pfsense**.
 
 ![lynx1](img/lynx2.png)
 
@@ -214,9 +214,9 @@ sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de 
 $ sudo ssh private_ip_pfsense -l root -i $YOU_KEYPAIR_PATH -L 443:localhost:443 -i private_key
 ~~~
 
-dans ce cas il faut utliser votre clé privée.
+Dans ce cas il faut utliser votre clé privée.
 
-ou
+Ou
 
 ~~~bash
 $ sudo ssh private_ip_pfsense -l root -L 443:localhost:443
@@ -240,7 +240,7 @@ Maintenant vous pouvez configurer votre firewall:
 
 ![pfsense2](img/pfsense2.png)
 
-Si vous rencontrez des problèmes de débit sur les instances connecté à votre PFsense,vous pouvez aller sur la page **System>Advanced>Networking**, puis cocher l'option **Disable hardware checksum offload**.
+Si vous rencontrez des problèmes de débit sur les instances connecté à votre PFsense, vous pouvez aller sur la page **System>Advanced>Networking**, puis cocher l'option **Disable hardware checksum offload**.
 
 ![pfsense3](img/pfsense3.png)
 
