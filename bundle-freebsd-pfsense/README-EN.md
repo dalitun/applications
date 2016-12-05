@@ -153,7 +153,7 @@ In this example you have a pfsense server connects on both networks LAN and WAN,
 you can connect to your pfsense by typing on your terminal this command:
 
 ~~~bash
-$ lynx http://privateip_pfsense
+$ lynx https://privateip_pfsense
 ~~~
 
 ![lynx](img/lynx.png)

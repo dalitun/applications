@@ -195,7 +195,7 @@ Dans cet exemple vous avez un serveur pfsense qui est connecté sur deux réseau
 Vous pouvez administrer votre firewall à partir de votre machine admin (ubuntu 14.04) en tapant la commande suivante sur le terminal
 
 ~~~bash
-$ lynx http://private_ip_pfsense
+$ lynx https://private_ip_pfsense
 ~~~
 
 ![lynx](img/lynx.png)
