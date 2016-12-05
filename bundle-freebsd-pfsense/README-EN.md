@@ -194,7 +194,7 @@ Now you can configure your firewall:
 
 ![pfsense2](img/pfsense2.png)
 
-If you have problems in the connection speed on the instances, connecte to your PFsense, you can go to the page **System>Advanced>Networking**, then check this option **Disable hardware checksum offload**
+If you have problems in the connection speed on the instances, connecte to your PFsense, you can go to the page **System>Advanced>Networking**, then check this option **Disable hardware checksum offload**.
 
 ![pfsense3](img/pfsense3.png)
 

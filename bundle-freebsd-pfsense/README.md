@@ -240,7 +240,7 @@ Maintenant vous pouvez configurer votre firewall:
 
 ![pfsense2](img/pfsense2.png)
 
-Si vous rencontrez des problèmes de débit sur les instances connecté à votre PFsense,vous pouvez aller sur la page **System>Advanced>Networking**, puis cocher l'option **Disable hardware checksum offload**
+Si vous rencontrez des problèmes de débit sur les instances connecté à votre PFsense,vous pouvez aller sur la page **System>Advanced>Networking**, puis cocher l'option **Disable hardware checksum offload**.
 
 ![pfsense3](img/pfsense3.png)
 
