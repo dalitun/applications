@@ -182,7 +182,7 @@ Et bien si ! En utilisant la console, vous pouvez déployer un serveur pfsense:
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Renseignez l'ensemble des paramètres demandés,
+8.	Renseignez l'ensemble des paramètres demandés
 9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
 
 La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu'à vous connecter en ssh avec votre keypair.
