@@ -217,7 +217,7 @@ Then click on `My account`.
 
 ![mailjet1](./img/mailjet1.png)
 
-Then click on `Add a Sender Domain or Address` in order to allow an email box or all the email boxes of your domains so that they can send and receive emails.
+Then click on `Add a Sender Domain or Address` in order to allow an email box or all the email boxes in your domains to send and to receive emails.
 
 ![mailjet2](./img/mailjet2.png)
 
