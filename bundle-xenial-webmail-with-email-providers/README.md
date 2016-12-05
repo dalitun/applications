@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode 40 : Webmail with email providers (relay SMTP) #
+# 5 Minutes Stacks, épisode 45 : Webmail with email providers (relay SMTP) #
 
-## Episode 40 :  Webmail with email providers
+## Episode 45 :  Webmail with email providers
 
 ![roundcube](./img/roundcube.png)
 
