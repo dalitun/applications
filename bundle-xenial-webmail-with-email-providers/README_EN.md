@@ -125,7 +125,8 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
          - n2.cw.highmem-16
  [...]
  ~~~
- ### Start stack
+ 
+### Start stack
 
  In a shell, run the script `stack-start.sh`:
 
