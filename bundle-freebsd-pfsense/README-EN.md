@@ -191,7 +191,13 @@ sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
 ![pfsense1](img/pfsense1.png)
 
 Now you can configure your firewall:
+
 ![pfsense2](img/pfsense2.png)
+
+in order the instances have the best connexion of internet.
+You can go to this page **System>Advanced>Networking**, check this option **Disable hardware checksum offload**
+
+![pfsense3](img/pfsense3.png)
 
 
 ## So watt ?

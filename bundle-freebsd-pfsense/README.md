@@ -208,6 +208,11 @@ Maintenant vous pouvez configurer votre firewall:
 
 ![pfsense2](img/pfsense2.png)
 
+Pour que les instances puissent se connecter à internet avec le bon débit.
+Vous pouvez aller sur la page **System>Advanced>Networking**, puis cocher l'option **Disable hardware checksum offload**
+
+![pfsense3](img/pfsense3.png)
+
 ------
 ## So watt ?
 
