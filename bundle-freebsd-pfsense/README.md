@@ -62,7 +62,7 @@ Une fois ceci fait, les outils de ligne de commande d'OpenStack peuvent interagi
 ### Ajuster les paramètres
 
 Dans le fichier `bundle-freebsd-pfsense.heat.yml` vous trouverez en haut une section `parameters`. Afin de pouvoir déployer votre stack sans problèmes, il faut compléter l'ensemble des paramètres ci-dessous.
-C'est dans ce même fichier que vous pouvez ajuster la taille des instances par le paramètre `flavor_name_fw` et `flavor_name_client`.
+C'est dans ce même fichier que vous pouvez ajuster la taille des instances par les paramètres `flavor_name_fw` et `flavor_name_client`.
 
 ~~~ yaml
 
@@ -211,7 +211,7 @@ sinon vous pouvez créez deux tunnels ssh pour administrer pfsense à partir de 
 1) Tapez la commande suivante dans la machine Admin (ubuntu)
 
 ~~~bash
-$ sudo ssh private_ip_pfsense -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:443 -i private_key
+$ sudo ssh private_ip_pfsense -l root -i $YOU_KEYPAIR_PATH -L 443:localhost:443 -i private_key
 ~~~
 
 dans ce cas il faut utliser votre clé privée.
@@ -219,7 +219,7 @@ dans ce cas il faut utliser votre clé privée.
 ou
 
 ~~~bash
-$ sudo ssh private_ip_pfsense -l root -L 80:localhost:443
+$ sudo ssh private_ip_pfsense -l root -L 443:localhost:443
 ~~~
 
 le mot de passe de root c'est **pfsense**, je vous conseille de le changer.
@@ -227,10 +227,10 @@ le mot de passe de root c'est **pfsense**, je vous conseille de le changer.
 2) Sur votre machine local tapez la commande suivante pour ouvrir le tunnel entre votre machine et la machine admin.
 
 ~~~bash
-$ sudo ssh flotting_ip_admin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
+$ sudo ssh flotting_ip_admin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:443
 ~~~
 
-3) Puis vous pouvez administrer votre pfsense en tapant cet url `http://localhost:5555` dans le navigateur
+3) Puis vous pouvez administrer votre pfsense en tapant cet url `https://localhost:5555` dans le navigateur
 
 avec **username:admin** et **password:pfsense**.
 
@@ -245,7 +245,7 @@ Si vous rencontrez des problèmes de débit sur les instances connecté à votre
 ![pfsense3](img/pfsense3.png)
 
 Si cela ne corrige pas le problème, nous vous rappelons que les débits des instances ne sont pas tous les mêmes par exemple pour avoir une bande passante égale à 800 Mb/s il faut choisir l'une de ces flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
-Pour connaître les débit de nos flavors [Cliquez-ici](https://www.cloudwatt.com/fr/produits/serveurs/tarifs.html).
+Pour connaître la bande passante de nos flavors [Cliquez-ici](https://www.cloudwatt.com/fr/produits/serveurs/tarifs.html).
 
 ------
 ## So watt ?

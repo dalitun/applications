@@ -61,7 +61,8 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `bundle-freebsd-pfsense.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `bundle-freebsd-pfsense.heat.yml` file, you will find at the top a section named `parameters`.In order to be able to deploy your stack without problems, you complete all the parameters below.This is within this same file that you can adjust the instances size by playing with `flavor_name_fw` and `flavor_name_client` parameters.
+
 
 ~~~ yaml
 heat_template_version: 2013-05-23
@@ -117,13 +118,13 @@ $ watch heat resource-list Pfsense
 | network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
 | subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
 | server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
-| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating_ip_admin`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
+| floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`admin_floating_ip`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
   +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
 ~~~
 The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
 * Starts pfsense based instance
-* `flotting_ip_admin` is admin machine flotting Ip .  
+* `admin_floating_ip` is admin machine flotting Ip .  
 
 <a name="console" />
 
@@ -140,9 +141,8 @@ We do indeed! Using the console, you can deploy a Pfsense server:
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
 6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
 7.	Name your stack in the « Stack name » field
-8.	Enter the name of your keypair in the « SSH Keypair » field
-9.  Write a passphrase that will be used for encrypting backups
-10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
+8.	Fill in all required parameters
+9.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
 
 The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
@@ -167,7 +167,7 @@ You can install a GUI interface on your Admin machine or you can use also window
 1) Type the following command:
 
 ~~~bash
-$ sudo ssh privateIpPfsense -l root -i $YOU_KEYPAIR_PATH -L 80:localhost:443 -i private_key
+$ sudo ssh privateIpPfsense -l root -i $YOU_KEYPAIR_PATH -L 443:localhost:443 -i private_key
 ~~~
 
 in this case you have to use your private key.
@@ -175,7 +175,7 @@ in this case you have to use your private key.
 or
 
 ~~~bash
-$ sudo ssh privateIpPfsense -l root -L 80:localhost:443
+$ sudo ssh privateIpPfsense -l root -L 443:localhost:443
 ~~~
 
 root's password is "pfsense". I advise you to change it.
@@ -183,10 +183,10 @@ root's password is "pfsense". I advise you to change it.
 2) On your own machine type this command in order to open the tunnel between your machine and the admin Machine.
 
 ~~~bash
-sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:80
+sudo ssh FloatingIPadmin -l cloud -i $YOU_KEYPAIR_PATH -L 5555:localhost:443
 ~~~
 
-3)Then you can manage pfsense by this url `http://localhost:5555`,with **username:admin** and **password: pfsense**:
+3)Then you can manage pfsense by this url `https://localhost:5555`,with **username:admin** and **password: pfsense**:
 
 ![pfsense1](img/pfsense1.png)
 
@@ -194,13 +194,12 @@ Now you can configure your firewall:
 
 ![pfsense2](img/pfsense2.png)
 
-In order the instances have the best connexion of internet.
-You can go to this page **System>Advanced>Networking**, check this option **Disable hardware checksum offload**
+If you encounter flow problems on the instances connected to your PFsense, you can go to the page **System>Advanced>Networking**, then check this option **Disable hardware checksum offload**
 
 ![pfsense3](img/pfsense3.png)
 
-The bandwidth is based on the flavor size of the Pfsense instance(for example in order to have a bandwidth equils 800 Mb/s it is necessary to choose one of these flavors n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
-For knowing the bandwidths of each flavor click on this [link](https://www.cloudwatt.com/en/products/servers/tarifs.html).
+If this does not correct the problem, we remind you that the rates of the instances are not all the same for example to have a bandwidth equal to 800 Mb/s you must choose one of these flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
+For knowing the bandwidths of our flavors click on this [link](https://www.cloudwatt.com/en/products/servers/tarifs.html).
 
 ## So watt ?
 
