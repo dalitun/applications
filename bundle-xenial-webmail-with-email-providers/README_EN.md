@@ -65,7 +65,9 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
- With the `bundle-xenial-webmail-with-email-providers.heat.yml` file, you will find at the top a section named `parameters`.In order to be able to deploy your stack without problems, you complete all the parameters below.
+ With the `bundle-xenial-webmail-with-email-providers.heat.yml` file, you will find at the top a section named `parameters`.In order to be able to deploy your stack without problems, you complete all the parameters below.This is within this same file that you can adjust the instance size by playing with the flavor parameter.
+
+
 
  ~~~ yaml
  [...]
