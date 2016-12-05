@@ -200,13 +200,13 @@ If you've reached this point, you're already done! Go enjoy Webmail!
 
 ## Enjoy
 
-Once this is done you can connect via a web browser on roundcube interface from this url `http://hostname.mail_domain/` or `http://floatingIP/` in ord for logging you use **admin@mail_domain** as login and **password_admin** as password, you have to arrive on these pages:
+Once this is done you can connect via a web browser on roundcube interface from this url `http://hostname.mail_domain/` or `http://floatingIP/` for logging you use **admin@mail_domain** as login and **password_admin** as password, you have to arrive on these pages:
 
 ![auth](./img/webmail1.png)
 
 ![inbox](./img/webmail2.png)
 
-Before you start sending and receiving emails, you must allow your email address to send email on your email sending service (in our example [Mailjet](https://app.mailjet.com/signup)), follow these steps:
+Before you start sending and receiving emails, you must allow your email address to send emails on your email sending service (in our example [Mailjet](https://app.mailjet.com/signup)), follow these steps:
 
 Connect with your email and your password.
 
@@ -216,12 +216,12 @@ Then click on `My account`.
 
 ![mailjet1](./img/mailjet1.png)
 
-Then click on `Add a Sender Domain or Address` in order to allow an email box or all the email boxes of your domains so that they can send and receive e-mails.
+Then click on `Add a Sender Domain or Address` in order to allow an email box or all the email boxes of your domains so that they can send and receive emails.
 
 ![mailjet2](./img/mailjet2.png)
 
 For creating new email boxes, you can log on postfixamdin inteface via a web browser from this URL
-`http://hostname.mail_domain/postfixadmin` or `http://floatingIP/postfixadmin`, to authenticate using the login **admin@mail_domain** and the password **password_admin**.
+`http://hostname.mail_domain/postfixadmin` or `http://floatingIP/postfixadmin`, to authenticate you use the login **admin@mail_domain** and the password **password_admin**.
 
 ![postfixadmin](./img/postfixadmin.png)
 
