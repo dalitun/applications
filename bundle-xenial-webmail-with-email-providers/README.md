@@ -222,6 +222,7 @@ Pour créer des nouvelles boites e-mails, vous pouvez vous connecter sur l'intef
 Pour savoir comment administrer le postfixadmin vous pouvez consulter ce lien
 [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
+------
 ## So watt?
 
 Les chemins intéressants sur votre machine :

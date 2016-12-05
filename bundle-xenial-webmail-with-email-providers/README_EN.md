@@ -230,6 +230,7 @@ For creating new email boxes, you can log on postfixamdin inteface via a web bro
 
 For knowing how to manager the postfixadmin you can see this link [postfixadmin](http://postfixadmin.sourceforge.net/screenshots/).
 
+------
 ## So watt?
 The interesting directories and files are:
 
