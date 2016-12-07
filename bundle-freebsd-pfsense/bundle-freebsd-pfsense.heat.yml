@@ -162,7 +162,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: dd162fa3-a386-45a6-8737-3cce42aab014
+      image: e8ac129a-39e3-4755-a4f9-87ac3779f33e
       flavor: { get_param: flavor_name_fw }
       networks:
         - port: { get_resource: fw_public_port }

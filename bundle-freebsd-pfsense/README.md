@@ -240,11 +240,7 @@ Maintenant vous pouvez configurer votre firewall:
 
 ![pfsense2](img/pfsense2.png)
 
-Si vous rencontrez des problèmes de débit sur les instances connecté à votre PFsense, vous pouvez aller sur la page **System>Advanced>Networking**, puis cocher l'option **Disable hardware checksum offload**.
-
-![pfsense3](img/pfsense3.png)
-
-Si cela ne corrige pas le problème, nous vous rappelons que la bande passante des instances ne sont pas tous les mêmes par exemple pour avoir une bande passante égale à 800 Mb/s il faut choisir l'une de ces flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
+Nous vous rappelons que la bande passante des instances ne sont pas tous les mêmes par exemple pour avoir une bande passante égale à 800 Mb/s il faut choisir l'une de ces flavors (n1.cw.standard-4,n2.cw.standard-4,n1.cw.highcpu-4,n1.cw.highmem-4,n2.cw.highmem-4 ou i2.cw.largessd-4).
 Pour connaître la bande passante de nos flavors [Cliquez-ici](https://www.cloudwatt.com/fr/produits/serveurs/tarifs.html).
 
 ------
