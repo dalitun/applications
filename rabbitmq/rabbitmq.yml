@@ -1,0 +1,5 @@
+- hosts: all
+  user: cloud
+  become: true
+  roles:
+    - { role: common }

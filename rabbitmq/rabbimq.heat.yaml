@@ -1,0 +1,115 @@
+heat_template_version: 2015-04-30
+
+description: |
+  Heat template provisioning a stack a rabbitMQ servers,
+  a load-balancer and a floating IP mapped to the
+  load-balacing VIP.
+
+parameters:
+  keypair_name:
+    description: Keypair to inject in instance
+    label: SSH Keypair
+    type: string
+
+  network_name:
+    description: network name
+    label: network name
+    type: string
+    default: cloudwatt_network
+
+  subnet_id:
+    description: subnet_id
+    label: subnet_id
+    type: string
+    default: 66aef9ca-b697-46d0-afd6-f2f04d150b98
+
+  flavor:
+    default: n1.cw.standard-2
+    description: Flavor to use for the deployed instances
+    type: string
+    label: Instance Type (Flavor)
+    constraints:
+      - allowed_values:
+          - n1.cw.standard-2
+          - n1.cw.standard-4
+          - n1.cw.standard-8
+          - n1.cw.standard-16
+  node_count:
+    default: 1
+    label: Node Count
+    description: Node counts
+    type: number
+    constraints:
+      - range: { min: 1, max: 50 }
+
+
+resources:
+
+  security_group:
+    type: OS::Neutron::SecurityGroup
+    properties:
+       rules:
+         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 55672, port_range_max: 55672 }
+         - { direction: ingress, protocol: 47 }
+         - { direction: ingress, protocol: ICMP }
+         - { direction: egress }
+
+  web_nodes:
+    type: OS::Heat::ResourceGroup
+    properties:
+      count: { get_param: node_count }
+      resource_def:
+          type: OS::Nova::Server
+          properties:
+            name:
+               str_replace:
+                  template: $stack-rabbitmq-%index%
+                  params:
+                     $stack: { get_param: 'OS::stack_name' }
+            flavor: {get_param: flavor}
+            image: Ubuntu 16.04
+            key_name: {get_param: keypair_name}
+            metadata: {"metering.stack": {get_param: "OS::stack_id"}}
+            networks:
+              - network: { get_param: network_name }
+            config_drive: True
+            security_groups: [get_resource: security_group]
+            user_data: |
+                #!/bin/sh
+                wget https://gist.githubusercontent.com/adilbaig/1a12028b6eff3cd8c78a/raw/988561180c07000c47325103beb7148f9417a037/setup-rabbitmq-cluster.sh
+                chmod +x setup-rabbitmq-cluster.sh
+
+
+
+
+
+  pool:
+    type: OS::Neutron::Pool
+    properties:
+      name: mypool1
+      protocol: HTTP
+      lb_method: ROUND_ROBIN
+      subnet: { get_param: subnet_id }
+      vip: {"protocol_port": 55672}
+  lb:
+    type: OS::Neutron::LoadBalancer
+    properties:
+      members: { get_attr: [web_nodes, refs] }
+      pool_id: { get_resource: pool }
+      protocol_port: 55672
+
+  floatingip:
+    type: OS::Neutron::FloatingIP
+    properties:
+      fixed_ip_address: { get_attr: [pool, vip, address] }
+      floating_network: public
+      port_id: { get_attr: [pool, vip, port_id] }
+
+outputs:
+  FloatingIP:
+    description: Service public VIP
+    value: { get_attr: [floatingip, floating_ip_address] }
+  VIP:
+    description: Internal VIP
+    value: { get_attr: [pool, vip, address] }

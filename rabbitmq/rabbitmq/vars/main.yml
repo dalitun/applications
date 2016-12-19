@@ -1,0 +1,11 @@
+config_rabbitmq_ha: true
+enable_rabbitmq_clustering: true
+erlang_cookie: LSKNKBELKPSTDBBCHETL
+rabbitmq_config:
+  - queue_name: testq
+    durable: true
+    exchange_name: testq
+    type: fanout
+    routing_key: testq
+    tags: 'ha-mode=all,ha-sync-mode=automatic'
+rabbitmq_master: ans-test-1
