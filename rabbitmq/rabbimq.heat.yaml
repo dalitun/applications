@@ -75,14 +75,16 @@ resources:
               - network: { get_param: network_name }
             config_drive: True
             security_groups: [get_resource: security_group]
-            user_data: |
-                #!/bin/sh
-                wget https://gist.githubusercontent.com/adilbaig/1a12028b6eff3cd8c78a/raw/988561180c07000c47325103beb7148f9417a037/setup-rabbitmq-cluster.sh
-                chmod +x setup-rabbitmq-cluster.sh
-
-
-
-
+            user_data_format: RAW
+            user_data:
+              str_replace:
+                template: |
+                 #!/bin/sh
+                   sudo mkdir /etc/ansible/
+                   sudo echo "rabbitmq_master: $stack-rabbitmq-0" >> /etc/ansible/vars.yml
+                   sudo ansible-pull -U https://github.com/dalitun/applications.git rabbitmq/rabbitmq.yml -e @/etc/ansible/vars.yml
+                params:
+                  $stack: { get_param: 'OS::stack_name' }
 
   pool:
     type: OS::Neutron::Pool

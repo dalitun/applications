@@ -2,4 +2,4 @@
   user: cloud
   become: true
   roles:
-    - { role: common }
+    - { role: rabbitmq }
