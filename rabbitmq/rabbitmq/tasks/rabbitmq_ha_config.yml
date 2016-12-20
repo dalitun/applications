@@ -10,7 +10,7 @@
   notify: restart rabbitmq-server
 
 - name: rabbitmq_ha_config | creating queue(s)
-  command: rabbitmqadmin declare queue name={{ item.queue_name }} durable={{ item.durable|lower }}
+  shell: rabbitmqadmin declare queue name={{ item.queue_name }} durable={{ item.durable|lower }}
   run_once: true
   with_items: rabbitmq_config
 
@@ -20,11 +20,11 @@
   with_items: rabbitmq_config
 
 - name: rabbitmq_ha_config | creating exchange(s)
-  command: rabbitmqadmin declare exchange name={{ item.exchange_name }} type={{ item.type }}
+  shell: rabbitmqadmin declare exchange name={{ item.exchange_name }} type={{ item.type }}
   run_once: true
   with_items: rabbitmq_config
 
 - name: rabbitmq_ha_config | creating binding(s)
-  command: rabbitmqadmin declare binding source={{ item.exchange_name }} destination_type="queue" destination={{ item.queue_name }} routing_key={{ item.routing_key }}
+  shell: rabbitmqadmin declare binding source={{ item.exchange_name }} destination_type="queue" destination={{ item.queue_name }} routing_key={{ item.routing_key }}
   run_once: true
   with_items: rabbitmq_config
