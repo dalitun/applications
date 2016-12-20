@@ -1,4 +1,4 @@
-- hosts: localhost
+- hosts: local
   user: cloud
   become: true
   roles:

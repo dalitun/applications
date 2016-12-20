@@ -1,117 +1,160 @@
-heat_template_version: 2015-04-30
-
-description: |
-  Heat template provisioning a stack a rabbitMQ servers,
-  a load-balancer and a floating IP mapped to the
-  load-balacing VIP.
+heat_template_version: 2013-05-23
+description: Template to show off parameters
 
 parameters:
-  keypair_name:
-    description: Keypair to inject in instance
-    label: SSH Keypair
-    type: string
+    keypair_name:
+      description: Keypair to inject in instance
+      label: SSH Keypair
+      type: string
+    slave_count:
+        type: number
+        label: Slave Count
+        description: Number of slaves
+        default: 0
+    network_name:
+      description: network name
+      label: network name
+      type: string
+      default: start-net-start
 
-  network_name:
-    description: network name
-    label: network name
-    type: string
-    default: cloudwatt_network
+    subnet_id:
+      description: subnet_id
+      label: subnet_id
+      type: string
+      default: 1a3d00d0-19e2-446e-828e-91b8032550aa
 
-  subnet_id:
-    description: subnet_id
-    label: subnet_id
-    type: string
-    default: 66aef9ca-b697-46d0-afd6-f2f04d150b98
-
-  flavor:
-    default: n1.cw.standard-2
-    description: Flavor to use for the deployed instances
-    type: string
-    label: Instance Type (Flavor)
-    constraints:
-      - allowed_values:
-          - n1.cw.standard-2
-          - n1.cw.standard-4
-          - n1.cw.standard-8
-          - n1.cw.standard-16
-  node_count:
-    default: 1
-    label: Node Count
-    description: Node counts
-    type: number
-    constraints:
-      - range: { min: 1, max: 50 }
-
+    master_flavor:
+        type: string
+        label: Master Instance Type
+        description: Type of instance (flavor) to deploy for the master node
+        default: s1.cw.small-1
+    slave_flavor:
+        type: string
+        label: Slave Instance Type
+        description: Type of instance (flavor) to deploy
+        default: s1.cw.small-1
+    private_net_id:
+        type: string
+        description: ID of private network into which servers get deployed
+        default: 7359a091-59a7-4e29-a068-ed2a64d8c068
+    public_net_id:
+        type: string
+        description: ID of the public net
+        default: 6ea98324-0f14-49f6-97c0-885d1b8dc517
 
 resources:
+    security_group:
+      type: OS::Neutron::SecurityGroup
+      properties:
+         rules:
+           - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 22, port_range_max: 22 }
+           - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 55672, port_range_max: 55672 }
+           - { direction: ingress, protocol: 47 }
+           - { direction: ingress, protocol: ICMP }
+           - { direction: egress }
 
-  security_group:
-    type: OS::Neutron::SecurityGroup
-    properties:
-       rules:
-         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 22, port_range_max: 22 }
-         - { direction: ingress, remote_ip_prefix : 0.0.0.0/0, protocol: TCP, port_range_min: 55672, port_range_max: 55672 }
-         - { direction: ingress, protocol: 47 }
-         - { direction: ingress, protocol: ICMP }
-         - { direction: egress }
 
-  web_nodes:
-    type: OS::Heat::ResourceGroup
-    properties:
-      count: { get_param: node_count }
-      resource_def:
-          type: OS::Nova::Server
-          properties:
+    master:
+        type: OS::Nova::Server
+        properties:
+            key_name: { get_param: keypair_name }
+            image: Debian Jessie
+            flavor: { get_param: master_flavor }
             name:
-               str_replace:
-                  template: $stack-rabbitmq-%index%
-                  params:
-                     $stack: { get_param: 'OS::stack_name' }
-            flavor: {get_param: flavor}
-            image: Ubuntu 16.04
-            key_name: {get_param: keypair_name}
-            metadata: {"metering.stack": {get_param: "OS::stack_id"}}
-            networks:
-              - network: { get_param: network_name }
-            config_drive: True
-            security_groups: [get_resource: security_group]
-            user_data_format: RAW
-            user_data:
               str_replace:
-                template: |
-                 #!/bin/sh
-                   sudo mkdir /etc/ansible/
-                   sudo echo "rabbitmq_master: $stack-rabbitmq-0" >> /etc/ansible/vars.yml
-                   sudo ansible-pull -U https://github.com/dalitun/applications.git rabbitmq/rabbitmq.yml -e @/etc/ansible/vars.yml
+                template: $stack-rabbitmq-master
                 params:
-                  $stack: { get_param: 'OS::stack_name' }
+                    $stack: { get_param: 'OS::stack_name' }
+            networks: [{network: { get_param: network_name}}]
+            security_groups: [get_resource: security_group]
+            user_data:
+                str_replace:
+                    template: |
+                        #!/bin/bash
+                        mkdir /etc/ansible/
+                        echo "[local]" >> /etc/ansible/hosts
+                        echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
+                        echo "rabbitmq_master: $stack-rabbitmq-master" >> /etc/ansible/vars.yml
+                        ansible-pull -U https://github.com/dalitun/applications.git rabbitmq/rabbitmq.yml -e @/etc/ansible/vars.yml
 
-  pool:
-    type: OS::Neutron::Pool
-    properties:
-      name: mypool1
-      protocol: HTTP
-      lb_method: ROUND_ROBIN
-      subnet: { get_param: subnet_id }
-      vip: {"protocol_port": 55672}
-  lb:
-    type: OS::Neutron::LoadBalancer
-    properties:
-      members: { get_attr: [web_nodes, refs] }
-      pool_id: { get_resource: pool }
-      protocol_port: 55672
+                    params:
+                        $stack: { get_param: 'OS::stack_name' }
 
-  floatingip:
-    type: OS::Neutron::FloatingIP
-    properties:
-      fixed_ip_address: { get_attr: [pool, vip, address] }
-      floating_network: public
-      port_id: { get_attr: [pool, vip, port_id] }
+    slaveresources:
+        type: OS::Heat::ResourceGroup
+        depends_on: master
+        properties:
+            count: { get_param: slave_count }
+            resource_def:
+                type: OS::Nova::Server
+                properties:
+                    key_name: { get_param: keypair_name }
+                    image: Debian Jessie
+                    flavor: { get_param: slave_flavor }
+                    name:
+                      str_replace:
+                        template: $stack-rabbitmq-salve-%index%
+                        params:
+                            $stack: { get_param: 'OS::stack_name' }
+                    networks: [{network: { get_param: network_name}}]
+                    security_groups: [get_resource: security_group]
+                    user_data:
+                        str_replace:
+                            template: |
+                                #!/bin/bash
+                                START=1
+                                END=$clusters_size
+                                echo "$master $stack-rabbitmq-master" >> /etc/hosts
+                                mkdir /etc/ansible/
+                                echo "[local]" >> /etc/ansible/hosts
+                                echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
+                                echo "rabbitmq_master: $stack-rabbitmq-master" >> /etc/ansible/vars.yml
+                                ansible-pull -U https://github.com/dalitun/applications.git rabbitmq/rabbitmq.yml -e @/etc/ansible/vars.yml
+                            params:
+                                $master: {get_attr: [master,first_address]}
+                                $stack: { get_param: 'OS::stack_name' }
+
+    pool:
+      type: OS::Neutron::Pool
+      properties:
+        name: mypool1
+        protocol: HTTP
+        lb_method: ROUND_ROBIN
+        subnet: { get_param: subnet_id }
+        vip: {"protocol_port": 55672}
+
+    lb:
+      type: OS::Neutron::LoadBalancer
+      properties:
+        members: {get_attr: [slaveresources, refs]}
+        pool_id: { get_resource: pool }
+        protocol_port: 55672
+
+    master_member:
+      type: OS::Neutron::PoolMember
+      properties:
+        pool_id: {get_resource: pool}
+        protocol_port: 55672
+        address: {get_attr: [master, first_address]}
+        #subnet: { get_param: subnet }
+
+    floatingip:
+      type: OS::Neutron::FloatingIP
+      properties:
+        fixed_ip_address: { get_attr: [pool, vip, address] }
+        floating_network: public
+        port_id: { get_attr: [pool, vip, port_id] }
+
+
 
 outputs:
-  FloatingIP:
-    description: Service public VIP
-    value: { get_attr: [floatingip, floating_ip_address] }
-  VIP:
-    description: Internal VIP
-    value: { get_attr: [pool, vip, address] }
+    FloatingIP:
+      description: Service public VIP
+      value: { get_attr: [floatingip, floating_ip_address] }
+    Master:
+      description: master ip
+      value: { get_attr: [master,first_address] }
+    VIP:
+      description: Internal VIP
+      value: { get_attr: [pool, vip, address] }
+    
