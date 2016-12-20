@@ -75,7 +75,7 @@ resources:
                         echo "[local]" >> /etc/ansible/hosts
                         echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
                         echo "rabbitmq_master: $stack-rabbitmq-master" >> /etc/ansible/vars.yml
-                        ansible-pull -U https://github.com/dalitun/applications.git rabbitmq/rabbitmq.yml -e @/etc/ansible/vars.yml
+                        /usr/local/bin/ansible-pull -U https://github.com/dalitun/applications.git rabbitmq/rabbitmq.yml -e @/etc/ansible/vars.yml
 
                     params:
                         $stack: { get_param: 'OS::stack_name' }
@@ -109,7 +109,7 @@ resources:
                                 echo "[local]" >> /etc/ansible/hosts
                                 echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
                                 echo "rabbitmq_master: $stack-rabbitmq-master" >> /etc/ansible/vars.yml
-                                ansible-pull -U https://github.com/dalitun/applications.git rabbitmq/rabbitmq.yml -e @/etc/ansible/vars.yml
+                                /usr/local/bin/ansible-pull -U https://github.com/dalitun/applications.git rabbitmq/rabbitmq.yml -e @/etc/ansible/vars.yml
                             params:
                                 $master: {get_attr: [master,first_address]}
                                 $stack: { get_param: 'OS::stack_name' }
@@ -157,4 +157,3 @@ outputs:
     VIP:
       description: Internal VIP
       value: { get_attr: [pool, vip, address] }
-    

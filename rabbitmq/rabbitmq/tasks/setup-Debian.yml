@@ -1,6 +1,7 @@
 ---
 - name: debian | adding RabbitMQ public GPG key to the apt repo
-  apt_key: url=http://www.rabbitmq.com/rabbitmq-signing-key-public.asc state=present
+  apt_key: url=https://www.rabbitmq.com/rabbitmq-release-signing-key.asc state=present
+
 
 - name: debian | adding RabbitMQ repo
   apt_repository: repo='deb http://www.rabbitmq.com/debian/ testing main' update_cache=no state=present
