@@ -13,37 +13,37 @@
 
 - name: rabbitmq_clustering | restarting rabbitmq-server on master
   service: name=rabbitmq-server state=restarted
-  when: inventory_hostname == "{{ rabbitmq_master }}"
+  when: ansible_hostname == "{{ rabbitmq_master }}"
 
 - name: rabbitmq_clustering | starting rabbitmq app on master
   shell: rabbitmqctl start_app
   register: cluster_master
-  when: inventory_hostname == "{{ rabbitmq_master }}"
+  when: ansible_hostname == "{{ rabbitmq_master }}"
 
 - name: rabbitmq_clustering | sending sigterm to any running rabbitmq processes
   shell: pkill -u rabbitmq || true
-  when: inventory_hostname != "{{ rabbitmq_master }}"
+  when: ansible_hostname != "{{ rabbitmq_master }}"
 
 - name: rabbitmq_clustering | restarting rabbitmq-server
   service: name=rabbitmq-server state=restarted
-  when: inventory_hostname != "{{ rabbitmq_master }}"
+  when: ansible_hostname != "{{ rabbitmq_master }}"
 
 - name: rabbitmq_clustering | stopping rabbitmq app
   shell: rabbitmqctl stop_app
-  when: inventory_hostname != "{{ rabbitmq_master }}"
+  when: ansible_hostname != "{{ rabbitmq_master }}"
 
 - name: rabbitmq_clustering | resetting rabbitmq app
   shell: rabbitmqctl reset
-  when: inventory_hostname != "{{ rabbitmq_master }}"
+  when: ansible_hostname != "{{ rabbitmq_master }}"
 
 - name: rabbitmq_clustering | joining rabbitmq cluster
   shell: rabbitmqctl join_cluster 'rabbit@{{ rabbitmq_master }}'
   register: cluster_joined
-  when: inventory_hostname != "{{ rabbitmq_master }}"
+  when: ansible_hostname != "{{ rabbitmq_master }}"
 
 - name: rabbitmq_clustering | starting rabbitmq app
   shell: rabbitmqctl start_app
-  when: inventory_hostname != "{{ rabbitmq_master }}"
+  when: ansible_hostname != "{{ rabbitmq_master }}"
 
 - name: rabbitmq_clustering | marking as clustered
   file: path=/etc/rabbitmq/clustered state=touch
