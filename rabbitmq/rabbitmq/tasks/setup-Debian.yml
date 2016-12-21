@@ -12,8 +12,7 @@
     - rabbitmq-server
 
 - name: debian | enabling the RabbitMQ Management Console
-  shell: rabbitmq-plugins enable rabbitmq_management
-  notify: restart rabbitmq-server
+  shell: sudo rabbitmq-plugins enable rabbitmq_management
   ignore_errors: yes
 
 - name: debian | ensuring that the RabbitMQ service is running
