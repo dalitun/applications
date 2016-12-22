@@ -74,6 +74,7 @@ Les variables d'environment sont dans le fichier `/home/cloud/.bashrc`.
 
 ### Autres sources pouvant vous intéresser:
 
-* [ Openstack-cli page](http://docs.openstack.org/user-guide/cli-cheat-sheet.html)
+* [Openstack-cli page](http://docs.openstack.org/user-guide/cli-cheat-sheet.html)
+
 ----
 Have fun. Hack in peace.
