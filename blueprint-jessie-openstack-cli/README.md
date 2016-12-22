@@ -60,7 +60,6 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
 
 Pour lister les instances qui sont sur votre tenant :
-
 ~~~bash
 $ openstack server list
 ~~~  
@@ -74,22 +73,22 @@ Pour lister les réseaux qui sont sur votre tenant
 ~~~bash
 openstack network list
 ~~~
-Pour créer une stack via template heat:
+Pour créer une stack via template heat :
 ~~~bash
 $ openstack stack create --template server_console.yaml
 ~~~
 
-Pour voir les détails de votre stack:
+Pour voir les détails de votre stack :
 ~~~bash
 $ openstack stack resource list MYSTACK
 ~~~
 
-Pour voir comment utliser la commande `openstack`:
+Pour voir comment utliser la commande `openstack` :
 ~~~bash
 $ openstack help
 ~~~
-Les variables d'environment sont dans le fichier `/home/cloud/.bashrc`.
-Pour les lister via le shell:
+
+Les variables d'environment sont dans le fichier `/home/cloud/.bashrc`, pour les lister via le shell:
 ~~~bash
 $ env | grep OS
 
