@@ -1,10 +1,14 @@
-# 5 Minutes Stacks, 25 episode : JeStart #
+# 5 Minutes Stacks, XX episode : Blueprint-jessie-openstack-cli #
 
-## Episode 20 : JeStart
-.
+## Episode xx : Blueprint-jessie-openstack-cli
+
+Ce stack vous permet d'installer openstack client et configurer vos credentials pour accéder aux API Cloudwatt via le shell.
 
 ## Preparations
 
+### The version
+
+* openstackclient 3.6.0
 
 ### The prerequisites to deploy this stack
 

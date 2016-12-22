@@ -1,13 +1,17 @@
-# 5 Minutes Stacks, épisode 25 : Blueprint-jessie-openstack-cli #
+# 5 Minutes Stacks, épisode XX  : Blueprint-jessie-openstack-cli #
 
-## Episode 25 : Blueprint-jessie-openstack-cli
+## Episode XX : Blueprint-jessie-openstack-cli
 
 Ce stack vous permet d'installer openstack client et configurer vos credentials pour accéder aux API Cloudwatt via le shell.
 
-
 ## Preparations
 
+### Les versions
+
+* openstackclient 3.6.0
+
 ### Les pré-requis pour déployer cette stack
+
 Ceci devrait être une routine à présent:
 
 * Un accès internet
@@ -18,13 +22,13 @@ Ceci devrait être une routine à présent:
 
 ### Taille de l'instance
 
-Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.tiny-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sûr, vous pouvez ajuster les paramètres de la stack et en particulier sa taille par défaut.
+Par défaut, le script propose un déploiement sur une instance de type "Tiny" (t1.cw.tiny) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sûr, vous pouvez ajuster les paramètres de la stack et en particulier sa taille par défaut.
 
 ## Démarrage
 
 ### mais vous n’auriez pas un moyen de lancer l’application par la console ?
 
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
+Et bien si ! En utilisant la console, vous pouvez déployer votre stack:
 
 1.	Allez sur le Github Cloudwatt dans le répertoire [applications/blueprint-jessie-openstack-cli](https://github.com/cloudwatt/applications/tree/master/blueprint-jessie-openstack-cli)
 2.	Cliquez sur le fichier nommé `blueprint-jessie-openstack-cli.heat.yml`
@@ -34,13 +38,13 @@ Et bien si ! En utilisant la console, vous pouvez déployer un serveur mail:
 6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
 7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
 8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
-10. network_name Entrez votre keypair dans le champ « keypair_name »
-11. os_auth_url Entrez votre keypair dans le champ « keypair_name »
-12. os_region_name Entrez votre keypair dans le champ « keypair_name »
-13. os_tenant_name Entrez votre keypair dans le champ « keypair_name »
-14. os_username Entrez votre keypair dans le champ « keypair_name »
-15. os_password Entrez votre keypair dans le champ « keypair_name »
+9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name »
+10. Entrez votre network_name dans le champ « network_name »
+11. Entrez votre os_auth_url dans le champ « os_auth_url  »
+12. Choisissez la région (fr1 ou fr2) parmi le menu déroulant « os_region_name »
+13. Entrez votre os_tenant_name dans le champ « os_tenant_name »
+14. Entrez votre os_username dans le champ « os_username »
+15. Entrez votre os_password dans le champ « os_password » enfin cliquez sur « LANCER »
 La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée.
 C’est (déjà) FINI !
 
@@ -51,26 +55,50 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 ## Enjoy
 
-### Quelques usages de la commande `openstack`.
+### Quelques exemples d'utilisation de la commande `openstack`.
 
 Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
 
-Pour lister les instances qui sont sur votre tanant :
+Pour lister les instances qui sont sur votre tenant :
 
 ~~~bash
 $ openstack server list
 ~~~  
 
-Pour lister les images qui sont sur votre tanant :
+Pour lister les images qui sont sur votre tenant :
 ~~~bash
 $ openstack image list
 ~~~  
 
-Pour créer une stack via heat
+Pour lister les réseaux qui sont sur votre tenant
+~~~bash
+openstack network list
+~~~
+Pour créer une stack via template heat:
 ~~~bash
 $ openstack stack create --template server_console.yaml
 ~~~
+
+Pour voir les détails de votre stack:
+~~~bash
+$ openstack stack resource list MYSTACK
+~~~
+
+Pour voir comment utliser la commande `openstack`:
+~~~bash
+$ openstack help
+~~~
 Les variables d'environment sont dans le fichier `/home/cloud/.bashrc`.
+Pour les lister via le shell:
+~~~bash
+$ env | grep OS
+
+OS_REGION_NAME=fr1
+OS_PASSWORD=xxxxxxxxxxxxxxxxxxxxx
+OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
+OS_USERNAME=your_username
+OS_TENANT_NAME=xxxxxxxxxxxxxxxxxx
+~~~
 
 ### Autres sources pouvant vous intéresser:
 
