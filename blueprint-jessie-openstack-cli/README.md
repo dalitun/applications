@@ -2,7 +2,8 @@
 
 ## Episode XX : Blueprint-jessie-openstack-cli
 
-Ce stack vous permet d'installer openstack client et configurer vos credentials pour accéder aux API Cloudwatt via le shell.
+Cette stack à pour but de vous permettre de piloter les différents module de l'infrastructure Openstack de Cloudwatt.
+En démarrant une image basée sur Debian Jessie avec le client openstack installer et vos informations d'identification qui vont vous permettre d'accéder a l'API de Cloudwatt via le shell de l'instance.
 
 ## Preparations
 
@@ -17,8 +18,6 @@ Ceci devrait être une routine à présent:
 * Un accès internet
 * Un shell linux
 * Un [compte Cloudwatt](https://www.cloudwatt.com/cockpit/#/create-contact) avec une [ paire de clés existante](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
-* Les outils [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
-* Un clone local du dépôt git [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 ### Taille de l'instance
 
@@ -75,7 +74,7 @@ openstack network list
 ~~~
 Pour créer une stack via template heat :
 ~~~bash
-$ openstack stack create --template server_console.yaml
+$ openstack stack create MYSTACK --template server_console.yaml
 ~~~
 
 Pour voir les détails de votre stack :
@@ -83,12 +82,12 @@ Pour voir les détails de votre stack :
 $ openstack stack resource list MYSTACK
 ~~~
 
-Pour voir comment utliser la commande `openstack` :
+Pour voir l'ensemble des options de la commande `openstack` :
 ~~~bash
 $ openstack help
 ~~~
 
-Les variables d'environment sont dans le fichier `/home/cloud/.bashrc`, pour les lister via le shell:
+Les variables d'environnement sont dans le fichier `/home/cloud/.bashrc`, pour les lister via le shell:
 ~~~bash
 $ env | grep OS
 
@@ -99,9 +98,11 @@ OS_USERNAME=your_username
 OS_TENANT_NAME=xxxxxxxxxxxxxxxxxx
 ~~~
 
-### Autres sources pouvant vous intéresser:
+### Autre sources pouvant vous intéresser:
 
+* [Cloudwatt tutorial](https://support.cloudwatt.com/debuter/cli-fin.html)
 * [Openstack-cli page](http://docs.openstack.org/user-guide/cli-cheat-sheet.html)
+
 
 ----
 Have fun. Hack in peace.

@@ -2,7 +2,8 @@
 
 ## Episode xx : Blueprint-jessie-openstack-cli
 
-Ce stack vous permet d'installer openstack client et configurer vos credentials pour accéder aux API Cloudwatt via le shell.
+This stack helps you to control the different modules of the CloudWatt Openstack infrastructure.
+We start by Debian Jessie image with the openstack client installed and your credentials that will allow you to access the Cloudwatt API via the shell of the instance.
 
 ## Preparations
 
@@ -15,7 +16,6 @@ Ce stack vous permet d'installer openstack client et configurer vos credentials 
  * an internet acces
  * a Linux shell
  * a [Cloudwatt account](https://www.cloudwatt.com/cockpit/#/create-contact), with an [existing keypair](https://console.cloudwatt.com/project/access_and_security/?tab=access_security_tabs__keypairs_tab)
- * the tools [OpenStack CLI](http://docs.openstack.org/cli-reference/content/install_clients.html)
  * a local clone of the git repository [Cloudwatt applications](https://github.com/cloudwatt/applications)
 
 
@@ -79,7 +79,7 @@ openstack network list
 
 To creat a stack via heat template:
 ~~~bash
-$ openstack stack create --template server_console.yaml
+$ openstack stack create MYSTACK --template server_console.yaml
 ~~~
 
 To display your stack details:
@@ -106,6 +106,7 @@ OS_TENANT_NAME=xxxxxxxxxxxxxxxxxx
 ### Other resources you could be interested in:
 
 * [Openstack-cli page](http://docs.openstack.org/user-guide/cli-cheat-sheet.html)
+* [Cloudwatt tutorial](https://support.cloudwatt.com/debuter/cli-fin.html)
 
 ----
 Have fun. Hack in peace.
