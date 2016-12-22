@@ -6,6 +6,20 @@
 heat_template_version: 2013-05-23
 
 description: Bundle Openstack Cli
+parameter_groups:
+ - label: General parameters
+   parameters:
+     - keypair_name
+     - flavor_name
+     - network_name
+
+ - label: Credentials parameters
+   parameters:
+     - os_auth_url
+     - os_region_name
+     - os_tenant_name
+     - os_username
+     - os_password
 
 parameters:
   keypair_name:
@@ -27,6 +41,17 @@ parameters:
         - n1.cw.standard-8
         - n1.cw.standard-12
         - n1.cw.standard-16
+
+
+  os_region_name:
+      default: fr1
+      label: OpenStack region
+      description: OpenStack region
+      type: string
+      constraints:
+        - allowed_values:
+          - fr1
+          - fr2
 
   os_username:
     description: OpenStack Username
@@ -99,14 +124,15 @@ resources:
               export OS_USERNAME="$os_username"
               export OS_TENANT_NAME="$os_tenant_name"
               export OS_PASSWORD="$os_password"
-              export OS_REGION_NAME="fr1"
+              export OS_REGION_NAME="$os_region_name"
               export OS_AUTH_URL="$os_auth_url"
             EOF
           params:
              $os_username: { get_param: os_username}
              $os_password: { get_param: os_password}
              $os_tenant_name: { get_param: os_tenant_name}
-             $os_auth_url: { get_param: os_auth_url }
+             $os_auth_url: { get_param: os_auth_url}
+             $os_region_name: { get_param: os_region_name}
 
 
   factory_internet_surface:
