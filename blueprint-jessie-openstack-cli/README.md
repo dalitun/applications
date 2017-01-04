@@ -2,8 +2,8 @@
 
 ## Episode XX : Blueprint-jessie-openstack-cli
 
-Cette stack à pour but de vous permettre de piloter les différents module de l'infrastructure Openstack de Cloudwatt.
-En démarrant une image basée sur Debian Jessie avec le client openstack installer et vos informations d'identification qui vont vous permettre d'accéder a l'API de Cloudwatt via le shell de l'instance.
+Cette stack à pour but de vous permettre de piloter les différents modules de l'infrastructure Openstack de Cloudwatt.
+En démarrant une image basée sur Debian Jessie avec le client openstack installé et vos informations d'identification qui vont vous permettre d'accéder à l'API de Cloudwatt via le shell de l'instance.
 
 ## Preparations
 
