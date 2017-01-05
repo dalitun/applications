@@ -12,14 +12,7 @@
     - script: |
         #!/usr/bin/env bash
 
-        export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
-        export OS_TENANT_ID=467b00f998064f1688feeca95bdc7a88
-        export OS_TENANT_NAME="0750180084_@_1455009201"
-        export OS_PROJECT_NAME="0750180084_@_1455009201"
-        export OS_USERNAME="mohamed.lachhab-ext+compute@cloudwatt.com"
-        export OS_PASSWORD=mohamedalilachhab123
-        export OS_REGION_NAME="fr1"
-
+        
 
         read -d '' JSON <<EOF
         {
@@ -45,7 +38,7 @@
         for instance in @option.List_instances@
         do
         BUILDMARK="$(date +%Y-%m-%d-%H%M)"
-        NAME_SNAPSHOT=$instance-$BUILDMARK 
+        NAME_SNAPSHOT=$instance-$BUILDMARK
         echo $NAME_SNAPSHOT
 
         read -d '' JSON1 <<EOF
