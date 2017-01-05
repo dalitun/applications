@@ -1,5 +1,16 @@
 #!/usr/bin/env bash
 
+
+# I wanna jste add these lines in my image
+#export RD_URL=$(awk -F= "/grails.serverURL/ {print \$2}" /etc/rundeck/rundeck-config.properties)
+#export RD_USER=admin RD_PASSWORD=admin
+
+#rd projects create -p InstancesSnapshot
+#rd jobs load --file snapshot.xml --project InstancesSnapshot
+
+
+
+
 set -eu
 
 if (( $# != 1 ))

@@ -39,18 +39,14 @@ EOF
 
 TOKEN=`curl -s "$OS_AUTH_URL/tokens" -X POST -H "Content-Type: application/json" -d "$JSON" | cut -d'"' -f 8`
 
-echo "le Token:"
-echo $TOKEN
-
-echo "************************"
-
 echo @option.List_instances@
 
 for instance in @option.List_instances@
 do
+
 BUILDMARK="$(date +%Y-%m-%d-%H%M)"
-NAME_SNAPSHOT=$instance-$BUILDMARK 
-echo $NAME_SNAPSHOT
+NAME_SNAPSHOT=$instance-$BUILDMARK
+
 
 read -d '' JSON1 <<EOF
 {

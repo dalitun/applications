@@ -258,10 +258,10 @@ resources:
                     After=docker.service
                     Requires=docker.service
                     [Service]
-                    ExecStartPre=-/usr/bin/docker kill jordan/rundeck:latest
-                    ExecStartPre=-/usr/bin/docker rm jordan/rundeck:latest
-                    ExecStartPre=/usr/bin/docker pull jordan/rundeck:latest
-                    ExecStart=/usr/bin/docker run -p 4440:4440 --env-file /home/core/rundeck.env -v /rundeck/var/:/var/rundeck --name rundeck -t jordan/rundeck:latest
+                    ExecStartPre=-/usr/bin/docker kill dalidocker/rundeck
+                    ExecStartPre=-/usr/bin/docker rm dalidocker/rundeck
+                    ExecStartPre=/usr/bin/docker pull dalidocker/rundeck
+                    ExecStart=/usr/bin/docker run -p 4440:4440 --env-file /home/core/rundeck.env -v /rundeck/var/:/var/rundeck --name rundeck -t dalidocker/rundeck
 
                     [Install]
                     WantedBy=multi-user.target
