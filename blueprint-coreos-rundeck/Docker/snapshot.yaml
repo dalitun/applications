@@ -1,0 +1,71 @@
+- description: ''
+  executionEnabled: true
+  id: ce2e9f21-3cab-4271-ba87-84625850b48c
+  loglevel: INFO
+  name: snapshot
+  nodeFilterEditable: false
+  options:
+  - name: List_instances
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - script: |
+        #!/usr/bin/env bash
+
+        export OS_AUTH_URL=https://identity.fr1.cloudwatt.com/v2.0
+        export OS_TENANT_ID=467b00f998064f1688feeca95bdc7a88
+        export OS_TENANT_NAME="0750180084_@_1455009201"
+        export OS_PROJECT_NAME="0750180084_@_1455009201"
+        export OS_USERNAME="mohamed.lachhab-ext+compute@cloudwatt.com"
+        export OS_PASSWORD=mohamedalilachhab123
+        export OS_REGION_NAME="fr1"
+
+
+        read -d '' JSON <<EOF
+        {
+            "auth": {
+                "tenantName": "$OS_TENANT_NAME",
+                "passwordCredentials": {
+                    "username": "$OS_USERNAME",
+                    "password": "$OS_PASSWORD"
+                }
+            }
+        }
+        EOF
+
+        TOKEN=`curl -s "$OS_AUTH_URL/tokens" -X POST -H "Content-Type: application/json" -d "$JSON" | cut -d'"' -f 8`
+
+        echo "le Token:"
+        echo $TOKEN
+
+        echo "************************"
+
+        echo @option.List_instances@
+
+        for instance in @option.List_instances@
+        do
+        BUILDMARK="$(date +%Y-%m-%d-%H%M)"
+        NAME_SNAPSHOT=$instance-$BUILDMARK 
+        echo $NAME_SNAPSHOT
+
+        read -d '' JSON1 <<EOF
+        {
+            "createImage" : {
+                "name" : "$NAME_SNAPSHOT",
+                "metadata": {
+                    "meta_var": "meta_val"
+                }
+            }
+        }
+        EOF
+
+
+        curl -k "https://compute.fr1.cloudwatt.com/v2/$OS_TENANT_ID/servers/$instance/action" -H "Content-Type: application/json" -H "X-Auth-Token: $TOKEN" -X POST -d "$JSON1"
+
+        done
+    keepgoing: false
+    pluginConfig:
+      WorkflowStrategy:
+        node-first: null
+    strategy: node-first
+  uuid: ce2e9f21-3cab-4271-ba87-84625850b48c
