@@ -1,9 +1,21 @@
 #!/bin/bash
 ls -l /etc/rundeck
 source /etc/rundeck/profile
-/bin/bash -c "$rundeckd"
+
+$rundeckd &
+
+while true
+do
+</dev/tcp/localhost/4440 2>/dev/null
+   if [ "$?" -ne 0 ]
+   then
+   echo "wait rundeck will be up"
+   else
+   echo "rundeck is up"
+   break
+fi
+done
 
 export RD_URL=$(awk -F= "/grails.serverURL/ {print \$2}" /etc/rundeck/rundeck-config.properties)
 export RD_USER=admin RD_PASSWORD=admin
-
 rd projects create -p test

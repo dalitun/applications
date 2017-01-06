@@ -41,7 +41,7 @@ if [ ! -f "${initfile}" ]; then
    RUNDECK_STORAGE_PROVIDER=${RUNDECK_STORAGE_PROVIDER:-"file"}
    RUNDECK_PROJECT_STORAGE_TYPE=${RUNDECK_PROJECT_STORAGE_TYPE:-"file"}
    NO_LOCAL_MYSQL=${NO_LOCAL_MYSQL:-"false"}
-   
+
 update_user_password () {
    (
    echo "UPDATE mysql.user SET password=PASSWORD('${2}') WHERE user='${1}';"
@@ -56,7 +56,7 @@ update_user_password () {
        echo "=>Generating rundeck key"
        sudo -u rundeck ssh-keygen -t rsa -b 4096 -f /var/lib/rundeck/.ssh/id_rsa -N ''
    fi
-   
+
    if [ "$(ls -A /etc/rundeck)" ]; then
        echo "=>/etc/rundeck check OK"
    else
@@ -88,7 +88,7 @@ update_user_password () {
          ) |
          mysql
      fi
-   
+
      # Set debian-sys-maint password
      update_user_password debian-sys-maint ${DEBIAN_SYS_MAINT_PASSWORD}
      sed -i 's,password\ \=\ .*,password\ \=\ '${DEBIAN_SYS_MAINT_PASSWORD}',g' /etc/mysql/debian.cnf
@@ -111,7 +111,7 @@ update_user_password () {
    sed -i 's,dataSource.dbCreate.*,,g' /etc/rundeck/rundeck-config.properties
    sed -i 's,dataSource.url = .*,dataSource.url = '${DATABASE_URL}',g' /etc/rundeck/rundeck-config.properties
    if grep -q dataSource.username /etc/rundeck/rundeck-config.properties ; then
-      : 
+      :
    else
       echo "dataSource.username = rundeck" >> /etc/rundeck/rundeck-config.properties
    fi
