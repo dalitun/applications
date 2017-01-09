@@ -196,7 +196,7 @@ resources:
                 owner: "root:root"
                 content: |
                   #!/bin/bash
-                  sudo mkdir -p { /rundeck/etc/,/rundeck/var/ }
+                  sudo mkdir -p { /rundeck/var/,/rundeck/projects/,/rundeck/mysql }
               - path: /home/core/rundeck.env
                 permissions: 0775
                 owner: "core:core"
@@ -207,10 +207,23 @@ resources:
                             OS_USERNAME="$os_username"
                             OS_PASSWORD="$os_password"
                             OS_REGION_NAME="$os_region_name"
-                            SERVER_URL=http://$public_ipv4:4440
-                            RD_URL=http://$public_ipv4:4440
-
-
+                            RUNDECK_SERVER_NAME="rundeck"
+                            RUNDECK_WEB_CONTEXT=/
+                            RUNDECK_USER_NAME="admin"
+                            RUNDECK_USER_PASSWORD="admin"
+                            RUNDECK_DB_USERNAME="rd"
+                            RUNDECK_DB_PASSWORD="rd"
+                            RUNDECK_DB_NAME="rundeck"
+                            RUNDECK_DB_HOST=mysql
+                            RUNDECK_DB_PORT=3306
+              - path: /home/core/mysql.env
+                permissions: 0775
+                owner: "core:core"
+                content: |
+                            MYSQL_ROOT_PASSWORD="cloudwatt123"
+                            MYSQL_DATABASE="rundeck"
+                            MYSQL_USER="rd"
+                            MYSQL_PASSWORD="rd"
             coreos:
               etcd2:
                 name: "%H"
@@ -261,6 +274,22 @@ resources:
                     [Service]
                     Type=oneshot
                     ExecStart=/home/core/mount.sh
+                - name: mysql.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=mysql UI
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    TimeoutStartSec=0
+                    Restart=Always
+                    ExecStartPre=/usr/bin/docker pull mysql:5.7.10
+                    ExecStart=/usr/bin/docker run \
+                             --volume /rundeck/mysql/:/var/lib/mysql \
+                             --env-file /home/core/mysql.env \
+                             --name=rundeck_db mysql:5.7.10
+                    ExecStop=/usr/bin/docker rm -f rundeck_db
                 - name: rundeck.service
                   command: start
                   content: |
@@ -272,8 +301,7 @@ resources:
                     ExecStartPre=-/usr/bin/docker kill dalidocker/rundeck
                     ExecStartPre=-/usr/bin/docker rm dalidocker/rundeck
                     ExecStartPre=/usr/bin/docker pull dalidocker/rundeck
-                    ExecStart=/usr/bin/docker run -p 4440:4440 --env-file /home/core/rundeck.env -v /rundeck/var/:/var/rundeck --name rundeck -t dalidocker/rundeck
-
+                    ExecStart=/usr/bin/docker run -p 4440:4440 -v /rundeck/var:/rundeck/var -v /rundeck/projects:/rundeck/projects --env-file /home/core/rundeck.env --link=rundeck_db:mysql --name rundeck dalidocker/rundeck
                     [Install]
                     WantedBy=multi-user.target
 
