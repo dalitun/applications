@@ -1,5 +1,4 @@
-IMAGE_VERSION = 2.7.1
-IMAGE = pavelgopanenko/rundeck:$(IMAGE_VERSION)
+IMAGE = pavelgopanenko/rundeck-cli
 
 .PHONY: all
 
