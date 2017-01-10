@@ -33,7 +33,7 @@ parameters:
     type: string
 
   flavor_name:
-    default: n1.cw.standard-1
+    default: n1.cw.standard-2
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
@@ -47,7 +47,7 @@ parameters:
           - n1.cw.standard-16
 
   volume_size:
-    default: 5
+    default: 10
     label: Backup Volume Size
     description: Size of Volume for rundeck Storage (Gigabytes)
     type: number
@@ -201,29 +201,24 @@ resources:
                 permissions: 0775
                 owner: "core:core"
                 content: |
-                            OS_AUTH_URL="$os_auth_url"
-                            OS_TENANT_ID="$os_tenant_id"
-                            OS_TENANT_NAME="$os_tenant_name"
-                            OS_USERNAME="$os_username"
-                            OS_PASSWORD="$os_password"
-                            OS_REGION_NAME="$os_region_name"
-                            RUNDECK_SERVER_NAME="rundeck"
-                            RUNDECK_WEB_CONTEXT=/
-                            RUNDECK_USER_NAME="admin"
-                            RUNDECK_USER_PASSWORD="admin"
-                            RUNDECK_DB_USERNAME="rd"
-                            RUNDECK_DB_PASSWORD="rd"
-                            RUNDECK_DB_NAME="rundeck"
-                            RUNDECK_DB_HOST=mysql
-                            RUNDECK_DB_PORT=3306
-              - path: /home/core/mysql.env
-                permissions: 0775
-                owner: "core:core"
-                content: |
+                            OS_AUTH_URL=$os_auth_url
+                            OS_TENANT_ID=$os_tenant_id
+                            OS_TENANT_NAME=$os_tenant_name
+                            OS_USERNAME=$os_username
+                            OS_PASSWORD=$os_password
+                            OS_REGION_NAME=$os_region_name
+                            MYSQL_HOST=mysql
                             MYSQL_ROOT_PASSWORD="cloudwatt123"
                             MYSQL_DATABASE="rundeck"
                             MYSQL_USER="rd"
                             MYSQL_PASSWORD="rd"
+                            MYSQL_PORT=3306
+                            RD_URL=http://$public_ipv4:4440
+                            RD_HOST=$public_ipv4
+                            RD_USER=admin
+                            RD_PASSWORD=admin
+
+
             coreos:
               etcd2:
                 name: "%H"
@@ -284,12 +279,12 @@ resources:
                     [Service]
                     TimeoutStartSec=0
                     Restart=Always
-                    ExecStartPre=/usr/bin/docker pull mysql:5.7.10
+                    ExecStartPre=/usr/bin/docker pull mysql
                     ExecStart=/usr/bin/docker run \
                              --volume /rundeck/mysql/:/var/lib/mysql \
-                             --env-file /home/core/mysql.env \
-                             --name=rundeck_db mysql:5.7.10
-                    ExecStop=/usr/bin/docker rm -f rundeck_db
+                             --env-file /home/core/rundeck.env \
+                             --name=mysql mysql
+                    ExecStop=/usr/bin/docker rm -f mysql
                 - name: rundeck.service
                   command: start
                   content: |
@@ -298,10 +293,22 @@ resources:
                     After=docker.service
                     Requires=docker.service
                     [Service]
-                    ExecStartPre=-/usr/bin/docker kill dalidocker/rundeck
-                    ExecStartPre=-/usr/bin/docker rm dalidocker/rundeck
                     ExecStartPre=/usr/bin/docker pull dalidocker/rundeck
-                    ExecStart=/usr/bin/docker run -p 4440:4440 -v /rundeck/var:/rundeck/var -v /rundeck/projects:/rundeck/projects --env-file /home/core/rundeck.env --link=rundeck_db:mysql --name rundeck dalidocker/rundeck
+                    ExecStart=/usr/bin/docker run -p 4440:4440 -v /rundeck/var:/rundeck/var -v /rundeck/projects:/rundeck/projects --env-file /home/core/rundeck.env --link=mysql:mysql --name rundeck dalidocker/rundeck
+                    ExecStop=/usr/bin/docker rm -f rundeck
+                    [Install]
+                    WantedBy=multi-user.target
+                - name: rundeck-cli.service
+                  command: start
+                  content: |
+                    [Unit]
+                    Description=Rundeck cli UI
+                    After=docker.service
+                    Requires=docker.service
+                    [Service]
+                    ExecStartPre=/usr/bin/docker pull dalidocker/rundeck-cli
+                    ExecStart=/usr/bin/docker run --env-file /home/core/rundeck.env --name rundeck-cli dalidocker/rundeck-cli
+                    ExecStop=/usr/bin/docker rm -f rundeck-cli
                     [Install]
                     WantedBy=multi-user.target
 
