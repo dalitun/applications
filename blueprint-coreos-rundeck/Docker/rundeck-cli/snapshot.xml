@@ -1,0 +1,70 @@
+<joblist>
+  <job>
+    <context>
+      <options preserveOrder='true'>
+        <option name='List_instances' />
+      </options>
+    </context>
+    <description></description>
+    <executionEnabled>true</executionEnabled>
+    <id>ce2e9f21-3cab-4271-ba87-84625850b48c</id>
+    <loglevel>INFO</loglevel>
+    <name>snapshot</name>
+    <nodeFilterEditable>false</nodeFilterEditable>
+    <scheduleEnabled>true</scheduleEnabled>
+    <sequence keepgoing='false' strategy='node-first'>
+      <command>
+        <script><![CDATA[#!/bin/bash
+
+
+
+read -d '' JSON <<EOF
+{
+    "auth": {
+        "tenantName": "$OS_TENANT_NAME",
+        "passwordCredentials": {
+            "username": "$OS_USERNAME",
+            "password": "$OS_PASSWORD"
+        }
+    }
+}
+EOF
+
+TOKEN=`curl -s "$OS_AUTH_URL/tokens" -X POST -H "Content-Type: application/json" -d "$JSON" | cut -d'"' -f 8`
+
+echo @option.List_instances@
+
+for instance in @option.List_instances@
+do
+
+BUILDMARK="$(date +%Y-%m-%d-%H%M)"
+NAME_SNAPSHOT=$instance-$BUILDMARK
+
+
+read -d '' JSON <<EOF
+{
+    "createImage" : {
+        "name" : "$NAME_SNAPSHOT",
+        "metadata": {
+            "meta_var": "meta_val"
+        }
+    }
+}
+EOF
+
+
+curl -k "https://compute.fr1.cloudwatt.com/v2/$OS_TENANT_ID/servers/$instance/action" -H "Content-Type: application/json" -H "X-Auth-Token: $TOKEN" -X POST -d "$JSON"
+
+done
+]]></script>
+        <scriptargs />
+      </command>
+      <pluginConfig>
+        <WorkflowStrategy>
+          <node-first />
+        </WorkflowStrategy>
+      </pluginConfig>
+    </sequence>
+    <uuid>ce2e9f21-3cab-4271-ba87-84625850b48c</uuid>
+  </job>
+</joblist>
