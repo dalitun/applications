@@ -66,7 +66,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: da10fb3f-f83b-4858-8881-c905b75a6184
+      image: 164cadda-f1ed-423b-8e96-24f40e7731e2
       flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }
@@ -78,9 +78,8 @@ resources:
         mkdir /etc/ansible
         echo "[local]" >> /etc/ansible/hosts
         echo "127.0.0.1 ansible_connection=local" >> /etc/ansible/hosts
-        cd /root && git clone https://github.com/cloudwatt/applications.git cw-app
-        ansible-playbook /root/cw-app/bundle-trusty-wordpress/seed-mysql.yml
-        rm -rf /root/cw-app
+        ansible-playbook ~cloud/seed-mysql.yml
+        rm -rf ~cloud/seed-mysql.yml wordpress.etc.conf
 
   floating_ip_link:
     type: OS::Nova::FloatingIPAssociation
