@@ -11,21 +11,21 @@ La base de déploiement est une instance unique Ubuntu Trusty pré-provisionnée
 ## Nota Bene pour les plus pressés
 
 Une image "Application Ubuntu 14.04.2 WORDPRESS" est disponible dans le catalogue des images publiques de la
-console Cloudwatt. Pour des raisons de sécurité, cette image ne contient pas l'initialisation de la base MySQL et n'est donc pas 
-fonctionnelle en mode "Lancer une instance". 
+console Cloudwatt. Pour des raisons de sécurité, cette image ne contient pas l'initialisation de la base MySQL et n'est donc pas
+fonctionnelle en mode "Lancer une instance".
 
 Cette image est destinée à servir de base de déploiement au template Heat que nous allons détailler dans cet article.
-Le template en question contient les étapes indispensables après lancement, de génération de mot de passe, création 
+Le template en question contient les étapes indispensables après lancement, de génération de mot de passe, création
 d'utilisateur, création de la base MySQL pour Wordpress et configuration finale de Wordpress pour les accès à MySQL.
 
 ## Préparatifs
 
 ### Les versions
 
-* Ubuntu 14.04.2
+* Ubuntu 14.04
 * Apache 2.4.7
-* Wordpress 3.8.2
-* MySQL 5.5.43
+* Wordpress 4.7.1
+* MySQL 5.5.53
 * PHP 5.5.9
 
 ### Les pré-requis pour déployer cette stack
@@ -38,11 +38,11 @@ d'utilisateur, création de la base MySQL pour Wordpress et configuration finale
 
 ### La taille de l'instance
 
-Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut. 
+Par défaut, le script propose un déploiement sur une instance de type " Small " (s1.cw.small-1) en tarification à l'usage (les prix à l'heure et au mois sont disponibles sur la [page Tarifs](https://www.cloudwatt.com/fr/produits/tarifs.html) du site de Cloudwatt). Bien sur, vous pouvez ajuster les parametres de la stack et en particulier sa taille par défaut.
 
 ### Au fait...
 
-Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur [ce lien](#console) 
+Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur [ce lien](#console)
 
 ## Tour du propriétaire
 
@@ -58,13 +58,13 @@ Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-
 
 Munissez-vous de vos identifiants Cloudwatt, et cliquez [ICI](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). Si vous n'êtes pas connecté, vous passerez par l'écran d'authentification, puis vous le téléchargement d'un script démarrera. C'est grâce à celui-ci que vous pourrez initialiser les accès shell aux API Cloudwatt.
 
-Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé. 
+Sourcez le fichier téléchargé dans votre shell. Votre mot de passe vous sera demandé.
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
 Please enter your OpenStack Password:
 
-~~~ 
+~~~
 
 Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir avec votre compte Cloudwatt.
 
@@ -99,9 +99,9 @@ parameters:
             - n1.cw.standard-8
             - n1.cw.standard-12
             - n1.cw.standard-16
-            
+
 [...]
-~~~ 
+~~~
 
 ### Démarrer la stack
 
@@ -114,7 +114,7 @@ $ ./stack-start.sh LE_BIDULE
 +--------------------------------------+------------+--------------------+----------------------+
 | ed4ac18a-4415-467e-928c-1bef193e4f38 | LE_BIDULE  | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
 +--------------------------------------+------------+--------------------+----------------------+
-~~~ 
+~~~
 
 Enfin, attendez 5 minutes que le déploiement soit complet.
 
@@ -127,7 +127,7 @@ Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` en pass
 ~~~ bash
 ./stack-get-url.sh LE_BIDULE
 LE_BIDULE 82.40.34.249
-~~~ 
+~~~
 
 qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et commencer à configurer votre instance Wordpress.
 
@@ -161,18 +161,20 @@ La stack va se créer automatiquement (vous pouvez en voir la progression cliqua
 
 C’est (déjà) FINI !
 
+### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Wordpress! !
 
 ## So watt ?
 
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord. 
+Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
 
 Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
 
 Les chemins intéressants sur votre machine :
 
-- `/usr/share/wordpress` : Répertoire d'installation de WordPress.
-- `/var/lib/wordpress/wp-content` : Répertoire de données spécifiques à votre instance Wordpress (thèmes, médias, ...).
-- `/etc/wordpress/config-default.php` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MySQL, généré pendant l'installation.
+- `/var/www/html/wordpress` : Répertoire d'installation de WordPress.
+- `/var/www/html/wordpress/wp-config.php` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MySQL, généré pendant l'installation.
 
 
 -----

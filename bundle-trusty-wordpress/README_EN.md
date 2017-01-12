@@ -20,10 +20,10 @@ This image has to be launched thru the Orchestration Stack menu with the Heat te
 
 ### The versions
 
-* Ubuntu 14.04.2
+* Ubuntu 14.04
 * Apache 2.4.7
-* Wordpress 3.8.2
-* MySQL 5.5.43
+* Wordpress 4.7.1
+* MySQL 5.5.53
 * PHP 5.5.9
 
 ### The prerequisites to deploy this stack
@@ -40,7 +40,7 @@ Per default, the script is proposing a deployement on an instance type "Small" (
 
 ### By the way...
 
-If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console) 
+If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console)
 
 ## What will you find in the repository
 
@@ -54,16 +54,16 @@ Once you have cloned the github, you will find in the  `bundle-trusty-wordpress/
 
 ### Initialize the environment
 
-Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/). 
+Have your Cloudwatt credentials in hand and click [HERE](https://console.cloudwatt.com/project/access_and_security/api_access/openrc/).
 If you are not logged in yet, you will go thru the authentication screen then the script download will start. Thanks to it, you will be able to initiate the shell acccesses towards the Cloudwatt APIs.
 
-Source the downloaded file in your shell. Your password will be requested. 
+Source the downloaded file in your shell. Your password will be requested.
 
 ~~~ bash
 $ source COMPUTE-[...]-openrc.sh
 Please enter your OpenStack Password:
 
-~~~ 
+~~~
 
 Once this done, the Openstack command line tools can interact with your Cloudwatt user account.
 
@@ -97,9 +97,9 @@ parameters:
             - n1.cw.standard-8
             - n1.cw.standard-12
             - n1.cw.standard-16
-            
+
 [...]
-~~~ 
+~~~
 
 ### Start up the stack
 
@@ -112,7 +112,7 @@ $ ./stack-start.sh LE_BIDULE
 +--------------------------------------+------------+--------------------+----------------------+
 | ed4ac18a-4415-467e-928c-1bef193e4f38 | LE_BIDULE  | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
 +--------------------------------------+------------+--------------------+----------------------+
-~~~ 
+~~~
 
 Last, wait 5 minutes until the deployement been completed.
 
@@ -120,18 +120,18 @@ At each new deployement of the stack, a mySQL password is generated directly in 
 
 ### Enjoy
 
-Once all of this done, you can run the `stack-get-url.sh` script. 
+Once all of this done, you can run the `stack-get-url.sh` script.
 
 ~~~ bash
 ./stack-get-url.sh THE_THING
 THE_THING 82.40.34.249
-~~~ 
+~~~
 
 It will gather the assigned flotting IP of your stack. You can then paste this IP in your favorite browser and start to configure your Wordpress instance.
 
 ## In the background
 
-The  `start-stack.sh` script is taking care of running the API necessary requests to: 
+The  `start-stack.sh` script is taking care of running the API necessary requests to:
 
 * start an Ubuntu Trusty Tahr based instance
 * do an update of the system packages
@@ -159,6 +159,10 @@ The stack will be automatically created (you can see its progress by clicking on
 
 It is (already) FINISH !
 
+### A one-click deployment sounds really nice...
+
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Wordpress!.
+
 ## So watt ?
 
 The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
@@ -166,9 +170,8 @@ You have a SSH access point on your virtual machine thru the flotting IP and you
 
 The interesting entry access points are:
 
-- `/usr/share/wordpress` : Wordpress installation repository
-- `/var/lib/wordpress/wp-content` : Repository of the specific data of your Wordpress instance (themes, media, ...)
-- `/etc/wordpress/config-default.php` : Wordpress configuration file, in which you can find the password of the MySQL user that has been generated buring the installation.
+- `/var/www/html/wordpress` : Wordpress installation repository
+- `/var/www/html/wordpress/wp-config.php` : Wordpress configuration file, in which you can find the password of the MySQL user that has been generated buring the installation.
 
 -----
 Have fun. Hack in peace.
