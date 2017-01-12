@@ -1,10 +1,11 @@
-FROM alpine:3.5
+FROM alpine
 
+ENV VERSION=1.0.3
 
 RUN     apk add --update openjdk8-jre bash curl openssh ca-certificates wget && \
         update-ca-certificates && \
-        wget https://github.com/rundeck/rundeck-cli/releases/download/v1.0.3/rd-1.0.3.zip && \
-        unzip rd-1.0.3.zip && rm -rf rd-1.0.3.zip && mv rd-1.0.3 rd &&\ 
+        wget https://github.com/rundeck/rundeck-cli/releases/download/v${VERSION}/rd-${VERSION}.zip && \
+        unzip rd-${VERSION}.zip && rm -rf rd-${VERSION}.zip && mv rd-${VERSION} rd &&\
         rm -Rf /var/cache/apk/*
 
 
@@ -20,4 +21,3 @@ ENV  RD_URL=http://localhost:4440 \
 
 
 CMD ["/bin/bash", "/entrypoint.sh"]
-

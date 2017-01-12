@@ -1,10 +1,11 @@
 FROM alpine:3.5
 
+ENV VERSION=2.7.1
 
 RUN     apk add --update openjdk8-jre bash curl wget && \
         mkdir -p /rundeck/ && \
         wget -O /rundeck/rundeck-launcher.jar \
-            http://dl.bintray.com/rundeck/rundeck-maven/rundeck-launcher-2.7.1.jar && \
+            http://dl.bintray.com/rundeck/rundeck-maven/rundeck-launcher-${VERSION}.jar && \
         rm -Rf /var/cache/apk/*
 
 
@@ -21,11 +22,10 @@ ENV RD_BASE=/rundeck \
     MYSQL_PASSWORD=rd \
     MYSQL_DATABASE=rundeck \
     MYSQL_HOST=mysql \
-    MYSQL_PORT=3306 
+    MYSQL_PORT=3306
 
 EXPOSE 4440
 
 VOLUME  [ "/rundeck/var/", "/rundeck/projects" ]
 
 CMD ["/bin/bash", "/entrypoint.sh"]
-

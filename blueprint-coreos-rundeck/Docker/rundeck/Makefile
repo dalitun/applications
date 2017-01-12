@@ -1,4 +1,4 @@
-IMAGE = dalidocker/rundeck
+IMAGE = dalidorepo/rundeck
 
 .PHONY: all
 

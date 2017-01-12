@@ -1,4 +1,4 @@
-IMAGE = pavelgopanenko/rundeck-cli
+IMAGE = dalidocker/rundeck-cli
 
 .PHONY: all
 
