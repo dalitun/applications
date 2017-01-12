@@ -1,6 +1,8 @@
 FROM alpine:3.5
 
+
 ENV VERSION=2.7.1
+
 
 RUN     apk add --update openjdk8-jre bash curl wget && \
         mkdir -p /rundeck/ && \
