@@ -32,7 +32,7 @@ We start by Debian Jessie image with the openstack client installed and your cre
 We do indeed! Using the console, you can deploy a mail server:
 
 1.	Go the Cloudwatt Github in the [applications/Jestart](https://github.com/cloudwatt/applications/tree/master/Jestart) repository
-2.	Click on the file named `JeStart.heat.yml` (or `JeStart.restore.heat.yml` to [restore from backup](#backup))
+2.	Click on the file named `blueprint-jessie-openstack-cli.heat.yml` (or `blueprint-jessie-openstack-cli.restore.heat.yml` to [restore from backup](#backup))
 3.	Click on RAW, a web page will appear containing purely the template
 4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
