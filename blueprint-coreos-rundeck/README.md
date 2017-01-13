@@ -168,7 +168,7 @@ Dans un shell, lancer le script `stack-start.sh` en passant en paramètre le nom
  +--------------------------------------+------------+--------------------+----------------------+
  | id                                   | stack_name | stack_status       | creation_time        |
  +--------------------------------------+------------+--------------------+----------------------+
- | ed4ac18a-4415-467e-928c-1bef193e4f38 | rundeck    | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
+ | ed4ac18a-4415-467e-928c-1bef193e4f38 | rundeck    | CREATE_IN_PROGRESS | 2017-01-12T16:36:05Z |
  +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
@@ -195,7 +195,7 @@ Enfin, attendez **5 minutes** que le déploiement soit complet.
 
    Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-   * démarrer une instance basée sur Coreos y deposer le conteneur *rundeck* rattaché à sa database *Mysql*,
+   * Démarrer une instance basée sur Coreos y deposer le conteneur *rundeck* rattaché à sa database *Mysql*,
 
    * l'exposer sur Internet via une IP flottante.
 
@@ -239,26 +239,29 @@ Vous êtes maintenant en possession de votre serveur Rundeck!. Vous pouvez y acc
 
 ![rundeck1](img/rundeck1.png)
 
-Pour s'authentifier vous utilisez le login **admin** et le password que vous avez choisi **Rundeck Admin Password**, vous devez arriver sur cette page.
+Pour s'authentifier vous utilisez le login **admin** et le password que vous avez mis **Rundeck Admin Password**, vous devez arriver sur cette page.
 
 ![rundeck2](img/rundeck2.png)
 
-Pour lancer le job qui va créer es snapshot des instances :
-vous devez cliquer sur le projet  `InstancesSnapshot`, vous devez arrivez sur cette page.
+Pour lancer le job qui va créer les snapshots des instances,vous devez cliquer sur le projet `InstancesSnapshot`.
 
 ![rundeck3](img/rundeck3.png)
 
-Cliquez sur `jobs`.
+Cliquez sur l'onglet `jobs`.
 
 ![rundeck4](img/rundeck4.png)
 
-Cliquez sur le job `snapshot` et entrez la liste des vos instances que vous vouliez snapshoter dans le champ `List_instances` enfin cliquez sur `Run Job Now` .
+Cliquez sur le job `snapshot` et entrez la liste des Id de vos instances que vous vouliez snapshoter dans le champ `List_instances`, enfin cliquez sur `Run Job Now` .
 
 ![rundeck5](img/rundeck5.png)
 
-Puis vérifier que votre instances sont bien snapshotés les snaphost sont sous forme `Id-date-temps`
-exemple c'est le snapshot `ed971910-0e1f-4ac4-9b8e-66f54a723693-2017-01-13-1123`  est de l'instance `d971910-0e1f-4ac4-9b8e-66f54a723693` .
+Puis vérifier que vos instances sont bien snapshotées avec la commande.
 
+~~~shell
+$ glance image-list | grep id_instance
+~~~
+
+Les snaphost sont sous forme `Id-date-temps`par exemple le snapshot de l'instance d'id `d971910-0e1f-4ac4-9b8e-66f54a723693` est `ed971910-0e1f-4ac4-9b8e-66f54a723693-2017-01-13-1123`.
 
 
 ## So watt ?
@@ -272,7 +275,6 @@ Vous avez un point d'entrée sur votre machine virtuelle en SSH via l'IP flottan
 * Voici quelques sites d'informations avant d'aller plus loin :
 
   - http://rundeck.org/
-
 
 
 ----
