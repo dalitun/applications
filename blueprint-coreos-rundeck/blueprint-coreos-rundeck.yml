@@ -97,8 +97,8 @@ parameters:
     type: string
 
   os_tenant_id:
-    description: OpenStack Tenant id
-    label: OpenStack Tenant id
+    description: OpenStack Tenant Id
+    label: OpenStack Tenant Id
     type: string
 
   os_auth_url:
@@ -109,13 +109,13 @@ parameters:
 
   mysql_root_password:
    description: mysql root password
-   label: Mysql root password
+   label: Mysql Root Password
    type: string
    hidden: true
 
-  rundeck_pass :
-    description: Rundeck admin pass
-    label: Rundeck admin pass
+  rundeck_password :
+    description: Rundeck Admin Password
+    label: Rundeck Admin Password
     type: string
     hidden: true
 
@@ -196,7 +196,7 @@ resources:
             $os_auth_url: { get_param: os_auth_url }
             $os_region_name: { get_param: os_region_name }
             $mysql_root_password: { get_param: mysql_root_password }
-            $rundeck_pass: { get_param: rundeck_pass }
+            $rundeck_password: { get_param: rundeck_password }
           template: |
             #cloud-config
             write_files:
@@ -230,12 +230,12 @@ resources:
                             MYSQL_ROOT_PASSWORD=$mysql_root_password
                             MYSQL_DATABASE="rundeck"
                             MYSQL_USER="rd"
-                            MYSQL_PASSWORD=$rundeck_pass
+                            MYSQL_PASSWORD=$rundeck_password
                             MYSQL_PORT=3306
                             RD_URL=http://$public_ipv4:4440
                             RD_HOST=$public_ipv4
                             RD_USER=admin
-                            RD_PASSWORD=$rundeck_pass
+                            RD_PASSWORD=$rundeck_password
 
 
             coreos:

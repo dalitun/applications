@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, episode X : Rundeck! #
+# 5 Minutes Stacks, episode 51 : Rundeck! #
 
-## Episode X : Rundeck!
+## Episode 51 : Rundeck!
 
 ![Joomlalogo](img/rundeck.jpg)
 
@@ -69,13 +69,15 @@ With the `blueprint-coreos-joomla.heat.yml` file, you will find at the top a sec
 
 ~~~ yaml
 
+parameters:
+
   keypair_name:
     description: Keypair to inject in instance
     label: SSH Keypair
     type: string
 
   flavor_name:
-    default: n1.cw.standard-2
+    default: n1.cw.standard-1
     description: Flavor to use for the deployed instance
     type: string
     label: Instance Type (Flavor)
@@ -134,8 +136,8 @@ With the `blueprint-coreos-joomla.heat.yml` file, you will find at the top a sec
     type: string
 
   os_tenant_id:
-    description: OpenStack Tenant id
-    label: OpenStack Tenant id
+    description: OpenStack Tenant Id
+    label: OpenStack Tenant Id
     type: string
 
   os_auth_url:
@@ -146,16 +148,15 @@ With the `blueprint-coreos-joomla.heat.yml` file, you will find at the top a sec
 
   mysql_root_password:
    description: mysql root password
-   label: Mysql root password
+   label: Mysql Root Password
    type: string
    hidden: true
 
-  rundeck_pass :
-    description: Rundeck admin pass
-    label: Rundeck admin pass
+  rundeck_password :
+    description: Rundeck Admin Password
+    label: Rundeck Admin Password
     type: string
     hidden: true
-
 [...]
  ~~~
 ### Start stack
