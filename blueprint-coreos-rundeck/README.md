@@ -16,6 +16,7 @@ On a crée un job qui va créer des snapshot de votre instances.
 ### Les versions
  - CoreOS Stable 1010.6
  - Rundeck 2.7.1
+ - Rundeck-cli 1.0.3
 
 ### Les pré-requis pour déployer cette stack
 
@@ -41,7 +42,6 @@ Une fois le dépôt cloné, vous trouverez le répertoire `blueprint-coreos-rund
 
 * `blueprint-coreos-rundeck.heat.yml`: Template d'orchestration HEAT, qui servira à déployer l'infrastructure nécessaire.
 * `stack-start.sh`: Script de lancement de la stack, qui simplifie la saisie des parametres et sécurise la création du mot de passe admin.
-* `stack-get-url.sh`: Script de récupération de l'IP d'entrée de votre stack, qui peut aussi se trouver dans les parametres de sortie de la stack.
 
 ## Démarrage
 
@@ -243,7 +243,7 @@ Pour s'authentifier vous utilisez le login **admin** et le password que vous ave
 
 ![rundeck2](img/rundeck2.png)
 
-Pour lancer le job qui va créer des snapshot des instances :
+Pour lancer le job qui va créer es snapshot des instances :
 vous devez cliquer sur le projet  `InstancesSnapshot`, vous devez arrivez sur cette page.
 
 ![rundeck3](img/rundeck3.png)

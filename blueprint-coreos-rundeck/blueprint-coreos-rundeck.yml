@@ -28,7 +28,7 @@ parameter_groups:
  - label: passwords
    parameters:
      - mysql_root_password
-     - rundeck_pass
+     - rundeck_password
 
 parameters:
 
