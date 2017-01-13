@@ -2,7 +2,7 @@
 
 ## Episode 51 : Rundeck!
 
-![Joomlalogo](img/rundeck.jpg)
+![logo](img/rundeck.jpg)
 
 Rundeck est un outil d’automatisation de processus idéal pour administrer un ou plusieurs serveurs. Rundeck est ainsi une sorte de chef d’orchestre permettant d’exécuter des commandes sur des machines distantes ou locales.
 

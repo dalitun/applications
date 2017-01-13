@@ -2,22 +2,17 @@
 
 ## Episode 51 : Rundeck!
 
-![Joomlalogo](img/rundeck.jpg)
+![logo](img/rundeck.jpg)
 
-Joomla! is a CMS, a Content Management System, that allows you to create your own website.
+Rundeck is open source software that helps you automate routine operational procedures in data center or cloud environments. There are a lot of features that Rundeck offers, one of the ones I use is the ability to create jobs and workflows that allow me to execute commands on remote machines, capture the results, (success or failure) and then process that result and either continue on with the workflow or terminate it. I can have the system notify me via email or webhooks as well as many other options through the plugin system for notifications. In a nutshell, Rundeck is a feature rich tool to schedule and run your tasks on one or thousands of systems.
 
-Thanks to several plugins and modules, it is possible to customize Joomla! and obtain more flexibility
-in the creation of your website.
-
-Its friendly interface can be used to publish some contents without any competences in development.
-
-Joomla! is entirely developed in PHP and uses a MySQL database to save all the data it needs.
 
 ## Preparations
 
 ### The Versions
 - CoreOS Stable 1010.6
 - Rundeck 2.7.1
+- Rundeck-cli 1.0.3
 
 ### The prerequisites to deploy this stack
 
@@ -40,11 +35,11 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ## What will you find in the repository
 
- Once you have cloned the github, you will find in the `bundle-trusty-joomla/` repository:
+ Once you have cloned the github, you will find in the `blueprint-coreos-rundeck/` repository:
 
- * `blueprint-coreos-joomla.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+ * `blueprint-coreos-rundeck.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
  * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
- * `stack-get-url.sh`: Flotting IP recovery script.
+
 
 ## Start-up
 
@@ -65,7 +60,11 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `blueprint-coreos-joomla.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account.You will also enter the `joomla` password account of your `MySQL` database. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+In the `blueprint-coreos-rundeck.heat.yml` file (heat template), you will find a section named `parameters` near the top. The only mandatory parameter is the `keypair_name`. The `keypair_name`'s `default` value should contain a valid keypair with regards to your Cloudwatt user account, if you wish to have it by default on the console.
+
+Within these heat templates, you can also adjust (and set the defaults for) the instance type by playing with the `flavor_name` parameter accordingly.
+
+By default, the stack network and subnet are generated for the stack. This behavior can be changed within the `blueprint-coreos-rundeck.heat.yml` file as well, if need be, although doing so may be cause for security concerns.
 
 ~~~ yaml
 
@@ -165,33 +164,38 @@ parameters:
 
 
  ~~~ bash
- ./stack-start.sh stack_name
+ ./stack-start.sh rundeck
  +--------------------------------------+-----------------+--------------------+----------------------+
  | id                                   | stack_name      | stack_status       | creation_time        |
  +--------------------------------------+-----------------+--------------------+----------------------+
- | ee873a3a-a306-4127-8647-4bc80469cec4 | Joomla          | CREATE_IN_PROGRESS | 2015-11-25T11:03:51Z |
+ | ee873a3a-a306-4127-8647-4bc80469cec4 | rundeck          | CREATE_IN_PROGRESS | 2017-01-12T16:36:05Z |
  +--------------------------------------+-----------------+--------------------+----------------------+
  ~~~
 
  Within **5 minutes** the stack will be fully operational. (Use `watch` to see the status in real-time)
 
  ~~~
- $ watch heat resource-list Joomla
- +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
- | resource_name    | physical_resource_id                                | resource_type                   | resource_status | updated_time         |
- +------------------+-----------------------------------------------------+---------------------------------+-----------------+----------------------+
- | floating_ip      | 44dd841f-8570-4f02-a8cc-f21a125cc8aa                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2015-11-25T11:03:51Z |
- | security_group   | efead2a2-c91b-470e-a234-58746da6ac22                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2015-11-25T11:03:52Z |
- | network          | 7e142d1b-f660-498d-961a-b03d0aee5cff                | OS::Neutron::Net                | CREATE_COMPLETE | 2015-11-25T11:03:56Z |
- | subnet           | 442b31bf-0d3e-406b-8d5f-7b1b6181a381                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2015-11-25T11:03:57Z |
- | server           | f5b22d22-1cfe-41bb-9e30-4d089285e5e5                | OS::Nova::Server                | CREATE_COMPLETE | 2015-11-25T11:04:00Z |
- | floating_ip_link | 44dd841f-8570-4f02-a8cc-f21a125cc8aa-`floating IP`  | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2015-11-25T11:04:30Z |
-   +------------------+-----------------------------------------------------+-------------------------------+-----------------+----------------------
+ $ watch heat resource-list rundeck
+ +-------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| resource_name     | physical_resource_id                                                                | resource_type                   | resource_status | updated_time         |
++-------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
+| cinder_volume     | 24016996-f5c4-4086-b351-d5613072792d                                                | OS::Cinder::Volume              | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
+| floating_ip       | 22d6e3eb-7562-472e-9f3b-e434d1f689b2                                                | OS::Neutron::FloatingIP         | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
+| floating_ip_link  | 855900                                                                              | OS::Nova::FloatingIPAssociation | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
+| interface         | 7129e80e-2214-45f4-a1f3-135c7578854e:subnet_id=a613b683-d94e-4343-9148-5b8e3e1900f6 | OS::Neutron::RouterInterface    | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
+| network           | a06ae947-6021-4440-b3bd-ea4fcf93f877                                                | OS::Neutron::Net                | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
+| ports             | 842e6b17-78a9-466d-8b21-fe6b5cd8b52d                                                | OS::Neutron::Port               | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
+| router            | 7129e80e-2214-45f4-a1f3-135c7578854e                                                | OS::Neutron::Router             | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
+| security_group    | c9f8660e-9be5-4df8-ae67-a8b1c7cbcd2f                                                | OS::Neutron::SecurityGroup      | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
+| server            | a5354423-5008-4206-8703-348c130a82a6                                                | OS::Nova::Server                | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
+| subnet            | a613b683-d94e-4343-9148-5b8e3e1900f6                                                | OS::Neutron::Subnet             | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
+| volume_attachment | 24016996-f5c4-4086-b351-d5613072792d                                                | OS::Cinder::VolumeAttachment    | CREATE_COMPLETE | 2017-01-12T16:36:05Z |
++-------------------+-------------------------------------------------------------------------------------+---------------------------------+-----------------+----------------------+
  ~~~
 
  The `start-stack.sh` script takes care of running the API necessary requests to execute the normal heat template which:
 
- * Starts an CoreOS based instance with the docker container *Joomla* attached to his database *Mysql*
+ * Starts an CoreOS based instance with the docker container *Rundeck* attached to his database *Mysql*
  * Expose it on the Internet via a floating IP.
 
 <a name="console" />
@@ -225,13 +229,8 @@ parameters:
 
  Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
- You are now in possession of your own Joomla! website, you can enter via the URL `http://ip-floatingip`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
+ You are now in possession of your own Joomla! website, you can enter via the URL `http://ip-floatingip:4440`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
 
-At your first connexion you will ask to give the information about your website and how to access to the database. Complete the fields as below, the password is which one you chose when you created the stack.
-
-![firstco](img/firstco.png)
-
-You can now setup your website, this one being hosted in France in a safe environment, you can completely trust on this product.
 
 ## So watt?
 
@@ -243,8 +242,8 @@ You now have an SSH access point on your virtual machine through the floating-IP
 
 * Here are some news sites to learn more:
 
-- https://www.joomla.org/
-- https://docs.joomla.org/
+- http://rundeck.org/
+
 
 
 ----
