@@ -125,8 +125,8 @@ At each new deployement of the stack, a mySQL password is generated directly in 
 Once all of this done, you can run the `stack-get-url.sh` script.
 
 ~~~ bash
-./stack-get-url.sh THE_THING
-THE_THING 82.40.34.249
+./stack-get-url.sh Wordpress
+Wordpress 82.40.34.249
 ~~~
 
 It will gather the assigned flotting IP of your stack. You can then paste this IP in your favorite browser and start to configure your Wordpress instance.
