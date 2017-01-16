@@ -8,7 +8,7 @@ Rundeck est un outil d’automatisation de processus idéal pour administrer un 
 
 L’outil est accompagné d’une interface dite ”web” simplifiant l’accès aux scripts et autres jobs mais également d’une interface “ligne de commande” : une collection d’outils est en effet fournie afin d’utiliser toutes les fonctionnalités offertes par le logiciel.
 
-On a crée un job qui va créer des snapshot de votre instances.
+On a créé un job qui va créer des snapshot de votre instances.
 
 
 ## Preparations
