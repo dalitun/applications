@@ -212,14 +212,14 @@ Et bien si ! En utilisant la console, vous pouvez déployer Rundeck! :
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
-6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
-7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « SSH Keypair »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « Instance Type (Flavor) »
+6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT ».
+7.	Donnez un nom à votre stack dans le champ « Nom de la stack ».
+8.	Entrez votre keypair dans le champ « SSH Keypair ».
+9.	Choisissez la taille de votre instance parmi le menu déroulant « Instance Type (Flavor) ».
 10. Entrez la taille de volume de backup dans le champ « Backup Volume Size », puis  choisissez le type de volume dans le champ
     « Backup Volume Type ».
-11. Entrez les credentials de votre compte cloudwatt « OpenStack region », « OpenStack Username », « OpenStack Password »,
-    « OpenStack Tenant Name »,  « OpenStack Tenant Id » et « OpenStack Auth URL ».
+11. Entrez les credentials de votre compte Cloudwatt dans les champs « OpenStack region », « OpenStack Username »,
+   « OpenStack Password », « OpenStack Tenant Name »,  « OpenStack Tenant Id » et « OpenStack Auth URL ».
 12. Entrez le mot de passe root de mysql dans le champ « Mysql Root Password ».
 13. Entrez le mot de passe admin de rundeck dans le champ « Rundeck Admin Password » et cliquez sur « LANCER ».
 
@@ -255,15 +255,13 @@ Cliquez sur le job `snapshot` et entrez la liste des Id de vos instances que vou
 
 ![rundeck5](img/rundeck5.png)
 
-Puis vérifier que vos instances sont bien snapshotées avec la commande.
+Puis vérifiez que vos instances ont été bien snapshotées avec la commande.
 
 ~~~shell
 $ glance image-list | grep id_instance
 ~~~
 
-Les snaphost sont sous forme `Id-date-temps`par exemple le snapshot de l'instance d'id `d971910-0e1f-4ac4-9b8e-66f54a723693` est `ed971910-0e1f-4ac4-9b8e-66f54a723693-2017-01-13-1123`.
-
-
+Les snaphost sont sous forme `Id-date-temps`, par exemple le snapshot de l'instance d'id `d971910-0e1f-4ac4-9b8e-66f54a723693` est `ed971910-0e1f-4ac4-9b8e-66f54a723693-2017-01-13-1123`.
 ## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.

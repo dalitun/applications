@@ -211,25 +211,56 @@ parameters:
  3.	Click on RAW, a web page will appear containing purely the template
  4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
  5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
- 6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT »
- 7.	Name your stack in the « Stack name » field
- 8.	Enter the name of your keypair in the « SSH Keypair » field
- 9.  Write a passphrase that will be used for the database joomla user
- 10.	Choose your instance size using the « Instance Type » dropdown and click on « LAUNCH »
-
+ 6.	Click on « Launch stack », then « Template file » and select the file you just saved to your PC, and finally click on « NEXT ».
+ 7.	Name your stack in the « Stack name » field.
+ 8.	Enter the name of your keypair in the « SSH Keypair » field.
+ 9. Choose your instance size using the « Instance Type » dropdown.
+ 10.Enter the backup volume size in « Backup Volume Size » field, then choose the volume type in « Backup Volume Type » field.
+ 11.Enter your account Cloudwatt credentials in « OpenStack region », « OpenStack Username », « OpenStack Password »,
+    « OpenStack Tenant Name »,  « OpenStack Tenant Id » et « OpenStack Auth URL » fields.
+ 12.Enter the mysql root password in « Mysql Root Password » field.
+ 13.Enter the rundeck admin password in « Rundeck Admin Password » field and click on « LAUNCH ».
  The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
 
- If you've reached this point, you're already done! Go enjoy Joomla!!
+ If you've reached this point, you're already done! Go enjoy Rundeck!
 
 ### A one-click deployment sounds really nice...
 
- ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Joomla!.
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Rundeck!.
 
 ## Enjoy
 
  Once all this makes you can connect on your server in SSH by using your keypair beforehand downloaded on your compute,
 
- You are now in possession of your own Joomla! website, you can enter via the URL `http://ip-floatingip:4440`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
+ You are now in possession of your own Rundeck! website, you can enter via the URL `http://ip-floatingip:4440`. Your full URL will be present in your stack overview in horizon Cloudwatt console.
+
+![rundeck1](img/rundeck1.png)
+
+For logging you use **admin@mail_domain** as login and **password_admin** as password, you have to arrive on this page:
+
+![rundeck2](img/rundeck2.png)
+
+In order to start the job that will create the snapshots of the instances, you have to click on the project `InstancesSnapshot`.
+
+![rundeck3](img/rundeck3.png)
+
+Click on the tab `jobs`.
+
+![rundeck4](img/rundeck4.png)
+
+Click on `snapshot` job and enter the list of the instances Ids that you want to snapshot in `List_instances` the field, then click on `Run Job Now` .
+
+![rundeck5](img/rundeck5.png)
+
+Then check your instances were snapshot with the command.
+
+~~~shell
+$ glance image-list | grep id_instance1
+~~~
+
+Snaphosts are in form `Id-date-temps`, for example the snapshot of the instance of id `d971910-0e1f-4ac4-9b8e-66f54a723693` is
+` ed971910-0e1f-4ac4-9b8e-66f54a723693-2017-01-13-1123`.
+
 
 
 ## So watt?
