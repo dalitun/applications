@@ -114,7 +114,7 @@ $ ./stack-start.sh LE_BIDULE
 +--------------------------------------+------------+--------------------+----------------------+
 | id                                   | stack_name | stack_status       | creation_time        |
 +--------------------------------------+------------+--------------------+----------------------+
-| ed4ac18a-4415-467e-928c-1bef193e4f38 | LE_BIDULE  | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
+| ed4ac18a-4415-467e-928c-1bef193e4f38 | Wordpress  | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
@@ -127,8 +127,8 @@ A chaque nouveau déploiement de stack, un mot de passe MySQL est généré, dir
 Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` en passant en paramètre le nom de la stack.
 
 ~~~ bash
-./stack-get-url.sh LE_BIDULE
-LE_BIDULE 82.40.34.249
+./stack-get-url.sh Wordpress
+Wordpress 82.40.34.249
 ~~~
 
 qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et commencer à configurer votre instance Wordpress.
