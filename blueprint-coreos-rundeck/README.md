@@ -251,7 +251,7 @@ Cliquez sur l'onglet `jobs`.
 
 ![rundeck4](img/rundeck4.png)
 
-Cliquez sur le job `snapshot` et entrez la liste des Id de vos instances que vous vouliez snapshoter dans le champ `List_instances`, enfin cliquez sur `Run Job Now` .
+Cliquez sur le job `snapshot` et entrez la liste des Ids de vos instances que vous vouliez snapshoter dans le champ `List_instances`, enfin cliquez sur `Run Job Now` .
 
 ![rundeck5](img/rundeck5.png)
 
