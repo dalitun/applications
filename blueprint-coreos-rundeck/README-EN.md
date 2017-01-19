@@ -255,6 +255,17 @@ Then check your instances were snapshot with the command.
 $ glance image-list | grep id_instance1
 ~~~
 
+To retrieve the IDs of your instances run this command:
+  ~~~bash
+  $ nova list
+  +--------------------------------------+-------------------------------------------------------+--------+------------+-------------+-------------------------------------------------------+
+  | ID                                   | Name                                                  | Status | Task State | Power State | Networks                                              |
+  +--------------------------------------+-------------------------------------------------------+--------+------------+-------------+-------------------------------------------------------+
+  | 627fd0b7-0af0-4a53-bb40-2b921f228c3b | factory-server-ctwk3vwqiesv                           | ACTIVE | -          | Running     | factory-dmz-6a4ysedl3h73=10.42.42.100  |
+  | 5b00d121-9998-4143-8504-298a2857f181 | ku-sj47pz-6otjy4e7bn6a-rqe6zfiitpz3-node-drjqqgaz4jw2 | ACTIVE | -          | Running     | kube-network-ih7t7tdomdz6=10.1.1.11   |
+  | d4b247c7-b691-4e5b-8070-b369ec059dec | ku-sj47pz-dr5spurvz3hi-qlwnfhpj3dq3-node-se3a7kpfvxwi | ACTIVE | -          | Running     |
+  +--------------------------------------+-------------------------------------------------------+--------+------------+-------------+-------------------------------------------------
+  ~~~
 Snaphosts are in form `name_instance-date-temps`, for example `name_instance-2017-01-13-1123`.
 
 

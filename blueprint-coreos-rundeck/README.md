@@ -133,7 +133,7 @@ parameters:
     description: OpenStack Tenant Name
     label: OpenStack Tenant Name
     type: string
-    
+
   os_auth_url:
     description: OpenStack Auth URL
     default: https://identity.fr1.cloudwatt.com/v2.0
@@ -252,8 +252,20 @@ Cliquez sur le job `snapshot` et entrez la liste des Ids de vos instances que vo
 
 Puis vérifiez que vos instances ont été bien snapshotées avec la commande.
 
-~~~shell
+~~~bash
 $ glance image-list | grep id_instance
+~~~
+
+Pour récupérer les IDs de vos instances lancez cette commande:
+~~~bash
+$ nova list
++--------------------------------------+-------------------------------------------------------+--------+------------+-------------+-------------------------------------------------------+
+| ID                                   | Name                                                  | Status | Task State | Power State | Networks                                              |
++--------------------------------------+-------------------------------------------------------+--------+------------+-------------+-------------------------------------------------------+
+| 627fd0b7-0af0-4a53-bb40-2b921f228c3b | factory-server-ctwk3vwqiesv                           | ACTIVE | -          | Running     | factory-dmz-6a4ysedl3h73=10.42.42.100  |
+| 5b00d121-9998-4143-8504-298a2857f181 | ku-sj47pz-6otjy4e7bn6a-rqe6zfiitpz3-node-drjqqgaz4jw2 | ACTIVE | -          | Running     | kube-network-ih7t7tdomdz6=10.1.1.11   |
+| d4b247c7-b691-4e5b-8070-b369ec059dec | ku-sj47pz-dr5spurvz3hi-qlwnfhpj3dq3-node-se3a7kpfvxwi | ACTIVE | -          | Running     |
++--------------------------------------+-------------------------------------------------------+--------+------------+-------------+-------------------------------------------------------+
 ~~~
 
 Les snaphost sont sous forme `nom_instance-date-temps`, par exemple: `nom_instance-2017-01-13-1123`.
