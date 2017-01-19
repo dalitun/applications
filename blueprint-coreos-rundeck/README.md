@@ -133,12 +133,7 @@ parameters:
     description: OpenStack Tenant Name
     label: OpenStack Tenant Name
     type: string
-
-  os_tenant_id:
-    description: OpenStack Tenant Id
-    label: OpenStack Tenant Id
-    type: string
-
+    
   os_auth_url:
     description: OpenStack Auth URL
     default: https://identity.fr1.cloudwatt.com/v2.0
@@ -219,7 +214,7 @@ Et bien si ! En utilisant la console, vous pouvez déployer Rundeck! :
 10. Entrez la taille de volume de backup dans le champ « Backup Volume Size », puis  choisissez le type de volume dans le champ
     « Backup Volume Type ».
 11. Entrez les credentials de votre compte Cloudwatt dans les champs « OpenStack region », « OpenStack Username »,
-   « OpenStack Password », « OpenStack Tenant Name »,  « OpenStack Tenant Id » et « OpenStack Auth URL ».
+   « OpenStack Password », « OpenStack Tenant Name » et « OpenStack Auth URL ».
 12. Entrez le mot de passe root de mysql dans le champ « Mysql Root Password ».
 13. Entrez le mot de passe admin de rundeck dans le champ « Rundeck Admin Password » et cliquez sur « LANCER ».
 
@@ -261,7 +256,7 @@ Puis vérifiez que vos instances ont été bien snapshotées avec la commande.
 $ glance image-list | grep id_instance
 ~~~
 
-Les snaphost sont sous forme `Id-date-temps`, par exemple le snapshot de l'instance d'id `d971910-0e1f-4ac4-9b8e-66f54a723693` est `ed971910-0e1f-4ac4-9b8e-66f54a723693-2017-01-13-1123`.
+Les snaphost sont sous forme `nom_instance-date-temps`, par exemple: `nom_instance-2017-01-13-1123`.
 ## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.

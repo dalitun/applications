@@ -136,11 +136,6 @@ parameters:
     label: OpenStack Tenant Name
     type: string
 
-  os_tenant_id:
-    description: OpenStack Tenant Id
-    label: OpenStack Tenant Id
-    type: string
-
   os_auth_url:
     description: OpenStack Auth URL
     default: https://identity.fr1.cloudwatt.com/v2.0
@@ -208,7 +203,7 @@ parameters:
 
  We do indeed! Using the console, you can deploy Joomla!:
 
- 1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-joomla](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-joomla) repository
+ 1.	Go the Cloudwatt Github in the [applications/blueprint-coreos-joomla](https://github.com/cloudwatt/applications/tree/master/blueprint-coreos-rundeck) repository
  2.	Click on the file named `blueprint-coreos-joomla.heat.yml`
  3.	Click on RAW, a web page will appear containing purely the template
  4.	Save the file to your PC. You can use the default name proposed by your browser (just remove the .txt)
@@ -219,7 +214,7 @@ parameters:
  9. Choose your instance size using the « Instance Type » dropdown.
  10.Enter the backup volume size in « Backup Volume Size » field, then choose the volume type in « Backup Volume Type » field.
  11.Enter your account Cloudwatt credentials in « OpenStack region », « OpenStack Username », « OpenStack Password »,
-    « OpenStack Tenant Name »,  « OpenStack Tenant Id » et « OpenStack Auth URL » fields.
+    « OpenStack Tenant Name » et « OpenStack Auth URL » fields.
  12.Enter the mysql root password in « Mysql Root Password » field.
  13.Enter the rundeck admin password in « Rundeck Admin Password » field and click on « LAUNCH ».
  The stack will be automatically generated (you can see its progress by clicking on its name). When all modules become green, the creation will be complete. You can then go to the "Instances" menu to find the floating IP, or simply refresh the current page and check the Overview tab for a handy link.
@@ -260,8 +255,7 @@ Then check your instances were snapshot with the command.
 $ glance image-list | grep id_instance1
 ~~~
 
-Snaphosts are in form `Id-date-temps`, for example the snapshot of the instance of id `d971910-0e1f-4ac4-9b8e-66f54a723693` is
-` ed971910-0e1f-4ac4-9b8e-66f54a723693-2017-01-13-1123`.
+Snaphosts are in form `name_instance-date-temps`, for example `name_instance-2017-01-13-1123`.
 
 
 
