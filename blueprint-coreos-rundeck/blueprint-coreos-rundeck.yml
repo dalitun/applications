@@ -305,7 +305,7 @@ resources:
                     After=docker.service
                     Requires=docker.service
                     [Service]
-                    ExecStartPre=/usr/bin/docker pull dalidocker/rundeck
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/rundeck
                     ExecStart=/usr/bin/docker run -p 4440:4440 -v /rundeck/var:/rundeck/var -v /rundeck/projects:/rundeck/projects --env-file /home/core/rundeck.env --link=mysql:mysql --name rundeck cloudwattfr/rundeckalpine
                     ExecStop=/usr/bin/docker rm -f rundeck
                     [Install]
@@ -318,7 +318,7 @@ resources:
                     After=docker.service
                     Requires=docker.service
                     [Service]
-                    ExecStartPre=/usr/bin/docker pull dalidocker/rundeck-cli
+                    ExecStartPre=/usr/bin/docker pull cloudwattfr/rundeck-cli
                     ExecStart=/usr/bin/docker run --env-file /home/core/rundeck.env --name rundeck-cli cloudwattfr/rundeck-cli
                     ExecStop=/usr/bin/docker rm -f rundeck-cli
                     [Install]
