@@ -21,7 +21,6 @@ parameter_groups:
      - os_auth_url
      - os_region_name
      - os_tenant_name
-     - os_tenant_id
      - os_username
      - os_password
 
@@ -96,10 +95,6 @@ parameters:
     label: OpenStack Tenant Name
     type: string
 
-  os_tenant_id:
-    description: OpenStack Tenant Id
-    label: OpenStack Tenant Id
-    type: string
 
   os_auth_url:
     description: OpenStack Auth URL
@@ -190,7 +185,6 @@ resources:
             $private_ipv4: { get_attr: [ ports, fixed_ips, 0, ip_address ] }
             $public_ipv4: { get_attr: [floating_ip, floating_ip_address] }
             $os_username: { get_param: os_username }
-            $os_tenant_id: { get_param: os_tenant_id }
             $os_password: { get_param: os_password }
             $os_tenant_name: { get_param: os_tenant_name }
             $os_auth_url: { get_param: os_auth_url }
@@ -221,7 +215,6 @@ resources:
                 owner: "core:core"
                 content: |
                             OS_AUTH_URL=$os_auth_url
-                            OS_TENANT_ID=$os_tenant_id
                             OS_TENANT_NAME=$os_tenant_name
                             OS_USERNAME=$os_username
                             OS_PASSWORD=$os_password
@@ -313,7 +306,7 @@ resources:
                     Requires=docker.service
                     [Service]
                     ExecStartPre=/usr/bin/docker pull dalidocker/rundeck
-                    ExecStart=/usr/bin/docker run -p 4440:4440 -v /rundeck/var:/rundeck/var -v /rundeck/projects:/rundeck/projects --env-file /home/core/rundeck.env --link=mysql:mysql --name rundeck dalidocker/rundeck
+                    ExecStart=/usr/bin/docker run -p 4440:4440 -v /rundeck/var:/rundeck/var -v /rundeck/projects:/rundeck/projects --env-file /home/core/rundeck.env --link=mysql:mysql --name rundeck cloudwattfr/rundeckalpine
                     ExecStop=/usr/bin/docker rm -f rundeck
                     [Install]
                     WantedBy=multi-user.target
@@ -326,7 +319,7 @@ resources:
                     Requires=docker.service
                     [Service]
                     ExecStartPre=/usr/bin/docker pull dalidocker/rundeck-cli
-                    ExecStart=/usr/bin/docker run --env-file /home/core/rundeck.env --name rundeck-cli dalidocker/rundeck-cli
+                    ExecStart=/usr/bin/docker run --env-file /home/core/rundeck.env --name rundeck-cli cloudwattfr/rundeck-cli
                     ExecStop=/usr/bin/docker rm -f rundeck-cli
                     [Install]
                     WantedBy=multi-user.target

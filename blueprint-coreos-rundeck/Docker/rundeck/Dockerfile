@@ -4,7 +4,7 @@ FROM alpine:3.5
 ENV VERSION=2.7.1
 
 
-RUN     apk add --update openjdk8-jre bash curl wget && \
+RUN     apk add --update openjdk8-jre bash curl wget jq && \
         mkdir -p /rundeck/ && \
         wget -O /rundeck/rundeck-launcher.jar \
             http://dl.bintray.com/rundeck/rundeck-maven/rundeck-launcher-${VERSION}.jar && \

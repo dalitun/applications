@@ -32,13 +32,19 @@ EOF
 
 TOKEN=`curl -s "$OS_AUTH_URL/tokens" -X POST -H "Content-Type: application/json" -d "$JSON" | cut -d'"' -f 8`
 
+TENANT_ID=$(curl -k "$OS_AUTH_URL/tenants" -H "Content-Type: application/json" -H  "X-Auth-Token: $TOKEN" | jq '.tenants[].id' |  sed -e 's/^"//'  -e 's/"$//')
+
+COMPUTE_URL=https://compute.fr1.cloudwatt.com/v2
+
 echo @option.List_instances@
 
 for instance in @option.List_instances@
 do
 
+
+NAME=$(curl -k "$COMPUTE_URL/$TENANT_ID/servers/$instance" -H "Content-Type: application/json" -H "X-Auth-Token: $TOKEN" | jq '.server.name'|  sed -e 's/^"//'  -e 's/"$//')
 BUILDMARK="$(date +%Y-%m-%d-%H%M)"
-NAME_SNAPSHOT=$instance-$BUILDMARK
+NAME_SNAPSHOT=$NAME-$BUILDMARK
 
 
 read -d '' JSON <<EOF
@@ -52,8 +58,7 @@ read -d '' JSON <<EOF
 }
 EOF
 
-
-curl -k "https://compute.fr1.cloudwatt.com/v2/$OS_TENANT_ID/servers/$instance/action" -H "Content-Type: application/json" -H "X-Auth-Token: $TOKEN" -X POST -d "$JSON"
+curl -k "$COMPUTE_URL/$TENANT_ID/servers/$instance/action" -H "Content-Type: application/json" -H "X-Auth-Token: $TOKEN" -X POST -d "$JSON"
 
 done
 ]]></script>
