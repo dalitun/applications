@@ -267,7 +267,7 @@ $ nova list
 +--------------------------------------+-------------------------------------------------------+--------+------------+-------------+-------------------------------------------------------+
 ~~~
 
-Les snaphost sont sous forme `nom_instance-date-temps`, par exemple: `nom_instance-2017-01-13-1123`.
+Les snaphosts sont sous forme `nom_instance-date-temps`, par exemple: `nom_instance-2017-01-13-1123`.
 ## So watt ?
 
 Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade **vous** êtes maître(sse) à bord.
