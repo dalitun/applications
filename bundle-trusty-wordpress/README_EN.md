@@ -118,7 +118,7 @@ $ ./stack-start.sh LE_BIDULE
 
 Last, wait 5 minutes until the deployement been completed.
 
-At each new deployement of the stack, a mySQL password is generated directly in the `/etc/wordpress/config-default.php` configuration file.
+At each new deployement of the stack, a mySQL password is generated directly in the `/var/www/html/wordpress/config-default.php` configuration file.
 
 ### Enjoy
 
