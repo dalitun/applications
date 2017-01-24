@@ -9,24 +9,24 @@ The Automattic compagny, which develop and distribute Wordpress, provides a SaaS
 
 Today, Cloudwatt provides the necessary toolset to start your Wordpress instance in a few minutes and to become its master.
 
-The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers are deployed on a single instance.
+The deployement base is an Ubuntu xenial instance. The Apache and MariaDB servers are deployed on a single instance.
 
 ## Nota Bene for the impatients
 
-An image named "Stack Orchestration Heat Ubuntu 14.04.2 WORDPRESS" is available in the public image catalogue of the Cloudwatt console. For security reasons, this image does not include the initialisation of the MySQL database and therefore is not working when spawning directly the image thru the "Launch instance" button.
+An image named "Stack Orchestration Heat Ubuntu 16.04 WORDPRESS" is available in the public image catalogue of the Cloudwatt console. For security reasons, this image does not include the initialisation of the MariaDB database and therefore is not working when spawning directly the image thru the "Launch instance" button.
 
-This image has to be launched thru the Orchestration Stack menu with the Heat template that we are detailling in this article. The heat template includes the mandatory steps required after the launch to generated the passsword, the creation of the user, the creation of the MySQL database for Wordpress and the final configuration of Wordpress for the MySQL accesses.
+This image has to be launched thru the Orchestration Stack menu with the Heat template that we are detailling in this article. The heat template includes the mandatory steps required after the launch to generated the passsword, the creation of the user, the creation of the MariaDB database for Wordpress and the final configuration of Wordpress for the MariaDB accesses.
 
 
 ## Preparations
 
 ### The versions
 
-* Ubuntu 14.04
-* Apache 2.4.7
+* Ubuntu 16.04
+* Apache 2.4.18
 * Wordpress 4.7.1
-* MySQL 5.5.53
-* PHP 5.5.9
+* MariaDB 10.0.28
+* PHP 7.0.13
 
 ### The prerequisites to deploy this stack
 
@@ -46,9 +46,9 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ## What will you find in the repository
 
-Once you have cloned the github, you will find in the  `bundle-trusty-wordpress/` repository:
+Once you have cloned the github, you will find in the  `bundle-xenial-wordpress/` repository:
 
-* `bundle-trusty-wordpress.heat.yml` : HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+* `bundle-xenial-wordpress.heat.yml` : HEAT orchestration template. It will be use to deploy the necessary infrastructure.
 * `stack-start.sh` : Stack launching script. This is a small script that will save you some copy-paste.
 * `stack-get-url.sh` : Flotting IP recovery script.
 
@@ -71,10 +71,10 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `bundle-trusty-wordpress.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `bundle-xenial-wordpress.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
 description: All-in-one Wordpress stack
@@ -118,7 +118,7 @@ $ ./stack-start.sh LE_BIDULE
 
 Last, wait 5 minutes until the deployement been completed.
 
-At each new deployement of the stack, a mySQL password is generated directly in the `/etc/wordpress/config-default.php` configuration file.
+At each new deployement of the stack, a  password is generated directly in the `/data/wordpress/config-default.php` configuration file.
 
 ### Enjoy
 
@@ -135,10 +135,10 @@ It will gather the assigned flotting IP of your stack. You can then paste this I
 
 The  `start-stack.sh` script is taking care of running the API necessary requests to:
 
-* start an Ubuntu Trusty Tahr based instance
+* start an Ubuntu Xenial based instance
 * do an update of the system packages
-* install Apache, PHP, MySQL and Wordpress
-* configure MySQL with a wordpress dedicated user and database, with a generated password
+* install Apache, PHP, MariaDB and Wordpress
+* configure MariaDB with a wordpress dedicated user and database, with a generated password
 * show a flotting IP on the internet
 
 <a name="console" />
@@ -147,8 +147,8 @@ The  `start-stack.sh` script is taking care of running the API necessary request
 
 Yes ! Using the console, you can deploy a Wordpress server:
 
-1.	Go the Cloudwatt Github in the applications/bundle-trusty-wordpress repository
-2.	Click on the file nammed bundle-trusty-wordpress.heat.yml
+1.	Go the Cloudwatt Github in the applications/bundle-xenial-wordpress repository
+2.	Click on the file nammed bundle-xenial-wordpress.heat.yml
 3.	Click on RAW, a web page appear with the script details
 4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
@@ -172,8 +172,9 @@ You have a SSH access point on your virtual machine thru the flotting IP and you
 
 The interesting entry access points are:
 
-- `/var/www/html/wordpress` : Wordpress installation repository
-- `/var/www/html/wordpress/wp-config.php` : Wordpress configuration file, in which you can find the password of the MySQL user that has been generated buring the installation.
+- `/data/wordpress` : Wordpress installation repository
+- `/data/wordpress/wp-config.php` : Wordpress configuration file, in which you can find the password of the MariaDB user that has been generated buring the installation.
+- `/data/mysql` : Mariadb nodes datadir is a cinder volume.
 
 -----
 Have fun. Hack in peace.

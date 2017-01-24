@@ -8,27 +8,27 @@ Dans la galaxie des CMS Open-Source, WordPress figure en bonne place en termes d
 
 Aujourd'hui nous mettons à votre disposition de quoi démarrer votre instance WordPress en quelques minutes et rester maître à bord pour la faire vivre.
 
-La base de déploiement est une instance unique Ubuntu Trusty pré-provisionnée avec les serveurs Apache et MySQL.
+La base de déploiement est une instance unique Ubuntu Xenial pré-provisionnée avec les serveurs Apache et Mariadb.
 
 ## Nota Bene pour les plus pressés
 
-Une image "Application Ubuntu 14.04.2 WORDPRESS" est disponible dans le catalogue des images publiques de la
-console Cloudwatt. Pour des raisons de sécurité, cette image ne contient pas l'initialisation de la base MySQL et n'est donc pas
+Une image "Application Ubuntu 16.04 WORDPRESS" est disponible dans le catalogue des images publiques de la
+console Cloudwatt. Pour des raisons de sécurité, cette image ne contient pas l'initialisation de la base MariaDB et n'est donc pas
 fonctionnelle en mode "Lancer une instance".
 
 Cette image est destinée à servir de base de déploiement au template Heat que nous allons détailler dans cet article.
 Le template en question contient les étapes indispensables après lancement, de génération de mot de passe, création
-d'utilisateur, création de la base MySQL pour Wordpress et configuration finale de Wordpress pour les accès à MySQL.
+d'utilisateur, création de la base MariaDB pour Wordpress et configuration finale de Wordpress pour les accès à MariaDB.
 
 ## Préparatifs
 
 ### Les versions
 
-* Ubuntu 14.04
-* Apache 2.4.7
+* Ubuntu 16.04
+* Apache 2.4.18
 * Wordpress 4.7.1
-* MySQL 5.5.53
-* PHP 5.5.9
+* MariaDB 10.0.28
+* PHP 7.0.13
 
 ### Les pré-requis pour déployer cette stack
 
@@ -48,9 +48,9 @@ Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à 
 
 ## Tour du propriétaire
 
-Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-trusty-wordpress/` :
+Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-xenial-wordpress/` :
 
-* `bundle-trusty-wordpress.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
+* `bundle-xenial-wordpress.heat.yml` : Template d'orchestration HEAT, qui va servir à déployer l'infrastructure nécessaire.
 * `stack-start.sh` : Script de lancement de la stack. C'est un micro-script pour vous économiser quelques copier-coller.
 * `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
 
@@ -72,11 +72,11 @@ Une fois ceci fait, les outils ligne de commande OpenStack peuvent interagir ave
 
 ### Ajuster les paramètres
 
-Dans le fichier `bundle-trusty-wordpress.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
+Dans le fichier `bundle-xenial-wordpress.heat.yml` vous trouverez en haut une section `parameters`. Le seul paramètre obligatoire à ajuster est celui nommé `keypair_name` dont la valeur `default` doit contenir le nom d'une paire de clés valide dans votre compte utilisateur.
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
 description: All-in-one Wordpress stack
@@ -120,7 +120,7 @@ $ ./stack-start.sh LE_BIDULE
 
 Enfin, attendez 5 minutes que le déploiement soit complet.
 
-A chaque nouveau déploiement de stack, un mot de passe MySQL est généré, directement dans le fichier de configuration `/etc/wordpress/config-default.php`.
+A chaque nouveau déploiement de stack, un mot de passe MariaDB est généré, directement dans le fichier de configuration `/data/wordpress/config-default.php`.
 
 ### Enjoy
 
@@ -137,10 +137,10 @@ qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors a
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu Trusty Tahr
+* démarrer une instance basée sur Ubuntu Xenial
 * faire une mise à jour de tous les paquets système
-* installer Apache, PHP, MySQL et Wordpress dessus
-* configurer MySQL avec un utilisateur et une base dédiés à WordPres, avec mot de passe généré
+* installer Apache, PHP, MariaDB et Wordpress dessus
+* configurer MariaDB avec un utilisateur et une base dédiés à WordPres, avec mot de passe généré
 * l'exposer sur Internet via une IP flottante
 
 <a name="console" />
@@ -149,8 +149,8 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur Wordpress :
 
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-wordpress
-2.	Cliquez sur le fichier nommé bundle-trusty-wordpress.heat.yml
+1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-xenial-wordpress
+2.	Cliquez sur le fichier nommé bundle-xenial-wordpress.heat.yml
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
 5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
@@ -175,9 +175,9 @@ Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottan
 
 Les chemins intéressants sur votre machine :
 
-- `/var/www/html/wordpress` : Répertoire d'installation de WordPress.
-- `/var/www/html/wordpress/wp-config.php` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MySQL, généré pendant l'installation.
-
+- `/data/wordpress` : Répertoire d'installation de WordPress.
+- `/data/wordpress/wp-config.php` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MariaDB, généré pendant l'installation.
+- `/data/mysql` : le datadir de Mariadb est un volume cinder.
 
 -----
 Have fun. Hack in peace.
