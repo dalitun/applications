@@ -68,10 +68,10 @@ Vous devez rentrer les informations suivantes :
 
 - Serveur : 127.0.0.1 ou localhost
 - Port : 3306
-- Nom de la base de donnée : backbee
-- Nom d'utilisateur de la base de donnée : backbee
+- Nom de la base de donnée : wordpress
+- Nom d'utilisateur de la base de donnée : wordpress
 
-Vous trouverez le mot de passe de votre utilisateur MariaDB a cette adresse : `http://IP/password.txt`.
+Vous trouverez le mot de passe de votre utilisateur MariaDB a cette adresse : `
 
 Et voilà, vous pouvez continuer de configurer BackBee comme vous le souhaitez
 
