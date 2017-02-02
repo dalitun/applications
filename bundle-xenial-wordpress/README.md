@@ -52,14 +52,13 @@ Si vous n'aimez que la ligne de commande, vous pouvez passer directement à la v
 ## Pour aller plus loin
 <a name="install" />
 
-### Configuration de la base de donnée
-![Configuration de la base de donnée](https://raw.githubusercontent.com/flemzord/applications/master/bundle-centos-backbee/images/installation.png?raw=true)
+### Installation votre blog wordpress
+![wordpress](img/image1.png )
 
-### Page d'accueil
-![Page d'accueil](https://raw.githubusercontent.com/flemzord/applications/master/bundle-centos-backbee/images/homepage.png?raw=true)
+![wordpress2](img/image2.png)
 
 ### Page d'accueil + BackOffice
-![Page d'accueil et BackOffice](https://raw.githubusercontent.com/flemzord/applications/master/bundle-centos-backbee/images/homepage_back.png?raw=true)
+![wordpress3](img/image3.png)
 
 ### Configuration de la base de donnée
 
