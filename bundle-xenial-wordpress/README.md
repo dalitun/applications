@@ -2,7 +2,7 @@
 
 ## Episode deux : Wordpress
 
-![logo](wordpress.png)
+![logo](img/wordpress.png)
 
 Dans la galaxie des CMS Open-Source, WordPress figure en bonne place en termes de communauté, de fonctionnalités et d'adoption. La société Automattic, qui développe et distribue WordPress, fourni une offre SaaS permettant de créer son blog en quelques minutes. Pour autant, ceux qui en ont fait l'expérience savent qu'on se retrouve rapidement limité par le cadre d'hébergement de wordpress.com.
 
@@ -10,15 +10,6 @@ Aujourd'hui nous mettons à votre disposition de quoi démarrer votre instance W
 
 La base de déploiement est une instance unique Ubuntu Xenial pré-provisionnée avec les serveurs Apache et Mariadb.
 
-## Nota Bene pour les plus pressés
-
-Une image "Application Ubuntu 16.04 WORDPRESS" est disponible dans le catalogue des images publiques de la
-console Cloudwatt. Pour des raisons de sécurité, cette image ne contient pas l'initialisation de la base MariaDB et n'est donc pas
-fonctionnelle en mode "Lancer une instance".
-
-Cette image est destinée à servir de base de déploiement au template Heat que nous allons détailler dans cet article.
-Le template en question contient les étapes indispensables après lancement, de génération de mot de passe, création
-d'utilisateur, création de la base MariaDB pour Wordpress et configuration finale de Wordpress pour les accès à MariaDB.
 
 ## Préparatifs
 
@@ -29,6 +20,82 @@ d'utilisateur, création de la base MariaDB pour Wordpress et configuration fina
 * Wordpress 4.7.1
 * MariaDB 10.0.28
 * PHP 7.0.13
+
+
+## Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
+
+Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/index.html) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : Coder maintenant !
+
+
+## C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
+
+Et bien si ! En utilisant la console, vous pouvez déployer un serveur Wordpress :
+
+1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-xenial-wordpress
+2.	Cliquez sur le fichier nommé bundle-xenial-wordpress.heat.yml
+3.	Cliquez sur RAW, une page web apparait avec le détail du script
+4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
+5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
+6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
+7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
+8.	Entrez votre keypair dans le champ « keypair_name »
+9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
+
+La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
+
+C’est (déjà) FINI !
+
+## Installation en CLI
+
+Si vous n'aimez que la ligne de commande, vous pouvez passer directement à la version "lancement en CLI" en cliquant sur [ce lien](#cli)
+
+## Pour aller plus loin
+<a name="install" />
+
+### Configuration de la base de donnée
+![Configuration de la base de donnée](https://raw.githubusercontent.com/flemzord/applications/master/bundle-centos-backbee/images/installation.png?raw=true)
+
+### Page d'accueil
+![Page d'accueil](https://raw.githubusercontent.com/flemzord/applications/master/bundle-centos-backbee/images/homepage.png?raw=true)
+
+### Page d'accueil + BackOffice
+![Page d'accueil et BackOffice](https://raw.githubusercontent.com/flemzord/applications/master/bundle-centos-backbee/images/homepage_back.png?raw=true)
+
+### Configuration de la base de donnée
+
+La configuration de la base de donnée est assez simple. 
+
+Vous devez rentrer les informations suivantes : 
+
+- Serveur : 127.0.0.1 ou localhost
+- Port : 3306
+- Nom de la base de donnée : backbee
+- Nom d'utilisateur de la base de donnée : backbee
+
+Vous trouverez le mot de passe de votre utilisateur MariaDB a cette adresse : `http://IP/password.txt`.
+
+Et voilà, vous pouvez continuer de configurer BackBee comme vous le souhaitez
+
+## So watt ?
+
+Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
+
+Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
+
+Les chemins intéressants sur votre machine :
+
+- `/data/wordpress` : Répertoire d'installation de WordPress.
+- `/data/wordpress/wp-config.php` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MariaDB, généré pendant l'installation.
+- `/data/mysql` : le datadir de Mariadb est un volume cinder.
+
+
+## Autres sources pouvant vous intéresser:
+
+* [wordpree](https://wordpress.com/)
+
+<a name="cli" />
+
+## Installer en CLI
 
 ### Les pré-requis pour déployer cette stack
 
@@ -122,6 +189,7 @@ Enfin, attendez 5 minutes que le déploiement soit complet.
 
 A chaque nouveau déploiement de stack, un mot de passe MariaDB est généré, directement dans le fichier de configuration `/data/wordpress/config-default.php`.
 
+
 ### Enjoy
 
 Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` en passant en paramètre le nom de la stack.
@@ -142,42 +210,6 @@ Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les AP
 * installer Apache, PHP, MariaDB et Wordpress dessus
 * configurer MariaDB avec un utilisateur et une base dédiés à WordPres, avec mot de passe généré
 * l'exposer sur Internet via une IP flottante
-
-<a name="console" />
-
-### C’est bien tout ça, mais vous n’auriez pas un moyen de lancer l’application par la console ?
-
-Et bien si ! En utilisant la console, vous pouvez déployer un serveur Wordpress :
-
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-xenial-wordpress
-2.	Cliquez sur le fichier nommé bundle-xenial-wordpress.heat.yml
-3.	Cliquez sur RAW, une page web apparait avec le détail du script
-4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
-5.  Rendez-vous à la section « [Stacks](https://console.cloudwatt.com/project/stacks/) » de la console.
-6.	Cliquez sur « Lancer la stack », puis cliquez sur « fichier du modèle » et sélectionnez le fichier que vous venez de sauvegarder sur votre PC, puis cliquez sur « SUIVANT »
-7.	Donnez un nom à votre stack dans le champ « Nom de la stack »
-8.	Entrez votre keypair dans le champ « keypair_name »
-9.	Choisissez la taille de votre instance parmi le menu déroulant « flavor_name » et cliquez sur « LANCER »
-
-La stack va se créer automatiquement (vous pouvez en voir la progression cliquant sur son nom). Quand tous les modules deviendront « verts », la création sera terminée. Vous pourrez alors aller dans le menu « Instances » pour découvrir l’IP flottante qui a été générée automatiquement. Ne vous reste plus qu’à lancer votre IP dans votre navigateur.
-
-C’est (déjà) FINI !
-
-### Vous n’auriez pas un moyen de lancer l’application en 1-clic ?
-
-Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/fr/applications/) du site de Cloudwatt, choisissez l'appli, appuyez sur DEPLOYER et laisser vous guider... 2 minutes plus tard un bouton vert apparait... ACCEDER : vous avez votre Wordpress! !
-
-## So watt ?
-
-Ce tutoriel a pour but d'accélerer votre démarrage. A ce stade vous êtes maître(sse) à bord.
-
-Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottante exposée et votre clé privée (utilisateur `cloud` par défaut).
-
-Les chemins intéressants sur votre machine :
-
-- `/data/wordpress` : Répertoire d'installation de WordPress.
-- `/data/wordpress/wp-config.php` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MariaDB, généré pendant l'installation.
-- `/data/mysql` : le datadir de Mariadb est un volume cinder.
 
 -----
 Have fun. Hack in peace.
