@@ -91,7 +91,7 @@ Les chemins intéressants sur votre machine :
 
 ## Autres sources pouvant vous intéresser:
 
-* [wordpree](https://wordpress.com/)
+* [wordpress](https://wordpress.com/)
 
 <a name="cli" />
 
