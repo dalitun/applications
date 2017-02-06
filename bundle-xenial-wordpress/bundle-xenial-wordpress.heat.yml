@@ -120,7 +120,7 @@ resources:
 outputs:
 
  floating_ip_url:
-   description: Mysql url
+   description: Wordpress url
    value:
       str_replace:
         template: http://$floating_ip
