@@ -53,12 +53,13 @@ Si vous n'aimez que la ligne de commande, vous pouvez passer directement à la v
 <a name="install" />
 
 ### Installation votre Wordpress
-![wordpress](img/image1.png )
+![wordpress](img/1.png )
 
-![wordpress2](img/image2.png)
+![wordpress2](img/2.png)
+![wordpress2](img/3.png)
 
 ### Page d'accueil + BackOffice
-![wordpress3](img/image3.png)
+![wordpress3](img/4.png)
 
 ### Configuration de la base de donnée
 

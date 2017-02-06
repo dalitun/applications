@@ -54,12 +54,13 @@ If you like only the command line, you can go directly to the "CLI launch" versi
 <a name="install" />
 
 ### Install your Wordpress
-![wordpress](img/image1.png )
+![wordpress](img/1.png )
 
-![wordpress2](img/image2.png)
+![wordpress2](img/2.png)
+![wordpress3](img/3.png)
 
 ### Homepage + BackOffice
-![wordpress3](img/image3.png)
+![wordpress4](img/4.png)
 
 ### Configuration of the database
 
