@@ -63,7 +63,7 @@ Si vous n'aimez que la ligne de commande, vous pouvez passer directement à la v
 
 ### Configuration de la base de donnée
 
-La configuration de la base de donnée dans le fichier `/data/wordpress/wp-config.php`. 
+La configuration de la base de donnée est dans le fichier `/data/wordpress/wp-config.php`. 
 
 
 ## So watt ?
