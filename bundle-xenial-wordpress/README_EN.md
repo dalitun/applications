@@ -11,12 +11,6 @@ Today, Cloudwatt provides the necessary toolset to start your Wordpress instance
 
 The deployement base is an Ubuntu xenial instance. The Apache and MariaDB servers are deployed on a single instance.
 
-## Nota Bene for the impatients
-
-An image named "Stack Orchestration Heat Ubuntu 16.04 WORDPRESS" is available in the public image catalogue of the Cloudwatt console. For security reasons, this image does not include the initialisation of the MariaDB database and therefore is not working when spawning directly the image thru the "Launch instance" button.
-
-This image has to be launched thru the Orchestration Stack menu with the Heat template that we are detailling in this article. The heat template includes the mandatory steps required after the launch to generated the passsword, the creation of the user, the creation of the MariaDB database for Wordpress and the final configuration of Wordpress for the MariaDB accesses.
-
 
 ## Preparations
 
@@ -27,6 +21,68 @@ This image has to be launched thru the Orchestration Stack menu with the Heat te
 * Wordpress 4.7.1
 * MariaDB 10.0.28
 * PHP 7.0.13
+
+## A one-click deployment sounds really nice...
+
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Wordpress!.
+
+
+### All of this is fine, but you do not have a way to run the stack thru the console ?
+
+Yes ! Using the console, you can deploy a Wordpress server:
+
+1.	Go the Cloudwatt Github in the applications/bundle-xenial-wordpress repository
+2.	Click on the file nammed bundle-xenial-wordpress.heat.yml
+3.	Click on RAW, a web page appear with the script details
+4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
+5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
+6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
+7.	Named your stack in the « Stack name » field
+8.	Enter your keypair in the « keypair_name » field
+9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
+
+The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
+
+It is (already) FINISH !
+
+## Install cli
+
+If you like only the command line, you can go directly to the "CLI launch" version by clicking [this link](# cli)
+
+
+## For further
+<a name="install" />
+
+### Install your Wordpress
+![wordpress](img/image1.png )
+
+![wordpress2](img/image2.png)
+
+### Homepage + BackOffice
+![wordpress3](img/image3.png)
+
+### Configuration of the database
+
+The configuration of the database is in `/data/wordpress/wp-config.php` file.
+
+
+## So watt ?
+
+The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
+You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
+
+The interesting entry access points are:
+
+- `/data/wordpress` : Wordpress installation repository.
+- `/data/mysql` : Mariadb nodes datadir is a cinder volume.
+
+#### Resources you could be interested in:
+
+* [wordpress](https://wordpress.com/)
+
+<a name="cli" />
+
+## Install cli
 
 ### The prerequisites to deploy this stack
 
@@ -108,7 +164,7 @@ parameters:
 In a shell, run the script `stack-start.sh` with the name you want to give it as parameter:
 
 ~~~ bash
-$ ./stack-start.sh LE_BIDULE
+$ ./stack-start.sh Wordpress
 +--------------------------------------+------------+--------------------+----------------------+
 | id                                   | stack_name | stack_status       | creation_time        |
 +--------------------------------------+------------+--------------------+----------------------+
@@ -140,41 +196,6 @@ The  `start-stack.sh` script is taking care of running the API necessary request
 * install Apache, PHP, MariaDB and Wordpress
 * configure MariaDB with a wordpress dedicated user and database, with a generated password
 * show a flotting IP on the internet
-
-<a name="console" />
-
-### All of this is fine, but you do not have a way to run the stack thru the console ?
-
-Yes ! Using the console, you can deploy a Wordpress server:
-
-1.	Go the Cloudwatt Github in the applications/bundle-xenial-wordpress repository
-2.	Click on the file nammed bundle-xenial-wordpress.heat.yml
-3.	Click on RAW, a web page appear with the script details
-4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
-5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
-6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
-7.	Named your stack in the « Stack name » field
-8.	Enter your keypair in the « keypair_name » field
-9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
-
-The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
-
-It is (already) FINISH !
-
-### A one-click deployment sounds really nice...
-
- ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Wordpress!.
-
-## So watt ?
-
-The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
-You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
-
-The interesting entry access points are:
-
-- `/data/wordpress` : Wordpress installation repository
-- `/data/wordpress/wp-config.php` : Wordpress configuration file, in which you can find the password of the MariaDB user that has been generated buring the installation.
-- `/data/mysql` : Mariadb nodes datadir is a cinder volume.
 
 -----
 Have fun. Hack in peace.

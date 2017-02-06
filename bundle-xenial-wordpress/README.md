@@ -1,6 +1,6 @@
-# 5 Minutes Stacks, épisode deux : WordPress
+# 5 Minutes Stacks, épisode 55 : WordPress
 
-## Episode deux : Wordpress
+## Episode 55 : Wordpress
 
 ![logo](img/wordpress.png)
 
@@ -52,7 +52,7 @@ Si vous n'aimez que la ligne de commande, vous pouvez passer directement à la v
 ## Pour aller plus loin
 <a name="install" />
 
-### Installation votre blog wordpress
+### Installation votre Wordpress
 ![wordpress](img/image1.png )
 
 ![wordpress2](img/image2.png)
@@ -62,18 +62,8 @@ Si vous n'aimez que la ligne de commande, vous pouvez passer directement à la v
 
 ### Configuration de la base de donnée
 
-La configuration de la base de donnée est assez simple. 
+La configuration de la base de donnée dans le fichier `/data/wordpress/wp-config.php`. 
 
-Vous devez rentrer les informations suivantes : 
-
-- Serveur : 127.0.0.1 ou localhost
-- Port : 3306
-- Nom de la base de donnée : wordpress
-- Nom d'utilisateur de la base de donnée : wordpress
-
-Vous trouverez le mot de passe de votre utilisateur MariaDB a cette adresse : `
-
-Et voilà, vous pouvez continuer de configurer BackBee comme vous le souhaitez
 
 ## So watt ?
 
@@ -84,7 +74,6 @@ Vous avez un point d'entrée sur votre machine virtuelle en ssh via l'IP flottan
 Les chemins intéressants sur votre machine :
 
 - `/data/wordpress` : Répertoire d'installation de WordPress.
-- `/data/wordpress/wp-config.php` : Fichier de configuration de WordPress, dans lequel se trouve le mot de passe du user MariaDB, généré pendant l'installation.
 - `/data/mysql` : le datadir de Mariadb est un volume cinder.
 
 
@@ -180,7 +169,7 @@ $ ./stack-start.sh LE_BIDULE
 +--------------------------------------+------------+--------------------+----------------------+
 | id                                   | stack_name | stack_status       | creation_time        |
 +--------------------------------------+------------+--------------------+----------------------+
-| ed4ac18a-4415-467e-928c-1bef193e4f38 | Wordpress  | CREATE_IN_PROGRESS | 2015-04-21T08:29:45Z |
+| ed4ac18a-4415-467e-928c-1bef193e4f38 | Wordpress  | CREATE_IN_PROGRESS | 2017-01-21T08:29:45Z |
 +--------------------------------------+------------+--------------------+----------------------+
 ~~~
 
@@ -195,7 +184,7 @@ Une fois tout ceci fait, vous pouvez lancez le script `stack-get-url.sh` en pass
 
 ~~~ bash
 ./stack-get-url.sh Wordpress
-Wordpress 82.40.34.249
+Wordpress 82.40.33.80
 ~~~
 
 qui va récupérer l'IP flottante attribuée à votre stack. Vous pouvez alors attaquer cette IP avec votre navigateur préféré et commencer à configurer votre instance Wordpress.
