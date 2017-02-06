@@ -2,7 +2,7 @@
 
 ## Episode Two : Wordpress
 
-![logo](wordpress.png)
+![logo](img/wordpress.png)
 
 In the CMS Open-Source galaxy, WordPress is the most used in term of community, available features and user adoption.
 The Automattic compagny, which develop and distribute Wordpress, provides a SaaS offer allowing a user to create its blog in few minutes. However, those who experiments know that limits can be easily found by the wordpress.com hosting capabilities.
@@ -56,7 +56,7 @@ If you like only the command line, you can go directly to the "CLI launch" versi
 ### Install your Wordpress
 ![wordpress](img/1.png )
 
-![wordpress2](img/2.png)
+ ![wordpress2](img/2.png)
 ![wordpress3](img/3.png)
 
 ### Homepage + BackOffice
