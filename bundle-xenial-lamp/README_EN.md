@@ -142,7 +142,7 @@ Last, wait 5 minutes until the deployement been completed.
 
 The `start-stack.sh` script is taking care of running the API necessary requests to:
 
-* start up an Ubuntu Xenial Tahr instance, pre-provisionned with the LAMP stack
+* start up an Ubuntu Xenial instance, pre-provisionned with the LAMP stack
 * Show a flotting IP on the internet
 
 ### Enjoy

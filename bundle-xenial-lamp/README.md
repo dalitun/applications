@@ -145,7 +145,7 @@ Enfin, attendez 5 minutes que le déploiement soit complet.
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu Xenial Tahr, pré-provisionnée avec la stack LAMP
+* démarrer une instance basée sur Ubuntu Xenial, pré-provisionnée avec la stack LAMP
 * l'exposer sur Internet via une IP flottante
 
 ### Enjoy
