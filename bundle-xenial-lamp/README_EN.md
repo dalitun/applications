@@ -4,7 +4,7 @@
 
 ![logo](img/lamplogo.gif)
 
-The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers are deployed on a single instance.
+The deployement base is an Ubuntu xenial instance. The Apache and MySQL servers are deployed on a single instance.
 
 ### The versions
 
@@ -22,8 +22,8 @@ The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers 
 
 Yes ! Using the console, you can deploy a LAMP server:
 
-1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
-2.	Click on the file nammed bundle-trusty-lamp.heat.yml
+1.	Go the Cloudwatt Github in the applications/bundle-xenial-lamp repository
+2.	Click on the file nammed bundle-xenial-lamp.heat.yml
 3.	Click on RAW, a web page appear with the script details
 4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
 5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
@@ -72,9 +72,9 @@ If you do not like command lines, you can go directly to the "run it thru the co
 
 ### What will you find in the repository
 
-Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repository:
+Once you have cloned the github, you will find in the `bundle-xenial-lamp/` repository:
 
-* `bundle-trusty-lamp.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
+* `bundle-xenial-lamp.heat.yml`: HEAT orchestration template. It will be use to deploy the necessary infrastructure.
 * `stack-start.sh`: Stack launching script. This is a small script that will save you some copy-paste.
 * `stack-get-url.sh`: Flotting IP recovery script.
 
@@ -98,10 +98,10 @@ Once this done, the Openstack command line tools can interact with your Cloudwat
 
 ### Adjust the parameters
 
-With the `bundle-trusty-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
+With the `bundle-xenial-lamp.heat.yml` file, you will find at the top a section named `parameters`. The sole mandatory parameter to adjust is the one called `keypair_name`. Its `default` value must contain a valid keypair with regards to your Cloudwatt user account. This is within this same file that you can adjust the instance size by playing with the `flavor` parameter.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
 description: Basic all-in-one LAMP stack
@@ -142,7 +142,7 @@ Last, wait 5 minutes until the deployement been completed.
 
 The `start-stack.sh` script is taking care of running the API necessary requests to:
 
-* start up an Ubuntu Trusty Tahr instance, pre-provisionned with the LAMP stack
+* start up an Ubuntu Xenial Tahr instance, pre-provisionned with the LAMP stack
 * Show a flotting IP on the internet
 
 ### Enjoy
