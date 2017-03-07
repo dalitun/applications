@@ -1,4 +1,4 @@
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
 description: All-in-one LAMP stack
@@ -63,7 +63,7 @@ resources:
     type: OS::Nova::Server
     properties:
       key_name: { get_param: keypair_name }
-      image: c3bf8565-e374-49e7-9693-f7e80999d2cb
+      image: 8f05c618-0969-40bf-a59f-17cce619ee42
       flavor: { get_param: flavor_name }
       networks:
         - network: { get_resource: network }

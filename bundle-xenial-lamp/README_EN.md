@@ -1,25 +1,58 @@
-# 5 minutes stacks episode one: LAMP - English version #
+# 5 minutes stacks episode 56: LAMP - English version #
 
-Welcome to the inauguration of the 5 Minutes Stacks series !
+## Episode 56 : Linux-Apache-MySQL-PHP7
 
-## The concept
-
-Regularly, Cloudwatt will publish on his technical blog and his github, applicative stacks with their associated deployement guide. Its goal is to facilitate your life while starting up projects. The procedure takes few minutes to prepare and 5 minutes to deploy.
-
-Once the stack is deployed, you become its master and you can immediately play with it.
-
-If you have any questions, remarks or enhancement requests, do not hesitate to open an issue on the github or to submit a pull request.
-
-## Episode One : Linux-Apache-MySQL-PHP5
+![logo](img/lamplogo.gif)
 
 The deployement base is an Ubuntu trusty instance. The Apache and MySQL servers are deployed on a single instance.
 
 ### The versions
 
-* Ubuntu 14.04.2
-* Apache 2.4.7
-* MySQL 5.5.43
-* PHP 5.5.9
+* Ubuntu 16.04
+* Apache 2.4.18
+* MySQL 5.7.17
+* PHP 7.0.15
+
+
+## A one-click deployment sounds really nice...
+
+ ... Good! Go to the [Apps page](https://www.cloudwatt.com/en/apps/) on the Cloudwatt website, choose the apps, press **DEPLOY** and follow the simple steps... 2 minutes later, a green button appears... **ACCESS**: you have your Wordpress!.
+
+### All of this is fine, but you do not have a way to run the stack thru the console ?
+
+Yes ! Using the console, you can deploy a LAMP server:
+
+1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
+2.	Click on the file nammed bundle-trusty-lamp.heat.yml
+3.	Click on RAW, a web page appear with the script details
+4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
+5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
+6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
+7.	Named your stack in the « Stack name » field
+8.	Enter your keypair in the « keypair_name » field
+9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
+
+The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
+
+It is (already) FINISH !
+
+## Install cli
+
+If you like only the command line, you can go directly to the "CLI launch" version by clicking [this link](# cli)
+
+## So watt ?
+
+The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
+You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
+
+You can start building your internet website on your virtual instance. Its entry access points are:
+
+* `/etc/apache2/sites-available/default-cw.conf`:  default Apache configuration 
+* `/var/www/cw`: the deployement repository of the little php website exemple
+
+<a name="cli" />
+
+## Install cli
 
 ### The prerequisites to deploy this stack
 
@@ -37,7 +70,7 @@ Per default, the script is proposing a deployement on an instance type "Small" (
 
 If you do not like command lines, you can go directly to the "run it thru the console" section by clicking [here](#console) 
 
-## What will you find in the repository
+### What will you find in the repository
 
 Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repository:
 
@@ -46,7 +79,7 @@ Once you have cloned the github, you will find in the `bundle-trusty-lamp/` repo
 * `stack-get-url.sh`: Flotting IP recovery script.
 
 
-## Start-up
+### Start-up
 
 ### Initialize the environment
 
@@ -116,36 +149,8 @@ The `start-stack.sh` script is taking care of running the API necessary requests
 
 Once all of this done, you can run the `stack-get-url.sh` script. It will gather the entry url of your stack.
 
-<a name="console" />
-
-### All of this is fine, but you do not have a way to run the stack thru the console ?
-
-Yes ! Using the console, you can deploy a LAMP server:
-
-1.	Go the Cloudwatt Github in the applications/bundle-trusty-lamp repository
-2.	Click on the file nammed bundle-trusty-lamp.heat.yml
-3.	Click on RAW, a web page appear with the script details
-4.	Save as its content on your PC. You can use the default name proposed by your browser (just remove the .txt)
-5.  Go to the « [Stacks](https://console.cloudwatt.com/project/stacks/) » section of the console
-6.	Click on « Launch stack », then click on « Template file » and select the file you've just saved on your PC, then click on « NEXT »
-7.	Named your stack in the « Stack name » field
-8.	Enter your keypair in the « keypair_name » field
-9.	Choose the instance size using the « flavor_name » popup menu and click on « LAUNCH »
-
-The stack will be automatically created (you can see its progress by clicking on its name). When all its modules will become "green", the creation will be completed. Then you can go on the "Instances" menu to discover the flotting IP value that has been automatically generated. Now, just run this IP adress in your browser and enjoy !
-
-It is (already) FINISH !
 
 
-## So watt ?
-
-The goal of this tutorial is to accelarate your start. At this point you are the master of the stack.
-You have a SSH access point on your virtual machine thru the flotting IP and your private keypair (default user name `cloud`).
-
-You can start building your internet website on your virtual instance. Its entry access points are:
-
-* `/etc/apache2/sites-available/default-cw.conf`:  default Apache configuration 
-* `/var/www/cw`: the deployement repository of the little php website exemple
 
 -----
 Have fun. Hack in peace.

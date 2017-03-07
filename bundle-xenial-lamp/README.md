@@ -1,6 +1,8 @@
-# 5 Minutes Stacks, épisode premier : LAMP #
+# 5 Minutes Stacks, épisode 56 : LAMP #
 
-## Episode 56 : Linux-Apache-MySQL-PHP5
+## Episode 56 : Linux-Apache-MySQL-PHP7
+
+![logo](img/lamplogo.gif)
 
 La base de déploiement est une instance Ubuntu Xenial. Les serveurs Apache et MySQL sont
 déployés dans une instance unique. 
@@ -20,7 +22,7 @@ Bon... en fait oui ! Allez sur la page [Applications](https://www.cloudwatt.com/
 
 Et bien si ! En utilisant la console, vous pouvez déployer un serveur LAMP :
 
-1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-trusty-lamp
+1.	Allez sur le Github Cloudwatt dans le répertoire applications/bundle-xenial-lamp
 2.	Cliquez sur le fichier nommé bundle-xenial-lamp.heat.yml
 3.	Cliquez sur RAW, une page web apparait avec le détail du script
 4.	Enregistrez-sous le contenu sur votre PC dans un fichier avec le nom proposé par votre navigateur (enlever le .txt à la fin)
@@ -37,7 +39,6 @@ C’est (déjà) FINI !
 ## Installation en CLI
 
 Si vous n'aimez que la ligne de commande, vous pouvez passer directement à la version "lancement en CLI" en cliquant sur [ce lien](#cli)
-
 
 ## So watt ?
 
@@ -72,7 +73,7 @@ Par défaut, le script propose un déploiement sur une instance de type " Small 
 
 Si vous n’aimez pas les lignes de commande, vous pouvez passer directement à la version « lancement par la console » en cliquant sur [ce lien](#console) 
 
-## Tour du propriétaire
+### Tour du propriétaire
 
 Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-xenial-lamp/`:
 
@@ -81,7 +82,7 @@ Une fois le repository cloné, vous trouvez, dans le répertoire `bundle-xenial-
 * `stack-get-url.sh` : Script de récupération de l'IP d'entrée de votre stack.
 
 
-## Démarrage
+### Démarrage
 
 ### Initialiser l'environnement
 
@@ -103,7 +104,7 @@ Dans le fichier `bundle-xenial-lamp.heat.yml` vous trouverez en haut une section
 C'est dans ce même fichier que vous pouvez ajuster la taille de l'instance par le paramètre `flavor`.
 
 ~~~ yaml
-heat_template_version: 2013-05-23
+heat_template_version: 2015-04-30
 
 
 description: Basic all-in-one LAMP stack
@@ -144,7 +145,7 @@ Enfin, attendez 5 minutes que le déploiement soit complet.
 
 Le script `start-stack.sh` s'occupe de lancer les appels nécessaires sur les API Cloudwatt pour :
 
-* démarrer une instance basée sur Ubuntu Trusty Tahr, pré-provisionnée avec la stack LAMP
+* démarrer une instance basée sur Ubuntu Xenial Tahr, pré-provisionnée avec la stack LAMP
 * l'exposer sur Internet via une IP flottante
 
 ### Enjoy
